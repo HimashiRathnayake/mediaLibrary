@@ -1,5 +1,6 @@
 # mediaLibrary
 Mobile and web based application to manage a media library.
+
 A distributed media library.
 Stores multimedia files.
 Users can upload and manage contents.
