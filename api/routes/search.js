@@ -8,8 +8,15 @@ router.get('/', (req, res, next) => {
 });
 
 router.post('/', (req, res, next) => {
+    const file ={
+        fileId: req.body.fileId,
+        fileName: req.body.fileName,
+        fileType: req.body.fileType,
+        fileSize: req.body.fileSize
+    };
     res.status(201).json({
-        message: 'Handling post request to /search'
+        message: 'Handling post request to /search',
+        createFile: file
     });
 });
 
