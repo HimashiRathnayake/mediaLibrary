@@ -9,4 +9,4 @@ const metaDataSchema = mongoose.Schema({
     accessList: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}]
 });
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('File', metaDataSchema);
