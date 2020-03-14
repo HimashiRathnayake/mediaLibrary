@@ -6,7 +6,7 @@ const metaDataSchema = mongoose.Schema({
     fileType: {type: String, required: true},
     fileSize: {type: Number, required: true},
     date: {type: Date, required: true},
-    accessList: {type: Array, required: true}
+    accessList: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}]
 });
 
 module.exports = mongoose.model('User', userSchema);
