@@ -1,9 +1,19 @@
 const express = require('express');
 const app = express();
+const bodyParser = require('body-parser');
 
 const fileRoutes = require('./api/routes/files');
 const userRoutes = require('./api/routes/user');
 const albumRoutes = require('./api/routes/albums');
+// const database = require('.api/connectDb.js');
+const mongoose = require('mongoose');
+
+mongoose.connect('mongodb+srv://mediaLibraryAdmin:media@cluster0-sguo7.mongodb.net/mediaLibraryDB?retryWrites=true&w=majority',
+{ useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.Promise = global.Promise;
+
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
 
 //handle cors
 app.use((req,res,next)=>{                    
