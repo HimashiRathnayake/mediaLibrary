@@ -16,10 +16,11 @@ mongoose.connect(
     {
         useNewUrlParser: true,
         useUnifiedTopology: true 
+        //useMongoClient: true
     }
     
 );
-mongoose.Promise = global.Promise;
+//mongoose.Promise = global.Promise;
 
 
 app.use(morgan('dev'));
