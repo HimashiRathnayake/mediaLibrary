@@ -2,11 +2,22 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
 const searchRoutes = require('./api/routes/search');
 const searchImageRoutes = require('./api/routes/searchImages');
 const searchAudioRoutes = require('./api/routes/searchAudios');
 const searchVideoRoutes = require('./api/routes/searchVideos');
+
+mongoose.connect(
+    'mongodb+srv://DBuser:'+
+    process.env.MONGO_ATLAS_PW +
+    '@cluster0-bwtkn.mongodb.net/test?retryWrites=true&w=majority',
+    {
+        useNewUrlParser: true,
+        useUnifiedTopology: true 
+    }
+);
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended: false}));
