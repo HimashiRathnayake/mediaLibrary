@@ -5,22 +5,32 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
 const searchRoutes = require('./api/routes/search');
+const usersRoutes = require('./api/routes/users');
 const searchImageRoutes = require('./api/routes/searchImages');
 const searchAudioRoutes = require('./api/routes/searchAudios');
 const searchVideoRoutes = require('./api/routes/searchVideos');
 
-mongoose.connect(
-    'mongodb+srv://DBuser:'+
-    process.env.MONGO_ATLAS_PW +
-    '@cluster0-bwtkn.mongodb.net/test?retryWrites=true&w=majority',
+ mongoose.connect(
+    'mongodb+srv://DBuser:DBpassword@cluster0-bwtkn.mongodb.net/test?retryWrites=true&w=majority',
     {
         useNewUrlParser: true,
-        useUnifiedTopology: true 
-        //useMongoClient: true
+        useUnifiedTopology: true
+        
     }
     
-);
-//mongoose.Promise = global.Promise;
+); 
+mongoose.Promise = global.Promise;
+
+
+/* const MongoClient = require('mongodb').MongoClient;
+const uri = "mongodb+srv://DBuser:"+ process.env.MONGO_ATLAS_PW +"@cluster0-bwtkn.mongodb.net/test?retryWrites=true&w=majority";
+const client = new MongoClient(uri, { useNewUrlParser: true });
+client.connect(err => {
+  const collection = client.db("test").collection("devices");
+  // perform actions on the collection object
+  client.close();
+}); */
+
 
 
 app.use(morgan('dev'));
@@ -39,6 +49,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/search', searchRoutes); 
+app.use('/users', usersRoutes); 
 app.use('/searchImages', searchImageRoutes); 
 app.use('/searchAudios', searchAudioRoutes); 
 app.use('/searchVideos', searchVideoRoutes); 
