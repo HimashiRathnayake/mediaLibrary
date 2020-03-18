@@ -3,14 +3,16 @@ const app = express();
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 
-const fileRoutes = require('./api/routes/files');
+const imageRoutes = require('./api/routes/images');
+const audioRoutes = require('./api/routes/audios');
+const videoRoutes = require('./api/routes/videos');
 const userRoutes = require('./api/routes/user');
-const albumRoutes = require('./api/routes/albums');
+const folderRoutes = require('./api/routes/folders');
 
 app.use(morgan('dev'));
 app.use('/uploads',express.static('uploads'));
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false, limit:'100mb'}));
+app.use(bodyParser.json({limit:'100mb'}));
 
 //handle cors
 app.use((req,res,next)=>{                    
@@ -26,9 +28,11 @@ app.use((req,res,next)=>{
     next();
 });
 
-app.use('/albums',albumRoutes);
-app.use('/files',fileRoutes);
+app.use('/images',imageRoutes);
+app.use('/audios',audioRoutes);
+app.use('/videos',videoRoutes);
 app.use('/user',userRoutes);
+app.use('/folders',folderRoutes);
 
 app.use((req,res,next)=>{
     const error = new Error('Route not found');

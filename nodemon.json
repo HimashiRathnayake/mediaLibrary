@@ -1,6 +1,7 @@
 {
     "env":{
         "JWT_KEY": "secret",
-        "MONGO_ATLAS_PW": "media"
+        "MONGO_ATLAS_PW": "media",
+        "FFMPEG_PATH" : "C:/ffmpeg-20200315-c467328-win64-static/bin/ffmpeg.exe"
     }
 }

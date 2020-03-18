@@ -60,7 +60,6 @@ exports.user_login = (req, res, next) =>{
                         message: 'Auth failed'
                     });
                 }
-                console.log(process.env.JWT_KEY);
                 if (result){
                     const token = jwt.sign({
                         email: user[0].email,
