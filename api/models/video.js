@@ -5,7 +5,6 @@ const audioSchema = mongoose.Schema({
     videoName: {type: String, required: true},
     title: {type: String, default: 'Untitled'},
     artist: {type: String, default: 'Unknown artist'},
-    date: {type: String, default: ''},
     accessList: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
     folder: {type: mongoose.Schema.Types.ObjectId, ref: 'Folder', required: true},
     path: {type: String, required: true}

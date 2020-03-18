@@ -5,9 +5,10 @@ const imageSchema = mongoose.Schema({
     imageName: {type: String, required: true},
     title: {type: String, default: "No title"},
     subject: {type: String, default: "No subject"},
-    author: {type: String, required: "Unknown Author"},
+    artist: {type: String, default: "Unknown Artist"},
     accessList: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
-    album: {type: mongoose.Schema.Types.ObjectId, ref: 'Folder', required: true}
+    folder: {type: mongoose.Schema.Types.ObjectId, ref: 'Folder', required: true},
+    path: {type: String, required: true}
 });
 
 module.exports = mongoose.model('Image', imageSchema);

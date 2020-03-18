@@ -36,7 +36,7 @@ exports.folders_create_folder = (req, res, next) =>{
     folder.save().then(result => {
         console.log(result);
         res.status(201).json({
-            message: 'Folder created successfully',
+            message: 'Folder created successfully'
         });
     }).catch(err=>{
         console.log(err);

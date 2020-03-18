@@ -1,7 +1,7 @@
 const express=require('express');
 const router=express.Router();
 const checkAuth=require('../middleware/check-auth');
-const audioMetadata=require('../middleware/audio-metaData');
+const getMetadata=require('../middleware/get-meta-data');
 const multer=require('multer');
 // const sftpStorage = require('multer-sftp');
 
@@ -34,7 +34,7 @@ const upload = multer({
 
 router.get('/', checkAuth, AudiosController.audios_get_all);
 router.get('/:folderId', checkAuth, AudiosController.audios_get_audios_from_folder);
-router.post('/:folderId', checkAuth, upload.single('file'), audioMetadata, AudiosController.audios_upload_audio);
+router.post('/:folderId', checkAuth, upload.single('file'), getMetadata, AudiosController.audios_upload_audio);
 router.patch('/:audioId', checkAuth, AudiosController.audios_rename_audio);
 router.delete('/:audioId', checkAuth, AudiosController.audios_delete_audio);
 

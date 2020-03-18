@@ -13,9 +13,8 @@ exports.images_get_all = (req, res, next) =>{
                     _id: doc._id,
                     imageName: doc.imageName,
                     title: doc.title,
-                    // album: doc.album,
-                    // artist: doc.artist,
-                    date: doc.date,
+                    subject: doc.subject,
+                    artist: doc.artist,
                     accessList: doc.accessList,
                     folder: doc.folder,
                     path: doc.path
@@ -42,9 +41,8 @@ exports.images_get_images_from_folder = (req, res, next) =>{
                     _id: doc._id,
                     imageName: doc.imageName,
                     title: doc.title,
-                    // album: doc.album,
-                    // artist: doc.artist,
-                    date: doc.date,
+                    subject: doc.subject,
+                    artist: doc.artist,
                     accessList: doc.accessList,
                     folder: doc.folder,
                     path: doc.path
@@ -61,13 +59,13 @@ exports.images_get_images_from_folder = (req, res, next) =>{
 }
 
 exports.images_upload_image = (req, res, next) =>{
+    console.log(req.data)
     const image =new Image({
         _id: new mongoose.Types.ObjectId(),
         imageName: req.file.originalname,
-        title: req.title,
-        // album: req.album,
-        // artist: req.artist,
-        date: req.date,
+        title: req.data.Title,
+        subject: req.data.Subject,
+        artist: req.data.Artist,
         accessList: [req.userData.userId],
         folder: req.params.folderId,
         path: req.file.path

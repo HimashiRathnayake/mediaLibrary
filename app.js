@@ -11,8 +11,8 @@ const folderRoutes = require('./api/routes/folders');
 
 app.use(morgan('dev'));
 app.use('/uploads',express.static('uploads'));
-app.use(bodyParser.urlencoded({extended: false, limit:'100mb'}));
-app.use(bodyParser.json({limit:'100mb'}));
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
 
 //handle cors
 app.use((req,res,next)=>{                    

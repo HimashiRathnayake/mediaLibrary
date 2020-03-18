@@ -64,10 +64,10 @@ exports.audios_upload_audio = (req, res, next) =>{
     const audio =new Audio({
         _id: new mongoose.Types.ObjectId(),
         audioName: req.file.originalname,
-        title: req.title,
-        album: req.album,
-        artist: req.artist,
-        date: req.date,
+        title: req.data.Title,
+        album: req.data.Album,
+        artist: req.data.Artist,
+        year: req.data.Year,
         accessList: [req.userData.userId],
         folder: req.params.folderId,
         path: req.file.path

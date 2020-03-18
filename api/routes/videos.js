@@ -1,7 +1,7 @@
 const express=require('express');
 const router=express.Router();
 const checkAuth=require('../middleware/check-auth');
-const videoMetadata=require('../middleware/video-metaData');
+const getMetadata=require('../middleware/get-meta-data');
 const multer=require('multer');
 // const sftpStorage = require('multer-sftp');
 
@@ -46,7 +46,7 @@ const upload = multer({
 
 router.get('/', checkAuth, VideosController.videos_get_all);
 router.get('/:folderId', checkAuth, VideosController.videos_get_videos_from_folder);
-router.post('/:folderId', checkAuth, upload.single('file'), videoMetadata, VideosController.videos_upload_video);
+router.post('/:folderId', checkAuth, upload.single('file'), getMetadata, VideosController.videos_upload_video);
 router.patch('/:videoId', checkAuth, VideosController.videos_rename_video);
 router.delete('/:videoId', checkAuth, VideosController.videos_delete_video);
 
