@@ -1,15 +1,7 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb+srv://mediaLibraryAdmin:'+process.env.MONGO_ATLAS_PW+'@cluster0-sguo7.mongodb.net/mediaLibraryDB?retryWrites=true&w=majority',
+mongoose.connect('mongodb+srv://mediaLibraryAdmin:mediaLibraryPassword@cluster0-3kobe.mongodb.net/mediaLibraryDB?retryWrites=true&w=majority',
 { useNewUrlParser: true, useUnifiedTopology: true });
-//         then(()=>{console.log('connected to database successfully')})
-//         .catch(err=>{
-//             console.log(err);
-//             res.status(500).json({
-//                 error: err
-//     });
-// });
-
 mongoose.Promise = global.Promise;
 
 // When successfully connected
