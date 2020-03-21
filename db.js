@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb+srv://mediaLibraryAdmin:mediaLibraryPassword@cluster0-3kobe.mongodb.net/mediaLibraryDB?retryWrites=true&w=majority',
+mongoose.connect('mongodb+srv://mediaLibraryAdmin:'+process.env.MONGO_ATLAS_PW+'@cluster0-3kobe.mongodb.net/mediaLibraryDB?retryWrites=true&w=majority',
 { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.Promise = global.Promise;
 
