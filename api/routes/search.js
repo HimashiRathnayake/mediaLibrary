@@ -1,27 +1,22 @@
 const express =require('express');
 const router = express.Router();
 const checkAuth = require('../middleware/check-auth');
-
-const File =  require('../models/metaData');
-
 const searchController = require('../controllers/search');
 
-router.get('/', checkAuth, searchController.search_get_all);
+/* router.post('/audio', checkAuth, searchController.create_new_audio);
+router.post('/video', checkAuth, searchController.create_new_video);
+router.post('/image', checkAuth, searchController.create_new_Image);  */
 
-router.post('/', checkAuth, searchController.create_files);
+router.get('/audio/artist/:Artist', checkAuth, searchController.search_audio_by_artist );
+router.get('/video/artist/:Artist', checkAuth, searchController.search_video_by_artist );
+router.get('/image/artist/:Artist', checkAuth, searchController.search_image_by_artist );
 
-router.get('/:Id', checkAuth, searchController.get_a_file );
+router.get('/audio/title/:Title', checkAuth, searchController.search_audio_by_title );
+router.get('/video/title/:Title', checkAuth, searchController.search_video_by_title );
+router.get('/image/title/:Title', checkAuth, searchController.search_image_by_title );
 
-router.patch('/:Id', (req, res, next) => {
-        res.status(200).json({
-            message: 'You update the special id'
-        });
-});
-
-router.delete('/:Id', (req, res, next) => {
-    res.status(200).json({
-        message: 'You delete the special id'
-    });
-});
+router.get('/audio/?', checkAuth, searchController.search_audio );
+router.get('/video/?', checkAuth, searchController.search_video );
+router.get('/image/?', checkAuth, searchController.search_image );
 
 module.exports = router;

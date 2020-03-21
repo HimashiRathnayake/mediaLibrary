@@ -6,9 +6,9 @@ const mongoose = require('mongoose');
 
 const searchRoutes = require('./api/routes/search');
 const usersRoutes = require('./api/routes/users');
-const searchImageRoutes = require('./api/routes/searchImages');
-const searchAudioRoutes = require('./api/routes/searchAudios');
-const searchVideoRoutes = require('./api/routes/searchVideos');
+//const searchImageRoutes = require('./api/routes/searchImages');
+//const searchAudioRoutes = require('./api/routes/searchAudios');
+//const searchVideoRoutes = require('./api/routes/searchVideos');
 
  mongoose.connect(
     'mongodb+srv://DBuser:DBpassword@cluster0-bwtkn.mongodb.net/test?retryWrites=true&w=majority',
@@ -50,9 +50,9 @@ app.use((req, res, next) => {
 
 app.use('/search', searchRoutes); 
 app.use('/users', usersRoutes); 
-app.use('/searchImages', searchImageRoutes); 
-app.use('/searchAudios', searchAudioRoutes); 
-app.use('/searchVideos', searchVideoRoutes); 
+//app.use('/searchImages', searchImageRoutes); 
+//app.use('/searchAudios', searchAudioRoutes); 
+//app.use('/searchVideos', searchVideoRoutes); 
 
 
 app.use((req,res,next) => {
