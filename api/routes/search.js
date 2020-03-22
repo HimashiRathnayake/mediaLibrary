@@ -7,6 +7,10 @@ const searchController = require('../controllers/search');
 router.post('/video', checkAuth, searchController.create_new_video);
 router.post('/image', checkAuth, searchController.create_new_Image);  */
 
+/* router.get('/:Id', checkAuth, searchController.get_a_file );
+router.get('/', checkAuth, searchController.get_files ); */
+
+
 router.get('/audio/artist/:Artist', checkAuth, searchController.search_audio_by_artist );
 router.get('/video/artist/:Artist', checkAuth, searchController.search_video_by_artist );
 router.get('/image/artist/:Artist', checkAuth, searchController.search_image_by_artist );
