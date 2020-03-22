@@ -152,9 +152,9 @@ exports.create_new_Image =  (req, res, next) => {
 //search by artist name
 
 exports.search_audio_by_artist =  (req, res, next) => {
-    const artist = req.params.Artist;
-    const accessList = req.usrData.userId;
-    Audio.find({artist: artist, accessList: accessList })
+    const artist = new RegExp(req.params.Artist, 'i');
+    const accessList = new RegExp(req.userData.userId, 'i');
+    Audio.find({artist: artist , accessList: accessList  })
     .exec()
     .then(docs=>{
         const response={
@@ -184,8 +184,8 @@ exports.search_audio_by_artist =  (req, res, next) => {
 
 
 exports.search_video_by_artist =  (req, res, next) => {
-    const artist = req.params.Artist;
-    const accessList = req.usrData.userId;
+    const artist = new RegExp(req.params.Artist, 'i');
+    const accessList = new RegExp(req.userData.userId, 'i');
     Video.find({artist: artist, accessList: accessList })
     .exec()
     .then(docs=>{
@@ -216,8 +216,8 @@ exports.search_video_by_artist =  (req, res, next) => {
 
 
 exports.search_image_by_artist =  (req, res, next) => {
-    const artist = req.params.Artist;
-    const accessList = req.usrData.userId;
+    const artist = new RegExp(req.params.Artist, 'i');
+    const accessList = new RegExp(req.userData.userId, 'i');
     Image.find({artist: artist, accessList: accessList })
     .exec()
     .then(docs=>{
@@ -248,8 +248,8 @@ exports.search_image_by_artist =  (req, res, next) => {
 //search by title
 
 exports.search_audio_by_title =  (req, res, next) => {
-    const title = req.params.Title;
-    const accessList = req.usrData.userId;
+    const title = new RegExp(req.params.Title, 'i');
+    const accessList = new RegExp(req.usrData.userId, 'i');
     Audio.find({title: title, accessList: accessList })
     .exec()
     .then(docs=>{
@@ -280,8 +280,8 @@ exports.search_audio_by_title =  (req, res, next) => {
 
 
 exports.search_video_by_title =  (req, res, next) => {
-    const title = req.params.Title;
-    const accessList = req.usrData.userId;
+    const title = new RegExp(req.params.Title, 'i');
+    const accessList = new RegExp(req.usrData.userId, 'i');
     Video.find({title: title, accessList: accessList })
     .exec()
     .then(docs=>{
@@ -312,8 +312,8 @@ exports.search_video_by_title =  (req, res, next) => {
 
 
 exports.search_image_by_title =  (req, res, next) => {
-    const title = req.params.Title;
-    const accessList = req.usrData.userId;
+    const title = new RegExp(req.params.Title, 'i');
+    const accessList = new RegExp(req.usrData.userId, 'i');
     Image.find({title: title, accessList: accessList })
     .exec()
     .then(docs=>{
