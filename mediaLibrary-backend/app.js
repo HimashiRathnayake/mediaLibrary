@@ -10,6 +10,7 @@ const userRoutes = require('./api/routes/user');
 const folderRoutes = require('./api/routes/folders');
 const shareRoutes = require('./api/routes/share');
 const searchRoutes = require('./api/routes/search');
+const favoritesRoutes = require('./api/routes/favorites');
 
 app.use(morgan('dev'));
 app.use('/uploads',express.static('uploads'));
