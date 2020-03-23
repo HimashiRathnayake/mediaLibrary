@@ -8,6 +8,8 @@ const audioRoutes = require('./api/routes/audios');
 const videoRoutes = require('./api/routes/videos');
 const userRoutes = require('./api/routes/user');
 const folderRoutes = require('./api/routes/folders');
+const shareRoutes = require('./api/routes/share');
+const searchRoutes = require('./api/routes/search');
 
 app.use(morgan('dev'));
 app.use('/uploads',express.static('uploads'));
@@ -33,6 +35,8 @@ app.use('/audios',audioRoutes);
 app.use('/videos',videoRoutes);
 app.use('/user',userRoutes);
 app.use('/folders',folderRoutes);
+app.use('/share', shareRoutes);
+app.use('/search', searchRoutes); 
 
 app.use((req,res,next)=>{
     const error = new Error('Route not found');
