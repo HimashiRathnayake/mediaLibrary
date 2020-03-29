@@ -1,36 +1,37 @@
 import React, {Component} from 'react';
+import './componentCss/files.css';
 
 export default class Video extends Component{
 
     render(){
         return(
         <form>
-            <nav class="navbar navbar-expand navbar-dark bg-primary"> 
-                <div class="collapse navbar-collapse" id="navbarsExample02">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item active"> 
-                            <a class="nav-link" href="#">
+            <nav className="navbar navbar-expand navbar-dark bg-primary"> 
+                <div className="collapse navbar-collapse" id="navbarsExample02">
+                    <ul className="navbar-nav mr-auto">
+                        <li className="nav-item active"> 
+                            <a className="nav-link" href="#">
                                 Home 
-                            <span class="sr-only">(current)</span>
+                            <span className="sr-only">(current)</span>
                             </a>
                         </li>
                     </ul>
-                    <form class="form-inline my-2 my-md-0"> </form>
+                    <form className="form-inline my-2 my-md-0"> </form>
                 </div>
                 <a href="#menu-toggle" id="menu-toggle" class="navbar-brand">
-                    <span class="navbar-toggler-icon"></span>
+                    <span className="navbar-toggler-icon"></span>
                 </a> 
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample02" aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation"> 
-                    <span class="navbar-toggler-icon"></span> 
+                <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample02" aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation"> 
+                    <span className="navbar-toggler-icon"></span> 
                 </button>
             </nav>
         
-            <div class="container">
-                <div id="wrapper" class="toggled">
+            <div className="container">
+                <div id="wrapper" className="toggled">
             
                     <div id="sidebar-wrapper">
-                        <ul class="sidebar-nav">
-                            <li class="sidebar-brand"><a >VIDEOS</a> </li>
+                        <ul className="sidebar-nav">
+                            <li className="sidebar-brand"><a >VIDEOS</a> </li>
                             <li> <a href="#">Folders</a> </li>
                             <li> <a href="#">Get all</a> </li>
                             <li> <a href="#">Get from folder</a> </li>
@@ -44,7 +45,7 @@ export default class Video extends Component{
                     </div>
             
                     <div id="page-content-wrapper">
-                        <div class="container-fluid">
+                        <div className="container-fluid">
                             
                         </div>
                     </div>

@@ -1,4 +1,7 @@
 import React, {Component} from 'react';
+import { Link } from "react-router-dom";
+import './componentCss/login.css';
+import history from '../history';
 
 export default class Login extends Component{
 
@@ -20,9 +23,9 @@ export default class Login extends Component{
                         <input type="password" className="form-control" placeholder="Enter password" />
                     </div>
 
-                    <button type="submit" className="btn btn-primary btn-block">Login</button>
+                    <button type="submit" className="btn btn-primary btn-block" onClick={() => history.push('/start')}>Login</button>
                     <p className="forgot-password text-right">
-                        Don't have an account? <a href="#">SignUp </a>
+                        Don't have an account? <Link  to={"/signup"}>SignUp</Link>
                     </p>
     
                 </form> 
