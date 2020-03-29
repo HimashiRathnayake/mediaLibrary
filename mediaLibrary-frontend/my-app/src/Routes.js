@@ -7,9 +7,9 @@ import Login from './components/loginComponent';
 
 import Signup from './components/signupComponent';
 import Start from './components/startpageComponent';  
-//import Image from './components/imageComponent';
-//import Audio from './components/audioComponent';
-//import Video from './components/videoComponent';
+import Image from './components/imageComponent';
+import Audio from './components/audioComponent';
+import Video from './components/videoComponent';
 //import Folder from './components/folderComponent'; 
 
 export default class Routes extends Component {
@@ -22,6 +22,9 @@ export default class Routes extends Component {
                     <Route path="/login" component={Login} />
                     <Route path="/signup" component={Signup} />
                     <Route path="/start" component={Start} />
+                    <Route path="/image" component={Image} />
+                    <Route path="/audio" component={Audio} />
+                    <Route path="/video" component={Video} />
                 </Switch>
             </Router>
 

@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { Link } from "react-router-dom";
 import './componentCss/login.css';
 import './componentCss/start.css';
 
@@ -9,24 +10,22 @@ export default class Start extends Component{
         <form>
         <nav className="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
             <div className="container">
-                <a className="navbar-brand js-scroll-trigger" >Media Library</a>
-                <button className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                    Menu
-                    <i className="fas fa-bars"></i>
-                </button>
+               
+                <Link className="navbar-brand js-scroll-trigger" to={"/start"}>Media Library</Link>
+
                 <div className="collapse navbar-collapse" id="navbarResponsive">
                     <ul className="navbar-nav text-uppercase ml-auto">
                         <li className="nav-item">
-                            <a className="nav-link js-scroll-trigger">Home</a>
+                            <Link className="nav-link js-scroll-trigger" to={"/start"}>Home</Link>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link js-scroll-trigger" >Image</a>
+                            <Link className="nav-link js-scroll-trigger" to={"/image"}>Image</Link>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link js-scroll-trigger" >Audio</a>
+                            <Link className="nav-link js-scroll-trigger" to={"/audio"}>Audio</Link>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link js-scroll-trigger" >Video</a>
+                            <Link className="nav-link js-scroll-trigger" to={"/video"}>Video</Link>
                         </li>
                         <li className="nav-item">
                             <a className="nav-link js-scroll-trigger" >Logout</a>
@@ -44,7 +43,7 @@ export default class Start extends Component{
                     <div className="card-body">
                         <h5 className="card-title">Image</h5>
                         <p className="card-text">Collect your all images here............</p>
-                        <a  className="btn btn-dark btn-sm">Image</a>
+                        <Link className="btn btn-dark btn-sm" to={"/image"}>Image</Link>
                     </div>
                 </div>
             </div>
@@ -54,7 +53,7 @@ export default class Start extends Component{
                     <div className="card-body">
                         <h5 className="card-title">Video</h5>
                         <p className="card-text">Collect your all videos here............</p>
-                        <a className="btn btn-dark btn-sm">Video</a>
+                        <Link className="btn btn-dark btn-sm" to={"/video"}>Video</Link>
                     </div>
                 </div>
             </div>
@@ -65,7 +64,7 @@ export default class Start extends Component{
                     <div className="card-body">
                         <h5 className="card-title">Audio</h5>
                         <p className="card-text">Collect your all audios here............</p>
-                        <a  className= "btn btn-dark btn-sm">Audio</a>
+                        <Link className="btn btn-dark btn-sm" to={"/audio"}>Audio</Link>
                     </div>
                 </div>
             </div>
