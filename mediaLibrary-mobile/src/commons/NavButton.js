@@ -1,12 +1,6 @@
 import React, {Component} from 'react';
 import { FontAwesome } from '@expo/vector-icons';
-import {
-    createDrawerNavigator,
-    DrawerContentScrollView,
-    DrawerItemList,
-    DrawerItem,
-  } from '@react-navigation/drawer';
-  
+
 export default class NavButton extends Component {
     render() {
         return (

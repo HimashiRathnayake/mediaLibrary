@@ -1,15 +1,11 @@
-import React, { Component } from 'react';
-import {UtilityThemeProvider, Box, Text} from 'react-native-design-utility';
-import Navigator from './src/screens/'
-
-export default class Cat extends Component {
-  render() {
-	return (
-		<UtilityThemeProvider>
-			<Navigator/>
-		</UtilityThemeProvider>
-	);
-  }
-}
+import React from 'react';
+import {UtilityThemeProvider} from 'react-native-design-utility';
+import Navigator from './src/navigators/'
 
 
+export default ()=>(
+	<UtilityThemeProvider>
+		<Navigator/>
+	</UtilityThemeProvider>
+);
+		

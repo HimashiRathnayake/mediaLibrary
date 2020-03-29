@@ -75,6 +75,7 @@ const color = {
     },
     color,
     space: {
+      'xxs': 0,
       xs: 8,
       sm: 16,
       md: 24,
