@@ -1,11 +1,34 @@
 import React, {Component} from 'react';
-import { Link } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import './componentCss/login.css';
 import './componentCss/start.css';
 
 export default class Start extends Component{
 
+    constructor(props){
+        super(props);
+
+        this.state={
+            redirect: false
+        }
+
+        this.logout = this.logout.bind(this);
+
+    }
+
+    logout(){
+        console.log("logout");
+        sessionStorage.setItem('userData', '');
+        sessionStorage.clear(); 
+        this.setState({redirect: true});
+    }
+
     render(){
+
+        if(this.state.redirect){
+            return(<Redirect to={'/login'}/>);
+        }
+
         return(
         <form>
         <nav className="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
@@ -28,7 +51,8 @@ export default class Start extends Component{
                             <Link className="nav-link js-scroll-trigger" to={"/video"}>Video</Link>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link js-scroll-trigger" >Logout</a>
+                            {/* <button  onClick={this.logout}>Logout</button> */}
+                            <input className="nav-link js-scroll-trigger" type="button" name="logout" onClick={this.logout} value="Logout" />
                         </li>
                     </ul>
                 </div>

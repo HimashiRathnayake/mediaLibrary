@@ -51,6 +51,11 @@ export default class Login extends Component{
         if(this.state.redirect){
             return(<Redirect to={'/start'} />);
         }
+        
+        if(sessionStorage.getItem('userData')){
+            return(<Redirect to={'/start'}/>);
+            
+        } 
 
         return(        
         <form >
