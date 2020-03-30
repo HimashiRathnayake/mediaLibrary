@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { Link } from "react-router-dom";
 import './componentCss/login.css';
+//import axios from 'axios';
 
 export default class Signup extends Component{
     
@@ -38,11 +39,15 @@ export default class Signup extends Component{
 
     onSubmit(e){
         e.preventDefault();
-        console.log(`The values are email: ${this.state.email}, password: ${this.state.password}, and conformPassword: ${this.state.confirmPassword}`);
+        const obj = {
+            email : this.state.email,
+            password : this.state.password
+        }
+        //axios.post(url: 'http://localhost:3001/users/signup', obj).then(onfulfilled: res => console.log(res.data));
+
         this.setState({
-            email: '',
-            password: '',
-            confirmPassword: ''
+            email : '',
+            password : ''
         })
     }
 
