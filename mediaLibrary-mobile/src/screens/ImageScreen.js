@@ -1,12 +1,10 @@
-import React, {Component} from 'react';
-import {Box, Text} from 'react-native-design-utility';
-import { ScreenContainer } from 'react-native-screens';
-import { Button } from 'react-native';
-import { BaseRouter } from '@react-navigation/native';
+import React from 'react';
+import {ImageBackground, Text, View} from 'react-native';
+import {styles} from '../styles/commons';
+import {Header} from '../commons/Header';
 
 export const ImageScreen = ({navigation}) => (
-    <Box f={1} center>
-        <Text>Images</Text>
-        {navigation.setParams({type: 'Image'})}
-    </Box>
+    <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
+        <Header navigation={navigation}>Image</Header>
+    </ImageBackground>
 );

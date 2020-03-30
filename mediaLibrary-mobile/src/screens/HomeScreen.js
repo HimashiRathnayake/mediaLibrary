@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
-import {Box, Text} from 'react-native-design-utility';
-import { ScreenContainer } from 'react-native-screens';
-import { Button } from 'react-native';
+import React from 'react';
+import {ImageBackground, Text, View} from 'react-native';
+import {Header} from '../commons/Header';
+import {styles} from '../styles/commons';
 
 export const HomeScreen = ({navigation}) => (
-    <Box f={1} center>
-        <Text>Home</Text>
-    </Box>
+    <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
+        <Header navigation={navigation}>Home</Header>
+    </ImageBackground>
 );

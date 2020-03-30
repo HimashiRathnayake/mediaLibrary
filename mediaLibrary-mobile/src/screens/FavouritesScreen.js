@@ -1,10 +1,11 @@
-import React, {Component} from 'react';
-import {Box, Text} from 'react-native-design-utility';
-import { ScreenContainer } from 'react-native-screens';
-import { Button } from 'react-native';
+import React from 'react';
+import {ImageBackground, Text, View} from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
+import {styles} from '../styles/commons';
+import {Header} from '../commons/Header';
 
 export const FavouritesScreen = ({navigation}) => (
-    <Box f={1} center>
-        <Text>Favourites</Text>
-    </Box>
+    <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
+        <Header navigation={navigation}>MyFavourites</Header>
+    </ImageBackground>
 );

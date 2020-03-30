@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import {LoginScreen} from '../screens/LoginScreen';
+import {SignUpScreen} from '../screens/SignUpScreen';
 import {SplashScreen} from '../screens/SplashScreen';
 import { createStackNavigator } from '@react-navigation/stack';
 import {AuthContext} from '../screens/context';
@@ -45,6 +46,7 @@ export default ()=>{
 			) : (
 				<AuthStack.Navigator>
 					<AuthStack.Screen name="Login" component={LoginScreen} options={{title: "LoginScreen", headerShown: false}}/>
+					<AuthStack.Screen name="SignUp" component={SignUpScreen} options={{title: "SignUpScreen", headerShown: false}}/>
 				</AuthStack.Navigator> 
 			)}
 		</NavigationContainer>

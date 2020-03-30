@@ -9,7 +9,8 @@ export const SplashScreen = ({navigation}) => (
         <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
             <Box center mt={250}>
                 <Entypo name="folder-video" color="white" size={100} />    
-                <Text center mt={20} size={40} color='white'>Media Library</Text>
+                <Text center mt={20} size={40} color='white'>MyMedia</Text>
+                <Text center size={14} color='#9e9e9e'>Manage Your All Media Files</Text>
             </Box>
         </ImageBackground>
     </Box>

@@ -1,11 +1,13 @@
-import React, {Component} from 'react';
-import {Box, Text} from 'react-native-design-utility';
-import { ScreenContainer } from 'react-native-screens';
-import { Button } from 'react-native';
+import React from 'react';
+import {ImageBackground, Text, View} from 'react-native';
+import {Header} from '../commons/Header';
+import {styles} from '../styles/commons';
 
-export const SearchScreen = ({navigation}) => (
-    <Box f={1} center>
-        <Text>Search</Text>
-<Text>{navigation.params.type}</Text>
-    </Box>
-);
+export const SearchScreen = ({route,navigation}) => {
+    const type=route.params.type;
+    return(
+        <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
+            <Header navigation={navigation}>Search {type}s</Header>
+        </ImageBackground>
+    );
+}

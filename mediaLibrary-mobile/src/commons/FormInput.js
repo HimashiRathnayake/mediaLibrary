@@ -1,6 +1,6 @@
 import React from 'react';
 import { TextInput, View } from 'react-native';
-import {styles} from './styles/forminput';
+import {styles} from '../styles/commons/forminput';
 import { FontAwesome, AntDesign } from '@expo/vector-icons';
 
 const secure = type => {

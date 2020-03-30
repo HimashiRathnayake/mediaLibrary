@@ -1,50 +1,44 @@
-import React, { Component, useState } from 'react';
+import React from 'react';
+import { ImageBackground, View, Text } from 'react-native';
 import {HomeScreen} from '../screens/HomeScreen';
-import {ImageScreen} from '../screens/ImageScreen';
-import {VideoScreen} from '../screens/VideoScreen';
-import {AudioScreen} from '../screens/AudioScreen';
-import {SearchScreen} from '../screens/SearchScreen';
-import {ShareScreen} from '../screens/ShareScreen';
 import {FavouritesScreen} from '../screens/FavouritesScreen';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { LogoutScreen } from '../screens/LogoutScreen';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createDrawerNavigator, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
+import {AuthContext} from '../screens/context'
+import { styles } from '../styles/drawer';
+import { FontAwesome } from '@expo/vector-icons';
+import { TabNavigator } from './TabNavigator';
 
-const Tabs =createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 
-const VideoTabNavigator = () => (
-	<Tabs.Navigator initialRouteName='Video'>
-			<Tabs.Screen name="Video" component={VideoScreen}/>
-            <Tabs.Screen name="Search" component={SearchScreen}/>
-            <Tabs.Screen name="Share" component={ShareScreen}/>
-	</Tabs.Navigator>
-);
+const VideoTabNavigator = () => (<TabNavigator type='Video'/>);
+const ImageTabNavigator = () => (<TabNavigator type='Image'/>);
+const AudioTabNavigator = () => (<TabNavigator type='Audio'/>);
 
-const ImageTabNavigator = () => (
-	<Tabs.Navigator initialRouteName='Image'>
-			<Tabs.Screen name="Image" component={ImageScreen}/>
-            <Tabs.Screen name="Search" component={SearchScreen}/>
-            <Tabs.Screen name="Share" component={ShareScreen}/>
-	</Tabs.Navigator>
-);
+export const DrawerNavigator = ()=>{
+const {signOut} = React.useContext(AuthContext);
 
-const AudioTabNavigator = () => (
-	<Tabs.Navigator initialRouteName='Audio'>
-			<Tabs.Screen name="Audio" component={AudioScreen}/>
-            <Tabs.Screen name="Search" component={SearchScreen}/>
-            <Tabs.Screen name="Share" component={ShareScreen}/>
-	</Tabs.Navigator>
-);
+function CustomDrawerContent(props) {
+    return (
+        <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.drawerImage}>
+            <View>
+                <View style={styles.drawerHeader}>
+                    <FontAwesome name="user-circle-o" style={styles.drawerIcon}/>
+                    <Text style={styles.drawerHeaderText}>nikeshalarathnayake19@gmail.com</Text>
+                </View>
+                <DrawerItemList {...props} />
+                <DrawerItem label="Logout" onPress={() => signOut()}/>
+            </View>       
+        </ImageBackground>
+    );
+}
 
-export const DrawerNavigator = ()=>(
-		<Drawer.Navigator>
+return(
+		<Drawer.Navigator initialRouteName="Home" drawerContentOptions={{style={backgroundColor: white}}} drawerContent={props => <CustomDrawerContent {...props}/>}>
             <Drawer.Screen name="Home" component={HomeScreen}/>
             <Drawer.Screen name="Image" component={ImageTabNavigator}/>
             <Drawer.Screen name="Audio" component={AudioTabNavigator}/>
             <Drawer.Screen name="Video" component={VideoTabNavigator}/>
             <Drawer.Screen name="Favourites" component={FavouritesScreen}/>
-            <Drawer.Screen name="Logout" component={LogoutScreen}/>
         </Drawer.Navigator>
-);			
+);	
+}		
