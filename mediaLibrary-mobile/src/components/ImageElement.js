@@ -17,14 +17,14 @@ const styles=StyleSheet.create({
     image:{
         flex: 1,
         alignSelf: 'stretch',
-        resizeMode: 'contain',
+        resizeMode: 'cover',
         height: 110,
         width: 110,
-        borderRadius: 30
+        borderRadius: 10,
     },
     originalImage:{
         alignSelf: 'stretch',
-        resizeMode:'contain',
+        resizeMode:'center',
         width: Dimensions.get('screen').width,
         height: Dimensions.get('screen').height
 

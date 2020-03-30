@@ -4,13 +4,14 @@ import {styles} from '../styles/commons';
 import {Header} from '../commons/Header';
 import {ImageElement, OriginalImageElement} from '../components/ImageElement';
 import { TouchableWithoutFeedback, TouchableHighlight } from 'react-native-gesture-handler';
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome, Ionicons, MaterialIcons, MaterialCommunityIcons, Entypo, AntDesign } from '@expo/vector-icons';
 
 export const ImageScreen = ({navigation}) => {
     const [modelVisible, setVisible] = React.useState(false);
     const [modelImage, setImage] = React.useState(require('../../assets/logo.png'));
+    const [detailsModal, setDetailsModal] = React.useState(false);
     const images = [
-        require('../../assets/logo.png'),
+        require('../../assets/flower.jpg'),
         require('../../assets/logo.png'),
         require('../../assets/logo.png'),
         require('../../assets/logo.png'),
@@ -26,14 +27,15 @@ export const ImageScreen = ({navigation}) => {
         require('../../assets/logo.png'),
         require('../../assets/logo.png'),
     ];
+
+    function toggleModal(){
+        setDetailsModal({detailsModal:!detailsModal});
+    }
     function setModelVisible(visible, imageKey){
         setImage(images[imageKey]);
         setVisible(visible);
     }
-    function getImage(){
-        return(modelImage)
-    }
-
+    
     const imageSet = images.map((val,key)=>{
         return(
             <TouchableOpacity key={key} onPress={()=>{setModelVisible(true, key)}}>
@@ -51,8 +53,22 @@ export const ImageScreen = ({navigation}) => {
                 <View style={stylesScreen.container}>
                     <Modal style={stylesScreen.modal} transparent={false} animationType='fade' visible={modelVisible} onRequestClose={()=>{}}>
                         <View style={stylesScreen.modal}>
-                            <FontAwesome name='' style={stylesScreen.icon} onPress={()=>setModelVisible(false)}/>
+                            <View flexDirection= 'row-reverse'>
+                                <Entypo name='dots-three-vertical' style={stylesScreen.icon} onPress={()=>setDetailsModal(true)}/>
+                                <MaterialCommunityIcons name='delete-outline' style={stylesScreen.icon} onPress={()=>setModelVisible(false)}/>
+                                <MaterialIcons name='favorite-border' style={stylesScreen.icon} onPress={()=>setModelVisible(false)}/>
+                                <Ionicons name='md-share' style={stylesScreen.icon} onPress={()=>setModelVisible(false)}/>
+                                <AntDesign name='left' style={stylesScreen.iconLeft} onPress={()=>setModelVisible(false)}/>
+                            </View>
                             <OriginalImageElement src={modelImage}></OriginalImageElement>
+                        </View>
+                    </Modal>
+                    <Modal style={stylesScreen.modal} transparent={false} animationType='fade' visible={detailsModal} onRequestClose={()=>{}}>
+                        <View style={stylesScreen.modal}>
+                            <View flexDirection= 'row'>
+                                <AntDesign name='left' style={stylesScreen.back} onPress={()=>setDetailsModal(false)}/>
+                                <Text style={stylesScreen.text}>Details</Text>
+                            </View>
                         </View>
                     </Modal>
                     {imageSet}
@@ -88,9 +104,30 @@ const stylesScreen = StyleSheet.create({
     modal: {
          flex:1,
          padding: 0,
-         backgroundColor: 'black'
+         backgroundColor: 'black',
+         color: '#fff'
+    },
+    icon: {
+        color: '#fff',
+        fontSize: 20,
+        paddingHorizontal: 15,
+        paddingTop: 5,
+    },
+    iconLeft:{
+        color: '#fff',
+        fontSize: 20,
+        paddingRight: 120,
+        paddingTop: 5,
+    },
+    back:{
+        color: '#fff',
+        fontSize: 20,
+        paddingRight: 10,
+        paddingTop: 5,
     },
     text: {
-        color: '#fff'
+        color: '#fff',
+        fontSize: 18,
+        marginRight: 200
     }
 });
