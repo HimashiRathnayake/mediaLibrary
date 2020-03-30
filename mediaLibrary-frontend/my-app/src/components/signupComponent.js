@@ -1,57 +1,61 @@
 import React, {Component} from 'react';
-import { Link } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import './componentCss/login.css';
+import {SignUpData} from '../services/PostData';
 //import axios from 'axios';
 
 export default class Signup extends Component{
     
     constructor(props){
         super(props);
-        this.onChangeEmail= this.onChangeEmail.bind(this);
-        this.onChangePassword= this.onChangePassword.bind(this);
-        this.onChangeConfirmPassword= this.onChangeConfirmPassword.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
+        
+        this.signup = this.signup.bind(this);
+        this.onChange = this.onChange.bind(this);
 
         this.state = {
             email: '',
             password: '',
-            confirmPassword: ''
+            confirmPassword: '',
+            redirect: false
         }
+
     }  
 
-    onChangeEmail(e){
-        this.setState({
-            email: e.target.value
-        });
-    }
+    signup(){
+        console.log('signup clicked');
+        console.log(this.state);
 
-    onChangePassword(e){
-        this.setState({
-            password: e.target.value
-        });
-    }
-
-    onChangeConfirmPassword(e){
-        this.setState({
-            confirmPassword: e.target.value
-        });
-    }
-
-    onSubmit(e){
-        e.preventDefault();
-        const obj = {
-            email : this.state.email,
-            password : this.state.password
-        }
-        //axios.post(url: 'http://localhost:3001/users/signup', obj).then(onfulfilled: res => console.log(res.data));
-
-        this.setState({
-            email : '',
-            password : ''
+        SignUpData(this.state).then((result) => {
+            let responseJSON = result;
+            console.log("response:",responseJSON);
+        
+            if(responseJSON.message==="User created"){
+                sessionStorage.setItem('userData', responseJSON);
+                this.setState({redirect: true})
+            }else{
+                console.log('SignUp Error');
+            }
         })
     }
 
+    onChange(e){
+        this.setState({
+            [e.target.name]: e.target.value 
+        });
+        
+    }
+
     render(){
+
+        if(this.state.redirect){
+            return(<Redirect to={'/login'} />);
+        }
+        
+        /* if(sessionStorage.getItem('userData')){
+            return(<Redirect to={'/start'}/>);
+
+        }  */
+
         return(
             <div className="auth-wrapper">
                 <div className="auth-inner">
@@ -63,8 +67,8 @@ export default class Signup extends Component{
                             <input type="email"
                                 className="form-control"
                                 placeholder="Enter email"
-                                value={this.state.email}
-                                onChange= {this.onChangeEmail}
+                                name= "email"
+                                onChange={this.onChange}
                             />
                         </div>
 
@@ -73,8 +77,8 @@ export default class Signup extends Component{
                             <input type="password" 
                                 className="form-control"
                                 placeholder="Enter password"
-                                value={this.state.password}
-                                onChange= {this.onChangePassword}
+                                name= "password"
+                                onChange={this.onChange}
                             />
                         </div>
 
@@ -83,12 +87,13 @@ export default class Signup extends Component{
                             <input type="password" 
                                 className="form-control"
                                 placeholder="Confirm your password"
-                                value={this.state.confirmPassword}
-                                onChange= {this.onChangeConfirmPassword}
+                                name= "confirmPassword"
+                                onChange={this.onChange}
                             />
                         </div>
 
-                        <button type="submit" className="btn btn-primary btn-block">Sign Up</button>
+                        
+                        <input className="btn btn-primary btn-block" type="button" name="signup" onClick={this.signup} value="SignUp" />
                         <p className="forgot-password text-right">
                              Already registered <Link  to={"/login"}>Sign In ?</Link>
                         </p>

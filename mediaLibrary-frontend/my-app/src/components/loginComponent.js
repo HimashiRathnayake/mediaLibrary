@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Redirect, Link } from "react-router-dom";
 import './componentCss/login.css';
-import {PostData} from '../services/PostData';
+import {LoginData} from '../services/PostData';
 
 
 export default class Login extends Component{
@@ -26,7 +26,7 @@ export default class Login extends Component{
         console.log(this.state);
         //axios.post(url: 'http://localhost:3001/users/login', obj).then(onfulfilled: res => console.log(res.data));
 
-        PostData(this.state).then((result) => {
+        LoginData(this.state).then((result) => {
             let responseJSON = result;
             console.log(responseJSON);
         
@@ -52,10 +52,10 @@ export default class Login extends Component{
             return(<Redirect to={'/start'} />);
         }
         
-        if(sessionStorage.getItem('userData')){
+        /* if(sessionStorage.getItem('userData')){
             return(<Redirect to={'/start'}/>);
-            
-        } 
+
+        } */ 
 
         return(        
         <form >

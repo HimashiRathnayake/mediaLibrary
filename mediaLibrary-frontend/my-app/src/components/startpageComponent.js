@@ -63,7 +63,7 @@ export default class Start extends Component{
      
             <div className="col-md-4">
                 <div className="card mb-4 border-dark">
-                <img className="card-img-top-image"  />
+                <div className="card-img-top-image"  />
                     <div className="card-body">
                         <h5 className="card-title">Image</h5>
                         <p className="card-text">Collect your all images here............</p>
@@ -73,7 +73,7 @@ export default class Start extends Component{
             </div>
             <div className="col-md-4">
                 <div className="card mb-4 border-dark">
-                    <img className="card-img-top-video"  />
+                    <div className="card-img-top-video"  />
                     <div className="card-body">
                         <h5 className="card-title">Video</h5>
                         <p className="card-text">Collect your all videos here............</p>
@@ -84,7 +84,7 @@ export default class Start extends Component{
             
             <div className="col-md-4">
                 <div className="card mb-4 border-dark">
-                    <img className="card-img-top-audio" />
+                    <div className="card-img-top-audio" />
                     <div className="card-body">
                         <h5 className="card-title">Audio</h5>
                         <p className="card-text">Collect your all audios here............</p>
