@@ -3,34 +3,16 @@ import {ImageBackground, Text, View, TouchableOpacity, StyleSheet, ScrollView, D
 import {styles} from '../styles/commons';
 import {Header} from '../commons/Header';
 import {ImageElement, OriginalImageElement} from '../components/ImageElement';
-import { TouchableWithoutFeedback, TouchableHighlight } from 'react-native-gesture-handler';
-import { FontAwesome, Ionicons, MaterialIcons, MaterialCommunityIcons, Entypo, AntDesign } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons, MaterialCommunityIcons, Entypo, AntDesign } from '@expo/vector-icons';
+import {imagesAll} from '../api/images';
+import { DetailsText } from '../commons/DetailsText';
 
-export const ImageScreen = ({navigation}) => {
+export const ImageScreen = ({navigation, route}) => {
     const [modelVisible, setVisible] = React.useState(false);
     const [modelImage, setImage] = React.useState(require('../../assets/logo.png'));
     const [detailsModal, setDetailsModal] = React.useState(false);
-    const images = [
-        require('../../assets/flower.jpg'),
-        require('../../assets/logo.png'),
-        require('../../assets/logo.png'),
-        require('../../assets/logo.png'),
-        require('../../assets/logo.png'),
-        require('../../assets/logo.png'),
-        require('../../assets/logo.png'),
-        require('../../assets/logo.png'),
-        require('../../assets/logo.png'),
-        require('../../assets/logo.png'),
-        require('../../assets/logo.png'),
-        require('../../assets/logo.png'),
-        require('../../assets/logo.png'),
-        require('../../assets/logo.png'),
-        require('../../assets/logo.png'),
-    ];
+    const images=imagesAll;
 
-    function toggleModal(){
-        setDetailsModal({detailsModal:!detailsModal});
-    }
     function setModelVisible(visible, imageKey){
         setImage(images[imageKey]);
         setVisible(visible);
@@ -40,7 +22,7 @@ export const ImageScreen = ({navigation}) => {
         return(
             <TouchableOpacity key={key} onPress={()=>{setModelVisible(true, key)}}>
                 <View style={stylesScreen.imagewrapper}>
-                    <ImageElement src={val}/>
+                    <ImageElement src={val.src}/>
                     <Text style={stylesScreen.imagename}>Image</Text>
                 </View>
             </TouchableOpacity>
@@ -48,28 +30,34 @@ export const ImageScreen = ({navigation}) => {
     })
     return(
         <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
-            <Header navigation={navigation}>Image</Header>
+            {route.params===undefined && <Header navigation={navigation}>Image</Header>||<Header navigation={navigation}>{route.params.folderName}</Header>}
             <ScrollView style={stylesScreen.container}>
                 <View style={stylesScreen.container}>
                     <Modal style={stylesScreen.modal} transparent={false} animationType='fade' visible={modelVisible} onRequestClose={()=>{}}>
                         <View style={stylesScreen.modal}>
                             <View flexDirection= 'row-reverse'>
                                 <Entypo name='dots-three-vertical' style={stylesScreen.icon} onPress={()=>setDetailsModal(true)}/>
-                                <MaterialCommunityIcons name='delete-outline' style={stylesScreen.icon} onPress={()=>setModelVisible(false)}/>
-                                <MaterialIcons name='favorite-border' style={stylesScreen.icon} onPress={()=>setModelVisible(false)}/>
-                                <Ionicons name='md-share' style={stylesScreen.icon} onPress={()=>setModelVisible(false)}/>
-                                <AntDesign name='left' style={stylesScreen.iconLeft} onPress={()=>setModelVisible(false)}/>
+                                <MaterialCommunityIcons name='delete-outline' style={stylesScreen.icon} onPress={()=>setVisible(false)}/>
+                                <MaterialIcons name='favorite-border' style={stylesScreen.icon} onPress={()=>setVisible(false)}/>
+                                <Ionicons name='md-share' style={stylesScreen.icon} onPress={()=>setVisible(false)}/>
+                                <AntDesign name='left' style={stylesScreen.iconLeft} onPress={()=>setVisible(false)}/>
                             </View>
-                            <OriginalImageElement src={modelImage}></OriginalImageElement>
+                            <OriginalImageElement src={modelImage.src}></OriginalImageElement>
                         </View>
-                    </Modal>
-                    <Modal style={stylesScreen.modal} transparent={false} animationType='fade' visible={detailsModal} onRequestClose={()=>{}}>
-                        <View style={stylesScreen.modal}>
-                            <View flexDirection= 'row'>
-                                <AntDesign name='left' style={stylesScreen.back} onPress={()=>setDetailsModal(false)}/>
-                                <Text style={stylesScreen.text}>Details</Text>
+                        <Modal style={stylesScreen.modal} transparent={false} animationType='fade' visible={detailsModal} onRequestClose={()=>{}}>
+                            <View style={stylesScreen.modal}>
+                                <View flexDirection= 'row'>
+                                    <AntDesign name='left' style={stylesScreen.back} onPress={()=>setDetailsModal(false)}/>
+                                    <Text style={stylesScreen.text}>Details</Text>
+                                </View>
+                                <View style={stylesScreen.details}>
+                                    <DetailsText name={'Image Name'}>{modelImage.imageName}</DetailsText>
+                                    <DetailsText name={'Title'}>{modelImage.title}</DetailsText>
+                                    <DetailsText name={'Subject'}>{modelImage.subject}</DetailsText>
+                                    <DetailsText name={'Artist'}>{modelImage.artist}</DetailsText>
+                                </View>
                             </View>
-                        </View>
+                        </Modal>
                     </Modal>
                     {imageSet}
                 </View>
@@ -122,12 +110,19 @@ const stylesScreen = StyleSheet.create({
     back:{
         color: '#fff',
         fontSize: 20,
-        paddingRight: 10,
-        paddingTop: 5,
+        paddingRight: 20,
+        paddingLeft: 20,
+        paddingTop: 10,
     },
     text: {
         color: '#fff',
-        fontSize: 18,
-        marginRight: 200
+        fontSize: 20,
+        marginRight: 200,
+        paddingTop: 5
+    },
+    details: {
+        marginTop: 140,
+        width: Dimensions.get('screen').width,
+        height: Dimensions.get('screen').height/2,
     }
 });

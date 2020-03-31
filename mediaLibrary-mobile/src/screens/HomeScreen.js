@@ -9,15 +9,15 @@ export const HomeScreen = ({navigation}) => (
         <Header navigation={navigation}>Home</Header>
         <View style={styleHome.container}>
             <Text style={styleHome.containerHeader}>Store Your All Multimedia Files & Manage Them at one place</Text>
-            <TouchableOpacity style={styleHome.card} onPress={()=>{navigation.navigate('Image')}}>
+            <TouchableOpacity style={styleHome.card} onPress={()=>{navigation.navigate('Images')}}>
                 <Entypo name="folder-images" style={styleHome.type}/> 
                 <Text style={styleHome.text}>Images</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styleHome.card} onPress={()=>{navigation.navigate('Audio')}}>
+            <TouchableOpacity style={styleHome.card} onPress={()=>{navigation.navigate('Audios')}}>
                 <Entypo name="folder-music" style={styleHome.type}/>  
                 <Text style={styleHome.text}>Audios</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styleHome.card} onPress={()=>{navigation.navigate('Video')}}>
+            <TouchableOpacity style={styleHome.card} onPress={()=>{navigation.navigate('Videos')}}>
                 <Entypo name="folder-video" style={styleHome.type}/>  
                 <Text style={styleHome.text}>Videos</Text>
             </TouchableOpacity>

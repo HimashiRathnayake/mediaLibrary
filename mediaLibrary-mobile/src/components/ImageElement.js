@@ -24,7 +24,7 @@ const styles=StyleSheet.create({
     },
     originalImage:{
         alignSelf: 'stretch',
-        resizeMode:'center',
+        resizeMode: 'center',
         width: Dimensions.get('screen').width,
         height: Dimensions.get('screen').height
 
