@@ -1,59 +1,154 @@
 import React, {Component} from 'react';
+import { Link} from "react-router-dom";
 import './componentCss/files.css';
+import {GetFolders, GetAllImages, GetImagesFromFolder} from '../services/PostData';
+import ResultList from './resultList';
+//import ImageList from './ImageList';
 
 export default class Image extends Component{
 
+    constructor(props) {
+        super(props);
+      
+        this.addActiveClass= this.addActiveClass.bind(this);
+        this.allfolders=this.allfolders.bind(this);
+        this.allImages=this.allImages.bind(this);
+        this.getImage=this.getImage.bind(this);
+        
+        this.state = {
+          isActive: false,
+          folders: {},
+          images: {}
+          //userData: JSON.parse(sessionStorage.getItem('userData')).token
+        }
+        //console.log("UserData: ", JSON.parse(sessionStorage.getItem('userData')).token);
+        //console.log(this.state.userData);
+
+    }
+      
+    addActiveClass() {
+        if(this.state.isActive){
+            this.setState({
+                isActive: false
+            })
+        }else{
+            this.setState({
+                isActive: true
+            })
+        }
+        
+        //console.log('Active');
+    }
+
+    allfolders() {
+        //console.log('All Folders');
+        //console.log("UserData: ", JSON.parse(sessionStorage.getItem('userData')).token);
+
+        GetFolders(JSON.parse(sessionStorage.getItem('userData')).token).then((result) => {
+            
+            //console.log("res:",result);
+        
+            this.setState({
+                folders: result,
+                images: {}
+            })
+            
+            //console.log('folders:', this.state.folders);
+            //console.log("UserData: ", sessionStorage.getItem('userData'));
+        }) 
+    }
+
+    allImages(){
+        //console.log('All Images');
+
+        GetAllImages(JSON.parse(sessionStorage.getItem('userData')).token).then((result) => {
+            
+            //console.log("res:",result);
+
+            this.setState({
+                //images: result,
+                folders: result
+            })
+
+            //console.log('folders:', this.state.folders);
+            //console.log('images:', this.state.images);
+
+        }) 
+
+    }
+
+    getImage(folder){
+        console.log('getImage');
+        console.log("User: ", JSON.parse(sessionStorage.getItem('userData')).token);
+        console.log("Folder name: ", folder._id);
+
+        GetImagesFromFolder(JSON.parse(sessionStorage.getItem('userData')).token, folder._id).then((result) => {
+            //console.log("res:",result);
+
+            this.setState({
+                folders: result
+            })
+            console.log("folderimg:", this.state.folders);
+        }) 
+        
+    }
+
+
     render(){
         return(
-        <form>
-            <nav className="navbar navbar-expand navbar-dark bg-primary"> 
-                <div className="collapse navbar-collapse" id="navbarsExample02">
-                    <ul className="navbar-nav mr-auto">
-                        <li className="nav-item active"> 
-                            <a className="nav-link" href="#">
-                                Home 
-                            <span className="sr-only">(current)</span>
-                            </a>
-                        </li>
-                    </ul>
-                    <form className="form-inline my-2 my-md-0"> </form>
-                </div>
-                <a href="#menu-toggle" id="menu-toggle" className="navbar-brand">
-                    <span className="navbar-toggler-icon"></span>
-                </a> 
-                <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample02" aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation"> 
-                    <span className="navbar-toggler-icon"></span> 
-                </button>
-            </nav>
+            <div >
+                <nav className="navbar navbar-expand navbar-dark bg-primary"> 
+                    <div className="collapse navbar-collapse" id="navbarsExample02">
+                        <ul className="navbar-nav mr-auto">
+                            <li className="nav-item"> 
+                                <Link className="nav-link" to={"/image"}>MyMedia</Link>
+                            </li>
+                            
+                            <li className="nav-item "> 
+                                <Link className="nav-link" to={"/start"}>Home</Link>
+                            </li> 
+                        </ul>
+                        <form className="form-inline my-2 my-md-0"> </form>
+                    </div>
+                    <div className="navbar-brand">
+                        <a className="navbar-toggler-icon" id="menu-toggle"  type="button"  onClick={this.addActiveClass} />
+                    </div>
+                    {/* <span className="navbar-toggler-icon"></span> */}
+                 
+                    <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample02" aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation" > 
+                        <span className="navbar-toggler-icon"></span> 
+                    </button>
+                </nav>
         
-            <div className="container">
-                <div id="wrapper" className="toggled">
+                
+                <div id="wrapper" className={this.state.isActive ? 'toggled': ''}>
             
                     <div id="sidebar-wrapper">
                         <ul className="sidebar-nav">
-                            <li className="sidebar-brand"><a >IMAGES</a> </li>
-                            <li> <a href="#">Folders</a> </li>
-                            <li> <a href="#">Get all</a> </li>
-                            <li> <a href="#">Get from folder</a> </li>
-                            <li> <a href="#">Upload</a> </li>
-                            <li> <a href="#">Search</a> </li>
-                            <li> <a href="#">Share</a> </li>
-                            <li> <a href="#">Rename</a> </li>
-                            <li> <a href="#">Delete</a> </li>
-                            <li> <a href="#">Logout</a> </li>
-                        </ul>
+                            <li className="sidebar-brand"><a className="nav-link">IMAGES</a> </li>
+                            <li> <a type="button" className="nav-link" onClick={this.allfolders}> All Folders</a></li>
+                            <li> <a type="button" className="nav-link" onClick={this.allImages}>All Images</a> </li>
+                            <li> <a type="button" className="nav-link" >Create Folder</a> </li>
+                            <li> <a type="button" className="nav-link">Upload</a> </li>
+                            <li> <a type="button" className="nav-link" >Search</a> </li>
+                            <li> <a type="button" className="nav-link" >Logout</a> </li>
+                        </ul> 
+
                     </div>
             
                     <div id="page-content-wrapper">
                         <div className="container-fluid">
-                            
+                            <ResultList resultFolders={this.state.folders}
+                                        getImage={this.getImage}
+                            />
                         </div>
+
                     </div>
              
                 </div>
             </div>
         
-        </form>
+           
 
         
           

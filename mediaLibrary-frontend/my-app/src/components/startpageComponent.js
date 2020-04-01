@@ -34,7 +34,7 @@ export default class Start extends Component{
         <nav className="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
             <div className="container">
                
-                <Link className="navbar-brand js-scroll-trigger" to={"/start"}>Media Library</Link>
+                <Link className="navbar-brand js-scroll-trigger" to={"/start"}>MyMedia</Link>
 
                 <div className="collapse navbar-collapse" id="navbarResponsive">
                     <ul className="navbar-nav text-uppercase ml-auto">

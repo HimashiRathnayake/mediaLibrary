@@ -44,6 +44,12 @@ body {
     margin-right: 0px;
   }
   
+  .nav-link{
+    font-weight: bold;
+    font-size:large;
+  }
+
+  
   
   /* Sidebar Styles */
   
@@ -64,12 +70,12 @@ body {
   .sidebar-nav li a {
     display: block;
     text-decoration: none;
-    color: #999999;
+    color: #a5e2fa;
   }
   
   .sidebar-nav li a:hover {
     text-decoration: none;
-    color: #fff;
+    color: rgb(245, 6, 6);
     background: rgba(255, 255, 255, 0.2);
   }
   
@@ -84,13 +90,14 @@ body {
   }
   
   .sidebar-nav>.sidebar-brand a {
-    color: #999999;
+    color: #ffffff;
   }
   
   .sidebar-nav>.sidebar-brand a:hover {
-    color: #fff;
+    color: rgb(247, 241, 241);
     background: none;
   }
+
   
   @media(min-width:768px) {
     #wrapper {

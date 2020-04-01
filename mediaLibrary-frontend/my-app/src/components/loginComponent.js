@@ -12,7 +12,7 @@ export default class Login extends Component{
         this.onChange = this.onChange.bind(this);
         this.login = this.login.bind(this);
 
-        this.state = {
+        this.state = { 
             email: '',
             password: '',
             redirect: false
@@ -28,14 +28,15 @@ export default class Login extends Component{
 
         LoginData(this.state).then((result) => {
             let responseJSON = result;
-            console.log(responseJSON);
+            console.log("res:",responseJSON);
         
             if(responseJSON.token){
-                sessionStorage.setItem('userData', responseJSON);
+                sessionStorage.setItem('userData', JSON.stringify(responseJSON));
                 this.setState({redirect: true})
             }else{
                 console.log('Login Error');
             }
+            //console.log("UserData: ", JSON.parse(sessionStorage.getItem('userData')).token);
         })
     }
 
@@ -52,10 +53,10 @@ export default class Login extends Component{
             return(<Redirect to={'/start'} />);
         }
         
-        /* if(sessionStorage.getItem('userData')){
+        if(sessionStorage.getItem('userData')){
             return(<Redirect to={'/start'}/>);
 
-        } */ 
+        } 
 
         return(        
         <form >
@@ -100,4 +101,3 @@ export default class Login extends Component{
     }
 
 }
-
