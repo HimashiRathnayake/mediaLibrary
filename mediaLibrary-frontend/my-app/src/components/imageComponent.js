@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Link} from "react-router-dom";
 import './componentCss/files.css';
-import {GetFolders, GetAllImages, GetImagesFromFolder} from '../services/PostData';
+import {GetFolders, GetAllImages, GetImagesFromFolder, DeleteFolder} from '../services/PostData';
 import ResultList from './resultList';
 //import ImageList from './ImageList';
 
@@ -14,6 +14,7 @@ export default class Image extends Component{
         this.allfolders=this.allfolders.bind(this);
         this.allImages=this.allImages.bind(this);
         this.getImage=this.getImage.bind(this);
+        this.deleteFolder=this.deleteFolder.bind(this);
         
         this.state = {
           isActive: false,
@@ -41,7 +42,7 @@ export default class Image extends Component{
     }
 
     allfolders() {
-        //console.log('All Folders');
+        console.log('All Folders');
         //console.log("UserData: ", JSON.parse(sessionStorage.getItem('userData')).token);
 
         GetFolders(JSON.parse(sessionStorage.getItem('userData')).token).then((result) => {
@@ -93,6 +94,19 @@ export default class Image extends Component{
         
     }
 
+    deleteFolder(folder){
+        console.log('Delete folder');
+
+        DeleteFolder(JSON.parse(sessionStorage.getItem('userData')).token, folder._id).then((result) => {
+            console.log("res:",result);
+            if(result.message === "Folder deleted"){
+                this.allfolders();
+            }  
+        })     
+    }
+
+    
+
 
     render(){
         return(
@@ -140,6 +154,7 @@ export default class Image extends Component{
                         <div className="container-fluid">
                             <ResultList resultFolders={this.state.folders}
                                         getImage={this.getImage}
+                                        deleteFolder={this.deleteFolder}
                             />
                         </div>
 

@@ -112,3 +112,27 @@ export function GetImagesFromFolder(userdata, folderId){
     });
 
 }
+
+export function DeleteFolder(userdata, folderId){
+    console.log('PostData');
+    return new Promise((resolve, reject) => {
+        fetch(`http://localhost:3001/folders/${folderId}`, {
+            method: 'Delete',
+            headers: {
+                'Authorization': `Bearer ${userdata}`,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify()
+            //params: folderId
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            resolve(responseJson);
+        })
+        .catch((error) => {
+            reject(error);
+        })
+    });
+
+}
