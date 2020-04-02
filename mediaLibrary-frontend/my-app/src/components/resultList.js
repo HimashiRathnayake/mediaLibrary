@@ -1,10 +1,20 @@
 import React, {Component} from 'react';
 import './componentCss/list.css';
+import Rename from './rename';
 
 
 class ResultList extends Component{
 
+    constructor(props){
+        super(props);
+        this.state={
+            renameShow: false
+        }
+        
+    }
+
     render(){
+        let renameClose=()=> this.setState({renameShow: false})
         console.log('results: ',this.props.resultFolders.count);
 
         if(this.props.resultFolders.count){
@@ -19,10 +29,11 @@ class ResultList extends Component{
                         </div>
                         <div className="pull-right action-buttons">
                             <a type="button" onClick={() => this.props.deleteFolder(folderName)}><span className="fa fa-trash-o fa-fw" > </span></a>
-                            <a type="button"><span className="fa fa-pencil-square-o fa-fw" ></span></a>
+                            <a type="button" onClick={() => this.setState({renameShow: true})}><span className="fa fa-pencil-square-o fa-fw" ></span></a>
                             <a type="button"><span className="fa fa-share-alt fa-fw" > </span></a>     
                         </div>
                     </li>   
+
                 )
               
             }) }
@@ -43,7 +54,7 @@ class ResultList extends Component{
                                             <div className="card-body">
                                                 <h6 className="card-title"> {imageName.imageName}</h6>
                                                 <div className="pull-right action-buttons">
-                                                    <a type="button"><span className="fa fa-trash-o fa-fw" > </span></a>
+                                                    <a type="button" onClick={() => this.props.deleteImage(imageName)}><span className="fa fa-trash-o fa-fw" > </span></a>
                                                     <a type="button"><span className="fa fa-pencil-square-o fa-fw" ></span></a>
                                                     <a type="button"><span className="fa fa-share-alt fa-fw" > </span></a>
                                                     <a type="button"><span className="fa fa-star fa-fw" > </span></a>      
@@ -65,6 +76,11 @@ class ResultList extends Component{
         return(
             <ul>
                 {folderlist}
+                <Rename 
+                show={this.state.renameShow}
+                onHide={renameClose}
+                renamefolder={this.props.renameFolder}
+                />
             </ul>
         );
     }

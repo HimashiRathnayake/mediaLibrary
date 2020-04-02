@@ -136,3 +136,27 @@ export function DeleteFolder(userdata, folderId){
     });
 
 }
+
+export function DeleteImage(userdata, imageId){
+    console.log('PostData');
+    return new Promise((resolve, reject) => {
+        fetch(`http://localhost:3001/images/${imageId}`, {
+            method: 'Delete',
+            headers: {
+                'Authorization': `Bearer ${userdata}`,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify()
+            //params: folderId
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            resolve(responseJson);
+        })
+        .catch((error) => {
+            reject(error);
+        })
+    });
+
+}

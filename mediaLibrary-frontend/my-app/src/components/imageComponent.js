@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Link} from "react-router-dom";
 import './componentCss/files.css';
-import {GetFolders, GetAllImages, GetImagesFromFolder, DeleteFolder} from '../services/PostData';
+import {GetFolders, GetAllImages, GetImagesFromFolder, DeleteFolder, DeleteImage} from '../services/PostData';
 import ResultList from './resultList';
 //import ImageList from './ImageList';
 
@@ -15,6 +15,8 @@ export default class Image extends Component{
         this.allImages=this.allImages.bind(this);
         this.getImage=this.getImage.bind(this);
         this.deleteFolder=this.deleteFolder.bind(this);
+        this.deleteImage=this.deleteImage.bind(this);
+        this.renameFolder=this.renameFolder.bind(this);
         
         this.state = {
           isActive: false,
@@ -105,7 +107,24 @@ export default class Image extends Component{
         })     
     }
 
+    deleteImage(image){
+        console.log('Delete Image');
+
+        DeleteImage(JSON.parse(sessionStorage.getItem('userData')).token, image._id).then((result) => {
+            console.log("res:",result);
+            if(result.message === "Image deleted"){
+                this.allImages();
+            }  
+        })     
+    }
+
+    renameFolder(e){
+        console.log("rename folder");
+        e.preventDefault();
     
+        alert(e.target.NewName.value); 
+       
+    }
 
 
     render(){
@@ -155,6 +174,8 @@ export default class Image extends Component{
                             <ResultList resultFolders={this.state.folders}
                                         getImage={this.getImage}
                                         deleteFolder={this.deleteFolder}
+                                        deleteImage={this.deleteImage}
+                                        renameFolder={this.renameFolder}
                             />
                         </div>
 
