@@ -160,3 +160,28 @@ export function DeleteImage(userdata, imageId){
     });
 
 }
+
+export function CreateFolders(userdata, type, folderName){
+    console.log('PostData', JSON.stringify(folderName));
+    return new Promise((resolve, reject) => {
+        fetch(`http://localhost:3001/folders/${type}`, {
+            method: 'Post',
+            headers: {
+                'Authorization': `Bearer ${userdata}`,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                folderName: folderName
+            })
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            resolve(responseJson);
+        })
+        .catch((error) => {
+            reject(error);
+        })
+    });
+
+}

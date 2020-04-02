@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import { Link} from "react-router-dom";
+import { Redirect, Link} from "react-router-dom";
 import './componentCss/files.css';
-import {GetFolders, GetAllImages, GetImagesFromFolder, DeleteFolder, DeleteImage} from '../services/PostData';
+import {GetFolders, GetAllImages, GetImagesFromFolder, DeleteFolder, DeleteImage, CreateFolders} from '../services/PostData';
 import ResultList from './resultList';
+import CreateFolder from './createFolder';
 //import ImageList from './ImageList';
 
 export default class Image extends Component{
@@ -17,11 +18,16 @@ export default class Image extends Component{
         this.deleteFolder=this.deleteFolder.bind(this);
         this.deleteImage=this.deleteImage.bind(this);
         this.renameFolder=this.renameFolder.bind(this);
+        this.createFolder=this.createFolder.bind(this);
+        this.logout = this.logout.bind(this);
         
         this.state = {
           isActive: false,
           folders: {},
-          images: {}
+          images: {},
+          folderName: '',
+          redirect: false,
+          createFolderShow: false
           //userData: JSON.parse(sessionStorage.getItem('userData')).token
         }
         //console.log("UserData: ", JSON.parse(sessionStorage.getItem('userData')).token);
@@ -126,8 +132,39 @@ export default class Image extends Component{
        
     }
 
+    createFolder(e){
+        console.log( String(e.target.folderName.value));
+        e.preventDefault();
+    
+        alert(e.target.folderName.value);
+        
+        CreateFolders(JSON.parse(sessionStorage.getItem('userData')).token,'Image', e.target.folderName.value).then((result) => {
+            console.log("res:",result); 
+            if(result.message === "Folder created successfully"){
+                this.allfolders();
+            } 
+        })
+
+        
+    } 
+
+
+    logout(){
+        console.log("logout");
+        sessionStorage.setItem('userData', '');
+        sessionStorage.clear(); 
+        this.setState({redirect: true});
+    }
+
 
     render(){
+
+        if(this.state.redirect){
+            return(<Redirect to={'/login'}/>);
+        }
+
+        let createFolderClose=()=> this.setState({createFolderShow: false})
+
         return(
             <div >
                 <nav className="navbar navbar-expand navbar-dark bg-primary"> 
@@ -161,10 +198,10 @@ export default class Image extends Component{
                             <li className="sidebar-brand"><a className="nav-link">IMAGES</a> </li>
                             <li> <a type="button" className="nav-link" onClick={this.allfolders}> All Folders</a></li>
                             <li> <a type="button" className="nav-link" onClick={this.allImages}>All Images</a> </li>
-                            <li> <a type="button" className="nav-link" >Create Folder</a> </li>
+                            <li> <a type="button" className="nav-link" onClick={() => this.setState({createFolderShow: true})}>Create Folder</a> </li>
                             <li> <a type="button" className="nav-link">Upload</a> </li>
                             <li> <a type="button" className="nav-link" >Search</a> </li>
-                            <li> <a type="button" className="nav-link" >Logout</a> </li>
+                            <li> <a type="button" className="nav-link" onClick={this.logout}>Logout</a> </li>
                         </ul> 
 
                     </div>
@@ -176,6 +213,10 @@ export default class Image extends Component{
                                         deleteFolder={this.deleteFolder}
                                         deleteImage={this.deleteImage}
                                         renameFolder={this.renameFolder}
+                            />
+                            <CreateFolder show={this.state.createFolderShow}
+                                          onHide={createFolderClose}
+                                          createfolder={this.createFolder}
                             />
                         </div>
 
