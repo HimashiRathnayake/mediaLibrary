@@ -13,7 +13,7 @@ export default class Rename extends Component{
           >
             <Modal.Header closeButton>
               <Modal.Title id="contained-modal-title-vcenter">
-                Rename Folder
+                Rename
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>

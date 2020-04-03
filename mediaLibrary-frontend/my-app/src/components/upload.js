@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {Modal, Button, Row, Col, Form, FormGroup } from 'react-bootstrap';
 
-export default class CreateFolder extends Component{
-
+export default class Upload extends Component{
+    
     render(){
         return(
             <Modal
@@ -13,24 +13,23 @@ export default class CreateFolder extends Component{
           >
             <Modal.Header closeButton>
               <Modal.Title id="contained-modal-title-vcenter">
-                Create Folder
+                Upload
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Row>
                     <Col sm={6}>
-                        <Form onSubmit={this.props.createfolder}>
-                            <Form.Group controlId="folderName">
-                                <Form.Label>FolderName</Form.Label>
+                        <Form>
+                            <Form.Group controlId="NewName">
+                                <Form.Label>Choose a file</Form.Label>
                                 <Form.Control 
-                                type="text"
-                                name="folderName"
+                                type="file"
                                 required
-                                placeholder="add folder name"
+                                onChange={this.props.selectedimage}
                                 />
                             </Form.Group>
-                            <FormGroup>
-                                <Button varient="primary" type="submit">Create</Button>
+                            <FormGroup> 
+                                <Button variant="primary" type="submit" onClick={this.props.uploadimage}>Upload</Button>
                             </FormGroup>
                         </Form>
                     </Col>
@@ -39,7 +38,7 @@ export default class CreateFolder extends Component{
             </Modal.Body>
             <Modal.Footer>
             
-              <Button varient='danger' onClick={this.props.onHide}>Close</Button>
+              <Button variant='danger' onClick={this.props.onHide}>Close</Button>
             </Modal.Footer>
           </Modal>  
         )

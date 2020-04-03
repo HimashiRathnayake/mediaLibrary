@@ -4,6 +4,7 @@ import './componentCss/files.css';
 import {GetFolders, GetAllImages, GetImagesFromFolder, DeleteFolder, DeleteImage, CreateFolders} from '../services/PostData';
 import ResultList from './resultList';
 import CreateFolder from './createFolder';
+
 //import ImageList from './ImageList';
 
 export default class Image extends Component{
@@ -17,15 +18,14 @@ export default class Image extends Component{
         this.getImage=this.getImage.bind(this);
         this.deleteFolder=this.deleteFolder.bind(this);
         this.deleteImage=this.deleteImage.bind(this);
-        this.renameFolder=this.renameFolder.bind(this);
         this.createFolder=this.createFolder.bind(this);
+        this.createShow=this.createShow.bind(this);
         this.logout = this.logout.bind(this);
         
         this.state = {
           isActive: false,
           folders: {},
           images: {},
-          folderName: '',
           redirect: false,
           createFolderShow: false
           //userData: JSON.parse(sessionStorage.getItem('userData')).token
@@ -107,6 +107,7 @@ export default class Image extends Component{
 
         DeleteFolder(JSON.parse(sessionStorage.getItem('userData')).token, folder._id).then((result) => {
             console.log("res:",result);
+            alert(result.message);
             if(result.message === "Folder deleted"){
                 this.allfolders();
             }  
@@ -124,31 +125,35 @@ export default class Image extends Component{
         })     
     }
 
-    renameFolder(e){
-        console.log("rename folder");
-        e.preventDefault();
     
-        alert(e.target.NewName.value); 
-       
-    }
 
     createFolder(e){
         console.log( String(e.target.folderName.value));
         e.preventDefault();
     
-        alert(e.target.folderName.value);
+        //alert(e.target.folderName.value);
         
         CreateFolders(JSON.parse(sessionStorage.getItem('userData')).token,'Image', e.target.folderName.value).then((result) => {
             console.log("res:",result); 
+
+            alert(result.message);
+
             if(result.message === "Folder created successfully"){
                 this.allfolders();
             } 
-        })
-
-        
+        })      
     } 
 
+    createShow(e){
+        console.log( "createShow");
+        e.preventDefault();  
+        
+        this.setState({
+            createFolderShow: true
+        })
+    } 
 
+    
     logout(){
         console.log("logout");
         sessionStorage.setItem('userData', '');
@@ -164,6 +169,7 @@ export default class Image extends Component{
         }
 
         let createFolderClose=()=> this.setState({createFolderShow: false})
+        let uploadClose=()=> this.setState({uploadShow: false})
 
         return(
             <div >
@@ -199,7 +205,6 @@ export default class Image extends Component{
                             <li> <a type="button" className="nav-link" onClick={this.allfolders}> All Folders</a></li>
                             <li> <a type="button" className="nav-link" onClick={this.allImages}>All Images</a> </li>
                             <li> <a type="button" className="nav-link" onClick={() => this.setState({createFolderShow: true})}>Create Folder</a> </li>
-                            <li> <a type="button" className="nav-link">Upload</a> </li>
                             <li> <a type="button" className="nav-link" >Search</a> </li>
                             <li> <a type="button" className="nav-link" onClick={this.logout}>Logout</a> </li>
                         </ul> 
@@ -212,7 +217,8 @@ export default class Image extends Component{
                                         getImage={this.getImage}
                                         deleteFolder={this.deleteFolder}
                                         deleteImage={this.deleteImage}
-                                        renameFolder={this.renameFolder}
+                                        allfolders={this.allfolders}
+                                        allImages={this.allImages}
                             />
                             <CreateFolder show={this.state.createFolderShow}
                                           onHide={createFolderClose}

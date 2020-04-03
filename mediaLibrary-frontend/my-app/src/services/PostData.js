@@ -185,3 +185,82 @@ export function CreateFolders(userdata, type, folderName){
     });
 
 }
+
+export function RenameFolder(userdata, type, folderId, folderName){
+    console.log('PostData', `http://localhost:3001/${type}/${folderId}`);
+    return new Promise((resolve, reject) => {
+        if(type==='folders'){
+            fetch(`http://localhost:3001/${type}/${folderId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Authorization': `Bearer ${userdata}`,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    folderName: folderName
+                })
+            })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                resolve(responseJson);
+            })
+            .catch((error) => {
+                reject(error);
+            })
+        }
+        else if(type === 'images'){
+            fetch(`http://localhost:3001/${type}/${folderId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Authorization': `Bearer ${userdata}`,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    imageName: folderName
+                })
+            })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                resolve(responseJson);
+            })
+            .catch((error) => {
+                reject(error);
+            })
+        }
+        
+        
+    });
+
+}
+
+export function UploadFiles(userdata, type, folderId, file){
+    console.log('UploadFiles', `http://localhost:3001/${type}/${folderId}`);
+    const fd =new FormData();
+    
+    fd.append('file', file);
+
+    console.log('fd: ', fd); 
+    console.log('boundary:', fd._boundary);
+
+    return new Promise((resolve, reject) => {
+        fetch(`http://localhost:3001/${type}/${folderId}`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${userdata}`,
+                'Accept': 'application/json'
+            },
+            body: fd
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            resolve(responseJson);
+        })
+        .catch((error) => {
+            reject(error);
+        })
+    });
+}
+
+
