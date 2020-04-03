@@ -4,50 +4,77 @@ import {LoginScreen} from '../screens/LoginScreen';
 import {SignUpScreen} from '../screens/SignUpScreen';
 import {SplashScreen} from '../screens/SplashScreen';
 import { createStackNavigator } from '@react-navigation/stack';
-import {AuthContext} from '../screens/context';
+import {AuthContext} from './context';
 import {DrawerNavigator} from './DrawerNavigator';
+import {AsyncStorage} from 'react-native';
 
 const AuthStack =createStackNavigator();
 
 export default ()=>{
-	const [isLoading, setIsLoading] = React.useState(true);
-	const [userToken, setUserToken] = React.useState(null);
-	const authContext = React.useMemo(()=>{
-		return {
-			signIn: ()=> {
-				setIsLoading(false);
-				setUserToken('asdf');
-			},
-			signUp: ()=> {
-				setIsLoading(false);
-				setUserToken('asdf');
-			},
-			signOut: ()=> {
-				setIsLoading(false);
-				setUserToken(null);
+	const [state, dispatch] = React.useReducer((prevState, action)=>{
+		switch (action.type) {
+			case 'RESTORE_TOKEN': return {
+				...prevState,
+				userToken: action.token,
+				isLoading: false,
+			};
+			case 'SIGN_IN': return{
+				...prevState,
+				isSignout: false,
+				userToken: action.token
+			};
+			case 'SIGN_OUT': return{
+				...prevState,
+				isSignout: true,
+				userToken: null,
 			}
 		}
-	}, [])
+	}, {
+		isLoading: true,
+		isSignout: false,
+		userToken: null
+	});
 
 	React.useEffect(()=>{
-		setTimeout(() => {
-			setIsLoading(false);
-		}, 1000);
-	}, []);
+		const bootstrapAsync = async () => {
+			let userToken;
+			try {
+			  	userToken = await AsyncStorage.getItem('userToken');
+			} catch (e) {
+			}
+			dispatch({ type: 'RESTORE_TOKEN', token: userToken });
+		  	};
+			bootstrapAsync();	
+		}, []);
 
-	if (isLoading){
+	const authContext = React.useMemo(
+		() => ({
+			signIn: async data => {
+				await AsyncStorage.setItem('userToken',data);
+			    dispatch({ type: 'SIGN_IN', token: data });
+			},
+			signOut: () => dispatch({ type: 'SIGN_OUT' }),
+			signUp: async data => {
+				await AsyncStorage.setItem('userToken',data);
+			    dispatch({ type: 'SIGN_IN', token: data});
+			},
+		  }),
+		  []
+	);
+
+	if (state.isLoading){
 		return <SplashScreen/>
 	}
 	return(
 		<AuthContext.Provider value={authContext}>
 		<NavigationContainer>
-			{userToken ? (
-				<DrawerNavigator/>
-			) : (
+			{state.userToken == null ? (
 				<AuthStack.Navigator>
 					<AuthStack.Screen name="Login" component={LoginScreen} options={{title: "LoginScreen", headerShown: false}}/>
 					<AuthStack.Screen name="SignUp" component={SignUpScreen} options={{title: "SignUpScreen", headerShown: false}}/>
 				</AuthStack.Navigator> 
+			) : (
+				<DrawerNavigator/>
 			)}
 		</NavigationContainer>
 		</AuthContext.Provider>

@@ -1,19 +1,21 @@
 import React from 'react';
-import { ImageBackground, View, Text, TouchableOpacity, TextInput} from 'react-native';
+import { ImageBackground, View, Text, TouchableOpacity, TextInput, Alert, AsyncStorage} from 'react-native';
 import { Entypo, FontAwesome, AntDesign } from '@expo/vector-icons';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import {AuthContext} from './context';
 import {styles} from '../styles/loginscreen';
-import {Formik} from 'formik'
+import {Formik} from 'formik';
 import * as yup from 'yup';
+import {login} from "../api/user";
+import {AuthContext} from '../navigators/context';
 
 const validationSchema = yup.object({
-    email: yup.string().required().email(),
-    password: yup.string().required().min(5),
+    email: yup.string().required(),
+    password: yup.string().required(),
 });
 
 export const LoginScreen = ({navigation}) => {
-const {signIn} = React.useContext(AuthContext);
+    const {signIn} = React.useContext(AuthContext); 
+
 return(
     <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
             <View style={styles.headerContainer}>
@@ -26,9 +28,18 @@ return(
                         validationSchema={validationSchema} 
                         onSubmit={
                             (values, actions)=>{
-                                actions.resetForm();
-                                console.log(values);
-                                signIn();
+                                login({values})
+                                .then((response)=>{
+                                    if (response.message==='Auth successful'){
+                                        signIn(response.token)
+                                    }else if (response.message==="Auth failed"){
+                                        Alert.alert('Alert',"Email or password is incorrect",[{text: 'OK', onPress: ()=>actions.resetForm()}])
+                                    }
+                                    else{
+                                        Alert.alert('Alert',"Something went wrong",[{text: 'OK', onPress: ()=>actions.resetForm()}])
+                                    }
+                                })
+                                .catch((error)=>{console.log(error)});
                         }}
                     >
                     {(props)=>(
@@ -42,10 +53,11 @@ return(
                                     underlineColorAndroid="transparent"
                                     secureTextEntry={false}
                                     onChangeText={props.handleChange('email')}
-                                    value={props.values.title}
+                                    value={props.values.email}
                                 />
                             </View>  
                             <Text style={styles.errorText}>{props.touched.email && props.errors.email}</Text>
+
                             <View style={styles.inputContainer}> 
                                 <AntDesign name="lock" style={styles.inputIcon}/>  
                                 <TextInput 
@@ -57,8 +69,9 @@ return(
                                     onChangeText={props.handleChange('password')}
                                     value={props.values.password}
                                 />
-                            </View>   
+                            </View>  
                             <Text style={styles.errorText}>{props.touched.password && props.errors.password}</Text>
+ 
                             <TouchableOpacity style={styles.loginbutton} onPress={()=>{props.handleSubmit();}}>
                                 <Text style={styles.logintext}>LOGIN</Text>
                             </TouchableOpacity>

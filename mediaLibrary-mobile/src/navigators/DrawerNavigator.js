@@ -3,7 +3,7 @@ import { ImageBackground, View, Text } from 'react-native';
 import {HomeScreen} from '../screens/HomeScreen';
 import {FavouritesScreen} from '../screens/FavouritesScreen';
 import { createDrawerNavigator, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
-import {AuthContext} from '../screens/context'
+import {AuthContext} from './context'
 import { styles } from '../styles/drawer';
 import { FontAwesome } from '@expo/vector-icons';
 import { ImageTabNavigator, AudioTabNavigator, VideoTabNavigator } from './TabNavigator';

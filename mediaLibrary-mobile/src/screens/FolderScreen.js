@@ -1,13 +1,15 @@
 import React from 'react';
-import {ImageBackground, Text, View, ScrollView, TouchableOpacity, StyleSheet, Dimensions, Modal, TextInput} from 'react-native';
+import {ImageBackground, Text, View, ScrollView, TouchableOpacity, StyleSheet, Dimensions, Modal, TextInput, Alert} from 'react-native';
 import {Header} from '../commons/Header';
 import {styles} from '../styles/commons';
 import {folder} from '../api/images';
-import { AntDesign, MaterialIcons } from '@expo/vector-icons';
+import {MaterialIcons } from '@expo/vector-icons';
+import {createFolder} from "../api/folder";
+import {Formik} from 'formik';
 
 export const FolderScreen = ({route,navigation}) => {
     const [modelVisible, setVisible] = React.useState(false);
-    const [newFolderName, setName]=React.useState('untitled');
+    const [isLoading, setLoading]=React.useState('false');
     const type=route.params.type;
     const folderSet = folder.map((val,key) => {
         return(
@@ -22,8 +24,7 @@ export const FolderScreen = ({route,navigation}) => {
 
     return(
         <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
-        {/* {navigation.dangerouslyGetParent().setOptions({tabBarVisible:true})}  */}
-        {console.log(navigation.dangerouslyGetParent().dangerouslyGetParent().setOptions({tabBarVisible:false}))}
+        {navigation.dangerouslyGetParent().dangerouslyGetParent().setOptions({tabBarVisible:false})}
             <Header navigation={navigation}>{type} Folders</Header>
             <ScrollView style={stylesScreen.container}>
                 <View style={stylesScreen.container}>
@@ -36,14 +37,38 @@ export const FolderScreen = ({route,navigation}) => {
                     {folderSet}
                     <Modal style={stylesScreen.modal} transparent={true} animationType='fade' visible={modelVisible} onRequestClose={()=>{}}>
                         <View style={stylesScreen.modal}>
-                            <View style={stylesScreen.modalView}>
-                                <Text style={stylesScreen.inputHeader}>Folder Name</Text>
-                                <TextInput style={stylesScreen.input} placeholder='Folder' placeholderTextColor="#9e9e9e" onChangeText={(text)=>setName(text)}/>
-                                <View style={stylesScreen.bottom}>
-                                    <TouchableOpacity onPress={()=>{setVisible(false)}}><Text style={stylesScreen.text}>Close</Text></TouchableOpacity> 
-                                    <TouchableOpacity onPress={()=>{setVisible(false); console.log(newFolderName);}}><Text style={stylesScreen.text}>Create</Text></TouchableOpacity>
-                                </View>
-                            </View>
+                            <Formik 
+                                initialValues={{folderName:''}}
+                                onSubmit={
+                                    (values)=>{
+                                        createFolder({name:values.folderName, type:type})
+                                        .then((response)=>{
+                                            setLoading(false);
+                                            if (responce!==undefined && response==="Folder created successfully"){}
+                                            else{
+                                                Alert.alert('Alert','Something Went wrong',[{text:'OK'}]);
+                                                setVisible(false);
+                                            }
+                                        })
+                                        
+                                }}
+                            >
+                                {(props)=>(
+                                <View style={stylesScreen.modalView}>
+                                    <Text style={stylesScreen.inputHeader}>Folder Name</Text>
+                                    <TextInput 
+                                        style={stylesScreen.input} 
+                                        placeholder='Folder' 
+                                        placeholderTextColor="#9e9e9e" 
+                                        onChangeText={props.handleChange('folderName')}
+                                        value={props.values.folderName}
+                                    />
+                                    <View style={stylesScreen.bottom}>
+                                        <TouchableOpacity onPress={()=>{setVisible(false)}}><Text style={stylesScreen.text}>Close</Text></TouchableOpacity> 
+                                        <TouchableOpacity onPress={()=>{props.handleSubmit();}}><Text style={stylesScreen.text}>Create</Text></TouchableOpacity>
+                                    </View>
+                                </View>)}
+                            </Formik>
                         </View>
                     </Modal>
                 </View>

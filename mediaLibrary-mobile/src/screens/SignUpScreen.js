@@ -1,11 +1,12 @@
 import React from 'react';
-import { ImageBackground, View, Text, TouchableOpacity, TextInput} from 'react-native';
+import { ImageBackground, View, Text, TouchableOpacity, TextInput, Alert} from 'react-native';
 import {styles} from '../styles/loginscreen';
 import { Entypo, FontAwesome, AntDesign } from '@expo/vector-icons';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { AuthContext } from './context'
+import { AuthContext } from '../navigators/context';
 import {Formik} from 'formik'
 import * as yup from 'yup';
+import {signup} from "../api/user";
 
 const validationSchema = yup.object({
     email: yup.string().required().email(),
@@ -28,8 +29,18 @@ return(
                         validationSchema={validationSchema} 
                         onSubmit={
                             (values, actions)=>{
-                                actions.resetForm();
-                                signUp();
+                                signup({values}).then((response)=>{
+                                    if(response!=undefined){
+                                        if (response==='email already exists'){
+                                            Alert.alert('Alert','Email already exists. Try with different email',[{text: 'OK', onPress: ()=>actions.resetForm()}])
+                                        }else if (response==='User created'){
+                                            Alert.alert('Alert','SignUp Successfully',[{text: 'OK', onPress: ()=>actions.resetForm()}])
+                                        }
+                                    }
+                                    else{
+                                        alert('Something went wrong. Try again')
+                                    }
+                                });
                         }}
                     >
                     {(props)=>(
@@ -43,7 +54,7 @@ return(
                                     underlineColorAndroid="transparent"
                                     secureTextEntry={false}
                                     onChangeText={props.handleChange('email')}
-                                    value={props.values.title}
+                                    value={props.values.email}
                                 />
                             </View>  
                             <Text style={styles.errorText}>{props.touched.email && props.errors.email}</Text>
