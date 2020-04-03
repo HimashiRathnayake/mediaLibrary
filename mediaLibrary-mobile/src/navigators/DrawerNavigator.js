@@ -6,13 +6,9 @@ import { createDrawerNavigator, DrawerItemList, DrawerItem } from '@react-naviga
 import {AuthContext} from '../screens/context'
 import { styles } from '../styles/drawer';
 import { FontAwesome } from '@expo/vector-icons';
-import { TabNavigator } from './TabNavigator';
+import { ImageTabNavigator, AudioTabNavigator, VideoTabNavigator } from './TabNavigator';
 
 const Drawer = createDrawerNavigator();
-
-const VideoTabNavigator = () => (<TabNavigator type='Video'/>);
-const ImageTabNavigator = () => (<TabNavigator type='Image'/>);
-const AudioTabNavigator = () => (<TabNavigator type='Audio'/>);
 
 export const DrawerNavigator = ()=>{
 const {signOut} = React.useContext(AuthContext);

@@ -1,93 +1,76 @@
 import React from 'react';
-import { ImageBackground, View, Text, TouchableOpacity, StyleSheet, Button} from 'react-native';
-import {FormInput} from '../commons/FormInput';
-import { Entypo } from '@expo/vector-icons';
+import { ImageBackground, View, Text, TouchableOpacity, TextInput} from 'react-native';
+import { Entypo, FontAwesome, AntDesign } from '@expo/vector-icons';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import {AuthContext} from './context';
+import {styles} from '../styles/loginscreen';
+import {Formik} from 'formik'
+import * as yup from 'yup';
+
+const validationSchema = yup.object({
+    email: yup.string().required().email(),
+    password: yup.string().required().min(5),
+});
 
 export const LoginScreen = ({navigation}) => {
 const {signIn} = React.useContext(AuthContext);
 return(
     <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
-              <View style={styles.headerContainer}>
+            <View style={styles.headerContainer}>
                 <Entypo name="folder-video" color="white" size={40} /> 
                 <Text style={styles.headerText}>Login Here To Continue</Text>
             </View>
             <KeyboardAwareScrollView>
-                <View style={styles.form}>
-                    <FormInput type='email'>Email</FormInput>
-                    <FormInput type='password'>Password</FormInput>
-                </View>
+                    <Formik 
+                        initialValues={{email:'',password:''}}
+                        validationSchema={validationSchema} 
+                        onSubmit={
+                            (values, actions)=>{
+                                actions.resetForm();
+                                console.log(values);
+                                signIn();
+                        }}
+                    >
+                    {(props)=>(
+                        <View style={styles.form}>
+                            <View style={styles.inputContainer}> 
+                                <FontAwesome name="user-circle-o" style={styles.inputIcon}/>   
+                                <TextInput 
+                                    style={styles.input}
+                                    placeholder='Email'
+                                    placeholderTextColor="white"
+                                    underlineColorAndroid="transparent"
+                                    secureTextEntry={false}
+                                    onChangeText={props.handleChange('email')}
+                                    value={props.values.title}
+                                />
+                            </View>  
+                            <Text style={styles.errorText}>{props.touched.email && props.errors.email}</Text>
+                            <View style={styles.inputContainer}> 
+                                <AntDesign name="lock" style={styles.inputIcon}/>  
+                                <TextInput 
+                                    style={styles.input}
+                                    placeholder='Password'
+                                    placeholderTextColor="white"
+                                    underlineColorAndroid="transparent"
+                                    secureTextEntry={true}
+                                    onChangeText={props.handleChange('password')}
+                                    value={props.values.password}
+                                />
+                            </View>   
+                            <Text style={styles.errorText}>{props.touched.password && props.errors.password}</Text>
+                            <TouchableOpacity style={styles.loginbutton} onPress={()=>{props.handleSubmit();}}>
+                                <Text style={styles.logintext}>LOGIN</Text>
+                            </TouchableOpacity>
+                        </View>
+                    )}    
+                    </Formik>
             </KeyboardAwareScrollView>
             <View style={styles.bottom}>
                 <Text style={styles.bottomtext} onPress={()=>navigation.navigate('SignUp')}>Create Account</Text>
                 <Text style={styles.bottomtext}>Forgot Password?</Text>
             </View>
-            <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.loginbutton} onPress={()=>signIn()}>
-                    <Text style={styles.logintext}>LOGIN</Text>
-                </TouchableOpacity>
-            </View>
     </ImageBackground>
 );
 }
 
-export const styles = StyleSheet.create({
-    backgroundImage:{
-        width:360,
-        height:640,
-        resizeMode:'contain'
-    },
-    form: {
-        alignContent: 'center',
-        justifyContent: 'center',
-        flex: 1
-    },
-    btn: {
-      position: 'absolute',
-      top: 55,
-      right: 28,
-    },
-    bottom: {
-      flex: 1,
-      top: 65,
-      width:360,
-      flexDirection: 'row',
-      justifyContent: 'space-around',
-    },
-    bottomtext: {
-      color: 'white',
-      backgroundColor: 'transparent',
-    },
-    loginbutton: {
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: '#1976d2',
-      height: 50,
-      borderRadius: 20,
-      zIndex: 100,
-      width: 200
-    },
-    buttonContainer: {
-      flex: 1,
-      top: -95,
-      alignItems: 'center',
-      justifyContent: 'flex-start',
-    },
-    logintext: {
-      color: 'white',
-      backgroundColor: 'transparent',
-    },
-    headerContainer: {
-      flex: 3,
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    headerText: {
-      color: 'white',
-      fontWeight: 'bold',
-      backgroundColor: 'transparent',
-      marginTop: 20,
-      fontSize: 26
-    },
-});

@@ -11,7 +11,7 @@ export const FolderScreen = ({route,navigation}) => {
     const type=route.params.type;
     const folderSet = folder.map((val,key) => {
         return(
-            <TouchableOpacity key={key} onPress={()=>{navigation.push('FolderImages',{visible:false, folderId:val._id, folderName: val.folderName})}}>
+            <TouchableOpacity key={key} onPress={()=>{navigation.push('InsideFolder',{visible:false, folderId:val._id, folderName: val.folderName})}}>
                 <View style={stylesScreen.folderWrapper}>
                     <MaterialIcons name='folder' style={stylesScreen.folderIcon}/>
                     <Text style={stylesScreen.folderName}>{val.folderName}</Text>
@@ -22,6 +22,8 @@ export const FolderScreen = ({route,navigation}) => {
 
     return(
         <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
+        {/* {navigation.dangerouslyGetParent().setOptions({tabBarVisible:true})}  */}
+        {console.log(navigation.dangerouslyGetParent().dangerouslyGetParent().setOptions({tabBarVisible:false}))}
             <Header navigation={navigation}>{type} Folders</Header>
             <ScrollView style={stylesScreen.container}>
                 <View style={stylesScreen.container}>

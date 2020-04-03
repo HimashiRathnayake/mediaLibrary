@@ -3,53 +3,46 @@ import {ImageBackground, Text, View, StyleSheet, Dimensions, TouchableOpacity} f
 import {Header} from '../commons/Header';
 import {styles} from '../styles/commons';
 import { FontAwesome, Entypo } from '@expo/vector-icons';
+import { MediaButton } from '../commons/MediaButton';
 
 export const HomeScreen = ({navigation}) => (
     <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
         <Header navigation={navigation}>Home</Header>
+
+        <View style={styleHome.headerContainer}>
+                <Entypo name="folder-video" color="white" size={40} /> 
+                <Text style={styleHome.headerText}>Welcome to MyMedia</Text>
+        </View>
+
         <View style={styleHome.container}>
-            <Text style={styleHome.containerHeader}>Store Your All Multimedia Files & Manage Them at one place</Text>
-            <TouchableOpacity style={styleHome.card} onPress={()=>{navigation.navigate('Images')}}>
-                <Entypo name="folder-images" style={styleHome.type}/> 
-                <Text style={styleHome.text}>Images</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styleHome.card} onPress={()=>{navigation.navigate('Audios')}}>
-                <Entypo name="folder-music" style={styleHome.type}/>  
-                <Text style={styleHome.text}>Audios</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styleHome.card} onPress={()=>{navigation.navigate('Videos')}}>
-                <Entypo name="folder-video" style={styleHome.type}/>  
-                <Text style={styleHome.text}>Videos</Text>
-            </TouchableOpacity>
+            <Text style={styleHome.containerHeader}>Store Your All Multimedia Files, Share & Manage Them at One Place</Text>
+            <MediaButton type='Image' onPress={()=>{navigation.navigate('Images')}}>Images</MediaButton>
+            <MediaButton type='Audio' onPress={()=>{navigation.navigate('Audios')}}>Audios</MediaButton>
+            <MediaButton type='Video' onPress={()=>{navigation.navigate('Videos')}}>Videos</MediaButton>
         </View>
     </ImageBackground>
 );
 
 const styleHome = StyleSheet.create({
-    card: {
-        width: Dimensions.get('screen').width - 100,
-        marginVertical: 20,
-        marginLeft: 80,
-        alignItems: 'center',
-        flexDirection: 'row'        
-    },
     container: {
-        alignContent: 'center'
-    },
-    text:{
-        fontSize: 24,
-        alignSelf: 'center',
-        color: '#9e9e9e',
-        marginLeft: 20
+        alignContent: 'center',
+        height: 500
     },
     containerHeader:{
         marginLeft: 10,
-        marginTop: 40,
-        fontSize: 18
+        marginTop: 10,
+        fontSize: 18,
+        marginBottom: 60
     },
-    type: {
-        backgroundColor:"transparent",
-        color:"#9e9e9e",
-        fontSize:100
-    }
+    headerContainer: {
+        flex: 3,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    headerText: {
+        color: 'white',
+        fontWeight: 'bold',
+        backgroundColor: 'transparent',
+        fontSize: 26
+    },
 });

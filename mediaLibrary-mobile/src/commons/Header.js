@@ -1,7 +1,7 @@
 import React from 'react';
 import { TextInput, View, Text } from 'react-native';
 import {styles} from '../styles/commons/header';
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome, Ionicons } from '@expo/vector-icons';
 
 export const Header = ({children,navigation}) => (
     <View flexDirection='row'>
@@ -11,3 +11,12 @@ export const Header = ({children,navigation}) => (
     </View>
 );
 
+export const InsideHeader = ({children,navigation}) => (
+    <View flexDirection='row'>
+        <Ionicons.Button name="md-arrow-back" underlayColor='transparent' backgroundColor="transparent" color="#1976d2" size={30} marginTop={20} onPress={()=>{
+            navigation.goBack();
+            navigation.dangerouslyGetParent().setOptions({tabBarVisible:true})}}/>  
+        <Text style={styles.header}>MyMedia</Text>
+        <Text style={styles.nextHeader}>{children}</Text>  
+    </View>
+);

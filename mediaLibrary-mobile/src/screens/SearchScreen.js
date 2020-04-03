@@ -8,6 +8,7 @@ export const SearchScreen = ({route,navigation}) => {
     return(
         <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
             <Header navigation={navigation}>Search {type}s</Header>
+            
         </ImageBackground>
     );
 }
