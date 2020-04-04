@@ -70,7 +70,7 @@ exports.audios_upload_audio = (req, res, next) =>{
         year: req.data.Year,
         accessList: [req.userData.userId],
         folder: req.params.folderId,
-        path: req.file.path
+        path: process.env.SERVER+req.file.filename
     });
     audio.save().then(result => {
         console.log(result);

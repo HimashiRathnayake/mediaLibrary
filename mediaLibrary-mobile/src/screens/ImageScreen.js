@@ -1,8 +1,7 @@
 import React from 'react';
-import {ImageBackground, Text, View, TouchableOpacity, ScrollView} from 'react-native';
+import {ImageBackground, Text, View, TouchableOpacity, ScrollView, Image} from 'react-native';
 import {styles} from '../styles/commons';
 import {Header} from '../commons/Header';
-import {ImageElement} from '../components/ImageElement';
 import {getImages} from '../api/image';
 import {ImageModal} from '../modals/ImageModal';
 import { AuthContext } from '../navigators/context';
@@ -35,7 +34,7 @@ export const ImageScreen = ({navigation, route}) => {
         return(
             <TouchableOpacity key={key} onPress={()=>{setModelVisible(true, key)}}>
                 <View style={stylesScreen.imagewrapper}>
-                    <ImageElement path={val.path}/>
+                    <Image source={{uri:val.path}} style={stylesScreen.image}/>
                     <Text style={stylesScreen.imagename}>Image</Text>
                 </View>
             </TouchableOpacity>

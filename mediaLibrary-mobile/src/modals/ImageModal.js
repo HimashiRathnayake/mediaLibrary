@@ -1,9 +1,8 @@
 import React from 'react';
-import {Text, View, StyleSheet, Modal, Dimensions} from 'react-native';
+import {Text, View, Modal, Image} from 'react-native';
 import {Ionicons, MaterialIcons, MaterialCommunityIcons, Entypo, AntDesign } from '@expo/vector-icons';
 import {DetailsText } from '../commons/DetailsText';
-import {OriginalImageElement} from '../components/ImageElement';
-
+import {stylesScreen} from '../styles/modals/image';
 
 export const ImageModal = ({modelImage, modelVisible, setVisible}) => {
     const [detailsModal, setDetailsModal] = React.useState(false);
@@ -18,7 +17,7 @@ export const ImageModal = ({modelImage, modelVisible, setVisible}) => {
                     <Ionicons name='md-share' style={stylesScreen.icon} onPress={()=>setVisible(false)}/>
                     <AntDesign name='left' style={stylesScreen.iconLeft} onPress={()=>setVisible(false)}/>
                 </View>
-                <OriginalImageElement src={modelImage.path}></OriginalImageElement>
+                <Image source={{uri:modelImage.path}} style={stylesScreen.originalImage}/>
             </View>
             <Modal style={stylesScreen.modal} transparent={false} animationType='fade' visible={detailsModal} onRequestClose={()=>{}}>
                 <View style={stylesScreen.modal}>
@@ -37,46 +36,3 @@ export const ImageModal = ({modelImage, modelVisible, setVisible}) => {
         </Modal>
     );
 }
-
-const stylesScreen = StyleSheet.create({
-    imagename:{
-        alignSelf: 'center',
-        color: 'white'
-    },
-    modal: {
-         flex:1,
-         padding: 0,
-         backgroundColor: 'black',
-         color: '#fff'
-    },
-    icon: {
-        color: '#fff',
-        fontSize: 20,
-        paddingHorizontal: 15,
-        paddingTop: 5,
-    },
-    iconLeft:{
-        color: '#fff',
-        fontSize: 20,
-        paddingRight: 120,
-        paddingTop: 5,
-    },
-    back:{
-        color: '#fff',
-        fontSize: 20,
-        paddingRight: 20,
-        paddingLeft: 20,
-        paddingTop: 10,
-    },
-    text: {
-        color: '#fff',
-        fontSize: 20,
-        marginRight: 200,
-        paddingTop: 5
-    },
-    details: {
-        marginTop: 140,
-        width: Dimensions.get('screen').width,
-        height: Dimensions.get('screen').height/2,
-    }
-});

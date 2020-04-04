@@ -18,6 +18,7 @@ export const stylesScreen = StyleSheet.create({
         height: 140,
         width: 110,
         borderRadius: 30,
+        marginBottom: 20
     },
     imagename:{
         alignSelf: 'center',
@@ -33,5 +34,13 @@ export const stylesScreen = StyleSheet.create({
         justifyContent: 'space-between',
         textAlignVertical: 'center',
         fontSize: 20
-    }
+    },
+    image:{
+        flex: 1,
+        alignSelf: 'stretch',
+        resizeMode: 'cover',
+        height: 110,
+        width: 110,
+        borderRadius: 10,
+    },
 });

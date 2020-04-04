@@ -65,7 +65,7 @@ exports.videos_upload_video = (req, res, next) =>{
         artist: req.data.Artist,
         accessList: [req.userData.userId],
         folder: req.params.folderId,
-        path: req.file.path
+        path: process.env.SERVER+req.file.filename
     });
     video.save().then(result => {
         console.log(result);
