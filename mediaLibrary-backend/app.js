@@ -13,7 +13,7 @@ const searchRoutes = require('./api/routes/search');
 const favoritesRoutes = require('./api/routes/favorites');
 
 app.use(morgan('dev'));
-app.use('/uploads',express.static('uploads'));
+app.use(express.static('uploads'));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 

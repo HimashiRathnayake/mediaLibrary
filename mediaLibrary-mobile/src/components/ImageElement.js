@@ -1,15 +1,15 @@
 import React from 'react';
 import {Image, Text, View, StyleSheet, Dimensions} from 'react-native';
 
-export const ImageElement = ({src}) => {
+export const ImageElement = ({path}) => {
     return(
-        <Image source={src} style={styles.image}/>
+        <Image source={{uri:path}} style={styles.image}/>
     );
 }
 
-export const OriginalImageElement = ({src}) => {
+export const OriginalImageElement = ({path}) => {
     return(
-        <Image source={src} style={styles.originalImage}/>
+        <Image source={path} style={styles.originalImage}/>
     );
 }
 

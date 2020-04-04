@@ -1,8 +1,7 @@
 import React from 'react';
-import { ImageBackground, View, Text, TouchableOpacity, TextInput, Alert} from 'react-native';
+import { ImageBackground, View, Text, TouchableOpacity, TextInput, Alert, KeyboardAvoidingView, Keyboard} from 'react-native';
 import {styles} from '../styles/loginscreen';
 import { Entypo, FontAwesome, AntDesign } from '@expo/vector-icons';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { AuthContext } from '../navigators/context';
 import {Formik} from 'formik'
 import * as yup from 'yup';
@@ -15,35 +14,41 @@ const validationSchema = yup.object({
 });
 
 export const SignUpScreen = ({navigation}) => {
-const {signUp} = React.useContext(AuthContext);
 
-return(
-    <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
-            <View style={styles.headerContainer}>
-                <Entypo name="folder-video" color="white" size={40} /> 
-                <Text style={styles.headerText}>SignUp Here To Continue</Text>
-            </View>
-            <KeyboardAwareScrollView>
+    const {authContext, state} = React.useContext(AuthContext);
+    const [isLoading, setIsLoading] = React.useState(false);
+
+    return(
+        <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
+            <View flex={1} style={{opacity: isLoading ? 0.3 : 1.0}}>
+                <View style={styles.headerContainer}>
+                    <Entypo name="folder-video" color="white" size={40} /> 
+                    <Text style={styles.headerText}>SignUp Here To Continue</Text>
+                </View>
+                
                     <Formik 
                         initialValues={{email:'',password:'', confirmPassword:''}}
                         validationSchema={validationSchema} 
                         onSubmit={
                             (values, actions)=>{
+                                setIsLoading(true);
                                 signup({values}).then((response)=>{
-                                    if(response!=undefined){
-                                        if (response==='email already exists'){
-                                            Alert.alert('Alert','Email already exists. Try with different email',[{text: 'OK', onPress: ()=>actions.resetForm()}])
-                                        }else if (response==='User created'){
-                                            Alert.alert('Alert','SignUp Successfully',[{text: 'OK', onPress: ()=>actions.resetForm()}])
-                                        }
+                                    if (response.message==='email already exists'){
+                                        Alert.alert('Alert','Email already exists. Try with different email',[{text: 'OK', onPress: ()=>actions.resetForm()}]);
+                                        setIsLoading(false);
+                                    }else if (response.message==='User created'){
+                                        authContext.signUp({token:response.token, email:values.email});
                                     }
                                     else{
-                                        alert('Something went wrong. Try again')
+                                        alert('Something went wrong. Try again');
+                                        setIsLoading(false);
                                     }
-                                });
+                                })
+                                .catch((error)=>{console.log(error)});;
                         }}
                     >
                     {(props)=>(
+                        <KeyboardAvoidingView flex={4} behavior='padding'>
                         <View style={styles.form}>
                             <View style={styles.inputContainer}> 
                                 <FontAwesome name="user-circle-o" style={styles.inputIcon}/>   
@@ -84,16 +89,18 @@ return(
                                 />
                             </View>   
                             <Text style={styles.errorText}>{props.touched.confirmPassword && props.errors.confirmPassword}</Text>
-                            <TouchableOpacity style={styles.loginbutton} onPress={()=>{props.handleSubmit();}}>
+                            <TouchableOpacity style={styles.loginbutton} disabled={isLoading} onPress={()=>{props.handleSubmit();}}>
                                 <Text style={styles.logintext}>SIGNUP</Text>
                             </TouchableOpacity>
                         </View>
+                        </KeyboardAvoidingView>
                     )}    
                     </Formik>
-            </KeyboardAwareScrollView>
-            <View style={styles.bottom}>
-                <Text style={styles.bottomtext} onPress={()=>navigation.navigate('Login')}>Already have an account?</Text>
+            
+                <View style={styles.bottom}>
+                    <Text style={styles.bottomtext} disabled={isLoading} onPress={()=>navigation.navigate('Login')}>Already have an account?</Text>
+                </View>
             </View>
-    </ImageBackground>
-);
+        </ImageBackground>
+    );
 }

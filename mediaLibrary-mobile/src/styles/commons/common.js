@@ -1,7 +1,6 @@
 export const styles = StyleSheet.create({
     backgroundImage:{
-        width:360,
-        height:640,
+        flex:1,
         resizeMode:'contain'
     },
     form: {

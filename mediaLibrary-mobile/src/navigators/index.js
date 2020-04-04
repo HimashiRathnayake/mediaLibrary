@@ -27,8 +27,8 @@ export default ()=>{
 				...prevState,
 				isSignout: true,
 				userToken: null,
-			}
-		}
+			};
+	}
 	}, {
 		isLoading: true,
 		isSignout: false,
@@ -50,33 +50,42 @@ export default ()=>{
 	const authContext = React.useMemo(
 		() => ({
 			signIn: async data => {
-				await AsyncStorage.setItem('userToken',data);
-			    dispatch({ type: 'SIGN_IN', token: data });
+				await AsyncStorage.multiSet([['userToken',data.token],['email',data.email]]);
+			    dispatch({ type: 'SIGN_IN', token: data.token });
 			},
-			signOut: () => dispatch({ type: 'SIGN_OUT' }),
+			signOut: async () => {
+				let keys = ['userToken','email'];
+				await AsyncStorage.multiRemove(keys);
+				dispatch({ type: 'SIGN_OUT' });
+			},
 			signUp: async data => {
-				await AsyncStorage.setItem('userToken',data);
-			    dispatch({ type: 'SIGN_IN', token: data});
+				await AsyncStorage.multiSet([['userToken',data.token],['email',data.email]]);
+			    dispatch({ type: 'SIGN_IN', token: data.token});
 			},
-		  }),
-		  []
+			token: async () => {
+				let token;
+				token = await AsyncStorage.getItem('userToken');
+				console.log(token)
+				// return token;
+			}
+		  }),[]
 	);
 
 	if (state.isLoading){
 		return <SplashScreen/>
 	}
 	return(
-		<AuthContext.Provider value={authContext}>
-		<NavigationContainer>
-			{state.userToken == null ? (
-				<AuthStack.Navigator>
-					<AuthStack.Screen name="Login" component={LoginScreen} options={{title: "LoginScreen", headerShown: false}}/>
-					<AuthStack.Screen name="SignUp" component={SignUpScreen} options={{title: "SignUpScreen", headerShown: false}}/>
-				</AuthStack.Navigator> 
-			) : (
-				<DrawerNavigator/>
-			)}
-		</NavigationContainer>
+		<AuthContext.Provider value={{authContext, state}}>
+			<NavigationContainer>
+				{state.userToken === null ? (
+					<AuthStack.Navigator>
+						<AuthStack.Screen name="Login" component={LoginScreen} options={{title: "LoginScreen", headerShown: false}}/>
+						<AuthStack.Screen name="SignUp" component={SignUpScreen} options={{title: "SignUpScreen", headerShown: false}}/>
+					</AuthStack.Navigator> 
+				) : (
+					<DrawerNavigator/>
+				)}
+			</NavigationContainer>
 		</AuthContext.Provider>
     );
 }

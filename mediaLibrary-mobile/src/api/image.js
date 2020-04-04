@@ -1,18 +1,16 @@
-export function getImages(){
+export function getImages({token}){
     return fetch('http://192.168.1.4:3000/images/',{
         method: 'GET',
         headers: {
             Accept: 'application/json',
-            'Content-Type':'application/json'
-        },
-        body: JSON.stringify({
-            email: values.email,
-            password: values.password
-        })
+            'Content-Type':'application/json',
+            'Authorization': 'Bearer '+token 
+        }
     })
     .then((response)=>response.json())
     .then((json)=>{
-        return json.message
+        console.log(json)
+        return json;
     })
     .catch((error)=>{
         console.log(error)

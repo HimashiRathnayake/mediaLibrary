@@ -18,7 +18,7 @@ export const ImageModal = ({modelImage, modelVisible, setVisible}) => {
                     <Ionicons name='md-share' style={stylesScreen.icon} onPress={()=>setVisible(false)}/>
                     <AntDesign name='left' style={stylesScreen.iconLeft} onPress={()=>setVisible(false)}/>
                 </View>
-                <OriginalImageElement src={modelImage.src}></OriginalImageElement>
+                <OriginalImageElement src={modelImage.path}></OriginalImageElement>
             </View>
             <Modal style={stylesScreen.modal} transparent={false} animationType='fade' visible={detailsModal} onRequestClose={()=>{}}>
                 <View style={stylesScreen.modal}>

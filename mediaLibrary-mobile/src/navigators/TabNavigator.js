@@ -42,7 +42,7 @@ export const AudioTabNavigator = () => {
     );
 }
 
-export const VideoTabNavigator = () => {
+export const VideoTabNavigator = (route) => {
     return(
         <Tabs.Navigator initialRouteName='Video' tabBarOptions={{tabStyle:{paddingTop: 20}, style:{backgroundColor:'transparent', 
                 borderTopWidth:0, left:0, right:0, bottom:0, height: 70,position:'absolute'}}}>

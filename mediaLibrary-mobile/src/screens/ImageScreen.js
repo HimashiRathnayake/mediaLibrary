@@ -1,15 +1,30 @@
 import React from 'react';
-import {ImageBackground, Text, View, TouchableOpacity, StyleSheet, ScrollView, Dimensions, Modal} from 'react-native';
+import {ImageBackground, Text, View, TouchableOpacity, ScrollView} from 'react-native';
 import {styles} from '../styles/commons';
 import {Header} from '../commons/Header';
 import {ImageElement} from '../components/ImageElement';
-import {imagesAll} from '../api/images';
+import {getImages} from '../api/image';
 import {ImageModal} from '../modals/ImageModal';
+import { AuthContext } from '../navigators/context';
+import {stylesScreen} from '../styles/imagescreen';
 
 export const ImageScreen = ({navigation, route}) => {
     const [modelVisible, setVisible] = React.useState(false);
     const [modelImage, setImage] = React.useState(require('../../assets/logo.png'));
-    const images=imagesAll;
+    const [images, setImages] = React.useState([]);
+    const [count, setCount] = React.useState(null);
+    const {authContext,state} = React.useContext(AuthContext); 
+
+    React.useEffect(()=>{  
+        getImages({token:state.userToken})
+        .then((response)=>{
+            setCount(response.count);
+            setImages(response.Images);
+        })
+        .catch((error)=>{
+            console.log(error)
+        })
+    },[])
 
     function setModelVisible(visible, imageKey){
         setImage(images[imageKey]);
@@ -20,7 +35,7 @@ export const ImageScreen = ({navigation, route}) => {
         return(
             <TouchableOpacity key={key} onPress={()=>{setModelVisible(true, key)}}>
                 <View style={stylesScreen.imagewrapper}>
-                    <ImageElement src={val.src}/>
+                    <ImageElement path={val.path}/>
                     <Text style={stylesScreen.imagename}>Image</Text>
                 </View>
             </TouchableOpacity>
@@ -29,37 +44,17 @@ export const ImageScreen = ({navigation, route}) => {
     return(
         <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
             {route.params===undefined && <Header navigation={navigation}>Image</Header>||<Header navigation={navigation}>{route.params.folderName}</Header>}
-            <ScrollView style={stylesScreen.container}>
-                <View style={stylesScreen.container}>
-                    <ImageModal modelImage={modelImage} modelVisible={modelVisible} setVisible={setVisible}/>
-                    {imageSet}
-                </View>
-            </ScrollView>
+            {count===0 ? 
+                (<View style={stylesScreen.noImageContainer}>
+                    <Text style={stylesScreen.noImageText}>No images found</Text>
+                </View>):
+                (<ScrollView style={stylesScreen.container}>
+                    <View style={stylesScreen.container}>
+                        <ImageModal modelImage={modelImage} modelVisible={modelVisible} setVisible={setVisible}/>
+                        {imageSet}
+                    </View>
+                </ScrollView>)
+            }
         </ImageBackground>       
     )
 }
-
-const stylesScreen = StyleSheet.create({
-    container:{
-        marginTop: 10,
-        width: Dimensions.get('screen').width,
-        flexDirection:'row',
-        flexWrap: 'wrap',
-        alignSelf: 'center',
-        marginBottom: 120
-    },
-    imagewrapper:{
-        margin: 5,
-        borderRadius: 30,
-        width: null,
-        alignSelf: 'stretch',
-        resizeMode: 'contain',
-        height: 140,
-        width: 110,
-        borderRadius: 30,
-    },
-    imagename:{
-        alignSelf: 'center',
-        color: 'white'
-    },
-});

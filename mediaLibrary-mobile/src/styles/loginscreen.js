@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
   },
   bottom: {
     flex: 1,
-    top: -30,
+    top: 0,
     width:360,
     flexDirection: 'row',
     justifyContent: 'space-around',

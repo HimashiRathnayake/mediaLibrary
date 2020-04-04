@@ -12,7 +12,7 @@ export function signup({values}){
     })
     .then((response)=>response.json())
     .then((json)=>{
-        return json.message
+        return json
     })
     .catch((error)=>{
         console.log(error)
