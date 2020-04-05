@@ -2,7 +2,18 @@ import React, {Component} from 'react';
 import { Redirect, Link } from "react-router-dom";
 import './componentCss/login.css';
 import {LoginData} from '../services/PostData';
+import { object } from 'prop-types';
 
+const emailRegex = RegExp(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/);
+
+const formValid = formErrors => {
+    let valid = true;
+
+    Object.values(formErrors).forEach(val => {
+        val.length>0 && (valid =false)
+    });
+    return valid;
+};
 
 export default class Login extends Component{
 
@@ -15,36 +26,63 @@ export default class Login extends Component{
         this.state = { 
             email: '',
             password: '',
+            formErrors: {
+                email: '',
+                password: ''
+            },
             redirect: false
         }
-
-        //console.log('In login class');
     }
 
     login(){
-        console.log('Login Success');
-        console.log(this.state);
-        //axios.post(url: 'http://localhost:3001/users/login', obj).then(onfulfilled: res => console.log(res.data));
-
-        LoginData(this.state).then((result) => {
-            let responseJSON = result;
-            console.log("res:",responseJSON);
         
-            if(responseJSON.token){
-                sessionStorage.setItem('userData', JSON.stringify(responseJSON));
-                this.setState({redirect: true})
-            }else{
-                console.log('Login Error');
-            }
-            //console.log("UserData: ", JSON.parse(sessionStorage.getItem('userData')).token);
-        })
+        if(formValid(this.state.formErrors) && this.state.email.length != 0 && this.state.password.length != 0){
+            console.log(`
+                --submitting--
+                email: ${this.state.email}
+                password: ${this.state.password}
+            `)
+            LoginData(this.state).then((result) => {
+                let responseJSON = result;
+                
+                if(responseJSON.token){
+                    sessionStorage.setItem('userData', JSON.stringify(responseJSON));
+                    this.setState({redirect: true})
+                }else{
+                    console.log('Login Error');
+                }
+            }) 
+        }
+        else{
+            console.error('form invalid - display error message');
+        }  
     }
 
     onChange(e){
+        const {name, value} = e.target;
+        let formErrors = this.state.formErrors;
+
+        switch(name){
+            case 'email':
+                formErrors.email =
+                    emailRegex.test(value) && value.length > 0 
+                    ? ""
+                    :"invalid email address";
+                break;
+            case 'password':
+                formErrors.password =
+                    value.length < 3 && value.length >0 
+                    ? "minimum 3 characters required"
+                    : "";
+                break;
+            default:
+                break;             
+        } 
         this.setState({
+            formErrors,
             [e.target.name]: e.target.value 
-        });
-        
+        } ); 
+        console.log(this.state);
     }
 
     render(){
@@ -55,8 +93,9 @@ export default class Login extends Component{
         
         if(sessionStorage.getItem('userData')){
             return(<Redirect to={'/start'}/>);
-
         } 
+
+        const {formErrors} = this.state;
 
         return(        
         <form >
@@ -71,8 +110,10 @@ export default class Login extends Component{
                           placeholder="Enter email"
                           name= "email"
                           onChange={this.onChange}
-                        />
-                        
+                        /> 
+                        {formErrors.email.length > 0 && (
+                            <span className="errorMessage">{formErrors.email}</span>
+                        )}
                     </div> 
                     
                     <div className="form-group"> 
@@ -82,22 +123,19 @@ export default class Login extends Component{
                             placeholder="Enter password"
                             name="password"
                             onChange={this.onChange} 
-                        />
-                        
+                        /> 
+                        {formErrors.password.length > 0 && (
+                            <span className="errorMessage">{formErrors.password}</span>
+                        )}  
                      </div>
                     
                     <input className="btn btn-primary btn-block" type="button" name="login" onClick={this.login} value="Login" />
-                    {/* <button type="submit" className="btn btn-primary btn-block" onClick={this.login}>Login</button> */}
                     <p className="forgot-password text-right">
                         Don't have an account? <Link  to={"/signup"}>SignUp</Link>
                     </p>
                 </div>
             </div> 
         </form> 
-            
-       
-        
         );
     }
-
 }

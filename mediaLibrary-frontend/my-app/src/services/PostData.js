@@ -263,4 +263,26 @@ export function UploadFiles(userdata, type, folderId, file){
     });
 }
 
+export function SearchImages(userdata, url){
+    console.log('SearchImages', `http://localhost:3001/search/image/?${url}`);
+    return new Promise((resolve, reject) => {
+        fetch(`http://localhost:3001/search/image/?${url}`, {
+            method: 'Get',
+            headers: {
+                'Authorization': `Bearer ${userdata}`,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            resolve(responseJson);
+        })
+        .catch((error) => {
+            reject(error);
+        })
+    });
+
+}
+
 
