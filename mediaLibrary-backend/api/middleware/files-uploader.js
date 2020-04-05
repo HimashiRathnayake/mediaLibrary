@@ -26,7 +26,7 @@ const storage = multer.diskStorage({
 const fileFilter = (req,file,cb)=>{
     fileType=req.originalUrl.split("/")[1];
     if (fileType === 'images'){
-        if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png'){
+        if (file.mimetype === 'image/jpeg'|| file.mimetype === 'image/jpg' || file.mimetype === 'image/png'){
             cb(null, true);
         }else{
             cb(null, false);
@@ -60,7 +60,7 @@ const fileFilter = (req,file,cb)=>{
 
 const upload = multer({
     storage: storage,
-    fileFilter : fileFilter
+    // fileFilter : fileFilter
 });
 
 module.exports = upload;

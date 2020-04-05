@@ -2,18 +2,33 @@ import React from 'react';
 import {ImageBackground, Text, View, ScrollView, TouchableOpacity, StyleSheet, Dimensions, Modal, TextInput, Alert} from 'react-native';
 import {Header} from '../commons/Header';
 import {styles} from '../styles/commons';
-import {folder} from '../api/images';
 import {MaterialIcons } from '@expo/vector-icons';
-import {createFolder} from "../api/folder";
+import {createFolder, getFolders} from "../api/folder";
 import {Formik} from 'formik';
+import { AuthContext } from '../navigators/context';
 
 export const FolderScreen = ({route,navigation}) => {
     const [modelVisible, setVisible] = React.useState(false);
     const [isLoading, setLoading]=React.useState('false');
+    const [folders, setFolders] = React.useState([]);
+    const [count, setCount] = React.useState(null);
+    const {authContext,state} = React.useContext(AuthContext); 
     const type=route.params.type;
-    const folderSet = folder.map((val,key) => {
+
+    React.useEffect(()=>{  
+        getFolders({token:state.userToken, type:type})
+        .then((response)=>{
+            setCount(response.count);
+            setFolders(response.folders);
+        })
+        .catch((error)=>{
+            console.log(error)
+        })
+    },[])
+
+    const folderSet = folders.map((val,key) => {
         return(
-            <TouchableOpacity key={key} onPress={()=>{navigation.push('InsideFolder',{visible:false, folderId:val._id, folderName: val.folderName})}}>
+            <TouchableOpacity key={key} onPress={()=>{navigation.push(type,{visible:false, folderId:val._id, folderName: val.folderName})}}>
                 <View style={stylesScreen.folderWrapper}>
                     <MaterialIcons name='folder' style={stylesScreen.folderIcon}/>
                     <Text style={stylesScreen.folderName}>{val.folderName}</Text>
@@ -24,9 +39,12 @@ export const FolderScreen = ({route,navigation}) => {
 
     return(
         <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
-        {navigation.dangerouslyGetParent().dangerouslyGetParent().setOptions({tabBarVisible:false})}
             <Header navigation={navigation}>{type} Folders</Header>
-            <ScrollView style={stylesScreen.container}>
+            {count===0 ? 
+            (<View style={stylesScreen.noImageContainer}>
+                <Text style={stylesScreen.noImageText}>No Folders found</Text>
+            </View>):
+            (<ScrollView style={stylesScreen.container}>
                 <View style={stylesScreen.container}>
                     <TouchableOpacity onPress={()=>{setVisible(true)}}>
                         <View style={stylesScreen.folderWrapper}>
@@ -72,7 +90,7 @@ export const FolderScreen = ({route,navigation}) => {
                         </View>
                     </Modal>
                 </View>
-            </ScrollView>
+            </ScrollView>)}
         </ImageBackground>
     );
 }
@@ -88,7 +106,8 @@ const stylesScreen = StyleSheet.create({
     folderWrapper: {
         width: 110,
         marginLeft: 10,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        marginBottom: 5
     },
     folderIcon: {
         fontSize: 100,
@@ -96,6 +115,7 @@ const stylesScreen = StyleSheet.create({
         alignSelf: 'center'
     },
     folderName: {
+        marginTop: -12,
         color: '#fff',
         alignSelf: 'center'
     },

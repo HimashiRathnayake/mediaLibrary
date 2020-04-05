@@ -1,7 +1,6 @@
 import React from 'react';
 import {Text, View, Modal, Image} from 'react-native';
 import {Ionicons, MaterialIcons, MaterialCommunityIcons, Entypo, AntDesign } from '@expo/vector-icons';
-import {DetailsText } from '../commons/DetailsText';
 import {stylesScreen} from '../styles/modals/image';
 
 export const ImageModal = ({modelImage, modelVisible, setVisible}) => {
@@ -26,10 +25,10 @@ export const ImageModal = ({modelImage, modelVisible, setVisible}) => {
                         <Text style={stylesScreen.text}>Details</Text>
                     </View>
                     <View style={stylesScreen.details}>
-                        <DetailsText name={'Image Name'}>{modelImage.imageName}</DetailsText>
-                        <DetailsText name={'Title'}>{modelImage.title}</DetailsText>
-                        <DetailsText name={'Subject'}>{modelImage.subject}</DetailsText>
-                        <DetailsText name={'Artist'}>{modelImage.artist}</DetailsText>
+                        <View flexDirection='row'><Text style={stylesScreen.detailTextLeft}>Image Name :</Text><Text style={stylesScreen.detailTextRight}>{modelImage.imageName}</Text></View>
+                        <View flexDirection='row'><Text style={stylesScreen.detailTextLeft}>Title :</Text><Text style={stylesScreen.detailTextRight}>{modelImage.title}</Text></View>
+                        <View flexDirection='row'><Text style={stylesScreen.detailTextLeft}>Subject :</Text><Text style={stylesScreen.detailTextRight}>{modelImage.subject}</Text></View>
+                        <View flexDirection='row'><Text style={stylesScreen.detailTextLeft}>Artist :</Text><Text style={stylesScreen.detailTextRight}>{modelImage.artist}</Text></View>
                     </View>
                 </View>
             </Modal>

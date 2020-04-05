@@ -65,8 +65,6 @@ export default ()=>{
 			token: async () => {
 				let token;
 				token = await AsyncStorage.getItem('userToken');
-				console.log(token)
-				// return token;
 			}
 		  }),[]
 	);

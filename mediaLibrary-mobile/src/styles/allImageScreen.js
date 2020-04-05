@@ -15,21 +15,19 @@ export const stylesScreen = StyleSheet.create({
         width: null,
         alignSelf: 'stretch',
         resizeMode: 'contain',
-        height: 140,
+        height: 110,
         width: 110,
         borderRadius: 30,
-        marginBottom: 20
     },
     imagename:{
         alignSelf: 'center',
         color: 'white'
     },
     noImageContainer:{
-        flex:1,
+        marginTop: '50%',
         alignSelf: 'center',
     },
     noImageText: {
-        flex: 0.75,
         color: '#fff',
         justifyContent: 'space-between',
         textAlignVertical: 'center',
@@ -43,4 +41,18 @@ export const stylesScreen = StyleSheet.create({
         width: 110,
         borderRadius: 10,
     },
+    imageIcon: {
+        fontSize: 100,
+        color: '#9e9e9e',
+        alignSelf: 'center'
+    },
+    addImageIcon: {
+        fontSize: 150,
+        color: '#9e9e9e',
+        alignSelf: 'center',
+        // marginTop: -200
+    },
+    imageAdder: {
+
+    }
 });

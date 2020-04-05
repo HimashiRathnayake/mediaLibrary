@@ -38,14 +38,26 @@ export const stylesScreen = StyleSheet.create({
     },
     details: {
         marginTop: 140,
-        width: Dimensions.get('screen').width,
+        width: Dimensions.get('screen').width - 80,
         height: Dimensions.get('screen').height/2,
+        alignSelf: 'center'
     },
     originalImage:{
         alignSelf: 'stretch',
         resizeMode: 'center',
         width: Dimensions.get('screen').width,
         height: Dimensions.get('screen').height
-
-    }
+    },
+    detailTextLeft: {
+        color: '#fff',
+        fontSize: 16,
+        paddingTop: 20,
+        width: 100
+    },
+    detailTextRight: {
+        color: '#fff',
+        fontSize: 16,
+        marginLeft: 20,
+        paddingTop: 20
+    },
 });
