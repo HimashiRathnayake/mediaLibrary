@@ -20,6 +20,7 @@ export const stylesScreen = StyleSheet.create({
         borderRadius: 30,
     },
     imagename:{
+        marginTop: -10,
         alignSelf: 'center',
         color: 'white'
     },

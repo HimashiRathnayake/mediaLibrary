@@ -2,13 +2,12 @@ import React from 'react';
 import {ImageBackground, Text, View, StyleSheet, Dimensions, TouchableOpacity} from 'react-native';
 import {Header} from '../commons/Header';
 import {styles} from '../styles/commons';
-import { FontAwesome, Entypo } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
 import { MediaButton } from '../commons/MediaButton';
 
-export const HomeScreen = ({navigation}) => (
+export const HomeScreen = ({navigation, route}) => (
     <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
         <Header navigation={navigation}>Home</Header>
-
         <View style={styleHome.headerContainer}>
                 <Entypo name="folder-video" color="white" size={40} /> 
                 <Text style={styleHome.headerText}>Welcome to MyMedia</Text>

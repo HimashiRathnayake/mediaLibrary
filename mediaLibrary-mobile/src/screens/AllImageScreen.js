@@ -15,15 +15,20 @@ export const AllImageScreen = ({navigation, route}) => {
     const {authContext,state} = React.useContext(AuthContext); 
 
     React.useEffect(()=>{  
-        getImages({token:state.userToken})
-        .then((response)=>{
-            setCount(response.count);
-            setImages(response.Images);
+        navigation.addListener('focus', ()=>{
+            getImages({token:state.userToken})
+            .then((response)=>{
+                if (response.message != undefined && response.message==="Auth failed"){
+                    authContext.signOut();
+                }
+                setCount(response.count);
+                setImages(response.Images); 
+            })
+            .catch((error)=>{
+                console.log(error)
+            })
         })
-        .catch((error)=>{
-            console.log(error)
-        })
-    },[])
+    },[navigation])
 
     function setModelVisible(visible, imageKey){
         setImage(images[imageKey]);
@@ -41,7 +46,7 @@ export const AllImageScreen = ({navigation, route}) => {
     })
     return(
         <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
-            {route.params===undefined && <Header navigation={navigation}>Image</Header>||<Header navigation={navigation}>{route.params.folderName}</Header>}
+            <Header navigation={navigation}>Image</Header>
             {count===0 ? 
                 (<View style={stylesScreen.noImageContainer}>
                     <Text style={stylesScreen.noImageText}>No images found</Text>
@@ -55,4 +60,4 @@ export const AllImageScreen = ({navigation, route}) => {
             }
         </ImageBackground>       
     )
-}
+} 

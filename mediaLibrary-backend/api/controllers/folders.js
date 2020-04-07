@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const Folder =  require('../models/folder'); 
+let File;
 
 exports.folders_get_folders = (req, res, next) =>{
     Folder.find({userList: req.userData.userId, folderType: req.params.type})
@@ -64,8 +65,25 @@ exports.folders_rename_folder = (req, res, next) =>{
 }
 
 exports.folders_delete_folder = (req, res, next) =>{
-    Folder.deleteOne({_id: req.params.folderId})
+    Folder.find({_id: req.params.folderId})
     .exec()
+    .then(result=>{
+        if (result[0].folderType==='Image'){
+            File=require('../models/image');
+        }
+        else if (result[0].folderType==='Audio'){
+            File=require('../models/audio');
+        }else{
+            File=require('../models/video');
+        }
+        console.log(File);
+        File.deleteMany({folder: req.params.folderId}).exec().then((result)=>{
+            console.log(result)
+        })
+    })
+    .then(
+        Folder.deleteOne({_id: req.params.folderId}).exec()
+    )
     .then(result => {
         res.status(200).json({
             message: "Folder deleted"

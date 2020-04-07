@@ -2,7 +2,7 @@ import React from 'react';
 import {ImageBackground, Text, View} from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import {styles} from '../styles/commons';
-import {InsideHeader} from '../commons/Header';
+import {FileHeader} from '../commons/Header';
 
 export const VideoScreen = ({navigation, routes}) => {
     React.useEffect(()=>{
@@ -17,7 +17,7 @@ export const VideoScreen = ({navigation, routes}) => {
     },[]);
     return(
         <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
-            <InsideHeader navigation={navigation}>Files</InsideHeader>
+            <FileHeader navigation={navigation}>Files</FileHeader>
         </ImageBackground>
     );
 }

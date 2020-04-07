@@ -1,18 +1,20 @@
 import React from 'react';
-import {ImageBackground, Text, View, ScrollView, TouchableOpacity, StyleSheet, Dimensions, Modal, TextInput, Alert} from 'react-native';
+import {ImageBackground, Text, View, ScrollView, TouchableOpacity, Modal, TouchableWithoutFeedback} from 'react-native';
 import {Header} from '../commons/Header';
 import {styles} from '../styles/commons';
+import {stylesScreen} from '../styles/folderStyles';
 import {MaterialIcons } from '@expo/vector-icons';
-import {createFolder, getFolders} from "../api/folder";
-import {Formik} from 'formik';
+import {getFolders, deleteFolder} from "../api/folder";
 import { AuthContext } from '../navigators/context';
+import { FolderModal } from '../modals/FolderModal';
 
 export const FolderScreen = ({route,navigation}) => {
-    const [modelVisible, setVisible] = React.useState(false);
-    const [isLoading, setLoading]=React.useState('false');
+    const [modalVisible, setVisible] = React.useState(false);
+    const [actionModal, actionModalVisible] = React.useState(false);
     const [folders, setFolders] = React.useState([]);
     const [count, setCount] = React.useState(null);
     const {authContext,state} = React.useContext(AuthContext); 
+    const [refresh,setRefresh] = React.useState(false);
     const type=route.params.type;
 
     React.useEffect(()=>{  
@@ -24,14 +26,28 @@ export const FolderScreen = ({route,navigation}) => {
         .catch((error)=>{
             console.log(error)
         })
-    },[])
+        setRefresh(false);
+    },[refresh])
+
+    function deletefolder(folderId){
+        console.log(folderId)
+        deleteFolder({token:state.userToken, folderId: folderId})
+        .then((response)=>{
+            console.log(response)
+            setRefresh(true);
+        })
+    }
 
     const folderSet = folders.map((val,key) => {
         return(
-            <TouchableOpacity key={key} onPress={()=>{navigation.push(type,{visible:false, folderId:val._id, folderName: val.folderName})}}>
+            <TouchableOpacity 
+                key={key} 
+                onPress={()=>{navigation.push(type,{visible:false, folderId:val._id, folderName: val.folderName})}}
+                onLongPress={()=>{deletefolder(val._id)}}
+            >
                 <View style={stylesScreen.folderWrapper}>
                     <MaterialIcons name='folder' style={stylesScreen.folderIcon}/>
-                    <Text style={stylesScreen.folderName}>{val.folderName}</Text>
+                    <Text style={stylesScreen.folderName}>{val.folderName.substring(0,10)}</Text>
                 </View>
             </TouchableOpacity>
         )
@@ -39,10 +55,16 @@ export const FolderScreen = ({route,navigation}) => {
 
     return(
         <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
-            <Header navigation={navigation}>{type} Folders</Header>
+            <Header navigation={navigation} token={state.userToken} setRefresh={setRefresh} type={type}>{type} Folders</Header>
             {count===0 ? 
-            (<View style={stylesScreen.noImageContainer}>
-                <Text style={stylesScreen.noImageText}>No Folders found</Text>
+            (<View style={stylesScreen.noFolderContainer}>
+                <Text style={stylesScreen.noFolderText}>No Folders found</Text>
+                <Text style={stylesScreen.noFolderText}>Create new Image</Text>
+                <TouchableOpacity onPress={()=>{setVisible(true)}}>
+                    <View>
+                        <MaterialIcons name='create-new-folder' style={stylesScreen.addFolderIcon}/>
+                    </View>
+                </TouchableOpacity>
             </View>):
             (<ScrollView style={stylesScreen.container}>
                 <View style={stylesScreen.container}>
@@ -53,106 +75,23 @@ export const FolderScreen = ({route,navigation}) => {
                         </View>
                     </TouchableOpacity>
                     {folderSet}
-                    <Modal style={stylesScreen.modal} transparent={true} animationType='fade' visible={modelVisible} onRequestClose={()=>{}}>
-                        <View style={stylesScreen.modal}>
-                            <Formik 
-                                initialValues={{folderName:''}}
-                                onSubmit={
-                                    (values)=>{
-                                        createFolder({name:values.folderName, type:type})
-                                        .then((response)=>{
-                                            setLoading(false);
-                                            if (responce!==undefined && response==="Folder created successfully"){}
-                                            else{
-                                                Alert.alert('Alert','Something Went wrong',[{text:'OK'}]);
-                                                setVisible(false);
-                                            }
-                                        })
-                                        
-                                }}
-                            >
-                                {(props)=>(
-                                <View style={stylesScreen.modalView}>
-                                    <Text style={stylesScreen.inputHeader}>Folder Name</Text>
-                                    <TextInput 
-                                        style={stylesScreen.input} 
-                                        placeholder='Folder' 
-                                        placeholderTextColor="#9e9e9e" 
-                                        onChangeText={props.handleChange('folderName')}
-                                        value={props.values.folderName}
-                                    />
-                                    <View style={stylesScreen.bottom}>
-                                        <TouchableOpacity onPress={()=>{setVisible(false)}}><Text style={stylesScreen.text}>Close</Text></TouchableOpacity> 
-                                        <TouchableOpacity onPress={()=>{props.handleSubmit();}}><Text style={stylesScreen.text}>Create</Text></TouchableOpacity>
-                                    </View>
-                                </View>)}
-                            </Formik>
-                        </View>
-                    </Modal>
                 </View>
-            </ScrollView>)}
+                <Modal style={stylesScreen.folderActionModal} transparent={true} animationType='fade' visible={actionModal} onRequestClose={()=>{}}>
+                    <TouchableWithoutFeedback onPress={()=>actionModalVisible(false)}>
+                        <View style={stylesScreen.folderActionModal}>
+                            <View style={stylesScreen.modalContainer}>
+                                <TouchableOpacity onPress={()=>{setVisible(false);}}>
+                                    <Text style={stylesScreen.modalText}>Rename</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={()=>alert('fgh')}><Text style={stylesScreen.modalText}>Delete</Text></TouchableOpacity>
+                                <TouchableOpacity onPress={()=>alert('fgh')}><Text style={stylesScreen.modalText}>Share</Text></TouchableOpacity>
+                            </View>
+                        </View>
+                    </TouchableWithoutFeedback>
+                </Modal>
+            </ScrollView>
+            )}
+            <FolderModal modalVisible={modalVisible} setVisible={setVisible} token={state.userToken} type={type} setRefresh={setRefresh} actionType={'Create'}/>
         </ImageBackground>
     );
 }
-const stylesScreen = StyleSheet.create({
-    container:{
-        marginTop: 10,
-        width: Dimensions.get('screen').width,
-        flexDirection:'row',
-        flexWrap: 'wrap',
-        alignSelf: 'center',
-        marginBottom: 120
-    },
-    folderWrapper: {
-        width: 110,
-        marginLeft: 10,
-        justifyContent: 'center',
-        marginBottom: 5
-    },
-    folderIcon: {
-        fontSize: 100,
-        color: '#9e9e9e',
-        alignSelf: 'center'
-    },
-    folderName: {
-        marginTop: -12,
-        color: '#fff',
-        alignSelf: 'center'
-    },
-    modal: {
-        flex:1,
-        padding: 0,
-        backgroundColor: 'rgba(0,0,0,0.7)'
-    },
-    modalView: {
-        height: 200,
-        marginTop: 200,
-        alignSelf: 'center',
-        backgroundColor: 'white',
-        width: Dimensions.get('screen').width-40,
-        borderRadius: 20
-    },
-    input: {
-        width: Dimensions.get('screen').width-80,
-        alignSelf: 'center',
-        borderBottomColor: 'black',
-        borderBottomWidth: 2
-    },
-    inputHeader:{
-        marginTop: 40,
-        marginLeft: 20,
-        marginBottom: 20,
-        fontSize: 18,
-        fontWeight: 'bold'
-    },
-    bottom:{
-        flex: 1,
-        top: 50,
-        width: Dimensions.get('screen').width-40,
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-    },
-    text: {
-        fontSize: 16,
-    }
-});

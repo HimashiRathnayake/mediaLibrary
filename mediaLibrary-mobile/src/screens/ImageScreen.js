@@ -1,8 +1,8 @@
 import React from 'react';
 import {ImageBackground, Text, View, ScrollView, TouchableOpacity, Image} from 'react-native';
-import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 import {styles} from '../styles/commons';
-import {InsideHeader} from '../commons/Header';
+import {FileHeader} from '../commons/Header';
 import { AuthContext } from '../navigators/context';
 import {stylesScreen} from '../styles/allImageScreen';
 import {ImageModal} from '../modals/ImageModal';
@@ -15,6 +15,7 @@ export const ImageScreen = ({navigation, route}) => {
     const [modelImage, setImage] = React.useState(require('../../assets/logo.png'));
     const [images, setImages] = React.useState([]);
     const [count, setCount] = React.useState(null);
+    const [refresh,setRefresh] = React.useState(false);
     const {authContext,state} = React.useContext(AuthContext); 
 
     React.useEffect(()=>{
@@ -34,7 +35,7 @@ export const ImageScreen = ({navigation, route}) => {
             parent.setOptions({
                 tabBarVisible: true
         });
-    },[count]);
+    },[refresh]);
     
     function setModelVisible(visible, imageKey){
         setImage(images[imageKey]);
@@ -54,7 +55,7 @@ export const ImageScreen = ({navigation, route}) => {
             let response = await uploadImage({folderId:route.params.folderId, uri:pickerResult.uri, token:state.userToken, type:pickerResult.uri.split('.')[-1]})
                 console.log(response)
                 if (response.message == "Image uploaded successfully"){
-                    setCount(count+1);
+                    setRefresh(true);
                 }
                 else{alert('Something went wrong')}
         }
@@ -71,7 +72,7 @@ export const ImageScreen = ({navigation, route}) => {
     })
     return(
         <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
-            <InsideHeader navigation={navigation}>{route.params.folderName}</InsideHeader>
+            <FileHeader navigation={navigation} route={route}/>
             {count===0 ? 
                 (<View style={stylesScreen.noImageContainer}>
                     <Text style={stylesScreen.noImageText}>No images found</Text>
@@ -89,7 +90,7 @@ export const ImageScreen = ({navigation, route}) => {
                         <TouchableOpacity onPress={()=>{openImagePickerAsync()}}>
                             <View style={stylesScreen.imagewrapper}>
                                 <MaterialIcons name='add-to-photos' style={stylesScreen.imageIcon}/>
-                                <Text style={stylesScreen.imagename}>Add new Image</Text>
+                                <Text style={stylesScreen.imagename}>Add Image</Text>
                             </View>
                         </TouchableOpacity>
                         {imageSet}
