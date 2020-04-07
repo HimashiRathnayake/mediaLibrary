@@ -14,4 +14,29 @@
 .card-horizontal {
     display: flex;
 } 
+.link-button{
+    color: black;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    text-transform: none;
+    display: inline;
+    margin: 0;
+    padding: 0;
+    font-size: 18px;
+}
+.link-button:hover,
+.link-button:focus {
+text-decoration: none;
+}
+/* .player-wrapper{
+    position: relative;
+    padding-top: 56.25%;
+}
 
+.react-palyer{
+    position: absolute;
+    top: 0;
+    left: 0;
+} */

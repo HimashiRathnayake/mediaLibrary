@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import { Redirect, Link } from "react-router-dom";
 import './componentCss/login.css';
 import {LoginData} from '../services/PostData';
-import { object } from 'prop-types';
 
 const emailRegex = RegExp(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/);
 
@@ -36,7 +35,7 @@ export default class Login extends Component{
 
     login(){
         
-        if(formValid(this.state.formErrors) && this.state.email.length != 0 && this.state.password.length != 0){
+        if(formValid(this.state.formErrors) && this.state.email.length !== 0 && this.state.password.length !== 0){
             console.log(`
                 --submitting--
                 email: ${this.state.email}

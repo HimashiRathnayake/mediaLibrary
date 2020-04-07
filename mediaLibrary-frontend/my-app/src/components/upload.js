@@ -25,11 +25,11 @@ export default class Upload extends Component{
                                 <Form.Control 
                                 type="file"
                                 required
-                                onChange={this.props.selectedimage}
+                                onChange={this.props.selectedfile}
                                 />
                             </Form.Group>
                             <FormGroup> 
-                                <Button variant="primary" type="submit" onClick={this.props.uploadimage}>Upload</Button>
+                                <Button variant="primary" type="submit" onClick={this.props.upload}>Upload</Button>
                             </FormGroup>
                         </Form>
                     </Col>

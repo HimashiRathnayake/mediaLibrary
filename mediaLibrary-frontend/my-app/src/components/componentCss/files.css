@@ -44,9 +44,10 @@ body {
     margin-right: 0px;
   }
   
-  .nav-link{
+  .link-button{
     font-weight: bold;
     font-size:large;
+    color: white;
   }
 
   
@@ -55,32 +56,33 @@ body {
   
   .sidebar-nav {
     position: absolute;
-    top: 0;
+    top: 10px;
     width: 250px;
     margin: 0;
     padding: 0;
     list-style: none;
   }
   
-  .sidebar-nav li {
-    text-indent: 20px;
-    line-height: 40px;
+  .sidebar-nav .link-button {
+    text-indent: 30px;
+    line-height: 50px;
   }
   
-  .sidebar-nav li a {
+  .sidebar-nav .link-button  {
     display: block;
     text-decoration: none;
     color: #a5e2fa;
   }
   
-  .sidebar-nav li a:hover {
+  .sidebar-nav .link-button:hover {
     text-decoration: none;
     color: rgb(245, 6, 6);
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(14, 13, 13, 0.2);
   }
   
-  .sidebar-nav li a:active, .sidebar-nav li a:focus {
+  .sidebar-nav .link-button:active, .sidebar-nav .link-button:focus {
     text-decoration: none;
+    color: rgb(245, 6, 6);
   }
   
   .sidebar-nav>.sidebar-brand {
@@ -89,11 +91,11 @@ body {
     line-height: 60px;
   }
   
-  .sidebar-nav>.sidebar-brand a {
+  .sidebar-nav>.sidebar-brand .link-button {
     color: #ffffff;
   }
   
-  .sidebar-nav>.sidebar-brand a:hover {
+  .sidebar-nav>.sidebar-brand .link-button:hover {
     color: rgb(247, 241, 241);
     background: none;
   }

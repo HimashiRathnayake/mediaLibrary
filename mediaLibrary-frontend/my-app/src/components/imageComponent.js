@@ -1,13 +1,10 @@
 import React, {Component} from 'react';
 import { Redirect, Link} from "react-router-dom";
 import './componentCss/files.css';
-import {GetFolders, GetAllImages, GetImagesFromFolder, DeleteFolder, DeleteImage, CreateFolders, SearchImages} from '../services/PostData';
+import {GetFolders, GetAll, GetFromFolder, DeleteFolder, DeleteImage, CreateFolders, SearchImages} from '../services/PostData';
 import ResultList from './resultList';
 import CreateFolder from './createFolder';
 import ImageSearch from './ImageSearch';
-import url from 'url';
-import querystring from 'querystring';
-
 
 export default class Image extends Component{
 
@@ -27,6 +24,8 @@ export default class Image extends Component{
         
         this.state = {
           isActive: false,
+          type: 'Image',
+          routeType: 'images',
           folders: {},
           images: {},
           redirect: false,
@@ -48,7 +47,7 @@ export default class Image extends Component{
     }
 
     allfolders() {
-        GetFolders(JSON.parse(sessionStorage.getItem('userData')).token).then((result) => {
+        GetFolders(JSON.parse(sessionStorage.getItem('userData')).token, this.state.type).then((result) => {
             this.setState({
                 folders: result,
                 images: {}
@@ -57,7 +56,8 @@ export default class Image extends Component{
     }
 
     allImages(){
-        GetAllImages(JSON.parse(sessionStorage.getItem('userData')).token).then((result) => {
+        GetAll(JSON.parse(sessionStorage.getItem('userData')).token, this.state.routeType).then((result) => {
+            console.log("All images results: ", result);
             this.setState({
                 folders: result
             })
@@ -65,7 +65,7 @@ export default class Image extends Component{
     }
 
     getImage(folder){
-        GetImagesFromFolder(JSON.parse(sessionStorage.getItem('userData')).token, folder._id).then((result) => {
+        GetFromFolder(JSON.parse(sessionStorage.getItem('userData')).token, this.state.routeType, folder._id).then((result) => {
             this.setState({
                 folders: result
             })
@@ -92,7 +92,7 @@ export default class Image extends Component{
 
     createFolder(e){
         e.preventDefault();
-        CreateFolders(JSON.parse(sessionStorage.getItem('userData')).token,'Image', e.target.folderName.value).then((result) => {
+        CreateFolders(JSON.parse(sessionStorage.getItem('userData')).token,this.state.type, e.target.folderName.value).then((result) => {
             alert(result.message);
             if(result.message === "Folder created successfully"){
                 this.allfolders();
@@ -109,9 +109,6 @@ export default class Image extends Component{
 
     search(e){
         e.preventDefault(e);
-        console.log('Search title', e.target.title.value);
-        console.log('Search subject', e.target.subject.value);
-        console.log('Search artist', e.target.artist.value);
 
         var eurl = '';
         if(e.target.title.value){
@@ -123,17 +120,8 @@ export default class Image extends Component{
         if(e.target.artist.value){
             eurl += ('artist='+ e.target.artist.value + '&');  
         }
-        console.log(eurl.substring(0, eurl.length-1));  
-    
         var nurl=eurl.substring(0, eurl.length-1);
-    
-        /* let parsedUrl = url.parse(`http://localhost:3001/search/image/?${nurl}`); 
-        let parsedQs = querystring.parse(parsedUrl.query);
-        
-
-        console.log("parsedUrl", parsedUrl);
-        console.log("parsedQs", parsedQs); */
-        console.log(nurl);
+ 
         SearchImages(JSON.parse(sessionStorage.getItem('userData')).token, nurl).then((result) => {
             console.log(result);
             this.setState({
@@ -154,18 +142,18 @@ export default class Image extends Component{
         if(this.state.redirect){
             return(<Redirect to={'/login'}/>);
         }
+
         let createFolderClose=()=> this.setState({createFolderShow: false})
         let searchClose=()=> this.setState({searchShow: false})
 
         return(
-            <div >
+            <div>
                 <nav className="navbar navbar-expand navbar-dark bg-primary"> 
                     <div className="collapse navbar-collapse" id="navbarsExample02">
                         <ul className="navbar-nav mr-auto">
                             <li className="nav-item"> 
                                 <Link className="nav-link" to={"/image"}>MyMedia</Link>
                             </li>
-                            
                             <li className="nav-item "> 
                                 <Link className="nav-link" to={"/start"}>Home</Link>
                             </li> 
@@ -173,31 +161,28 @@ export default class Image extends Component{
                         <form className="form-inline my-2 my-md-0"> </form>
                     </div>
                     <div className="navbar-brand">
-                        <a className="navbar-toggler-icon" id="menu-toggle"  type="button"  onClick={this.addActiveClass} />
+                        <button className="navbar-toggler-icon link-button" id="menu-toggle"   onClick={this.addActiveClass} ></button>
                     </div>
                     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample02" aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation" > 
                         <span className="navbar-toggler-icon"></span> 
                     </button>
                 </nav>
-        
                 <div id="wrapper" className={this.state.isActive ? 'toggled': ''}>
-            
                     <div id="sidebar-wrapper">
                         <ul className="sidebar-nav">
-                            <li className="sidebar-brand"><a className="nav-link">IMAGES</a> </li>
-                            <li> <a type="button" className="nav-link" onClick={this.allfolders}> All Folders</a></li>
-                            <li> <a type="button" className="nav-link" onClick={this.allImages}>All Images</a> </li>
-                            <li> <a type="button" className="nav-link" onClick={() => this.setState({createFolderShow: true})}>Create Folder</a> </li>
-                            <li> <a type="button" className="nav-link" onClick={() => this.setState({searchShow: true})}>Search</a> </li>
-                            <li> <a type="button" className="nav-link" onClick={this.logout}>Logout</a> </li>
+                            <li className="sidebar-brand"><button className="link-button">IMAGES</button> </li>
+                            <li> <button className="link-button " onClick={this.allfolders}> All Folders</button></li>
+                            <li> <button className="link-button" onClick={this.allImages}>All Images</button> </li>
+                            <li> <button className="link-button" onClick={() => this.setState({createFolderShow: true})}>Create Folder</button> </li>
+                            <li> <button className="link-button" onClick={() => this.setState({searchShow: true})}>Search</button> </li>
+                            <li> <button className="link-button" onClick={this.logout}>Logout</button> </li>
                         </ul> 
-
                     </div>
-            
                     <div id="page-content-wrapper">
                         <div className="container-fluid">
                             <ResultList resultFolders={this.state.folders}
-                                        getImage={this.getImage}
+                                        routeType={this.state.routeType}
+                                        getMedia={this.getImage}
                                         deleteFolder={this.deleteFolder}
                                         deleteImage={this.deleteImage}
                                         allfolders={this.allfolders}
@@ -208,8 +193,9 @@ export default class Image extends Component{
                                           createfolder={this.createFolder}
                             />
                             <ImageSearch show={this.state.searchShow}
-                                        onHide={searchClose}
-                                        search= {this.search}/>
+                                         onHide={searchClose}
+                                         search= {this.search}
+                            />     
                         </div>
                     </div>
                 </div>

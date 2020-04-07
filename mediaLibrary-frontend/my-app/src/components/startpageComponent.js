@@ -11,9 +11,7 @@ export default class Start extends Component{
         this.state={
             redirect: false
         }
-
         this.logout = this.logout.bind(this);
-
     }
 
     logout(){
@@ -24,7 +22,6 @@ export default class Start extends Component{
     }
 
     render(){
-
         if(this.state.redirect){
             return(<Redirect to={'/login'}/>);
         }
@@ -33,13 +30,14 @@ export default class Start extends Component{
         <form>
         <nav className="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
             <div className="container">
-               
                 <Link className="navbar-brand js-scroll-trigger" to={"/start"}>MyMedia</Link>
-
                 <div className="collapse navbar-collapse" id="navbarResponsive">
                     <ul className="navbar-nav text-uppercase ml-auto">
                         <li className="nav-item">
                             <Link className="nav-link js-scroll-trigger" to={"/start"}>Home</Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link className="nav-link js-scroll-trigger" to={"/start"}>Search</Link>
                         </li>
                         <li className="nav-item">
                             <Link className="nav-link js-scroll-trigger" to={"/image"}>Image</Link>
@@ -51,8 +49,7 @@ export default class Start extends Component{
                             <Link className="nav-link js-scroll-trigger" to={"/video"}>Video</Link>
                         </li>
                         <li className="nav-item">
-                            {/* <button  onClick={this.logout}>Logout</button> */}
-                            <input className="nav-link js-scroll-trigger" type="button" name="logout" onClick={this.logout} value="Logout" />
+                            <button  className="nav-link js-scroll-trigger link-button" onClick={this.logout}>Logout</button> 
                         </li>
                     </ul>
                 </div>
@@ -60,7 +57,6 @@ export default class Start extends Component{
         </nav>
         <div className="container">
         <div className="row">
-     
             <div className="col-md-4">
                 <div className="card mb-4 border-dark">
                 <div className="card-img-top-image"  />
@@ -81,7 +77,6 @@ export default class Start extends Component{
                     </div>
                 </div>
             </div>
-            
             <div className="col-md-4">
                 <div className="card mb-4 border-dark">
                     <div className="card-img-top-audio" />
@@ -97,7 +92,6 @@ export default class Start extends Component{
         </form>  
         ) ;
     } 
-
 }
 
 

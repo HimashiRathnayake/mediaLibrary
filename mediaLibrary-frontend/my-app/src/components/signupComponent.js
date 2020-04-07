@@ -36,7 +36,7 @@ export default class Signup extends Component{
     }  
 
     signup(){
-        if(formValid(this.state.formErrors) && this.state.email.length != 0 && this.state.password.length != 0){
+        if(formValid(this.state.formErrors) && this.state.email.length !== 0 && this.state.password.length !== 0){
             console.log(`
                 --submitting--
                 email: ${this.state.email}
@@ -62,7 +62,6 @@ export default class Signup extends Component{
     onChange(e){
         const {name, value} = e.target;
         let formErrors = this.state.formErrors;
-        let pass = '';
 
         switch(name){
             case 'email':
@@ -72,7 +71,6 @@ export default class Signup extends Component{
                     :"invalid email address";
                 break;
             case 'password':
-                pass= value;
                 formErrors.password =
                     value.length < 3 && value.length >0 
                     ? "minimum 3 characters required"
@@ -146,7 +144,6 @@ export default class Signup extends Component{
                             )} 
                         </div>
 
-                        
                         <input className="btn btn-primary btn-block" type="button" name="signup" onClick={this.signup} value="SignUp" />
                         <p className="forgot-password text-right">
                              Already registered <Link  to={"/login"}>Sign In ?</Link>
