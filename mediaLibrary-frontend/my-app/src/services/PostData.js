@@ -185,6 +185,30 @@ export function DeleteVideo(userdata, videoId){
 
 }
 
+export function DeleteAudio(userdata, audioId){
+    console.log('PostData Delete video');
+    return new Promise((resolve, reject) => {
+        fetch(`http://localhost:3000/audios/${audioId}`, {
+            method: 'Delete',
+            headers: {
+                'Authorization': `Bearer ${userdata}`,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify()
+            //params: folderId
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            resolve(responseJson);
+        })
+        .catch((error) => {
+            reject(error);
+        })
+    });
+
+}
+
 export function CreateFolders(userdata, type, folderName){
     console.log('PostData', JSON.stringify(folderName));
     return new Promise((resolve, reject) => {
@@ -273,6 +297,26 @@ export function RenameFolder(userdata, type, folderId, folderName){
                 reject(error);
             })
         }
+        else if(type === 'audios'){
+            fetch(`http://localhost:3000/${type}/${folderId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Authorization': `Bearer ${userdata}`,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    audioName: folderName
+                })
+            })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                resolve(responseJson);
+            })
+            .catch((error) => {
+                reject(error);
+            })
+        }
         
     });
 
@@ -285,6 +329,8 @@ export function UploadFiles(userdata, type, folderId, file){
     fd.append('file', file);
 
     console.log('fd: ', fd); 
+    console.log('file: ', file); 
+    //console.log("file path: ", fd.file.filename);
     console.log('boundary:', fd._boundary);
 
     return new Promise((resolve, reject) => {

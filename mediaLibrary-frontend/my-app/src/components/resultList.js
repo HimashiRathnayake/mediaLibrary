@@ -36,15 +36,19 @@ class ResultList extends Component{
             }  
             else if(this.state.type=== 'videos'){
                 this.props.allVideos(); 
+            }
+            else if(this.state.type=== 'audios'){
+                this.props.allAudios(); 
             }  
         }) 
     }
 
     upload(e){
         e.preventDefault();
-        
+        console.log("In result list upload function: ", e);
+        console.log("In result list upload function selected file: ", this.state.selectedFile);
         UploadFiles(JSON.parse(sessionStorage.getItem('userData')).token,this.props.routeType, this.state.folderId, this.state.selectedFile).then((result) => {
-            console.log("res:",result);
+            console.log("in upload file");
             alert(result.message);
         })  
     }
@@ -130,6 +134,41 @@ class ResultList extends Component{
                                                 <div className="pull-right action-buttons">
                                                     <button className="link-button" onClick={() => this.props.deleteVideo(videoName)}><span className="fa fa-trash-o fa-fw" > </span></button>
                                                     <button className="link-button" onClick={()=> this.setState({renameShow: true, type: 'videos', folderId: videoName._id})}><span className="fa fa-pencil-square-o fa-fw" ></span></button>
+                                                    <button className="link-button"><span className="fa fa-share-alt fa-fw" > </span></button>
+                                                    <button className="link-button"><span className="fa fa-star fa-fw" > </span></button>      
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li> 
+                   )
+                })   
+            }
+            else if(this.props.resultFolders.Audios){
+                folderlist= this.props.resultFolders.Audios.map(audioName => {
+                    var audiosrc=  audioName.path;
+                    console.log("audiosrc: ", audiosrc);
+                    
+                    return(
+                        <li className="list-group-item" key={audioName._id}>
+                            <div className="row">
+                                <div className="col-12 ">
+                                    <div className="card">
+                                        <div className="card-horizontal">
+                                            <div className="img-square-wrapper">
+                                                <audio controls width="300px" height="100px">
+                                                    <source src={audiosrc} type="audio/ogg"/>
+                                                    <source src={audiosrc} type="audio/mpeg"/>
+                                                        Your browser does not support the audio tag.
+                                                </audio>
+                                            </div>
+                                            <div className="card-body">
+                                                <h6 className="card-title"> {audioName.audioName}</h6>
+                                                <div className="pull-right action-buttons">
+                                                    <button className="link-button" onClick={() => this.props.deleteAudio(audioName)}><span className="fa fa-trash-o fa-fw" > </span></button>
+                                                    <button className="link-button" onClick={()=> this.setState({renameShow: true, type: 'audios', folderId: audioName._id})}><span className="fa fa-pencil-square-o fa-fw" ></span></button>
                                                     <button className="link-button"><span className="fa fa-share-alt fa-fw" > </span></button>
                                                     <button className="link-button"><span className="fa fa-star fa-fw" > </span></button>      
                                                 </div>

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Redirect, Link} from "react-router-dom";
 import './componentCss/files.css';
-import {GetFolders, GetAll, GetFromFolder, CreateFolders, DeleteFolder, DeleteVideo} from '../services/PostData';
+import {GetFolders, GetAll, GetFromFolder, CreateFolders, DeleteFolder, DeleteAudio} from '../services/PostData';
 import ResultList from './resultList';
 import CreateFolder from './createFolder';
 
@@ -86,11 +86,11 @@ export default class Audio extends Component{
         })     
     }
 
-    deleteVideo(video){
-        DeleteVideo(JSON.parse(sessionStorage.getItem('userData')).token, video._id).then((result) => {
+    deleteAudio(audio){
+        DeleteAudio(JSON.parse(sessionStorage.getItem('userData')).token, audio._id).then((result) => {
             alert(result.message);
-            if(result.message === "Video deleted"){
-                this.allVideos();
+            if(result.message === "Audio deleted"){
+                this.allAudios();
             }  
         })     
     }
@@ -136,9 +136,9 @@ export default class Audio extends Component{
                 <div id="wrapper" className={this.state.isActive ? 'toggled': ''}>
                     <div id="sidebar-wrapper">
                         <ul className="sidebar-nav">
-                            <li className="sidebar-brand"><button className="link-button">VIDEOS</button> </li>
+                            <li className="sidebar-brand"><button className="link-button">AUDIOS</button> </li>
                             <li> <button className="link-button " onClick={this.allfolders}> All Folders</button></li>
-                            <li> <button className="link-button" onClick={this.allVideos}>All Videos</button> </li>
+                            <li> <button className="link-button" onClick={this.allAudios}>All Audios</button> </li>
                             <li> <button className="link-button" onClick={() => this.setState({createFolderShow: true})} >Create Folder</button> </li>
                             <li> <button className="link-button" >Search</button> </li>
                             <li> <button className="link-button" onClick={this.logout}>Logout</button> </li>
@@ -148,11 +148,11 @@ export default class Audio extends Component{
                         <div className="container-fluid">
                             <ResultList resultFolders={this.state.folders}
                                         deleteFolder={this.deleteFolder}
-                                        getMedia={this.getVideo}
-                                        deleteVideo={this.deleteVideo}
+                                        getMedia={this.getAudio}
+                                        deleteAudio={this.deleteAudio}
                                         allfolders={this.allfolders}
                                         routeType={this.state.routeType}
-                                        allVideos={this.allVideos}/>
+                                        allAudios={this.allAudios}/>
                             <CreateFolder show={this.state.createFolderShow}
                                           onHide={createFolderClose}
                                           createfolder={this.createFolder}
