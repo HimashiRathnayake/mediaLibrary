@@ -374,4 +374,48 @@ export function SearchImages(userdata, url){
 
 }
 
+export function SearchVideos(userdata, url){
+    console.log('SearchVideos', `http://localhost:3000/search/video/?${url}`);
+    return new Promise((resolve, reject) => {
+        fetch(`http://localhost:3000/search/video/?${url}`, {
+            method: 'Get',
+            headers: {
+                'Authorization': `Bearer ${userdata}`,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            resolve(responseJson);
+        })
+        .catch((error) => {
+            reject(error);
+        })
+    });
+
+}
+
+export function SearchAudios(userdata, url){
+    console.log('SearchAudios', `http://localhost:3000/search/audio/?${url}`);
+    return new Promise((resolve, reject) => {
+        fetch(`http://localhost:3000/search/audio/?${url}`, {
+            method: 'Get',
+            headers: {
+                'Authorization': `Bearer ${userdata}`,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            resolve(responseJson);
+        })
+        .catch((error) => {
+            reject(error);
+        })
+    });
+
+}
+
 

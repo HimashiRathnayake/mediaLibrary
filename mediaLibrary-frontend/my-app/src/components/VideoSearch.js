@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {  Modal, Row, Col, Button, Form, FormGroup } from 'react-bootstrap';
 
-export default class ImageSearch extends Component{
+export default class VideoSearch extends Component{
     render(){
         return(
             <Modal
@@ -12,7 +12,7 @@ export default class ImageSearch extends Component{
           >
             <Modal.Header closeButton>
               <Modal.Title id="contained-modal-title-vcenter">
-                Search Image
+                Search Video
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -25,14 +25,6 @@ export default class ImageSearch extends Component{
                                     type="text"
                                     name="title"
                                     placeholder="enter the title"
-                                />
-                            </Form.Group>
-                            <Form.Group controlId="subject">
-                                <Form.Label>Subject:</Form.Label>
-                                <Form.Control 
-                                    type="text"
-                                    name="subject"
-                                    placeholder="enter the subject"
                                 />
                             </Form.Group>
                             <Form.Group controlId="artist">

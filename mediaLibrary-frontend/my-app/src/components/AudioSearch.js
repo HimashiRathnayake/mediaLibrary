@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {  Modal, Row, Col, Button, Form, FormGroup } from 'react-bootstrap';
 
-export default class ImageSearch extends Component{
+export default class AudioSearch extends Component{
     render(){
         return(
             <Modal
@@ -12,7 +12,7 @@ export default class ImageSearch extends Component{
           >
             <Modal.Header closeButton>
               <Modal.Title id="contained-modal-title-vcenter">
-                Search Image
+                Search Audio
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -27,12 +27,12 @@ export default class ImageSearch extends Component{
                                     placeholder="enter the title"
                                 />
                             </Form.Group>
-                            <Form.Group controlId="subject">
-                                <Form.Label>Subject:</Form.Label>
+                            <Form.Group controlId="album">
+                                <Form.Label>Album:</Form.Label>
                                 <Form.Control 
                                     type="text"
-                                    name="subject"
-                                    placeholder="enter the subject"
+                                    name="album"
+                                    placeholder="enter the album name"
                                 />
                             </Form.Group>
                             <Form.Group controlId="artist">
@@ -41,6 +41,14 @@ export default class ImageSearch extends Component{
                                     type="text"
                                     name="artist"
                                     placeholder="enter the artist"
+                                />
+                            </Form.Group>
+                            <Form.Group controlId="year">
+                                <Form.Label>year:</Form.Label>
+                                <Form.Control 
+                                    type="text"
+                                    name="year"
+                                    placeholder="enter the year"
                                 />
                             </Form.Group>
                             <FormGroup>

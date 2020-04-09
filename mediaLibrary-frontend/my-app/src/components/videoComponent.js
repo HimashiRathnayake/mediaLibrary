@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import { Redirect, Link} from "react-router-dom";
 import './componentCss/files.css';
-import {GetFolders, GetAll, GetFromFolder, CreateFolders, DeleteFolder, DeleteVideo} from '../services/PostData';
+import {GetFolders, GetAll, GetFromFolder, CreateFolders, DeleteFolder, DeleteVideo, SearchVideos} from '../services/PostData';
 import ResultList from './resultList';
 import CreateFolder from './createFolder';
+import VideoSearch from './VideoSearch';
 
 export default class Video extends Component{
 
@@ -17,6 +18,7 @@ export default class Video extends Component{
         this.createFolder=this.createFolder.bind(this);
         this.deleteFolder=this.deleteFolder.bind(this);
         this.deleteVideo=this.deleteVideo.bind(this);
+        this.search=this.search.bind(this);
         this.logout = this.logout.bind(this);
         
         this.state = {
@@ -25,7 +27,8 @@ export default class Video extends Component{
           routeType:'videos',
           folders: {},
           createFolderShow: false,
-          redirect: false
+          redirect: false,
+          searchShow: false
         }
     }
       
@@ -95,6 +98,26 @@ export default class Video extends Component{
         })     
     }
 
+    search(e){
+        e.preventDefault(e);
+
+        var eurl = '';
+        if(e.target.title.value){
+            eurl += ('title='+ e.target.title.value + '&');  
+        }
+        if(e.target.artist.value){
+            eurl += ('artist='+ e.target.artist.value + '&');  
+        }
+        var nurl=eurl.substring(0, eurl.length-1);
+ 
+        SearchVideos(JSON.parse(sessionStorage.getItem('userData')).token, nurl).then((result) => {
+            console.log(result);
+            this.setState({
+                folders: result
+            })
+        })   
+    }
+
     
     logout(){
         sessionStorage.setItem('userData', '');
@@ -110,7 +133,7 @@ export default class Video extends Component{
         }
 
         let createFolderClose=()=> this.setState({createFolderShow: false})
-        /* let searchClose=()=> this.setState({searchShow: false}) */
+        let searchClose=()=> this.setState({searchShow: false}) 
 
         return(
             <div>
@@ -140,7 +163,7 @@ export default class Video extends Component{
                             <li> <button className="link-button " onClick={this.allfolders}> All Folders</button></li>
                             <li> <button className="link-button" onClick={this.allVideos}>All Videos</button> </li>
                             <li> <button className="link-button" onClick={() => this.setState({createFolderShow: true})} >Create Folder</button> </li>
-                            <li> <button className="link-button" >Search</button> </li>
+                            <li> <button className="link-button" onClick={() => this.setState({searchShow: true})}>Search</button> </li>
                             <li> <button className="link-button" onClick={this.logout}>Logout</button> </li>
                         </ul> 
                     </div>
@@ -156,6 +179,10 @@ export default class Video extends Component{
                             <CreateFolder show={this.state.createFolderShow}
                                           onHide={createFolderClose}
                                           createfolder={this.createFolder}
+                            />
+                            <VideoSearch show={this.state.searchShow}
+                                         onHide={searchClose}
+                                         search= {this.search}
                             />
                         </div>
                     </div>

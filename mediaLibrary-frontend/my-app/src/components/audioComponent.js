@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import { Redirect, Link} from "react-router-dom";
 import './componentCss/files.css';
-import {GetFolders, GetAll, GetFromFolder, CreateFolders, DeleteFolder, DeleteAudio} from '../services/PostData';
+import {GetFolders, GetAll, GetFromFolder, CreateFolders, DeleteFolder, DeleteAudio, SearchAudios} from '../services/PostData';
 import ResultList from './resultList';
 import CreateFolder from './createFolder';
+import AudioSearch from './AudioSearch';
 
 export default class Audio extends Component{
 
@@ -17,6 +18,7 @@ export default class Audio extends Component{
         this.createFolder=this.createFolder.bind(this);
         this.deleteFolder=this.deleteFolder.bind(this);
         this.deleteAudio=this.deleteAudio.bind(this);
+        this.search=this.search.bind(this);
         this.logout = this.logout.bind(this);
         
         this.state = {
@@ -25,7 +27,8 @@ export default class Audio extends Component{
           routeType:'audios',
           folders: {},
           createFolderShow: false,
-          redirect: false
+          redirect: false,
+          searchShow: false
         }
     }
       
@@ -95,7 +98,32 @@ export default class Audio extends Component{
         })     
     }
 
-    
+    search(e){
+        e.preventDefault(e);
+
+        var eurl = '';
+        if(e.target.title.value){
+            eurl += ('title='+ e.target.title.value + '&');  
+        }
+        if(e.target.album.value){
+            eurl += ('album='+ e.target.album.value + '&');  
+        }
+        if(e.target.artist.value){
+            eurl += ('artist='+ e.target.artist.value + '&');  
+        }
+        if(e.target.year.value){
+            eurl += ('year='+ e.target.year.value + '&');  
+        }
+        var nurl=eurl.substring(0, eurl.length-1);
+ 
+        SearchAudios(JSON.parse(sessionStorage.getItem('userData')).token, nurl).then((result) => {
+            console.log(result);
+            this.setState({
+                folders: result
+            })
+        })   
+    }
+
     logout(){
         sessionStorage.setItem('userData', '');
         sessionStorage.clear(); 
@@ -110,7 +138,7 @@ export default class Audio extends Component{
         }
 
         let createFolderClose=()=> this.setState({createFolderShow: false})
-        /* let searchClose=()=> this.setState({searchShow: false}) */
+        let searchClose=()=> this.setState({searchShow: false}) 
 
         return(
             <div>
@@ -140,7 +168,7 @@ export default class Audio extends Component{
                             <li> <button className="link-button " onClick={this.allfolders}> All Folders</button></li>
                             <li> <button className="link-button" onClick={this.allAudios}>All Audios</button> </li>
                             <li> <button className="link-button" onClick={() => this.setState({createFolderShow: true})} >Create Folder</button> </li>
-                            <li> <button className="link-button" >Search</button> </li>
+                            <li> <button className="link-button" onClick={() => this.setState({searchShow: true})}>Search</button> </li>
                             <li> <button className="link-button" onClick={this.logout}>Logout</button> </li>
                         </ul> 
                     </div>
@@ -156,6 +184,10 @@ export default class Audio extends Component{
                             <CreateFolder show={this.state.createFolderShow}
                                           onHide={createFolderClose}
                                           createfolder={this.createFolder}
+                            />
+                            <AudioSearch show={this.state.searchShow}
+                                         onHide={searchClose}
+                                         search= {this.search}
                             />
                         </div>
                     </div>
