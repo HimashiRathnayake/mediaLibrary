@@ -2,16 +2,30 @@ import React from 'react';
 import {Text, View, Modal, Image} from 'react-native';
 import {Ionicons, MaterialIcons, MaterialCommunityIcons, Entypo, AntDesign } from '@expo/vector-icons';
 import {stylesScreen} from '../styles/modals/image';
+import {deleteImage} from '../api/image';
 
-export const ImageModal = ({modelImage, modelVisible, setVisible}) => {
+export const ImageModal = ({modelImage, modelVisible, setVisible, token, setRefresh}) => {
     const [detailsModal, setDetailsModal] = React.useState(false);
+
+    function deleteimage(imageId){
+        deleteImage({token:token, imageId: imageId})
+        .then((response)=>{
+            console.log(response);
+            setRefresh(true);
+        })
+        .catch((error)=>{
+            console.log(error);
+        })
+    }
 
     return(
         <Modal style={stylesScreen.modal} transparent={false} animationType='fade' visible={modelVisible} onRequestClose={()=>{}}>
             <View style={stylesScreen.modal}>
                 <View flexDirection= 'row-reverse'>
                     <Entypo name='dots-three-vertical' style={stylesScreen.icon} onPress={()=>setDetailsModal(true)}/>
-                    <MaterialCommunityIcons name='delete-outline' style={stylesScreen.icon} onPress={()=>setVisible(false)}/>
+                    <MaterialCommunityIcons name='delete-outline' style={stylesScreen.icon} 
+                        onPress={()=>{setVisible(false); deleteimage(modelImage._id)}}
+                    />
                     <MaterialIcons name='favorite-border' style={stylesScreen.icon} onPress={()=>setVisible(false)}/>
                     <Ionicons name='md-share' style={stylesScreen.icon} onPress={()=>setVisible(false)}/>
                     <AntDesign name='left' style={stylesScreen.iconLeft} onPress={()=>setVisible(false)}/>

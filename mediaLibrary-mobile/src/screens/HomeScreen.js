@@ -14,7 +14,8 @@ export const HomeScreen = ({navigation, route}) => (
         </View>
 
         <View style={styleHome.container}>
-            <Text style={styleHome.containerHeader}>Store Your All Multimedia Files, Share & Manage Them at One Place</Text>
+            {/* <Text style={styleHome.containerHeader}>Store Your All Multimedia Files,</Text>
+            <Text style={styleHome.containerHeader}>Share & Manage Them at One Place</Text> */}
             <MediaButton type='Image' onPress={()=>{navigation.navigate('Images')}}>Images</MediaButton>
             <MediaButton type='Audio' onPress={()=>{navigation.navigate('Audios')}}>Audios</MediaButton>
             <MediaButton type='Video' onPress={()=>{navigation.navigate('Videos')}}>Videos</MediaButton>
@@ -25,16 +26,17 @@ export const HomeScreen = ({navigation, route}) => (
 const styleHome = StyleSheet.create({
     container: {
         alignContent: 'center',
-        height: 500
+        flex: 2
     },
     containerHeader:{
         marginLeft: 10,
         marginTop: 10,
         fontSize: 18,
-        marginBottom: 60
+        marginBottom: 60,
+        alignSelf: 'center'
     },
     headerContainer: {
-        flex: 3,
+        flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
     },

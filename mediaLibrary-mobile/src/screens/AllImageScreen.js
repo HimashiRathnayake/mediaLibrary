@@ -18,9 +18,6 @@ export const AllImageScreen = ({navigation, route}) => {
         navigation.addListener('focus', ()=>{
             getImages({token:state.userToken})
             .then((response)=>{
-                if (response.message != undefined && response.message==="Auth failed"){
-                    authContext.signOut();
-                }
                 setCount(response.count);
                 setImages(response.Images); 
             })

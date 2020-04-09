@@ -27,6 +27,7 @@ export const ImageScreen = ({navigation, route}) => {
         .catch((error)=>{
             console.log(error)
         });
+        setRefresh(false);
         const parent = navigation.dangerouslyGetParent();
         parent.setOptions({
             tabBarVisible:false,
@@ -86,7 +87,7 @@ export const ImageScreen = ({navigation, route}) => {
                 ):
                 (<ScrollView style={stylesScreen.container}>
                     <View style={stylesScreen.container}>
-                        <ImageModal modelImage={modelImage} modelVisible={modelVisible} setVisible={setVisible}/>
+                        <ImageModal modelImage={modelImage} modelVisible={modelVisible} setVisible={setVisible} token={state.userToken} setRefresh={setRefresh}/>
                         <TouchableOpacity onPress={()=>{openImagePickerAsync()}}>
                             <View style={stylesScreen.imagewrapper}>
                                 <MaterialIcons name='add-to-photos' style={stylesScreen.imageIcon}/>

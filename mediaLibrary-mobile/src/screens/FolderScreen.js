@@ -9,8 +9,10 @@ import { AuthContext } from '../navigators/context';
 import { FolderModal } from '../modals/FolderModal';
 
 export const FolderScreen = ({route,navigation}) => {
-    const [modalVisible, setVisible] = React.useState(false);
-    const [actionModal, actionModalVisible] = React.useState(false);
+    const [createModalVisible, setCreateModalVisible] = React.useState(false);
+    const [renameModalVisible, setRenameModalVisible] = React.useState(false);
+    const [actionModalVisible, setActionModalVisible] = React.useState(false);
+    const [modalFolder, setModalFolder] = React.useState(null);
     const [folders, setFolders] = React.useState([]);
     const [count, setCount] = React.useState(null);
     const {authContext,state} = React.useContext(AuthContext); 
@@ -30,7 +32,7 @@ export const FolderScreen = ({route,navigation}) => {
     },[refresh])
 
     function deletefolder(folderId){
-        console.log(folderId)
+        setActionModalVisible(false);
         deleteFolder({token:state.userToken, folderId: folderId})
         .then((response)=>{
             console.log(response)
@@ -43,7 +45,10 @@ export const FolderScreen = ({route,navigation}) => {
             <TouchableOpacity 
                 key={key} 
                 onPress={()=>{navigation.push(type,{visible:false, folderId:val._id, folderName: val.folderName})}}
-                onLongPress={()=>{deletefolder(val._id)}}
+                onLongPress={async()=>{
+                                setActionModalVisible(true); 
+                                await setModalFolder(val._id); 
+                            }}
             >
                 <View style={stylesScreen.folderWrapper}>
                     <MaterialIcons name='folder' style={stylesScreen.folderIcon}/>
@@ -56,19 +61,21 @@ export const FolderScreen = ({route,navigation}) => {
     return(
         <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
             <Header navigation={navigation} token={state.userToken} setRefresh={setRefresh} type={type}>{type} Folders</Header>
+            
             {count===0 ? 
             (<View style={stylesScreen.noFolderContainer}>
                 <Text style={stylesScreen.noFolderText}>No Folders found</Text>
                 <Text style={stylesScreen.noFolderText}>Create new Image</Text>
-                <TouchableOpacity onPress={()=>{setVisible(true)}}>
+                <TouchableOpacity onPress={()=>{setCreateModalVisible (true)}}>
                     <View>
                         <MaterialIcons name='create-new-folder' style={stylesScreen.addFolderIcon}/>
                     </View>
                 </TouchableOpacity>
             </View>):
+
             (<ScrollView style={stylesScreen.container}>
                 <View style={stylesScreen.container}>
-                    <TouchableOpacity onPress={()=>{setVisible(true)}}>
+                    <TouchableOpacity onPress={()=>{setCreateModalVisible(true)}}>
                         <View style={stylesScreen.folderWrapper}>
                             <MaterialIcons name='create-new-folder' style={stylesScreen.folderIcon}/>
                             <Text style={stylesScreen.folderName}>Create Folder</Text>
@@ -76,22 +83,28 @@ export const FolderScreen = ({route,navigation}) => {
                     </TouchableOpacity>
                     {folderSet}
                 </View>
-                <Modal style={stylesScreen.folderActionModal} transparent={true} animationType='fade' visible={actionModal} onRequestClose={()=>{}}>
-                    <TouchableWithoutFeedback onPress={()=>actionModalVisible(false)}>
+                <Modal style={stylesScreen.folderActionModal} transparent={true} animationType='fade' visible={actionModalVisible} onRequestClose={()=>{}}>
+                    <TouchableWithoutFeedback onPress={()=>setActionModalVisible(false)}>
                         <View style={stylesScreen.folderActionModal}>
                             <View style={stylesScreen.modalContainer}>
-                                <TouchableOpacity onPress={()=>{setVisible(false);}}>
+                                <TouchableOpacity onPress={()=>{setActionModalVisible(false); setRenameModalVisible(true);}}>
                                     <Text style={stylesScreen.modalText}>Rename</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={()=>alert('fgh')}><Text style={stylesScreen.modalText}>Delete</Text></TouchableOpacity>
-                                <TouchableOpacity onPress={()=>alert('fgh')}><Text style={stylesScreen.modalText}>Share</Text></TouchableOpacity>
+                                <TouchableOpacity onPress={()=>deletefolder(modalFolder)}>
+                                    <Text style={stylesScreen.modalText}>Delete</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={()=>alert('fgh')}>
+                                    <Text style={stylesScreen.modalText}>Share</Text>
+                                </TouchableOpacity>
                             </View>
                         </View>
                     </TouchableWithoutFeedback>
                 </Modal>
             </ScrollView>
             )}
-            <FolderModal modalVisible={modalVisible} setVisible={setVisible} token={state.userToken} type={type} setRefresh={setRefresh} actionType={'Create'}/>
+
+            <FolderModal modalVisible={createModalVisible} setVisible={setCreateModalVisible} token={state.userToken} type={type} setRefresh={setRefresh} actionType={'Create'}/>
+            <FolderModal modalVisible={renameModalVisible} setVisible={setRenameModalVisible} token={state.userToken} type={type} setRefresh={setRefresh} folderId={modalFolder} actionType={'Rename'}/>
         </ImageBackground>
     );
 }
