@@ -8,16 +8,6 @@ export const SearchScreen = ({route,navigation}) => {
     const type=route.params.type;
     const [selected, setSelected] = React.useState(null);
 
-    const SearchCriteria = ({criteria}) => {
-        return (
-            <TouchableOpacity style={[searchStyle.searchCriteria, {backgroundColor: selected===criteria?'#1976d2':'rgba(255, 255, 255, 0.4)'}]} 
-                onPress={async()=>await setSelected(criteria)}
-            >
-                <Text style={searchStyle.criteriaText}>Search By {criteria}</Text>
-            </TouchableOpacity>
-        );
-    }
-    
     return(
         <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
             <Header navigation={navigation}>Search {type}s</Header>
