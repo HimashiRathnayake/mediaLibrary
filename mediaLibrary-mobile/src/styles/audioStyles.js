@@ -30,14 +30,26 @@ export const styleAudio = StyleSheet.create({
         marginHorizontal: 8,
         fontSize: 14
     },
+    audioNameLeft: {
+        color: 'black',
+        marginHorizontal: 0,
+        fontSize: 14
+    },
     addAudioIcon:{
-        fontSize: 150,
-        color: '#9e9e9e',
+        fontSize: 50,
+        color: '#1976d2',
         alignSelf: 'center',
     },
-    audioIcon: {
-        fontSize: 100,
-        color: '#9e9e9e',
-        alignSelf: 'center'
+    iconContainer:{
+        backgroundColor: '#fff',
+        position: 'absolute',
+        top: Dimensions.get('screen').height - 140,
+        right: 20,
+        width: 50,
+        height: 50,
+        alignSelf: 'flex-end',
+        borderRadius: 100,
+        justifyContent: 'center',
+        shadowOpacity: 1
     }
 })

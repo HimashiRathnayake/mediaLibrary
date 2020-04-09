@@ -15,7 +15,7 @@ exports.audios_get_all = (req, res, next) =>{
                     title: doc.title,
                     album: doc.album,
                     artist: doc.artist,
-                    date: doc.date,
+                    year: doc.year,
                     accessList: doc.accessList,
                     folder: doc.folder,
                     path: doc.path
@@ -44,7 +44,7 @@ exports.audios_get_audios_from_folder = (req, res, next) =>{
                     title: doc.title,
                     album: doc.album,
                     artist: doc.artist,
-                    date: doc.date,
+                    year: doc.year,
                     accessList: doc.accessList,
                     folder: doc.folder,
                     path: doc.path

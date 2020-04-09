@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {ImageBackground, Text, View, ScrollView, TouchableOpacity} from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
+import { AudioModal } from '../modals/AudioModal';
 import {styles} from '../styles/commons';
 import {FileHeader} from '../commons/Header';
 import { AuthContext } from '../navigators/context';
@@ -57,78 +57,43 @@ export const AudioScreen = ({navigation, route}) => {
     }
     
     const audioSet = audios.map((val,key)=>{
+        const name = (val.audioName+'-'+val.artist).substring(0, 45).split('-'); 
         return(
-            <View>
             <TouchableOpacity key={key} onPress={()=>{openModal(true, key)}}>
-                <View style={styleAudio.audioContainer}>
-                    <Text style={styleAudio.audioName}>{val.audioName.substring(0, 45)}</Text>
+                <View style={styleAudio.audioContainer} flexDirection='row'>
+                    <Text style={styleAudio.audioName}>{name[0]}</Text><Text style={styleAudio.audioNameLeft}>{'- '+name[1]}</Text>
                 </View>
             </TouchableOpacity>
-            <TouchableOpacity >
-            <View style={styleAudio.audioContainer}>
-                <Text style={styleAudio.audioName}>{val.audioName.substring(0, 45)}</Text>
-            </View>
-        </TouchableOpacity>
-        <TouchableOpacity >
-        <View style={styleAudio.audioContainer}>
-            <Text style={styleAudio.audioName}>{val.audioName.substring(0, 45)}</Text>
-        </View>
-    </TouchableOpacity>
-    <TouchableOpacity>
-    <View style={styleAudio.audioContainer}>
-        <Text style={styleAudio.audioName}>{val.audioName.substring(0, 45)}</Text>
-    </View>
-</TouchableOpacity>
-<TouchableOpacity >
-                <View style={styleAudio.audioContainer}>
-                    <Text style={styleAudio.audioName}>{val.audioName.substring(0, 45)}</Text>
-                </View>
-            </TouchableOpacity>
-            <TouchableOpacity >
-            <View style={styleAudio.audioContainer}>
-                <Text style={styleAudio.audioName}>{val.audioName.substring(0, 45)}</Text>
-            </View>
-        </TouchableOpacity>
-        <TouchableOpacity >
-        <View style={styleAudio.audioContainer}>
-            <Text style={styleAudio.audioName}>{val.audioName.substring(0, 45)}</Text>
-        </View>
-    </TouchableOpacity>
-    <TouchableOpacity >
-    <View style={styleAudio.audioContainer}>
-        <Text style={styleAudio.audioName}>{val.audioName.substring(0, 45)}</Text>
-    </View>
-</TouchableOpacity>
-</View>
         )
     })
 
     return(
         <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
             <FileHeader navigation={navigation} route={route}/>
+            <View>
             {count===0 ? 
                 (
                 <View style={styleAudio.noAudioContainer}>
                     <Text style={styleAudio.noAudioText}>No audios found</Text>
                 </View>
                 ):
-                (<View style={styleAudio.scrollContainer}>
-                    <ScrollView style={styleAudio.container}>
-                        <View style={styleAudio.container}>
-                            {(audioModal !== null) && (
-                                <AudioModal visible={visible} setVisible={setVisible} audio={audioModal}/>
-                            )} 
-                            {audioSet}
-                        </View>
-                    </ScrollView>
-                </View>
+                (
+                <ScrollView style={styleAudio.container}>
+                    <View style={styleAudio.container}>
+                        {(audioModal !== null) && (
+                            <AudioModal visible={visible} setVisible={setVisible} audio={audioModal}/>
+                        )} 
+                        {audioSet}
+                    </View>
+                </ScrollView>
                 )
                 }
-                <TouchableOpacity onPress={()=>{openAudioPickerAsync()}}>
-                    <View>
-                        <MaterialIcons name='add-circle-outline' style={styleAudio.addAudioIcon}/>
-                    </View>
-                </TouchableOpacity>
+                <View style={styleAudio.iconContainer}>
+                    <TouchableOpacity onPress={()=>{openAudioPickerAsync()}}>
+                        <Text style={styleAudio.addAudioIcon}>+</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
         </ImageBackground>       
     )
 }
