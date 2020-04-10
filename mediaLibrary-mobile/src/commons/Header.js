@@ -32,7 +32,7 @@ export const SearchHeader = ({navigation, route}) => {
                 <Ionicons.Button name="md-arrow-back" underlayColor='transparent' backgroundColor="transparent" color="#1976d2" size={30} marginTop={20} onPress={()=>{
                     navigation.goBack();
                     navigation.dangerouslyGetParent().setOptions({tabBarVisible:true})}}/>  
-                <Text style={styles.header}>Search Results of</Text>
+                <Text style={styles.header}>Search Results</Text>
                 <Text style={styles.nextHeader}>{route.params.searchText}</Text>  
             </View>                
         </View>

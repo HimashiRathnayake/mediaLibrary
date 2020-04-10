@@ -45,9 +45,9 @@ export const FolderScreen = ({route,navigation}) => {
             <TouchableOpacity 
                 key={key} 
                 onPress={()=>{navigation.push(type,{visible:false, folderId:val._id, folderName: val.folderName})}}
-                onLongPress={async()=>{
+                onLongPress={()=>{
                                 setActionModalVisible(true); 
-                                await setModalFolder(val._id); 
+                                setModalFolder(val._id); 
                             }}
             >
                 <View style={stylesScreen.folderWrapper}>

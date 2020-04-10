@@ -1,4 +1,4 @@
-export function searchAudios({token, type, title, album, artist, year, subject}){
+export function searchFiles({token, type, title, album, artist, year, subject}){
     let searchUrl = 'http://192.168.1.4:3000/search/';
     if (type==='Image'){searchUrl+='image/'}
     else if (type==='Audio'){searchUrl+='audio/'}

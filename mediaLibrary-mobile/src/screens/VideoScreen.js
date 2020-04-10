@@ -1,23 +1,19 @@
-import React from 'react';
-import {ImageBackground, Text, View} from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
+import React, { useState } from 'react';
+import {ImageBackground, Button} from 'react-native';
 import {styles} from '../styles/commons';
-import {FileHeader} from '../commons/Header';
+import {Header} from '../commons/Header';
+import { VideoModal } from '../modals/VideoModal';
 
-export const VideoScreen = ({navigation, routes}) => {
-    React.useEffect(()=>{
-        const parent = navigation.dangerouslyGetParent();
-        parent.setOptions({
-            tabBarVisible:false,
-        });
-        return()=>
-            parent.setOptions({
-                tabBarVisible: true
-            })
-    },[]);
+export const VideoScreen = ({navigation}) => {
+
+    const [visible, setVisible] = useState(false);
+
     return(
-        <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
-            <FileHeader navigation={navigation}>Files</FileHeader>
-        </ImageBackground>
+    <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
+        <Header navigation={navigation}>Video</Header>
+        <Button title='click' onPress={()=>setVisible(true)}/>
+        <VideoModal visible={visible} setVisible={setVisible}/>
+    </ImageBackground>
     );
 }
+

@@ -6,7 +6,6 @@ import {Formik} from 'formik';
 
 export const SearchScreen = ({route,navigation}) => {
     const type=route.params.type;
-    const [selected, setSelected] = React.useState(null);
 
     return(
         <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
