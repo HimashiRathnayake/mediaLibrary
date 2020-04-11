@@ -45,6 +45,7 @@ export const FolderScreen = ({route,navigation}) => {
             <TouchableOpacity 
                 key={key} 
                 onPress={()=>{navigation.push(type,{visible:false, folderId:val._id, folderName: val.folderName})}}
+                delayLongPress= {1000}
                 onLongPress={()=>{
                                 setActionModalVisible(true); 
                                 setModalFolder(val._id); 
@@ -64,8 +65,7 @@ export const FolderScreen = ({route,navigation}) => {
             
             {count===0 ? 
             (<View style={stylesScreen.noFolderContainer}>
-                <Text style={stylesScreen.noFolderText}>No Folders found</Text>
-                <Text style={stylesScreen.noFolderText}>Create new Image</Text>
+                <Text style={stylesScreen.noFolderText}>No {type} Folders found</Text>
                 <TouchableOpacity onPress={()=>{setCreateModalVisible (true)}}>
                     <View>
                         <MaterialIcons name='create-new-folder' style={stylesScreen.addFolderIcon}/>

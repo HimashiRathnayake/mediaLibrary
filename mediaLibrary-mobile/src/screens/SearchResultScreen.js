@@ -48,7 +48,9 @@ export const SearchResultScreen = ({route,navigation}) => {
         return(
             <TouchableOpacity key={key} onPress={()=>{openModal(true, key)}}>
                 <View style={styleAudio.audioContainer}>
-                    <Text style={styleAudio.audioName}>{val.audioName.substring(0, 45)}</Text>
+                    {type==='Image' && <Text style={styleAudio.audioName}>{val.imageName.substring(0, 45)}</Text>}
+                    {type==='Audio' && <Text style={styleAudio.audioName}>{val.audioName.substring(0, 45)}</Text>}
+                    {type==='Video' && <Text style={styleAudio.audioName}>{val.videoName.substring(0, 45)}</Text>}
                 </View>
             </TouchableOpacity>
         )

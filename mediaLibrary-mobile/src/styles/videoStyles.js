@@ -1,47 +1,42 @@
 import {StyleSheet, Dimensions} from 'react-native';
 
-export const styleAudio = StyleSheet.create({
+export const styleVideo = StyleSheet.create({
     container:{
         marginTop: 20,
         width: Dimensions.get('screen').width,
         alignSelf: 'center',
         marginBottom: 120,
     },
-    noAudioContainer:{
+    noVideoContainer:{
         marginTop: '50%',
         alignSelf: 'center',
     },
-    noAudioText: {
+    noVideoText: {
         color: '#fff',
         justifyContent: 'space-between',
         textAlignVertical: 'center',
         fontSize: 20
     },
-    audioIcon:{
-        color: '#fff',
-		fontSize: 24,
-		marginHorizontal: 4
-    },
-    audioContainer: {
-        flexDirection: 'row',
+    videoContainer: {
         backgroundColor: 'rgba(255, 255, 255, 0.4)',
         alignSelf: 'center',
         width : Dimensions.get('screen').width - 40,
         padding: 10,
         marginVertical: 2,
-        borderRadius: 10        
+		borderRadius: 10,
+		flexDirection: 'row'        
     },
-    audioName: {
+    videoName: {
         color: '#fff',
         marginHorizontal: 8,
         fontSize: 16
-    },
-    audioNameLeft: {
-        color: 'black',
-        marginHorizontal: 0,
-        fontSize: 14
-    },
-    addAudioIcon:{
+	},
+	videoIcon: {
+		color: '#fff',
+		fontSize: 24,
+		marginHorizontal: 4
+	},
+    addVideoIcon:{
         fontSize: 50,
         color: '#1976d2',
         alignSelf: 'center',

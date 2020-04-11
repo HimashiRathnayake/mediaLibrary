@@ -47,13 +47,21 @@ export const stylesScreen = StyleSheet.create({
         color: '#9e9e9e',
         alignSelf: 'center'
     },
-    addImageIcon: {
-        fontSize: 150,
-        color: '#9e9e9e',
+    addImageIcon:{
+        fontSize: 50,
+        color: '#1976d2',
         alignSelf: 'center',
-        // marginTop: -200
     },
-    imageAdder: {
-
+    iconContainer:{
+        backgroundColor: '#fff',
+        position: 'absolute',
+        top: Dimensions.get('screen').height - 140,
+        right: 20,
+        width: 50,
+        height: 50,
+        alignSelf: 'flex-end',
+        borderRadius: 100,
+        justifyContent: 'center',
+        shadowOpacity: 1
     }
 });

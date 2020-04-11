@@ -1,22 +1,21 @@
-import React from 'react';
-import {ImageBackground, Text, View, ScrollView, TouchableOpacity, Image} from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
+import React, { useState, useContext } from 'react';
+import {ImageBackground, Text, View, TouchableOpacity} from 'react-native';
 import {styles} from '../styles/commons';
 import {FileHeader} from '../commons/Header';
 import { AuthContext } from '../navigators/context';
 import {stylesScreen} from '../styles/allImageScreen';
-import {ImageModal} from '../modals/ImageModal';
+import {ImageDisplayer} from '../commons/ImageDisplayer';
 import {getImagesInFolder, uploadImage} from '../api/image';
 import * as ImagePicker from 'expo-image-picker';
+import { ProgressModal } from '../modals/ProgressModal';
 
 export const ImageScreen = ({navigation, route}) => {
 
-    const [modelVisible, setVisible] = React.useState(false);
-    const [modelImage, setImage] = React.useState(require('../../assets/logo.png'));
-    const [images, setImages] = React.useState([]);
-    const [count, setCount] = React.useState(null);
-    const [refresh,setRefresh] = React.useState(false);
-    const {authContext,state} = React.useContext(AuthContext); 
+    const [images, setImages] = useState([]);
+    const [count, setCount] = useState(null);
+    const [progressBar, showProgress] = useState(false);
+    const [refresh,setRefresh] = useState(false);
+    const {authContext,state} = useContext(AuthContext); 
 
     React.useEffect(()=>{
         getImagesInFolder({token:state.userToken, folderId:route.params.folderId})
@@ -37,11 +36,6 @@ export const ImageScreen = ({navigation, route}) => {
                 tabBarVisible: true
         });
     },[refresh]);
-    
-    function setModelVisible(visible, imageKey){
-        setImage(images[imageKey]);
-        setVisible(visible);
-    }
 
     let openImagePickerAsync = async () => {
         let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
@@ -53,51 +47,32 @@ export const ImageScreen = ({navigation, route}) => {
     
         let pickerResult = await ImagePicker.launchImageLibraryAsync({mediaTypes: ImagePicker.MediaTypeOptions.Images});
         if (pickerResult.cancelled === false){
+            showProgress(true);
             let response = await uploadImage({folderId:route.params.folderId, uri:pickerResult.uri, token:state.userToken, type:pickerResult.uri.split('.')[-1]})
-                console.log(response)
-                if (response.message == "Image uploaded successfully"){
-                    setRefresh(true);
-                }
-                else{alert('Something went wrong')}
+            console.log(response)
+            if (response.message == "Image uploaded successfully"){
+                setRefresh(true);
+                showProgress(false);
+            }
+            else{
+                showProgress(false);
+                alert('Something went wrong');
+            }
         }
     }
     
-    const imageSet = images.map((val,key)=>{
-        return(
-            <TouchableOpacity key={key} onPress={()=>{setModelVisible(true, key)}}>
-                <View style={stylesScreen.imagewrapper}>
-                    <Image source={{uri:val.path}} style={stylesScreen.image}/>
-                </View>
-            </TouchableOpacity>
-        )
-    })
     return(
         <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
             <FileHeader navigation={navigation} route={route}/>
-            {count===0 ? 
-                (<View style={stylesScreen.noImageContainer}>
-                    <Text style={stylesScreen.noImageText}>No images found</Text>
-                    <Text style={stylesScreen.noImageText}>Add new Image</Text>
+            <View>
+                <ImageDisplayer setRefresh={setRefresh} images={images} count={count}/>
+                <View style={stylesScreen.iconContainer}>
                     <TouchableOpacity onPress={()=>{openImagePickerAsync()}}>
-                        <View>
-                            <MaterialIcons name='add-to-photos' style={stylesScreen.addImageIcon}/>
-                        </View>
+                        <Text style={stylesScreen.addImageIcon}>+</Text>
                     </TouchableOpacity>
                 </View>
-                ):
-                (<ScrollView style={stylesScreen.container}>
-                    <View style={stylesScreen.container}>
-                        <ImageModal modelImage={modelImage} modelVisible={modelVisible} setVisible={setVisible} token={state.userToken} setRefresh={setRefresh}/>
-                        <TouchableOpacity onPress={()=>{openImagePickerAsync()}}>
-                            <View style={stylesScreen.imagewrapper}>
-                                <MaterialIcons name='add-to-photos' style={stylesScreen.imageIcon}/>
-                                <Text style={stylesScreen.imagename}>Add Image</Text>
-                            </View>
-                        </TouchableOpacity>
-                        {imageSet}
-                    </View>
-                </ScrollView>)
-            }
+            </View>
+            <ProgressModal type='Uploading Image' visible={progressBar}/>
         </ImageBackground>       
     )
 }

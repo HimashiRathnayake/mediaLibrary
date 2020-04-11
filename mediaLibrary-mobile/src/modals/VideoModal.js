@@ -4,27 +4,25 @@ import {styles} from '../styles/commons';
 import {Video} from 'expo-av';
 import { Ionicons, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 
-const playList = [
-    {name: "Big Buck Bunny", uri:"http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4"},
-];
-
+const DISABLED_OPACITY = 0.3;
 const { width: DEVICE_WIDTH, height: DEVICE_HEIGHT } = Dimensions.get("window");
 const LOADING_STRING = "... loading ...";
 const VIDEO_CONTAINER_HEIGHT = (DEVICE_HEIGHT * 2.0) / 5.0 ;
 
-export const VideoModal = ({visible, setVisible}) => {
+export const VideoModal = ({visible, setVisible, videoModal}) => {
 
     const [audioName, setName] = useState(LOADING_STRING);
     const [isLoading, setLoading]= useState(true);
 
     function onLoadStart(){
         setLoading(true);
+        setName(LOADING_STRING);
         console.log(`ON LOAD START`);
     };
     
     function onLoad (status){
         setLoading(false);
-        setName(playList[0].name)
+        setName(videoModal.videoName)
         console.log(`ON LOAD : ${JSON.stringify(status)}`);
       };
     
@@ -33,15 +31,15 @@ export const VideoModal = ({visible, setVisible}) => {
     };
 
     return(
-        <Modal style={stylesScreen.modal} transparent={true} animationType='fade' visible={visible} onRequestClose={()=>{}}>
-            <View style={stylesScreen.modal}>
+        <Modal style={stylesScreen.modal} transparent={false} animationType='fade' visible={visible} onRequestClose={()=>{}}>
+            <View style={[stylesScreen.modal,  {opacity: isLoading ? DISABLED_OPACITY : 1.0}]}>
                 <TouchableOpacity onPress={()=>{setVisible(false)}} style={{flexDirection:'row-reverse', marginLeft: 10, marginTop: 10}}>
                     <MaterialCommunityIcons name='close-box' style={stylesScreen.icon}/>  
                 </TouchableOpacity>
                 <Text style={stylesScreen.header}>{audioName}</Text>
                 <View style={styles.videoContainer}>
                     <Video
-                        source={{uri: playList[0].uri}}
+                        source={{uri: videoModal.path}}
                         style={[
                         styles.video,
                         {
@@ -66,9 +64,8 @@ export const VideoModal = ({visible, setVisible}) => {
 
                 <View style={stylesScreen.bottomView}>
                     <Text style={{fontWeight: 'bold', fontSize:20}}>Details: </Text>
-                    <View flexDirection='row'><Text style={stylesScreen.detailTextLeft}>Title :</Text><Text style={stylesScreen.detailTextRight}>Title1</Text></View>
-                    <View flexDirection='row'><Text style={stylesScreen.detailTextLeft}>Album :</Text><Text style={stylesScreen.detailTextRight}>Album1</Text></View>
-                    <View flexDirection='row'><Text style={stylesScreen.detailTextLeft}>Artist :</Text><Text style={stylesScreen.detailTextRight}>Artist1</Text></View>
+                    <View flexDirection='row'><Text style={stylesScreen.detailTextLeft}>Title :</Text><Text style={stylesScreen.detailTextRight}>{videoModal.title}</Text></View>
+                    <View flexDirection='row'><Text style={stylesScreen.detailTextLeft}>Artist :</Text><Text style={stylesScreen.detailTextRight}>{videoModal.artist}</Text></View>
                 </View>
             </View>
         </Modal>
