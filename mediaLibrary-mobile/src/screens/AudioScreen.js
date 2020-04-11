@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {ImageBackground, Text, View, TouchableOpacity} from 'react-native';
 import {styles} from '../styles/commons';
 import {FileHeader} from '../commons/Header';
-import { AuthContext } from '../navigators/context';
 import {uploadAudio, getAudiosInFolder} from '../api/audio';
 import * as DocumentPicker from 'expo-document-picker';
 import {styleAudio} from '../styles/audioStyles';
@@ -15,10 +14,9 @@ export const AudioScreen = ({navigation, route}) => {
     const [count, setCount] = useState(null);
     const [progressBar, showProgress] = useState(false);
     const [refresh,setRefresh] = useState(false);
-    const {authContext,state} = React.useContext(AuthContext); 
 
     React.useEffect(()=>{
-        getAudiosInFolder({token:state.userToken, folderId:route.params.folderId})
+        getAudiosInFolder({folderId:route.params.folderId})
         .then((response)=>{
             setCount(response.count);
             setAudios(response.audios);
@@ -43,7 +41,7 @@ export const AudioScreen = ({navigation, route}) => {
         console.log(pickerResult)
         if (pickerResult.type === "success"){
             showProgress(true);
-            let response = await uploadAudio({folderId:route.params.folderId, uri:pickerResult.uri, token:state.userToken, name:pickerResult.name})
+            let response = await uploadAudio({folderId:route.params.folderId, uri:pickerResult.uri, name:pickerResult.name})
             console.log(response)
             if (response.message == "Audio uploaded successfully"){
                 setRefresh(true);

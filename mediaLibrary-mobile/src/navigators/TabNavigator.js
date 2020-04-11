@@ -2,7 +2,6 @@ import React from 'react';
 import {AllImageScreen} from '../screens/AllImageScreen';
 import {AllVideoScreen} from '../screens/AllVideoScreen';
 import {AllAudioScreen} from '../screens/AllAudioScreen';
-import {SearchScreen} from '../screens/SearchScreen';
 import {ShareScreen} from '../screens/ShareScreen';
 import {FolderStackScreen, SearchStackScreen} from '../navigators/StackNavigators';
 import { FontAwesome, Entypo, MaterialIcons } from '@expo/vector-icons';

@@ -11,7 +11,7 @@ import { ImageTabNavigator, AudioTabNavigator, VideoTabNavigator } from './TabNa
 const Drawer = createDrawerNavigator();
 
 export const DrawerNavigator = ()=>{
-const {authContext, state} = React.useContext(AuthContext);
+const {signOut} = React.useContext(AuthContext);
 const [email,setEmail] = React.useState(null);
 
 React.useEffect(()=>{
@@ -34,7 +34,7 @@ function CustomDrawerContent(props) {
                     <Text style={styles.drawerHeaderText}>{email}</Text>
                 </View>
                 <DrawerItemList {...props} activeTintColor='#1976d2' inactiveTintColor='#fff'/>
-                <DrawerItem labelStyle={{color:'#fff'}} label="Logout" onPress={() => authContext.signOut()}/>
+                <DrawerItem labelStyle={{color:'#fff'}} label="Logout" onPress={() => signOut()}/>
             </View>       
         </ImageBackground>
     );
@@ -48,5 +48,5 @@ function CustomDrawerContent(props) {
             <Drawer.Screen name="Videos" component={VideoTabNavigator}/>
             <Drawer.Screen name="Favourites" component={FavouritesScreen}/>
         </Drawer.Navigator>
-);	
+    );	
 }		

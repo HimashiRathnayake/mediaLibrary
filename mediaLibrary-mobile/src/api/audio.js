@@ -1,5 +1,10 @@
-export function getAudios({token}){
-    return fetch('http://192.168.1.4:3000/audios/',{
+import { AsyncStorage } from "react-native";
+
+const serverUrl = 'http://192.168.1.4:3000';
+
+export async function getAudios(){
+    var token = await AsyncStorage.getItem('userToken')
+    return fetch(serverUrl+'/audios/',{
         method: 'GET',
         headers: {
             Accept: 'application/json',
@@ -17,10 +22,11 @@ export function getAudios({token}){
     })
 }
 
-export function uploadAudio({folderId,uri,token,name}){
+export async function uploadAudio({folderId,uri,name}){
+    var token = await AsyncStorage.getItem('userToken')
     let body = new FormData();
     body.append('file', {uri:uri, type:'audio/mp3', name:name});
-    return fetch('http://192.168.1.4:3000/audios/'+folderId,{
+    return fetch(serverUrl+'/audios/'+folderId,{
         method: 'POST',
         headers: {
             'Content-Type':'multipart/form-data',
@@ -37,8 +43,9 @@ export function uploadAudio({folderId,uri,token,name}){
     })
 }
 
-export function getAudiosInFolder({token,folderId}){
-    return fetch('http://192.168.1.4:3000/audios/'+folderId,{
+export async function getAudiosInFolder({folderId}){
+    var token = await AsyncStorage.getItem('userToken')
+    return fetch(serverUrl+'/audios/'+folderId,{
         method: 'GET',
         headers: {
             Accept: 'application/json',

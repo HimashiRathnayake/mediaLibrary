@@ -8,7 +8,6 @@ import { SearchScreen } from '../screens/SearchScreen';
 import { SearchResultScreen } from '../screens/SearchResultScreen';
 
 const FolderStack = createStackNavigator();
-const SearchStack = createStackNavigator();
 
 export const FolderStackScreen = ({route, navigation})=>{
     const type= route.params.type;

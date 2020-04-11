@@ -16,7 +16,7 @@ const validationSchema = yup.object({
 export const LoginScreen = ({navigation}) => {
 
     const [isLoading, setIsLoading] = React.useState(false);
-    const {authContext, state} = React.useContext(AuthContext); 
+    const {signIn} = React.useContext(AuthContext); 
 
     return(
     <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
@@ -35,7 +35,7 @@ export const LoginScreen = ({navigation}) => {
                             login({values})
                             .then((response)=>{
                                 if (response.message==='Auth successful'){
-                                    authContext.signIn({token:response.token, email:values.email});
+                                    signIn({token:response.token, email:values.email});
                                 }else if (response.message==="Auth failed"){
                                     Alert.alert('Alert',"Email or password is incorrect",[{text: 'OK', onPress: ()=>actions.resetForm()}])
                                     setIsLoading(false);

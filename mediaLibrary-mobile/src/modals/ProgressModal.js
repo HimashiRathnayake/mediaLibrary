@@ -1,7 +1,7 @@
 import React from 'react';
 import {Text, View, ProgressBarAndroid, Dimensions, Modal, StyleSheet} from 'react-native';
 
-export const ProgressModal = ({visible, setVisible, type}) => {
+export const ProgressModal = ({visible, type}) => {
     return(
         <Modal transparent={true} animationType='fade' visible={visible} onRequestClose={()=>{}}>
             <View style={styleProgress.modal}>

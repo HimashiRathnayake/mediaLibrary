@@ -1,5 +1,10 @@
-export function createFolder({name,type,token}){
-    return fetch('http://192.168.1.4:3000/folders/'+type,{
+import { AsyncStorage } from "react-native"
+
+const serverUrl = 'http://192.168.1.4:3000';
+
+export async function createFolder({name,type}){
+    var token = await AsyncStorage.getItem('userToken')
+    return fetch(serverUrl+'/folders/'+type,{
         method: 'POST',
         headers: {
             Accept: 'application/json',
@@ -19,8 +24,10 @@ export function createFolder({name,type,token}){
     })
 }
 
-export function getFolders({token, type}){
-    return fetch('http://192.168.1.4:3000/folders/'+type,{
+export async function getFolders({type}){
+    var token = await AsyncStorage.getItem('userToken')
+
+    return fetch(serverUrl+'/folders/'+type,{
         method: 'GET',
         headers: {
             Accept: 'application/json',
@@ -38,8 +45,9 @@ export function getFolders({token, type}){
     })
 }
 
-export function deleteFolder({token, folderId}){
-    return fetch('http://192.168.1.4:3000/folders/'+folderId,{
+export async function deleteFolder({folderId}){
+    var token = await AsyncStorage.getItem('userToken')
+    return fetch(serverUrl+'/folders/'+folderId,{
         method: 'DELETE',
         headers: {
             Accept: 'application/json',
@@ -56,8 +64,9 @@ export function deleteFolder({token, folderId}){
     })
 }
 
-export function renameFolder({name, folderId, token}){
-    return fetch('http://192.168.1.4:3000/folders/'+folderId,{
+export async function renameFolder({name, folderId}){
+    var token = await AsyncStorage.getItem('userToken')
+    return fetch(serverUrl+'/folders/'+folderId,{
         method: 'PATCH',
         headers: {
             Accept: 'application/json',

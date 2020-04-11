@@ -2,7 +2,6 @@ import React, {useState, useContext} from 'react';
 import {ImageBackground, Text, View, TouchableOpacity} from 'react-native';
 import {styles} from '../styles/commons';
 import {FileHeader} from '../commons/Header';
-import { AuthContext } from '../navigators/context';
 import {uploadVideo, getVideosInFolder} from '../api/video';
 import * as DocumentPicker from 'expo-document-picker';
 import {styleVideo} from '../styles/videoStyles';
@@ -15,10 +14,9 @@ export const VideoScreen = ({navigation, route}) => {
 	const [count, setCount] = useState(null);
     const [refresh,setRefresh] = useState(false);
     const [progressBar, showProgress] = useState(false);
-    const {authContext,state} = useContext(AuthContext); 
 
     React.useEffect(()=>{
-        getVideosInFolder({token:state.userToken, folderId:route.params.folderId})
+        getVideosInFolder({folderId:route.params.folderId})
         .then((response)=>{
             setCount(response.count);
             setVideos(response.videos);
@@ -42,7 +40,7 @@ export const VideoScreen = ({navigation, route}) => {
         console.log(pickerResult)
         if (pickerResult.type === "success"){
             showProgress(true);
-            let response = await uploadVideo({folderId:route.params.folderId, uri:pickerResult.uri, token:state.userToken, name:pickerResult.name})
+            let response = await uploadVideo({folderId:route.params.folderId, uri:pickerResult.uri, name:pickerResult.name})
             console.log(response)
             if (response.message == "Video uploaded successfully"){
                 setRefresh(true);

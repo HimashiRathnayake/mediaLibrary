@@ -1,6 +1,5 @@
 import React from 'react';
 import {Text, View, ScrollView, TouchableOpacity, Image} from 'react-native';
-import { AuthContext } from '../navigators/context';
 import {stylesScreen} from '../styles/allImageScreen';
 import {ImageModal} from '../modals/ImageModal';
 
@@ -8,7 +7,6 @@ export const ImageDisplayer = ({setRefresh, images, count}) => {
 
     const [modelVisible, setVisible] = React.useState(false);
     const [modelImage, setImage] = React.useState(require('../../assets/logo.png'));
-    const {authContext,state} = React.useContext(AuthContext); 
 
     function setModelVisible(visible, imageKey){
         setImage(images[imageKey]);
@@ -33,7 +31,7 @@ export const ImageDisplayer = ({setRefresh, images, count}) => {
                 ):
                 (<ScrollView style={stylesScreen.container}>
                     <View style={stylesScreen.container}>
-                        <ImageModal modelImage={modelImage} modelVisible={modelVisible} setVisible={setVisible} token={state.userToken} setRefresh={setRefresh}/>
+                        <ImageModal modelImage={modelImage} modelVisible={modelVisible} setVisible={setVisible} setRefresh={setRefresh}/>
                         {imageSet}
                     </View>
                 </ScrollView>)

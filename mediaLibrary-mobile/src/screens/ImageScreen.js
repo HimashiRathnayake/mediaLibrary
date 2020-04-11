@@ -2,7 +2,6 @@ import React, { useState, useContext } from 'react';
 import {ImageBackground, Text, View, TouchableOpacity} from 'react-native';
 import {styles} from '../styles/commons';
 import {FileHeader} from '../commons/Header';
-import { AuthContext } from '../navigators/context';
 import {stylesScreen} from '../styles/allImageScreen';
 import {ImageDisplayer} from '../commons/ImageDisplayer';
 import {getImagesInFolder, uploadImage} from '../api/image';
@@ -15,10 +14,9 @@ export const ImageScreen = ({navigation, route}) => {
     const [count, setCount] = useState(null);
     const [progressBar, showProgress] = useState(false);
     const [refresh,setRefresh] = useState(false);
-    const {authContext,state} = useContext(AuthContext); 
 
     React.useEffect(()=>{
-        getImagesInFolder({token:state.userToken, folderId:route.params.folderId})
+        getImagesInFolder({folderId:route.params.folderId})
         .then((response)=>{
             setCount(response.count);
             setImages(response.images);
@@ -48,7 +46,7 @@ export const ImageScreen = ({navigation, route}) => {
         let pickerResult = await ImagePicker.launchImageLibraryAsync({mediaTypes: ImagePicker.MediaTypeOptions.Images});
         if (pickerResult.cancelled === false){
             showProgress(true);
-            let response = await uploadImage({folderId:route.params.folderId, uri:pickerResult.uri, token:state.userToken, type:pickerResult.uri.split('.')[-1]})
+            let response = await uploadImage({folderId:route.params.folderId, uri:pickerResult.uri, type:pickerResult.uri.split('.')[-1]})
             console.log(response)
             if (response.message == "Image uploaded successfully"){
                 setRefresh(true);

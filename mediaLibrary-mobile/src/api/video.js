@@ -1,5 +1,10 @@
-export function getVideos({token}){
-    return fetch('http://192.168.1.4:3000/videos/',{
+import { AsyncStorage } from "react-native";
+
+const serverUrl = 'http://192.168.1.4:3000';
+
+export async function getVideos(){
+    var token = await AsyncStorage.getItem('userToken')
+    return fetch(serverUrl+'/videos/',{
         method: 'GET',
         headers: {
             Accept: 'application/json',
@@ -17,10 +22,11 @@ export function getVideos({token}){
     })
 }
 
-export function uploadVideo({folderId,uri,token,name}){
+export async function uploadVideo({folderId,uri,name}){
+    var token = await AsyncStorage.getItem('userToken')
     let body = new FormData();
     body.append('file', {uri:uri, type:'video/mp4', name:name});
-    return fetch('http://192.168.1.4:3000/videos/'+folderId,{
+    return fetch(serverUrl+'/videos/'+folderId,{
         method: 'POST',
         headers: {
             'Content-Type':'multipart/form-data',
@@ -37,8 +43,9 @@ export function uploadVideo({folderId,uri,token,name}){
     })
 }
 
-export function getVideosInFolder({token,folderId}){
-    return fetch('http://192.168.1.4:3000/videos/'+folderId,{
+export async function getVideosInFolder({folderId}){
+    var token = await AsyncStorage.getItem('userToken')
+    return fetch(serverUrl+'/videos/'+folderId,{
         method: 'GET',
         headers: {
             Accept: 'application/json',

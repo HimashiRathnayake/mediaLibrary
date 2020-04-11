@@ -1,5 +1,10 @@
-export function getImages({token}){
-    return fetch('http://192.168.1.4:3000/images/',{
+import { AsyncStorage } from "react-native";
+
+const serverUrl = 'http://192.168.1.4:3000';
+
+export async function getImages(){
+    var token = await AsyncStorage.getItem('userToken')
+    return fetch(serverUrl+'/images/',{
         method: 'GET',
         headers: {
             Accept: 'application/json',
@@ -16,8 +21,9 @@ export function getImages({token}){
     })
 }
 
-export function getImagesInFolder({token,folderId}){
-    return fetch('http://192.168.1.4:3000/images/'+folderId,{
+export async function getImagesInFolder({folderId}){
+    var token = await AsyncStorage.getItem('userToken')
+    return fetch(serverUrl+'/images/'+folderId,{
         method: 'GET',
         headers: {
             Accept: 'application/json',
@@ -34,10 +40,11 @@ export function getImagesInFolder({token,folderId}){
     })
 }
 
-export function uploadImage({folderId,uri,token,type}){
+export async function uploadImage({folderId,uri,type}){
+    var token = await AsyncStorage.getItem('userToken')
     let body = new FormData();
     body.append('file', {uri:uri, type:'image/'+type, name:'IMG_'+Math.random(4000)});
-    return fetch('http://192.168.1.4:3000/images/'+folderId,{
+    return fetch(serverUrl+'/images/'+folderId,{
         method: 'POST',
         headers: {
             'Content-Type':'multipart/form-data',
@@ -54,8 +61,9 @@ export function uploadImage({folderId,uri,token,type}){
     })
 }
 
-export function deleteImage({token, imageId}){
-    return fetch('http://192.168.1.4:3000/images/'+imageId,{
+export async function deleteImage({imageId}){
+    var token = await AsyncStorage.getItem('userToken')
+    return fetch(serverUrl+'/images/'+imageId,{
         method: 'DELETE',
         headers: {
             Accept: 'application/json',

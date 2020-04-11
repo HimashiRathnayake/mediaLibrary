@@ -5,7 +5,6 @@ import {styles} from '../styles/commons';
 import {stylesScreen} from '../styles/folderStyles';
 import {MaterialIcons } from '@expo/vector-icons';
 import {getFolders, deleteFolder} from "../api/folder";
-import { AuthContext } from '../navigators/context';
 import { FolderModal } from '../modals/FolderModal';
 
 export const FolderScreen = ({route,navigation}) => {
@@ -15,12 +14,11 @@ export const FolderScreen = ({route,navigation}) => {
     const [modalFolder, setModalFolder] = React.useState(null);
     const [folders, setFolders] = React.useState([]);
     const [count, setCount] = React.useState(null);
-    const {authContext,state} = React.useContext(AuthContext); 
     const [refresh,setRefresh] = React.useState(false);
     const type=route.params.type;
 
     React.useEffect(()=>{  
-        getFolders({token:state.userToken, type:type})
+        getFolders({type:type})
         .then((response)=>{
             setCount(response.count);
             setFolders(response.folders);
@@ -33,7 +31,7 @@ export const FolderScreen = ({route,navigation}) => {
 
     function deletefolder(folderId){
         setActionModalVisible(false);
-        deleteFolder({token:state.userToken, folderId: folderId})
+        deleteFolder({folderId: folderId})
         .then((response)=>{
             console.log(response)
             setRefresh(true);
@@ -61,7 +59,7 @@ export const FolderScreen = ({route,navigation}) => {
 
     return(
         <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
-            <Header navigation={navigation} token={state.userToken} setRefresh={setRefresh} type={type}>{type} Folders</Header>
+            <Header navigation={navigation} setRefresh={setRefresh} type={type}>{type} Folders</Header>
             
             {count===0 ? 
             (<View style={stylesScreen.noFolderContainer}>
@@ -103,8 +101,8 @@ export const FolderScreen = ({route,navigation}) => {
             </ScrollView>
             )}
 
-            <FolderModal modalVisible={createModalVisible} setVisible={setCreateModalVisible} token={state.userToken} type={type} setRefresh={setRefresh} actionType={'Create'}/>
-            <FolderModal modalVisible={renameModalVisible} setVisible={setRenameModalVisible} token={state.userToken} type={type} setRefresh={setRefresh} folderId={modalFolder} actionType={'Rename'}/>
+            <FolderModal modalVisible={createModalVisible} setVisible={setCreateModalVisible} type={type} setRefresh={setRefresh} actionType={'Create'}/>
+            <FolderModal modalVisible={renameModalVisible} setVisible={setRenameModalVisible} type={type} setRefresh={setRefresh} folderId={modalFolder} actionType={'Rename'}/>
         </ImageBackground>
     );
 }

@@ -1,5 +1,7 @@
+const serverUrl = 'http://192.168.1.4:3000';
+
 export function signup({values}){
-    return fetch('http://192.168.1.4:3000/user/signup',{
+    return fetch(serverUrl+'/user/signup',{
         method: 'POST',
         headers: {
             Accept: 'application/json',
@@ -20,7 +22,7 @@ export function signup({values}){
 }
 
 export function login({values}){
-    return fetch('http://192.168.1.4:3000/user/login',{
+    return fetch(serverUrl+'/user/login',{
         method: 'POST',
         headers: {
             Accept: 'application/json',

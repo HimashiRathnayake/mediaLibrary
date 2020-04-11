@@ -15,7 +15,7 @@ const validationSchema = yup.object({
 
 export const SignUpScreen = ({navigation}) => {
 
-    const {authContext, state} = React.useContext(AuthContext);
+    const {signUp} = React.useContext(AuthContext);
     const [isLoading, setIsLoading] = React.useState(false);
 
     return(
@@ -37,7 +37,7 @@ export const SignUpScreen = ({navigation}) => {
                                         Alert.alert('Alert','Email already exists. Try with different email',[{text: 'OK', onPress: ()=>actions.resetForm()}]);
                                         setIsLoading(false);
                                     }else if (response.message==='User created'){
-                                        authContext.signUp({token:response.token, email:values.email});
+                                        signUp({token:response.token, email:values.email});
                                     }
                                     else{
                                         alert('Something went wrong. Try again');

@@ -4,11 +4,11 @@ import {Ionicons, MaterialIcons, MaterialCommunityIcons, Entypo, AntDesign } fro
 import {stylesScreen} from '../styles/modals/image';
 import {deleteImage} from '../api/image';
 
-export const ImageModal = ({modelImage, modelVisible, setVisible, token, setRefresh}) => {
+export const ImageModal = ({modelImage, modelVisible, setVisible, setRefresh}) => {
     const [detailsModal, setDetailsModal] = React.useState(false);
 
     function deleteimage(imageId){
-        deleteImage({token:token, imageId: imageId})
+        deleteImage({imageId: imageId})
         .then((response)=>{
             console.log(response);
             setRefresh(true);

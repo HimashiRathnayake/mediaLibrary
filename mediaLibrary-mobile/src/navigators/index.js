@@ -41,6 +41,7 @@ export default ()=>{
 			try {
 			  	userToken = await AsyncStorage.getItem('userToken');
 			} catch (e) {
+				console.log(e);
 			}
 			dispatch({ type: 'RESTORE_TOKEN', token: userToken });
 		  	};
@@ -55,17 +56,13 @@ export default ()=>{
 			},
 			signOut: async () => {
 				let keys = ['userToken','email'];
-				await AsyncStorage.multiRemove(keys);
+				await AsyncStorage.clear();
 				dispatch({ type: 'SIGN_OUT' });
 			},
 			signUp: async data => {
 				await AsyncStorage.multiSet([['userToken',data.token],['email',data.email]]);
 			    dispatch({ type: 'SIGN_IN', token: data.token});
 			},
-			token: async () => {
-				let token;
-				token = await AsyncStorage.getItem('userToken');
-			}
 		  }),[]
 	);
 
@@ -73,7 +70,7 @@ export default ()=>{
 		return <SplashScreen/>
 	}
 	return(
-		<AuthContext.Provider value={{authContext, state}}>
+		<AuthContext.Provider value={authContext}>
 			<NavigationContainer>
 				{state.userToken === null ? (
 					<AuthStack.Navigator>

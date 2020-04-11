@@ -2,21 +2,19 @@ import React, {useState, useContext} from 'react';
 import {ImageBackground, Text, View, ScrollView, TouchableOpacity} from 'react-native';
 import {styles} from '../styles/commons';
 import {Header} from '../commons/Header';
-import { AuthContext } from '../navigators/context';
 import { getAudios } from '../api/audio';
 import { AudioDisplayer } from '../commons/AudioDisplayer';
 
 export const AllAudioScreen = ({navigation, route}) => {
-    const {authContext,state} = useContext(AuthContext); 
     const [audios, setAudios] = useState([]);
     const [count, setCount] = useState(null);
     const [refresh, setRefresh] = useState(false);
     
     React.useEffect(()=>{  
-        navigation.addListener('focus', ()=>{
-            setRefresh(true);
-        });
-        getAudios({token:state.userToken})
+        // navigation.addListener('focus', ()=>{
+        //     setRefresh(true);
+        // });
+        getAudios()
         .then((response)=>{
             setCount(response.count);
             setAudios(response.Audios);

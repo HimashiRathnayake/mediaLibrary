@@ -16,7 +16,8 @@ export const SearchScreen = ({route,navigation}) => {
                 initialValues={{title:'', subject:'', artist:'', album:'', year:''}}
                 onSubmit={
                     (values, actions)=>{
-                        navigation.push('Result',{type:type, values:values})
+                        navigation.push('Result',{type:type, values:values});
+                        actions.resetForm();
                     }
                 }
             >

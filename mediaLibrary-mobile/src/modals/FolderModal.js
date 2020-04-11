@@ -4,12 +4,12 @@ import {stylesScreen} from '../styles/folderStyles';
 import {Formik} from 'formik';
 import {createFolder, renameFolder} from "../api/folder";
 
-export const FolderModal = ({modalVisible, setVisible, token, type, folderId, setRefresh, actionType}) => {
+export const FolderModal = ({modalVisible, setVisible, type, folderId, setRefresh, actionType}) => {
 
     function startAction(folderName){
         if (actionType==='Create'){
             if (folderName===''){folderName='Untitled'}
-            createFolder({name:folderName, type:type, token:token})
+            createFolder({name:folderName, type:type})
             .then((response)=>{
                 if (response.message==="Folder created successfully"){
                     setRefresh(true);
@@ -25,7 +25,7 @@ export const FolderModal = ({modalVisible, setVisible, token, type, folderId, se
             if (folderName===''){
                 Alert.alert('You have to enter a name in order to rename the folder','',[{text:'OK'}]);
             }else{
-                renameFolder({name:folderName, folderId:folderId, token:token})
+                renameFolder({name:folderName, folderId:folderId})
                 .then((response)=>{
                     if (response.message==="Folder renamed successfully"){
                         setRefresh(true);

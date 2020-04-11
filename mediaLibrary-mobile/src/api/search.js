@@ -1,5 +1,10 @@
-export function searchFiles({token, type, title, album, artist, year, subject}){
-    let searchUrl = 'http://192.168.1.4:3000/search/';
+import { AsyncStorage } from "react-native";
+
+const serverUrl = 'http://192.168.1.4:3000';
+
+export async function searchFiles({ type, title, album, artist, year, subject}){
+    var token = await AsyncStorage.getItem('userToken')
+    let searchUrl = serverUrl+'/search/';
     if (type==='Image'){searchUrl+='image/'}
     else if (type==='Audio'){searchUrl+='audio/'}
     else{searchUrl+='video/'}

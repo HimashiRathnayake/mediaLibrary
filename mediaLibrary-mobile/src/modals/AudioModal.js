@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Text, View, Modal, StyleSheet, Dimensions, TouchableOpacity, Slider} from 'react-native';
 import {Audio} from 'expo-av';
 import { Foundation, Ionicons, FontAwesome, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -9,17 +9,17 @@ const BUFFERING_STRING = "... buffering ...";
 
 export const AudioModal = ({audio, visible, setVisible}) => {
 
-    const [playbackInstance, setInstance] = React.useState(null); 
-    const [isSeeking, setSeeking] = React.useState(false);
-    const [shouldPlayAtEndOfSeek, setShouldPlayAtEndOfSeek] = React.useState(false);
-    const [audioName, setName] = React.useState(LOADING_STRING);
-    const [isMuted, setMute]= React.useState(false);
-    const [playbackInstancePosition, setPosition]= React.useState(null);
-    const [playbackInstanceDuration, setDuration]= React.useState(null);
-    const [shouldPlay, setShouldPlay]= React.useState(false);
-    const [isPlaying, setIsPlaying]= React.useState(false);
-    const [isBuffering, setBuffering]= React.useState(false);
-    const [isLoading, setLoading]= React.useState(true);
+    const [playbackInstance, setInstance] = useState(null); 
+    const [isSeeking, setSeeking] = useState(false);
+    const [shouldPlayAtEndOfSeek, setShouldPlayAtEndOfSeek] = useState(false);
+    const [audioName, setName] = useState(LOADING_STRING);
+    const [isMuted, setMute]= useState(false);
+    const [playbackInstancePosition, setPosition]= useState(null);
+    const [playbackInstanceDuration, setDuration]= useState(null);
+    const [shouldPlay, setShouldPlay]= useState(false);
+    const [isPlaying, setIsPlaying]= useState(false);
+    const [isBuffering, setBuffering]= useState(false);
+    const [isLoading, setLoading]= useState(true);
     
     async function loadNewPlaybackInstance(playing){
         console.log(audio)
