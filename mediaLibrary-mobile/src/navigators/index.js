@@ -1,14 +1,13 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import {LoginScreen} from '../screens/LoginScreen';
-import {SignUpScreen} from '../screens/SignUpScreen';
 import {SplashScreen} from '../screens/SplashScreen';
 import { createStackNavigator } from '@react-navigation/stack';
 import {AuthContext} from './context';
 import {DrawerNavigator} from './DrawerNavigator';
 import {AsyncStorage} from 'react-native';
+import {AuthNavigator} from '../navigators/StackNavigators';
 
-const AuthStack =createStackNavigator();
+const Stack =createStackNavigator();
 
 export default ()=>{
 	const [state, dispatch] = React.useReducer((prevState, action)=>{
@@ -72,14 +71,13 @@ export default ()=>{
 	return(
 		<AuthContext.Provider value={authContext}>
 			<NavigationContainer>
-				{state.userToken === null ? (
-					<AuthStack.Navigator>
-						<AuthStack.Screen name="Login" component={LoginScreen} options={{title: "LoginScreen", headerShown: false}}/>
-						<AuthStack.Screen name="SignUp" component={SignUpScreen} options={{title: "SignUpScreen", headerShown: false}}/>
-					</AuthStack.Navigator> 
-				) : (
-					<DrawerNavigator/>
-				)}
+				<Stack.Navigator>
+					{state.userToken === null ? (
+						<Stack.Screen name='AuthNavigator' component={AuthNavigator} options={{headerShown: false}}/>
+					) : (
+						<Stack.Screen name='DrawerNavigator' component={DrawerNavigator} options={{headerShown: false}}/>
+					)}
+				</Stack.Navigator>
 			</NavigationContainer>
 		</AuthContext.Provider>
     );

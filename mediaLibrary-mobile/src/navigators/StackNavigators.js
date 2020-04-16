@@ -6,6 +6,8 @@ import { AudioScreen } from '../screens/AudioScreen';
 import { VideoScreen } from '../screens/VideoScreen';
 import { SearchScreen } from '../screens/SearchScreen';
 import { SearchResultScreen } from '../screens/SearchResultScreen';
+import {LoginScreen} from '../screens/LoginScreen';
+import {SignUpScreen} from '../screens/SignUpScreen';
 
 const FolderStack = createStackNavigator();
 
@@ -29,4 +31,15 @@ export const SearchStackScreen = ({route, navigation})=>{
             <FolderStack.Screen name="Result" initialParams={{type:type}} component={SearchResultScreen} options={{headerShown: false}}/>
         </FolderStack.Navigator>
     );
+}
+
+const AuthStack = createStackNavigator();
+
+export const AuthNavigator = () => {
+	return (
+		<AuthStack.Navigator>
+			<AuthStack.Screen name="Login" component={LoginScreen} options={{title: "LoginScreen", headerShown: false}}/>
+			<AuthStack.Screen name="SignUp" component={SignUpScreen} options={{title: "SignUpScreen", headerShown: false}}/>
+		</AuthStack.Navigator>
+	)
 }
