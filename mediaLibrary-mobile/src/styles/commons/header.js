@@ -20,4 +20,18 @@ export const styles = StyleSheet.create({
         left: 10,
         top: 36,
     },
+    searchHeader:{
+        color: 'white',
+        backgroundColor: 'rgba(255, 255, 255, 0.4)',
+        width : Dimensions.get('screen').width-30,
+        alignSelf: 'center',
+        borderRadius: 10,
+        height: 50,
+        marginTop: 30,
+    },
+    search:{
+        marginTop: 10,
+        fontSize: 30,
+        color: '#fff'
+    }
 });

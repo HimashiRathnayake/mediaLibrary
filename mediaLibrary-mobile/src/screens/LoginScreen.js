@@ -1,5 +1,5 @@
 import React from 'react';
-import { ImageBackground, View, Text, TouchableOpacity, TextInput, Alert, AsyncStorage} from 'react-native';
+import { ImageBackground, View, Text, TouchableOpacity, TextInput, Alert} from 'react-native';
 import { Entypo, FontAwesome, AntDesign } from '@expo/vector-icons';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import {styles} from '../styles/loginscreen';

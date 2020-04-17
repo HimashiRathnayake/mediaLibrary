@@ -30,3 +30,24 @@ export async function searchFiles({ type, title, album, artist, year, subject}){
         console.log(error)
     })
 }
+
+export async function searchOverall(text, type, criteria){
+    var token = await AsyncStorage.getItem('userToken')
+    let searchUrl = serverUrl+'/search/'+type+'/'+criteria+'/'+text;
+    console.log(searchUrl)
+    return fetch(searchUrl,{
+        method: 'GET',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type':'application/json',
+            'Authorization': 'Bearer '+token 
+        }
+    })
+    .then((response)=>response.json())
+    .then((json)=>{
+        return json;
+    })
+    .catch((error)=>{
+        console.log(error)
+    })
+}

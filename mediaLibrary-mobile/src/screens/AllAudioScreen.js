@@ -11,9 +11,9 @@ export const AllAudioScreen = ({navigation, route}) => {
     const [refresh, setRefresh] = useState(false);
     
     React.useEffect(()=>{  
-        // navigation.addListener('focus', ()=>{
-        //     setRefresh(true);
-        // });
+        navigation.addListener('focus', ()=>{
+            setRefresh(true);
+        });
         getAudios()
         .then((response)=>{
             setCount(response.count);

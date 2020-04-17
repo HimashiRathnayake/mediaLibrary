@@ -11,9 +11,9 @@ export const AllVideoScreen = ({navigation, route}) => {
 	const [refresh, setRefresh] = useState(false);
 
 	React.useEffect(()=>{  
-        // navigation.addListener('focus', ()=>{       
-		// 	setRefresh(true);
-		// })
+        navigation.addListener('focus', ()=>{       
+			setRefresh(true);
+		})
 		getVideos()
 		.then((response)=>{
 			console.log(response);

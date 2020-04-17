@@ -11,9 +11,9 @@ export const AllImageScreen = ({navigation, route}) => {
     const [refresh, setRefresh] = React.useState(false);
 
     React.useEffect(()=>{  
-        // navigation.addListener('focus', ()=>{
-        //     setRefresh(true);
-        // });
+        navigation.addListener('focus', ()=>{
+            setRefresh(true);
+        });
         getImages()
         .then((response)=>{
             setCount(response.count);
