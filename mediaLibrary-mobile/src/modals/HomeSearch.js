@@ -36,7 +36,8 @@ export const HomeSearch = ({visible, setVisible}) => {
             }
         }
         searchMediaFiles();
-    },[selected, value, criteria])
+        setRefresh(false);
+    },[selected, value, criteria, refresh])
 
     return(
         <Modal flex={1} transparent={false} animationType='none' visible={visible} onRequestClose={()=>{}}>

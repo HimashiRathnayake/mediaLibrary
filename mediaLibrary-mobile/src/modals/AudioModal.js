@@ -1,14 +1,15 @@
 import React, {useState} from 'react';
-import {Text, View, Modal, TouchableOpacity, Slider} from 'react-native';
+import {Text, View, Modal, TouchableOpacity, Slider, Alert} from 'react-native';
 import {Audio} from 'expo-av';
 import { Foundation, Ionicons, FontAwesome, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import {stylesScreen} from '../styles/modals/audio';
+import {deleteAudio} from '../api/audio';
 
 const DISABLED_OPACITY = 0.6;
 const LOADING_STRING = "... loading ...";
 const BUFFERING_STRING = "... buffering ...";
 
-export const AudioModal = ({audio, visible, setVisible}) => {
+export const AudioModal = ({audio, visible, setVisible, setRefresh}) => {
 
     const [playbackInstance, setInstance] = useState(null); 
     const [isSeeking, setSeeking] = useState(false);
@@ -21,6 +22,18 @@ export const AudioModal = ({audio, visible, setVisible}) => {
     const [isPlaying, setIsPlaying]= useState(false);
     const [isBuffering, setBuffering]= useState(false);
     const [isLoading, setLoading]= useState(true);
+
+    function deleteaudio(audioId){
+        setVisible(false);
+        deleteAudio({audioId: audioId})
+        .then((response)=>{
+            console.log(response);
+            setRefresh(true);
+        })
+        .catch((error)=>{
+            console.log(error);
+        })
+    }
     
     async function loadNewPlaybackInstance(playing){
         console.log(audio)
@@ -183,7 +196,13 @@ export const AudioModal = ({audio, visible, setVisible}) => {
                 
                     
                     <View flexDirection='row' marginTop={50} marginLeft={30} flexDirection='row-reverse'>
-                        <MaterialCommunityIcons name='delete-outline' style={stylesScreen.iconBottom} onPress={()=>setVisible(false)}/>
+                        <MaterialCommunityIcons name='delete-outline' style={stylesScreen.iconBottom} 
+                            onPress={()=>{ 
+                                Alert.alert('Do you want to delete audio','',[
+                                    {text: 'Cancel'},
+                                    {text: "Yes", onPress: ()=>deleteaudio(audio._id)}
+                            ],{cancelable:false})}}                        
+                        />
                         <MaterialIcons name='favorite-border' style={stylesScreen.iconBottom} onPress={()=>setVisible(false)}/>
                         <Ionicons name='md-share' style={stylesScreen.iconBottom} onPress={()=>setVisible(false)}/>
                     </View>    

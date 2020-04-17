@@ -33,7 +33,7 @@ return(
 			(<ScrollView style={styleVideo.container}>
 				<View style={styleVideo.container}>
 					{(videoModal !== null) && (
-					<VideoModal visible={visible} setVisible={setVisible} videoModal={videoModal}/>
+					<VideoModal visible={visible} setVisible={setVisible} videoModal={videoModal} setRefresh={setRefresh}/>
 					)}
 					{videoSet}
 				</View>

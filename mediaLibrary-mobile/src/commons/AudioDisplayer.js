@@ -33,7 +33,7 @@ export const AudioDisplayer = ({setRefresh, audios, count}) => {
                 (<ScrollView style={styleAudio.container}>
                     <View style={styleAudio.container}>
                         {(audioModal !== null) && (
-                        <AudioModal visible={visible} setVisible={setVisible} audio={audioModal}/>
+                        <AudioModal visible={visible} setVisible={setVisible} audio={audioModal} setRefresh={setRefresh}/>
                         )}
                         {audioSet}
                     </View>

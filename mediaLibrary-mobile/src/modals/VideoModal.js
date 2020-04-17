@@ -1,18 +1,31 @@
 import React, { useState } from 'react';
-import { Text, View, Modal, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
+import { Text, View, Modal, StyleSheet, Dimensions, TouchableOpacity, Alert } from 'react-native';
 import {styles} from '../styles/commons';
 import {Video} from 'expo-av';
 import { Ionicons, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
+import {deleteVideo} from '../api/video';
 
 const DISABLED_OPACITY = 0.3;
 const { width: DEVICE_WIDTH, height: DEVICE_HEIGHT } = Dimensions.get("window");
 const LOADING_STRING = "... loading ...";
 const VIDEO_CONTAINER_HEIGHT = (DEVICE_HEIGHT * 2.0) / 5.0 ;
 
-export const VideoModal = ({visible, setVisible, videoModal}) => {
+export const VideoModal = ({visible, setVisible, videoModal, setRefresh}) => {
 
-    const [audioName, setName] = useState(LOADING_STRING);
+    const [videoName, setName] = useState(LOADING_STRING);
     const [isLoading, setLoading]= useState(true);
+
+    function deletevideo(videoId){
+        setVisible(false);
+        deleteVideo({videoId: videoId})
+        .then((response)=>{
+            console.log(response);
+            setRefresh(true);
+        })
+        .catch((error)=>{
+            console.log(error);
+        })
+    }
 
     function onLoadStart(){
         setLoading(true);
@@ -36,7 +49,7 @@ export const VideoModal = ({visible, setVisible, videoModal}) => {
                 <TouchableOpacity onPress={()=>{setVisible(false)}} style={{flexDirection:'row-reverse', marginLeft: 10, marginTop: 10}}>
                     <MaterialCommunityIcons name='close-box' style={stylesScreen.icon}/>  
                 </TouchableOpacity>
-                <Text style={stylesScreen.header}>{audioName}</Text>
+                <Text style={stylesScreen.header}>{videoName}</Text>
                 <View style={styles.videoContainer}>
                     <Video
                         source={{uri: videoModal.path}}
@@ -57,7 +70,13 @@ export const VideoModal = ({visible, setVisible, videoModal}) => {
                 </View>
                 
                 <View flexDirection='row-reverse'>
-                    <MaterialCommunityIcons name='delete-outline' style={stylesScreen.iconBottom} onPress={()=>setVisible(false)}/>
+                    <MaterialCommunityIcons name='delete-outline' style={stylesScreen.iconBottom} 
+                        onPress={()=>{ 
+                            Alert.alert('Do you want to delete video','',[
+                                {text: 'Cancel'},
+                                {text: "Yes", onPress: ()=>deletevideo(videoModal._id)}
+                        ],{cancelable:false})}}
+                    />
                     <MaterialIcons name='favorite-border' style={stylesScreen.iconBottom} onPress={()=>setVisible(false)}/>
                     <Ionicons name='md-share' style={stylesScreen.iconBottom} onPress={()=>setVisible(false)}/>
                 </View> 

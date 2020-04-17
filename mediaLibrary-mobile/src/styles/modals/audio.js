@@ -41,7 +41,7 @@ export const stylesScreen = StyleSheet.create({
     },
     iconBottom:{
         fontSize: 20,
-        marginHorizontal: 10
+        marginHorizontal: 20,
     },
     audioSlider: {
         width: Dimensions.get('screen').width-60,

@@ -61,3 +61,22 @@ export async function getVideosInFolder({folderId}){
         console.log(error)
     })
 }
+
+export async function deleteVideo({videoId}){
+    var token = await AsyncStorage.getItem('userToken')
+    return fetch(serverUrl+'/videos/'+videoId,{
+        method: 'DELETE',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type':'application/json',
+            'Authorization': 'Bearer '+token 
+        }
+    })
+    .then((response)=>response.json())
+    .then((json)=>{
+        return json;
+    })
+    .catch((error)=>{
+        console.log(error)
+    })
+}

@@ -15,13 +15,13 @@ export const stylesScreen = StyleSheet.create({
         color: '#fff',
         fontSize: 20,
         paddingHorizontal: 15,
-        paddingTop: 5,
+        paddingTop: 15,
     },
     iconLeft:{
         color: '#fff',
         fontSize: 20,
         paddingRight: 120,
-        paddingTop: 5,
+        paddingTop: 15,
     },
     back:{
         color: '#fff',
