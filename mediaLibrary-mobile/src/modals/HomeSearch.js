@@ -36,12 +36,7 @@ export const HomeSearch = ({visible, setVisible}) => {
             }
         }
         searchMediaFiles();
-    },[value, selected, criteria])
-
-    // function changeType(type){
-    //     setSelected(type);
-    //     // searchMediaFiles(value, type);
-    // }
+    },[selected, value, criteria])
 
     return(
         <Modal flex={1} transparent={false} animationType='none' visible={visible} onRequestClose={()=>{}}>
@@ -71,17 +66,17 @@ export const HomeSearch = ({visible, setVisible}) => {
                 </View>
 
                 <View style={styleHome.searchView}>
-                    <TouchableOpacity onPress={async()=>await setSelected('image')}>
+                    <TouchableOpacity onPress={async()=>{await setFiles(null); setSelected('image');}}>
                         <Text style={[styleHome.criteria, selected==='image'?{borderBottomColor:'#1976d2', color:'#1976d2'}:{borderBottomColor:'transparent', color:'#fff'}]}>
                             Image
                         </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={async()=>await setSelected('audio')}>
+                    <TouchableOpacity onPress={async()=>{await setFiles(null); setSelected('audio'); }}>
                         <Text style={[styleHome.criteria, selected==='audio'?{borderBottomColor:'#1976d2', color:'#1976d2'}:{borderBottomColor:'transparent', color:'#fff'}]}>
                             Audio
                         </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={async()=>await setSelected('video')}>
+                    <TouchableOpacity onPress={async()=>{await setFiles(null); setSelected('video');}}>
                         <Text style={[styleHome.criteria, selected==='video'?{borderBottomColor:'#1976d2', color:'#1976d2'}:{borderBottomColor:'transparent', color:'#fff'}]}>
                             Video
                         </Text>
