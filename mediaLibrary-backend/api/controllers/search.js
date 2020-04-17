@@ -23,7 +23,7 @@ exports.search_audio_by_artist =  (req, res, next) => {
                     title: doc.title,
                     album: doc.album,
                     artist: doc.artist,
-                    date: doc.date,
+                    year: doc.year,
                     accessList: doc.accessList,
                     folder: doc.folder,
                     path: doc.path
@@ -54,7 +54,7 @@ exports.search_video_by_artist =  (req, res, next) => {
                     videoName: doc.videoName,
                     title: doc.title,
                     artist: doc.artist,
-                    date: doc.date,
+                    year: doc.year,
                     accessList: doc.accessList,
                     folder: doc.folder,
                     path: doc.path
@@ -119,7 +119,7 @@ exports.search_audio_by_title =  (req, res, next) => {
                     title: doc.title,
                     album: doc.album,
                     artist: doc.artist,
-                    date: doc.date,
+                    year: doc.year,
                     accessList: doc.accessList,
                     folder: doc.folder,
                     path: doc.path
@@ -150,7 +150,7 @@ exports.search_video_by_title =  (req, res, next) => {
                     videoName: doc.videoName,
                     title: doc.title,
                     artist: doc.artist,
-                    date: doc.date,
+                    year: doc.year,
                     accessList: doc.accessList,
                     folder: doc.folder,
                     path: doc.path
@@ -217,7 +217,7 @@ exports.search_audio =  (req, res, next) => {
                     title: doc.title,
                     album: doc.album,
                     artist: doc.artist,
-                    date: doc.date,
+                    year: doc.year,
                     accessList: doc.accessList,
                     folder: doc.folder,
                     path: doc.path
@@ -251,7 +251,7 @@ exports.search_video =  (req, res, next) => {
                     videoName: doc.videoName,
                     title: doc.title,
                     artist: doc.artist,
-                    date: doc.date,
+                    year: doc.year,
                     accessList: doc.accessList,
                     folder: doc.folder,
                     path: doc.path
