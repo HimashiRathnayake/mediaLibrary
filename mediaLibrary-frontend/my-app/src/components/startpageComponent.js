@@ -14,11 +14,13 @@ export default class Start extends Component{
         this.logout = this.logout.bind(this);
     }
 
-    logout(){
-        console.log("logout");
+    logout(e){
+        e.preventDefault(e);
         sessionStorage.setItem('userData', '');
         sessionStorage.clear(); 
-        this.setState({redirect: true});
+        this.setState({
+            redirect: true
+        });
     }
 
     render(){

@@ -41,7 +41,7 @@ export default class Rename extends Component{
             </Modal.Body>
             <Modal.Footer>
             
-              <Button varient='danger' onClick={this.props.onHide}>Close</Button>
+              <Button variant='danger' onClick={this.props.onHide}>Close</Button>
             </Modal.Footer>
           </Modal>  
         )

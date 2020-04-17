@@ -32,7 +32,7 @@ class ResultList extends Component{
                 this.props.allfolders(); 
             }
             else if(this.state.type=== 'images'){
-                this.props.allImages(); 
+                this.props.RenameImage(); 
             }  
             else if(this.state.type=== 'videos'){
                 this.props.allVideos(); 

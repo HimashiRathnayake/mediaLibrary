@@ -17,6 +17,7 @@ export default class Image extends Component{
         this.getImage=this.getImage.bind(this);
         this.deleteFolder=this.deleteFolder.bind(this);
         this.deleteImage=this.deleteImage.bind(this);
+        this.RenameImage=this.RenameImage.bind(this);
         this.createFolder=this.createFolder.bind(this);
         this.createShow=this.createShow.bind(this);
         this.search=this.search.bind(this);
@@ -27,11 +28,13 @@ export default class Image extends Component{
           type: 'Image',
           routeType: 'images',
           folders: {},
+          folder: {},
           images: {},
           redirect: false,
           createFolderShow: false,
           searchShow: false
         }
+        this.allfolders();
     }
       
     addActiveClass() {
@@ -59,12 +62,18 @@ export default class Image extends Component{
         GetAll(JSON.parse(sessionStorage.getItem('userData')).token, this.state.routeType).then((result) => {
             console.log("All images results: ", result);
             this.setState({
-                folders: result
+                folders: result,
+                folder: {}
             })
         }) 
     }
 
     getImage(folder){
+        console.log("folder in getImage function: ", folder);
+        console.log("folder state: ", Object.keys(folder).length  );
+        this.setState({
+            folder: folder
+        })
         GetFromFolder(JSON.parse(sessionStorage.getItem('userData')).token, this.state.routeType, folder._id).then((result) => {
             this.setState({
                 folders: result
@@ -85,9 +94,23 @@ export default class Image extends Component{
         DeleteImage(JSON.parse(sessionStorage.getItem('userData')).token, image._id).then((result) => {
             alert(result.message);
             if(result.message === "Image deleted"){
-                this.allImages();
+                if(Object.keys(this.state.folder).length){
+                    this.getImage(this.state.folder);
+                }
+                else{
+                    this.allImages();
+                }
             }  
         })     
+    }
+
+    RenameImage(){
+        if(Object.keys(this.state.folder).length){
+            this.getImage(this.state.folder);
+        }
+        else{
+            this.allImages();
+        }    
     }
 
     createFolder(e){
@@ -97,7 +120,7 @@ export default class Image extends Component{
             if(result.message === "Folder created successfully"){
                 this.allfolders();
             } 
-        })      
+        })     
     } 
 
     createShow(e){
@@ -147,6 +170,7 @@ export default class Image extends Component{
         let searchClose=()=> this.setState({searchShow: false})
 
         return(
+            
             <div>
                 <nav className="navbar navbar-expand navbar-dark bg-primary"> 
                     <div className="collapse navbar-collapse" id="navbarsExample02">
@@ -181,6 +205,7 @@ export default class Image extends Component{
                             <li> <button className="link-button" onClick={this.allImages}>All Images</button> </li>
                             <li> <button className="link-button" onClick={() => this.setState({createFolderShow: true})}>Create Folder</button> </li>
                             <li> <button className="link-button" onClick={() => this.setState({searchShow: true})}>Search</button> </li>
+                            <li> <button className="link-button" >Shared Folders & Images</button> </li>
                             <li> <button className="link-button" onClick={this.logout}>Logout</button> </li>
                         </ul> 
                     </div>
@@ -192,7 +217,7 @@ export default class Image extends Component{
                                         deleteFolder={this.deleteFolder}
                                         deleteImage={this.deleteImage}
                                         allfolders={this.allfolders}
-                                        allImages={this.allImages}
+                                        RenameImage={this.RenameImage}
                             />
                             <CreateFolder show={this.state.createFolderShow}
                                           onHide={createFolderClose}

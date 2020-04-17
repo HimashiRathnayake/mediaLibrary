@@ -25,7 +25,7 @@ export default class CreateFolder extends Component{
                                 <Form.Control 
                                 type="text"
                                 name="folderName"
-                                required
+                                defaultValue="Undifined"
                                 placeholder="add folder name"
                                 />
                             </Form.Group>
@@ -39,7 +39,7 @@ export default class CreateFolder extends Component{
             </Modal.Body>
             <Modal.Footer>
             
-              <Button varient='danger' onClick={this.props.onHide}>Close</Button>
+              <Button variant='danger' onClick={this.props.onHide}>Close</Button>
             </Modal.Footer>
           </Modal>  
         )
