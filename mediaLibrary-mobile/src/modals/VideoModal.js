@@ -109,6 +109,7 @@ const stylesScreen = StyleSheet.create({
         color: 'black',
         fontSize: 16,
         marginLeft: 20,
-        paddingTop: 20
+        paddingTop: 20,
+        width: Dimensions.get('screen').width/2,
     },
 });
