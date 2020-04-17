@@ -146,6 +146,12 @@ export default class Video extends Component{
                             <li className="nav-item "> 
                                 <Link className="nav-link" to={"/start"}>Home</Link>
                             </li> 
+                            <li className="nav-item "> 
+                                <Link className="nav-link" to={"/search"}>Search</Link>
+                            </li>
+                            <li className="nav-item "> 
+                                <Link className="nav-link" to={"/start"}>Favourites</Link>
+                            </li> 
                         </ul>
                         <form className="form-inline my-2 my-md-0"> </form>
                     </div>

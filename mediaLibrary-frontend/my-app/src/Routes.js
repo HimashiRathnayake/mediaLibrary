@@ -10,7 +10,7 @@ import Start from './components/startpageComponent';
 import Image from './components/imageComponent';
 import Audio from './components/audioComponent';
 import Video from './components/videoComponent'; 
-//import Folder from './components/folderComponent'; 
+import Search from './components/search'; 
 
 export default class Routes extends Component {
 
@@ -25,6 +25,7 @@ export default class Routes extends Component {
                     <Route path="/image" component={Image} />
                     <Route path="/audio" component={Audio} />
                     <Route path="/video" component={Video} /> 
+                    <Route path="/search" component={Search} /> 
                 </Switch>
             </Router>
            

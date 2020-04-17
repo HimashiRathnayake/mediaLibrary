@@ -37,17 +37,17 @@ export default class Start extends Component{
                             <Link className="nav-link js-scroll-trigger" to={"/start"}>Home</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link js-scroll-trigger" to={"/start"}>Search</Link>
+                            <Link className="nav-link js-scroll-trigger" to={"/search"}>Search</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link js-scroll-trigger" to={"/image"}>Image</Link>
+                            <Link className="nav-link js-scroll-trigger" to={"/start"}>Favourites</Link>
                         </li>
-                        <li className="nav-item">
+                        {/* <li className="nav-item">
                             <Link className="nav-link js-scroll-trigger" to={"/audio"}>Audio</Link>
                         </li>
                         <li className="nav-item">
                             <Link className="nav-link js-scroll-trigger" to={"/video"}>Video</Link>
-                        </li>
+                        </li> */}
                         <li className="nav-item">
                             <button  className="nav-link js-scroll-trigger link-button" onClick={this.logout}>Logout</button> 
                         </li>

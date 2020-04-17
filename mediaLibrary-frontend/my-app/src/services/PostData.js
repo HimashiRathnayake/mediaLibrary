@@ -418,4 +418,69 @@ export function SearchAudios(userdata, url){
 
 }
 
+export function SearchImagebyCriteria(userdata, criteria, parameter){
+    console.log('SearchImagebyCCriteria');
+    return new Promise((resolve, reject) => {
+        fetch(`http://localhost:3000/search/image/${criteria}/${parameter}`, {
+            method: 'Get',
+            headers: {
+                'Authorization': `Bearer ${userdata}`,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            resolve(responseJson);
+        })
+        .catch((error) => {
+            reject(error);
+        })
+    });
+
+}
+
+export function SearchAudiobyCriteria(userdata, criteria, parameter){
+    console.log('SearchAudiobyCriteria: ', `http://localhost:3000/search/audio/${criteria}/${parameter}`);
+    return new Promise((resolve, reject) => {
+        fetch(`http://localhost:3000/search/audio/${criteria}/${parameter}`, {
+            method: 'Get',
+            headers: {
+                'Authorization': `Bearer ${userdata}`,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            resolve(responseJson);
+        })
+        .catch((error) => {
+            reject(error);
+        })
+    });
+
+} 
+
+export function SearchVideobyCriteria(userdata, criteria, parameter){
+    console.log('SearchVideobyCriteria');
+    return new Promise((resolve, reject) => {
+        fetch(`http://localhost:3000/search/video/${criteria}/${parameter}`, {
+            method: 'Get',
+            headers: {
+                'Authorization': `Bearer ${userdata}`,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            resolve(responseJson);
+        })
+        .catch((error) => {
+            reject(error);
+        })
+    });
+
+}
 
