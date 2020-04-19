@@ -1,7 +1,14 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb+srv://mediaLibraryAdmin:'+process.env.MONGO_ATLAS_PW+'@cluster0-3kobe.mongodb.net/mediaLibraryDB?retryWrites=true&w=majority',
-{ useNewUrlParser: true, useUnifiedTopology: true });
+if (process.env.NODE_ENV === 'test'){
+    mongoose.connect('mongodb+srv://mediaLibraryAdmin:'+process.env.MONGO_ATLAS_PW+'@cluster0-3kobe.mongodb.net/mediaLibraryTestDb?retryWrites=true&w=majority',
+    { useNewUrlParser: true, useUnifiedTopology: true });
+}
+else{
+    mongoose.connect('mongodb+srv://mediaLibraryAdmin:'+process.env.MONGO_ATLAS_PW+'@cluster0-3kobe.mongodb.net/mediaLibraryDB?retryWrites=true&w=majority',
+    { useNewUrlParser: true, useUnifiedTopology: true });
+}
+
 mongoose.Promise = global.Promise;
 
 // When successfully connected
