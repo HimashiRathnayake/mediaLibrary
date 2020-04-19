@@ -36,7 +36,7 @@ export default class Signup extends Component{
     }  
 
     signup(){
-        if(formValid(this.state.formErrors) && this.state.email.length !== 0 && this.state.password.length !== 0){
+        if(formValid(this.state.formErrors)){
             console.log(`
                 --submitting--
                 email: ${this.state.email}
@@ -51,6 +51,14 @@ export default class Signup extends Component{
                     this.setState({redirect: true})
                 }else{
                     console.log('SignUp Error');
+                    let formErrors = this.state.formErrors;
+                    if(result.message === 'email already exists'){
+                        formErrors.email= "Email already exists";
+                        this.setState({
+                            formErrors
+                        })
+                        
+                    }
                 }
             })
         }
@@ -65,22 +73,47 @@ export default class Signup extends Component{
 
         switch(name){
             case 'email':
-                formErrors.email =
-                    emailRegex.test(value) && value.length > 0 
-                    ? ""
-                    :"invalid email address";
+                if(value){
+                    formErrors.email =
+                        emailRegex.test(value) && value.length > 0 
+                        ? ""
+                        :"invalid email address";
+                }else{
+                    formErrors.email = "The email is required";
+                }
                 break;
             case 'password':
-                formErrors.password =
-                    value.length < 3 && value.length >0 
-                    ? "minimum 3 characters required"
-                    : "";
+                if(value){
+                    formErrors.password =
+                        value.length < 3 && value.length >0 
+                        ? "minimum 3 characters required"
+                        : "";
+                }
+                else{
+                    formErrors.password = "The password is required";
+                }
                 break;
             case 'confirmPassword':
-                formErrors.confirmPassword =
-                value !== this.state.password
-                    ? "not matching"
-                    : "";
+                if(value){
+                    formErrors.confirmPassword =
+                        value !== this.state.password
+                        ? "not matching"
+                        : "";
+                }
+                else{
+                    formErrors.confirmPassword = "Please confirm the password";
+                }
+                break;
+            case 'signup':
+                if(this.state.email.length === 0){
+                    formErrors.email = "The email is required";
+                }
+                if(this.state.password.length === 0){
+                    formErrors.password = "The password is required";
+                }
+                if(this.state.confirmPassword.length === 0){
+                    formErrors.confirmPassword = "Please confirm the password";
+                }
                 break;
             default:
                 break;             
@@ -89,6 +122,9 @@ export default class Signup extends Component{
             formErrors,
             [e.target.name]: e.target.value 
         });
+        if(e.target.name === 'signup'){
+            this.signup();
+        }
         console.log(this.state);
     }
 
@@ -144,7 +180,7 @@ export default class Signup extends Component{
                             )} 
                         </div>
 
-                        <input className="btn btn-primary btn-block" type="button" name="signup" onClick={this.signup} value="SignUp" />
+                        <input className="btn btn-primary btn-block" type="button" name="signup" onClick={this.onChange} value="SignUp" />
                         <p className="forgot-password text-right">
                              Already registered <Link  to={"/login"}>Sign In ?</Link>
                         </p>

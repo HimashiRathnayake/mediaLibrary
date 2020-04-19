@@ -16,8 +16,10 @@ export default class Video extends Component{
         this.allVideos=this.allVideos.bind(this);
         this.getVideo=this.getVideo.bind(this);
         this.createFolder=this.createFolder.bind(this);
+        this.RenameVideo=this.RenameVideo.bind(this);
         this.deleteFolder=this.deleteFolder.bind(this);
         this.deleteVideo=this.deleteVideo.bind(this);
+        this.SearchVideo=this.SearchVideo.bind(this);
         this.search=this.search.bind(this);
         this.logout = this.logout.bind(this);
         
@@ -26,10 +28,13 @@ export default class Video extends Component{
           type: 'Video',
           routeType:'videos',
           folders: {},
+          folder: {},
+          nurl: '',
           createFolderShow: false,
           redirect: false,
           searchShow: false
         }
+        this.allfolders();
     }
       
     addActiveClass() {
@@ -56,12 +61,18 @@ export default class Video extends Component{
         GetAll(JSON.parse(sessionStorage.getItem('userData')).token, this.state.routeType).then((result) => {
             console.log("result:", result);
             this.setState({
-                folders: result
+                folders: result,
+                folder: {},
+                nurl: ''
             })
         }) 
     }
 
     getVideo(folder){
+        this.setState({
+            folder: folder,
+            nurl:''
+        })
         GetFromFolder(JSON.parse(sessionStorage.getItem('userData')).token, this.state.routeType, folder._id).then((result) => {
             console.log("get video from folder: ", result);
             this.setState({
@@ -93,9 +104,29 @@ export default class Video extends Component{
         DeleteVideo(JSON.parse(sessionStorage.getItem('userData')).token, video._id).then((result) => {
             alert(result.message);
             if(result.message === "Video deleted"){
-                this.allVideos();
+                if(Object.keys(this.state.folder).length){
+                    this.getVideo(this.state.folder);
+                }
+                else if(this.state.nurl.length){
+                    this.SearchVideo(this.state.nurl)
+                }
+                else{
+                    this.allVideos();
+                }
             }  
         })     
+    }
+
+    RenameVideo(){
+        if(Object.keys(this.state.folder).length){
+            this.getVideo(this.state.folder);
+        }
+        else if(this.state.nurl.length){
+            this.SearchVideo(this.state.nurl)
+        }
+        else{
+            this.allVideos();
+        }    
     }
 
     search(e){
@@ -108,9 +139,16 @@ export default class Video extends Component{
         if(e.target.artist.value){
             eurl += ('artist='+ e.target.artist.value + '&');  
         }
-        var nurl=eurl.substring(0, eurl.length-1);
- 
-        SearchVideos(JSON.parse(sessionStorage.getItem('userData')).token, nurl).then((result) => {
+        var newurl=eurl.substring(0, eurl.length-1);
+        console.log("newurl: ", newurl);
+        this.setState({
+            nurl: newurl
+        })
+        this.SearchVideo(newurl);
+    }
+
+    SearchVideo(newurl){
+        SearchVideos(JSON.parse(sessionStorage.getItem('userData')).token, newurl).then((result) => {
             console.log(result);
             this.setState({
                 folders: result
@@ -170,6 +208,7 @@ export default class Video extends Component{
                             <li> <button className="link-button" onClick={this.allVideos}>All Videos</button> </li>
                             <li> <button className="link-button" onClick={() => this.setState({createFolderShow: true})} >Create Folder</button> </li>
                             <li> <button className="link-button" onClick={() => this.setState({searchShow: true})}>Search</button> </li>
+                            <li> <button className="link-button" >Shared Folders & Videos</button> </li>
                             <li> <button className="link-button" onClick={this.logout}>Logout</button> </li>
                         </ul> 
                     </div>
@@ -181,7 +220,7 @@ export default class Video extends Component{
                                         deleteVideo={this.deleteVideo}
                                         allfolders={this.allfolders}
                                         routeType={this.state.routeType}
-                                        allVideos={this.allVideos}/>
+                                        RenameVideo={this.RenameVideo}/>
                             <CreateFolder show={this.state.createFolderShow}
                                           onHide={createFolderClose}
                                           createfolder={this.createFolder}

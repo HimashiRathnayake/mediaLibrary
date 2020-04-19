@@ -419,7 +419,7 @@ export function SearchAudios(userdata, url){
 }
 
 export function SearchImagebyCriteria(userdata, criteria, parameter){
-    console.log('SearchImagebyCCriteria');
+    console.log('SearchImagebyCCriteria: ', `http://localhost:3000/search/image/${criteria}/${parameter}`);
     return new Promise((resolve, reject) => {
         fetch(`http://localhost:3000/search/image/${criteria}/${parameter}`, {
             method: 'Get',

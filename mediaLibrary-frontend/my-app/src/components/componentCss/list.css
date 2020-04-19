@@ -10,7 +10,7 @@
 .panel-body input[type=checkbox]:checked + label { text-decoration: line-through;color: rgb(18, 62, 105); }
 .list-group-item:hover, a.list-group-item:focus {text-decoration: none;background-color: rgb(9, 154, 221);}
 .list-group { margin-bottom:0px; }
-.pull-right action-buttons{padding-left: 25px;}
+.pull-right action-buttons{display: flex; padding-left: 25px;}
 .card-horizontal {
     display: flex;
 } 

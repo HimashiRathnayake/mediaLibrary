@@ -35,10 +35,10 @@ class ResultList extends Component{
                 this.props.RenameImage(); 
             }  
             else if(this.state.type=== 'videos'){
-                this.props.allVideos(); 
+                this.props.RenameVideo(); 
             }
             else if(this.state.type=== 'audios'){
-                this.props.allAudios(); 
+                this.props.RenameAudio(); 
             }  
         }) 
     }
@@ -62,9 +62,9 @@ class ResultList extends Component{
     render(){
         let renameClose=()=> this.setState({renameShow: false})
         let uploadClose=()=> this.setState({uploadShow: false})
-
+        var folderlist='No Result Found';
         if(this.props.resultFolders.count){
-            var folderlist='';
+           
             if(this.props.resultFolders.folders){
                 folderlist= this.props.resultFolders.folders.map(folderName => {
                 
@@ -88,28 +88,18 @@ class ResultList extends Component{
                     var imgsrc=  imageName.path;
                     
                     return(
-                        <li className="list-group-item" key={imageName._id}>
-                            <div className="row">
-                                <div className="col-12 ">
-                                    <div className="card">
-                                        <div className="card-horizontal">
-                                            <div className="img-square-wrapper">
-                                                <img className="" src={imgsrc} width="350px" height="200px" alt="" />
-                                            </div>
-                                            <div className="card-body">
-                                                <h6 className="card-title"> {imageName.imageName}</h6>
-                                                <div className="pull-right action-buttons">
-                                                    <button className="link-button" onClick={() => this.props.deleteImage(imageName)}><span className="fa fa-trash-o fa-fw" > </span></button>
-                                                    <button className="link-button" onClick={()=> this.setState({renameShow: true,type: 'images', folderId: imageName._id})}><span className="fa fa-pencil-square-o fa-fw" ></span></button>
-                                                    <button className="link-button"><span className="fa fa-share-alt fa-fw" > </span></button>
-                                                    <button className="link-button"><span className="fa fa-star fa-fw" > </span></button>      
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                        <li className="list-group-item" key={imageName._id} > 
+                            <div className="checkbox">
+                                <img className="" src={imgsrc} width="300px" height="200px" alt="" /> 
+                                <span> {imageName.imageName}</span>
                             </div>
-                        </li> 
+                            <div className="pull-right action-buttons">
+                                <button className="link-button" onClick={() => this.props.deleteImage(imageName)}><span className="fa fa-trash-o fa-fw" > </span></button>
+                                <button className="link-button" onClick={()=> this.setState({renameShow: true,type: 'images', folderId: imageName._id})}><span className="fa fa-pencil-square-o fa-fw" ></span></button>
+                                <button className="link-button"><span className="fa fa-share-alt fa-fw" > </span></button>
+                                <button className="link-button"><span className="fa fa-star fa-fw" > </span></button>      
+                            </div>
+                        </li>
                    )
                 })   
             }
@@ -119,30 +109,26 @@ class ResultList extends Component{
                     console.log("videosrc: ", videosrc);
                     
                     return(
-                        <li className="list-group-item" key={videoName._id}>
-                            <div className="row">
-                                <div className="col-12 ">
-                                    <div className="card">
-                                        <div className="card-horizontal">
-                                            <div className="img-square-wrapper">
-                                                <video id="samp" width="640" height="370" controls>
-                                                    <source src = {videosrc} type="video/mp4"/>
-                                                </video>
-                                            </div>
-                                            <div className="card-body">
-                                                <h6 className="card-title"> {videoName.videoName}</h6>
-                                                <div className="pull-right action-buttons">
-                                                    <button className="link-button" onClick={() => this.props.deleteVideo(videoName)}><span className="fa fa-trash-o fa-fw" > </span></button>
-                                                    <button className="link-button" onClick={()=> this.setState({renameShow: true, type: 'videos', folderId: videoName._id})}><span className="fa fa-pencil-square-o fa-fw" ></span></button>
-                                                    <button className="link-button"><span className="fa fa-share-alt fa-fw" > </span></button>
-                                                    <button className="link-button"><span className="fa fa-star fa-fw" > </span></button>      
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                    <li className="list-group-item" key={videoName._id} > 
+                        <div className="row">
+                            <div className="col-md-7">
+                                <video  object-fit='fill'  controls >
+                                    <source  src = {videosrc} type="video/mp4" />
+                                </video>
+                            </div>
+                            <div className="col-md-5">
+                            <div className="pull-left" style={{marginLeft: '10px'}}>
+                                <span>{videoName.videoName}</span>
+                                </div>
+                                <div className="pull-right action-buttons">
+                                    <button className="link-button" onClick={() => this.props.deleteVideo(videoName)}><span className="fa fa-trash-o fa-fw" > </span></button>
+                                    <button className="link-button" onClick={()=> this.setState({renameShow: true, type: 'videos', folderId: videoName._id})}><span className="fa fa-pencil-square-o fa-fw" ></span></button>
+                                    <button className="link-button"><span className="fa fa-share-alt fa-fw" > </span></button>
+                                    <button className="link-button"><span className="fa fa-star fa-fw" > </span></button>      
                                 </div>
                             </div>
-                        </li> 
+                        </div>
+                    </li> 
                    )
                 })   
             }
@@ -152,36 +138,32 @@ class ResultList extends Component{
                     console.log("audiosrc: ", audiosrc);
                     
                     return(
-                        <li className="list-group-item" key={audioName._id}>
-                            <div className="row">
-                                <div className="col-12 ">
-                                    <div className="card">
-                                        <div className="card-horizontal">
-                                            <div className="img-square-wrapper">
-                                                <audio controls width="300px" height="100px">
-                                                    <source src={audiosrc} type="audio/ogg"/>
-                                                    <source src={audiosrc} type="audio/mpeg"/>
-                                                        Your browser does not support the audio tag.
-                                                </audio>
-                                            </div>
-                                            <div className="card-body">
-                                                <h6 className="card-title"> {audioName.audioName}</h6>
-                                                <div className="pull-right action-buttons">
-                                                    <button className="link-button" onClick={() => this.props.deleteAudio(audioName)}><span className="fa fa-trash-o fa-fw" > </span></button>
-                                                    <button className="link-button" onClick={()=> this.setState({renameShow: true, type: 'audios', folderId: audioName._id})}><span className="fa fa-pencil-square-o fa-fw" ></span></button>
-                                                    <button className="link-button"><span className="fa fa-share-alt fa-fw" > </span></button>
-                                                    <button className="link-button"><span className="fa fa-star fa-fw" > </span></button>      
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                    <li className="list-group-item" key={audioName._id} > 
+                        <div className="row">
+                            <div className="col" style={{columnWidth: '100px'}}>
+                                <audio  controls>
+                                    <source src={audiosrc} type="audio/mp3" />
+                                    <source src={audiosrc} type="audio/wav" />
+                                </audio>
+                            </div>
+                            <div className="col" style={{columnWidth: '770px'}}>
+                                <div className="pull-left">
+                                    <span>{audioName.audioName}</span>
+                                </div>
+                                <div className="pull-right action-buttons" >
+                                    <button className="link-button" onClick={() => this.props.deleteAudio(audioName)}><span className="fa fa-trash-o fa-fw" > </span></button>
+                                    <button className="link-button" onClick={()=> this.setState({renameShow: true, type: 'audios', folderId: audioName._id})}><span className="fa fa-pencil-square-o fa-fw" ></span></button>
+                                    <button className="link-button"><span className="fa fa-share-alt fa-fw" > </span></button>
+                                    <button className="link-button"><span className="fa fa-star fa-fw" > </span></button>   
                                 </div>
                             </div>
-                        </li> 
+                        </div>
+                    </li> 
                    )
                 })   
             }
         }
+         
         return(
             <ul>
                 {folderlist}

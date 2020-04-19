@@ -16,8 +16,10 @@ export default class Audio extends Component{
         this.allAudios=this.allAudios.bind(this);
         this.getAudio=this.getAudio.bind(this);
         this.createFolder=this.createFolder.bind(this);
+        this.RenameAudio=this.RenameAudio.bind(this);
         this.deleteFolder=this.deleteFolder.bind(this);
         this.deleteAudio=this.deleteAudio.bind(this);
+        this.SearchAudio=this.SearchAudio.bind(this);
         this.search=this.search.bind(this);
         this.logout = this.logout.bind(this);
         
@@ -26,10 +28,13 @@ export default class Audio extends Component{
           type: 'Audio',
           routeType:'audios',
           folders: {},
+          folder: {},
+          nurl: '',
           createFolderShow: false,
           redirect: false,
           searchShow: false
         }
+        this.allfolders();
     }
       
     addActiveClass() {
@@ -56,12 +61,18 @@ export default class Audio extends Component{
         GetAll(JSON.parse(sessionStorage.getItem('userData')).token, this.state.routeType).then((result) => {
             console.log("result:", result);
             this.setState({
-                folders: result
+                folders: result,
+                folder: {},
+                nurl: ''
             })
         }) 
     }
 
     getAudio(folder){
+        this.setState({
+            folder: folder,
+            nurl:''
+        })
         GetFromFolder(JSON.parse(sessionStorage.getItem('userData')).token, this.state.routeType, folder._id).then((result) => {
             console.log("get audio from folder: ", result);
             this.setState({
@@ -93,9 +104,29 @@ export default class Audio extends Component{
         DeleteAudio(JSON.parse(sessionStorage.getItem('userData')).token, audio._id).then((result) => {
             alert(result.message);
             if(result.message === "Audio deleted"){
-                this.allAudios();
+                if(Object.keys(this.state.folder).length){
+                    this.getAudio(this.state.folder);
+                }
+                else if(this.state.nurl.length){
+                    this.SearchAudio(this.state.nurl)
+                }
+                else{
+                    this.allAudios();
+                }
             }  
         })     
+    }
+
+    RenameAudio(){
+        if(Object.keys(this.state.folder).length){
+            this.getAudio(this.state.folder);
+        }
+        else if(this.state.nurl.length){
+            this.SearchAudio(this.state.nurl)
+        }
+        else{
+            this.allAudios();
+        }    
     }
 
     search(e){
@@ -114,9 +145,17 @@ export default class Audio extends Component{
         if(e.target.year.value){
             eurl += ('year='+ e.target.year.value + '&');  
         }
-        var nurl=eurl.substring(0, eurl.length-1);
- 
-        SearchAudios(JSON.parse(sessionStorage.getItem('userData')).token, nurl).then((result) => {
+        var newurl=eurl.substring(0, eurl.length-1);
+        console.log("newurl: ", newurl);
+
+        this.setState({
+            nurl: newurl
+        })
+        this.SearchAudio(newurl);
+    }
+
+    SearchAudio(newurl){
+        SearchAudios(JSON.parse(sessionStorage.getItem('userData')).token, newurl).then((result) => {
             console.log(result);
             this.setState({
                 folders: result
@@ -175,6 +214,7 @@ export default class Audio extends Component{
                             <li> <button className="link-button" onClick={this.allAudios}>All Audios</button> </li>
                             <li> <button className="link-button" onClick={() => this.setState({createFolderShow: true})} >Create Folder</button> </li>
                             <li> <button className="link-button" onClick={() => this.setState({searchShow: true})}>Search</button> </li>
+                            <li> <button className="link-button" >Shared Folders & Audios</button> </li>
                             <li> <button className="link-button" onClick={this.logout}>Logout</button> </li>
                         </ul> 
                     </div>
@@ -186,7 +226,7 @@ export default class Audio extends Component{
                                         deleteAudio={this.deleteAudio}
                                         allfolders={this.allfolders}
                                         routeType={this.state.routeType}
-                                        allAudios={this.allAudios}/>
+                                        RenameAudio={this.RenameAudio}/>
                             <CreateFolder show={this.state.createFolderShow}
                                           onHide={createFolderClose}
                                           createfolder={this.createFolder}

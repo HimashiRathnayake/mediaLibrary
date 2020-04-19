@@ -19,7 +19,7 @@ export default class Image extends Component{
         this.deleteImage=this.deleteImage.bind(this);
         this.RenameImage=this.RenameImage.bind(this);
         this.createFolder=this.createFolder.bind(this);
-        this.createShow=this.createShow.bind(this);
+        this.SearchImage=this.SearchImage.bind(this);
         this.search=this.search.bind(this);
         this.logout = this.logout.bind(this);
         
@@ -29,7 +29,7 @@ export default class Image extends Component{
           routeType: 'images',
           folders: {},
           folder: {},
-          images: {},
+          nurl: '',
           redirect: false,
           createFolderShow: false,
           searchShow: false
@@ -52,8 +52,7 @@ export default class Image extends Component{
     allfolders() {
         GetFolders(JSON.parse(sessionStorage.getItem('userData')).token, this.state.type).then((result) => {
             this.setState({
-                folders: result,
-                images: {}
+                folders: result
             })
         }) 
     }
@@ -63,7 +62,8 @@ export default class Image extends Component{
             console.log("All images results: ", result);
             this.setState({
                 folders: result,
-                folder: {}
+                folder: {},
+                nurl: ''
             })
         }) 
     }
@@ -72,7 +72,8 @@ export default class Image extends Component{
         console.log("folder in getImage function: ", folder);
         console.log("folder state: ", Object.keys(folder).length  );
         this.setState({
-            folder: folder
+            folder: folder,
+            nurl:''
         })
         GetFromFolder(JSON.parse(sessionStorage.getItem('userData')).token, this.state.routeType, folder._id).then((result) => {
             this.setState({
@@ -97,6 +98,9 @@ export default class Image extends Component{
                 if(Object.keys(this.state.folder).length){
                     this.getImage(this.state.folder);
                 }
+                else if(this.state.nurl.length){
+                    this.SearchImage(this.state.nurl)
+                }
                 else{
                     this.allImages();
                 }
@@ -107,6 +111,9 @@ export default class Image extends Component{
     RenameImage(){
         if(Object.keys(this.state.folder).length){
             this.getImage(this.state.folder);
+        }
+        else if(this.state.nurl.length){
+            this.SearchImage(this.state.nurl)
         }
         else{
             this.allImages();
@@ -123,13 +130,6 @@ export default class Image extends Component{
         })     
     } 
 
-    createShow(e){
-        e.preventDefault();  
-        this.setState({
-            createFolderShow: true
-        })
-    } 
-
     search(e){
         e.preventDefault(e);
 
@@ -143,9 +143,17 @@ export default class Image extends Component{
         if(e.target.artist.value){
             eurl += ('artist='+ e.target.artist.value + '&');  
         }
-        var nurl=eurl.substring(0, eurl.length-1);
- 
-        SearchImages(JSON.parse(sessionStorage.getItem('userData')).token, nurl).then((result) => {
+
+        var newurl = eurl.substring(0, eurl.length-1);
+        console.log("newurl: ", newurl);
+        this.setState({
+            nurl: newurl
+        })
+        this.SearchImage(newurl);
+    }
+
+    SearchImage(newurl){
+        SearchImages(JSON.parse(sessionStorage.getItem('userData')).token, newurl).then((result) => {
             console.log(result);
             this.setState({
                 folders: result
