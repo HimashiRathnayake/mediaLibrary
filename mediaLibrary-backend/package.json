@@ -4,7 +4,7 @@
   "description": "Mobile and web based application to manage a media library.",
   "main": "app.js",
   "scripts": {
-    "test": "mocha --recursive --timeout 10000000000 --exit",
+    "test": "nyc mocha --recursive --timeout 10000 --exit",
     "start": "nodemon server.js"
   },
   "repository": {

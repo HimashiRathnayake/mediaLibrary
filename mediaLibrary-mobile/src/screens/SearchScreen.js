@@ -1,5 +1,5 @@
 import React from 'react';
-import {ImageBackground, Text, StyleSheet, TextInput, TouchableOpacity, Dimensions, View, KeyboardAvoidingView} from 'react-native';
+import {ImageBackground, Text, StyleSheet, TextInput, TouchableOpacity, Dimensions, View, KeyboardAvoidingView, Alert} from 'react-native';
 import {Header} from '../commons/Header';
 import {styles} from '../styles/commons';
 import {Formik} from 'formik';
@@ -16,8 +16,15 @@ export const SearchScreen = ({route,navigation}) => {
                 initialValues={{title:'', subject:'', artist:'', album:'', year:''}}
                 onSubmit={
                     (values, actions)=>{
-                        navigation.push('Result',{type:type, values:values});
-                        actions.resetForm();
+                        console.log(values.title==='' && values.subject===''&& values.artist===''&& values.album===''&& values.year==='');
+                        if (values.title==='' && values.subject===''&& values.artist===''&& values.album===''&& values.year===''){
+                            Alert.alert('First enter what you want to search','',[
+                                {text: 'Ok'},
+                            ])
+                        }else{
+                            navigation.push('Result',{type:type, values:values});
+                            actions.resetForm();
+                        }
                     }
                 }
             >

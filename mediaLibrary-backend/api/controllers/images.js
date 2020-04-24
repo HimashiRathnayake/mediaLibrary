@@ -4,7 +4,7 @@ const Image =  require('../models/image');
 
 exports.images_get_all = (req, res, next) =>{
     Image.find({accessList: req.userData.userId})
-    .exec()
+    .exec() 
     .then(docs=>{
         const response={
             count: docs.length,

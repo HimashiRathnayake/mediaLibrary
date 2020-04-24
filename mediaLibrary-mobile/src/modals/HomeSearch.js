@@ -14,12 +14,15 @@ export const HomeSearch = ({visible, setVisible}) => {
     const [refresh, setRefresh] = useState(false);
     const [files, setFiles] = useState([]);
     const [count, setCount] = useState(null);
+    const [isLoading, setLoading] = useState(false);
 
     React.useEffect(()=>{
         function searchMediaFiles(){
+            setLoading(true);
             if (value==''){
                 setFiles(null);
                 setCount(0);
+                setLoading(false);
             }
             else{
                 searchOverall(value, selected, criteria)
@@ -29,9 +32,11 @@ export const HomeSearch = ({visible, setVisible}) => {
                     if (selected ==='image'){setFiles(response.Images);}
                     else if (selected ==='audio'){setFiles(response.Audios);}
                     else{setFiles(response.Videos);} 
+                    setLoading(false);
                 })
                 .catch((error)=>{
-                    console.log(error)
+                    console.log(error);
+                    setLoading(false);
                 })
             }
         }
@@ -67,17 +72,17 @@ export const HomeSearch = ({visible, setVisible}) => {
                 </View>
 
                 <View style={styleHome.searchView}>
-                    <TouchableOpacity onPress={async()=>{await setFiles(null); setSelected('image');}}>
+                    <TouchableOpacity disabled={isLoading} onPress={async()=>{await setFiles(null); setSelected('image');}}>
                         <Text style={[styleHome.criteria, selected==='image'?{borderBottomColor:'#1976d2', color:'#1976d2'}:{borderBottomColor:'transparent', color:'#fff'}]}>
                             Image
                         </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={async()=>{await setFiles(null); setSelected('audio'); }}>
+                    <TouchableOpacity disabled={isLoading} onPress={async()=>{await setFiles(null); setSelected('audio'); }}>
                         <Text style={[styleHome.criteria, selected==='audio'?{borderBottomColor:'#1976d2', color:'#1976d2'}:{borderBottomColor:'transparent', color:'#fff'}]}>
                             Audio
                         </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={async()=>{await setFiles(null); setSelected('video');}}>
+                    <TouchableOpacity disabled={isLoading} onPress={async()=>{await setFiles(null); setSelected('video');}}>
                         <Text style={[styleHome.criteria, selected==='video'?{borderBottomColor:'#1976d2', color:'#1976d2'}:{borderBottomColor:'transparent', color:'#fff'}]}>
                             Video
                         </Text>

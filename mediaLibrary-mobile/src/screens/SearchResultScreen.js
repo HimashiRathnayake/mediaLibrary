@@ -17,9 +17,8 @@ export const SearchResultScreen = ({route,navigation}) => {
         navigation.addListener('focus', ()=>{ 
             setRefresh(true);
         })
-        searchFiles({type:route.params.type, title:route.params.values.title, album:route.params.values.album, artist:route.params.values.artist, year:route.params.values.year})
+        searchFiles({type:route.params.type, title:route.params.values.title, album:route.params.values.album, artist:route.params.values.artist, year:route.params.values.year, subject:route.params.values.subject})
         .then((response)=>{
-            console.log(response)
             setCount(response.count);
             if (type ==='Image'){setFiles(response.Images);}
             else if (type ==='Audio'){setFiles(response.Audios);}

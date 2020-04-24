@@ -58,7 +58,7 @@ export const FolderModal = ({modalVisible, setVisible, type, folderId, setRefres
                         {actionType==='Rename' && <Text style={stylesScreen.inputHeader}>Rename Folder</Text>}
                         <TextInput 
                             style={stylesScreen.input} 
-                            placeholder={actionType==='Create'?'Untitled Folder':'Enter New Name'}
+                            placeholder={actionType==='Create'?'Enter Name':'Enter New Name'}
                             placeholderTextColor="#9e9e9e" 
                             onChangeText={props.handleChange('folderName')}
                             value={props.values.folderName}

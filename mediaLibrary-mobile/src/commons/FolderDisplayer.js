@@ -12,13 +12,13 @@ export const FolderDisplayer = ({setRefresh, folders, count, type, navigation}) 
     const [modalFolder, setModalFolder] = useState(null);
     
     function deletefolder(folderId){
-        showProgress(true);
+        // showProgress(true);
         setActionModalVisible(false);
         deleteFolder({folderId: folderId})
         .then((response)=>{
             console.log(response)
             setRefresh(true);
-            showProgress(false);
+            // showProgress(false);
         })
     }
 
