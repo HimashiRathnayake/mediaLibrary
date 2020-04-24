@@ -12,7 +12,7 @@ describe ('User Modal', ()=>{
     });
     
     describe ('User Modal failers', ()=>{
-        it('Should not save a user without a password', (done)=>{
+        it('OK, Should not save a user without a password', (done)=>{
             var user = new User({
                 email: faker.internet.email()
             });
@@ -24,7 +24,7 @@ describe ('User Modal', ()=>{
             })
         })
     
-        it('Should not save a user without an email', (done)=>{
+        it('OK, Should not save a user without an email', (done)=>{
             var user = new User({
                 password: faker.internet.password()
             });
@@ -36,7 +36,7 @@ describe ('User Modal', ()=>{
             })
         })
     
-        it('Should not save a user without both password and email', (done)=>{
+        it('OK, Should not save a user without both password and email', (done)=>{
             var user = new User({});
             user.save()
             .catch((err)=>{
@@ -47,7 +47,7 @@ describe ('User Modal', ()=>{
         })
     })
     
-    describe('User Model success', ()=>{
+    describe('OK, User Model success', ()=>{
         it('Should save a user with both password and email', (done)=>{
             var user = new User({
                 _id: mongoose.Types.ObjectId(),

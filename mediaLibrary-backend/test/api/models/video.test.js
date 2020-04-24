@@ -13,7 +13,7 @@ describe ('Video Modal', ()=>{
     
     describe ('Video Modal Save Should failes', ()=>{
 
-        it('Should not save a video without a name', (done)=>{
+        it('OK, Should not save a video without a name', (done)=>{
             var video = new Video({
                 title: 'Test Title',
                 artist: 'Test Artist',
@@ -28,7 +28,7 @@ describe ('Video Modal', ()=>{
             })
         })
     
-        it('Should not save a video without a folder', (done)=>{
+        it('OK, Should not save a video without a folder', (done)=>{
             var video = new Video({
                 videoName: 'Test Audio',
                 title: 'Test Title',
@@ -43,7 +43,7 @@ describe ('Video Modal', ()=>{
             })
         })
 
-        it('Should not save a video without a path', (done)=>{
+        it('OK, Should not save a video without a path', (done)=>{
             var video = new Video({
                 videoName: 'Test Video',
                 title: 'Test Title',
@@ -58,7 +58,7 @@ describe ('Video Modal', ()=>{
             })
         })
     
-        it('Should not save a video without both path and folder', (done)=>{
+        it('OK, Should not save a video without both path and folder', (done)=>{
             var video = new Video({
                 videoName: 'Test Video',
                 title: 'Test Title',
@@ -72,7 +72,7 @@ describe ('Video Modal', ()=>{
             })
         })
 
-        it('Should not save a video without both name and folder', (done)=>{
+        it('OK, Should not save a video without both name and folder', (done)=>{
             var video = new Video({
                 title: 'Test Title',
                 artist: 'Test Artist',
@@ -86,7 +86,7 @@ describe ('Video Modal', ()=>{
             })
         })
 
-        it('Should not save a video without both name and path', (done)=>{
+        it('OK, Should not save a video without both name and path', (done)=>{
             var video = new Video({
                 title: 'Test Title',
                 artist: 'Test Artist',
@@ -100,7 +100,7 @@ describe ('Video Modal', ()=>{
             })
         })
 
-        it('Should not save a video without name, folder and path', (done)=>{
+        it('OK, Should not save a video without name, folder and path', (done)=>{
             var video = new Video({
                 title: 'Test Title',
                 artist: 'Test Artist',
@@ -116,7 +116,7 @@ describe ('Video Modal', ()=>{
     
     describe('Video Model should successfully save', ()=>{
 
-        it('Should save an video without a title as `Untitled`', (done)=>{
+        it('OK, Should save an video without a title as `Untitled`', (done)=>{
             var video = new Video({
                 _id: mongoose.Types.ObjectId(),
                 videoName: 'Test Video',
@@ -137,7 +137,7 @@ describe ('Video Modal', ()=>{
             })
         })
 
-        it('Should save a video without an artist as `Unknown artist`', (done)=>{
+        it('OK, Should save a video without an artist as `Unknown artist`', (done)=>{
             var video = new Video({
                 _id: mongoose.Types.ObjectId(),
                 videoName: 'Test Video',
@@ -158,7 +158,7 @@ describe ('Video Modal', ()=>{
             })
         })
 
-        it('Should save a video correctly if all details are provided', (done)=>{
+        it('OK, Should save a video correctly if all details are provided', (done)=>{
             var video = new Video({
                 _id: mongoose.Types.ObjectId(),
                 videoName: 'Test Video',

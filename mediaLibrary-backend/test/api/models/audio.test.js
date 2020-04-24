@@ -13,7 +13,7 @@ describe ('Audio Modal', ()=>{
     
     describe ('Audio Modal Save Should failes', ()=>{
 
-        it('Should not save an audio without a name', (done)=>{
+        it('OK, Should not save an audio without a name', (done)=>{
             var audio = new Audio({
                 title: 'Test Title',
                 album: 'Test Album',
@@ -30,7 +30,7 @@ describe ('Audio Modal', ()=>{
             })
         })
     
-        it('Should not save an audio without a folder', (done)=>{
+        it('OK, Should not save an audio without a folder', (done)=>{
             var audio = new Audio({
                 audioName: 'Test Audio',
                 title: 'Test Title',
@@ -47,7 +47,7 @@ describe ('Audio Modal', ()=>{
             })
         })
 
-        it('Should not save an audio without a path', (done)=>{
+        it('OK, Should not save an audio without a path', (done)=>{
             var audio = new Audio({
                 audioName: 'Test Audio',
                 title: 'Test Title',
@@ -64,7 +64,7 @@ describe ('Audio Modal', ()=>{
             })
         })
     
-        it('Should not save an audio without both path and folder', (done)=>{
+        it('OK, Should not save an audio without both path and folder', (done)=>{
             var audio = new Audio({
                 audioName: 'Test Audio',
                 title: 'Test Title',
@@ -80,7 +80,7 @@ describe ('Audio Modal', ()=>{
             })
         })
 
-        it('Should not save an audio without both name and folder', (done)=>{
+        it('OK, Should not save an audio without both name and folder', (done)=>{
             var audio = new Audio({
                 title: 'Test Title',
                 album: 'Test Album',
@@ -96,7 +96,7 @@ describe ('Audio Modal', ()=>{
             })
         })
 
-        it('Should not save an audio without both name and path', (done)=>{
+        it('OK, Should not save an audio without both name and path', (done)=>{
             var audio = new Audio({
                 title: 'Test Title',
                 album: 'Test Album',
@@ -112,7 +112,7 @@ describe ('Audio Modal', ()=>{
             })
         })
 
-        it('Should not save an audio without name, folder and path', (done)=>{
+        it('OK, Should not save an audio without name, folder and path', (done)=>{
             var audio = new Audio({
                 title: 'Test Title',
                 album: 'Test Album',
@@ -130,7 +130,7 @@ describe ('Audio Modal', ()=>{
     
     describe('Audio Model should successfully save', ()=>{
 
-        it('Should save an audio without title as `Untitled`', (done)=>{
+        it('OK, Should save an audio without title as `Untitled`', (done)=>{
             var audio = new Audio({
                 _id: mongoose.Types.ObjectId(),
                 audioName: 'Test Audio',
@@ -155,7 +155,7 @@ describe ('Audio Modal', ()=>{
             })
         })
 
-        it('Should save an audio without album as `Unknown album`', (done)=>{
+        it('OK, Should save an audio without album as `Unknown album`', (done)=>{
             var audio = new Audio({
                 _id: mongoose.Types.ObjectId(),
                 audioName: 'Test Audio',
@@ -180,7 +180,7 @@ describe ('Audio Modal', ()=>{
             })
         })
 
-        it('Should save an audio without artist as `Unknown artist`', (done)=>{
+        it('OK, Should save an audio without artist as `Unknown artist`', (done)=>{
             var audio = new Audio({
                 _id: mongoose.Types.ObjectId(),
                 audioName: 'Test Audio',
@@ -205,7 +205,7 @@ describe ('Audio Modal', ()=>{
             })
         })
 
-        it('Should save an audio correctly if all details are provided', (done)=>{
+        it('OK, Should save an audio correctly if all details are provided', (done)=>{
             var audio = new Audio({
                 _id: mongoose.Types.ObjectId(),
                 audioName: 'Test Audio',
