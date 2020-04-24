@@ -1,58 +1,36 @@
-// process.env.NODE_ENV = 'test';
-// process.env.JWT_KEY = "secret";
-// process.env.MONGO_ATLAS_PW = "mediaLibraryPassword";
-
-// const chai = require('chai');
-// const {expect} = chai;
-// const faker = require('faker');
 // const sinon = require('sinon');
-// const sinonChai = require('sinon-chai');
-// const rewire = require('rewire');
-
+// const UserController = require('../../../api/controllers/user');
 // const User = require('../../../api/models/user');
-// const userController = rewire('../../../api/controllers/user');
+// const sinonTest =  require('sinon-test');
+// const test = sinonTest(sinon);
+// const faker = require('faker');
+// // const sinonMongoose = require('sinon-mongoose');
 
-// chai.use(sinonChai);
-
-// let sandbox = null;
-
-// describe('User Controller', ()=>{
-//     let req = {
-//         body: {
-//             email: faker.internet.email(),
-//             password: faker.internet.password()
-//         }
-//     };
-//     let res = {
-//         json : function(){
-//             return this;
+// describe('User Controller', function () {
+//     describe('user login', function () {
+//         let req = { 
+//             body: { // for testing create vehicle
+//                 email: faker.internet.email(),
+//                 password:  faker.internet.password()
+//             },
 //         },
-//         status: function(){
-//             return this;
-//         }
-//     }
-
-//     beforeEach(()=>{
-//         sandbox = sinon.createSandbox();
-//     })
-
-//     afterEach(()=>{
-//         sandbox.restore();
-//     })
-
-//     describe('login', ()=>{
-//         it('should return token when signIn called', ()=>{
-//             sandbox.spy(res, 'json');
-//             sandbox.spy(res, 'status');
-//             userController.user_login(req,res, ()=>{
-//                 expect(res.status).to.have.been.calledWith(409);
-//                 expect(res.json.callCount).to.equal(1);
-//                 done();
-//             })
-//         })
-
-        
-//     })
-
-
+//             // server error
+//             error = new Error({ error: "blah blah" }),
+//             res = {}, 
+//             expectedResult;
+//         beforeEach(function () {
+//             res = {
+//                 json: sinon.spy(),
+//                 status: sinon.spy()
+//             };
+//         });
+//         it('should return created vehicle obj', test(function () {
+//             // sinonMongoose.mock()
+//             this.stub(User, 'find').returns(); 
+//             UserController.user_login(req, res);
+//             sinon.assert.calledWith(User.find.exec, req.body);
+//             // sinon.assert.calledWith(res.json, sinon.match({ model: req.body.model }));
+//             // sinon.assert.calledWith(res.json, sinon.match({ manufacturer: req.body.manufacturer }));
+//         }));
+//     });
 // })
