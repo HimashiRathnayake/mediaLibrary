@@ -35,14 +35,12 @@ describe ('User routes', ()=>{
 
     after('dropping test db', done => {
         mongoose.connection.db.dropDatabase(()=>{
-            console.log('\n Test database dropped')
-        });
-        mongoose.connection.close(()=>{
+            console.log('\n Test database dropped');
             done();
-        })
+        });
     })
 
-    describe('signup', ()=>{
+    describe('\nsignup', ()=>{
         it('OK, should create new user if email not found', done => {
             request(app)
             .post(signup)
@@ -76,7 +74,7 @@ describe ('User routes', ()=>{
         });
     });
 
-    describe('login', ()=>{
+    describe('\nlogin', ()=>{
         it('OK, should return error 401 if user email and password empty', done => {
             let user ={};
             request(app)

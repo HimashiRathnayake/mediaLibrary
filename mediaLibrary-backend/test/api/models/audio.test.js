@@ -152,7 +152,7 @@ describe ('Audio Modal', ()=>{
                 expect(res).to.contain.property('accessList');
                 expect(res).to.be.deep.contain({title: "Untitled"});
                 done();
-            })
+            }).catch((err)=>console.log(err))
         })
 
         it('OK, Should save an audio without album as `Unknown album`', (done)=>{
@@ -177,7 +177,7 @@ describe ('Audio Modal', ()=>{
                 expect(res).to.contain.property('accessList');
                 expect(res).to.be.deep.contain({album: "Unknown album"});
                 done();
-            })
+            }).catch((err)=>console.log(err))
         })
 
         it('OK, Should save an audio without artist as `Unknown artist`', (done)=>{
@@ -202,7 +202,7 @@ describe ('Audio Modal', ()=>{
                 expect(res).to.contain.property('accessList');
                 expect(res).to.be.deep.contain({artist: "Unknown artist"});
                 done();
-            })
+            }).catch((err)=>console.log(err))
         })
 
         it('OK, Should save an audio correctly if all details are provided', (done)=>{
@@ -228,7 +228,7 @@ describe ('Audio Modal', ()=>{
                 expect(res).to.contain.property('folder');
                 expect(res).to.contain.property('accessList');
                 done();
-            })
+            }).catch((err)=>console.log(err))
         })
     })
     

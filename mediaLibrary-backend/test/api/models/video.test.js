@@ -134,7 +134,7 @@ describe ('Video Modal', ()=>{
                 expect(res).to.contain.property('accessList');
                 expect(res).to.be.deep.contain({title: "Untitled"});
                 done();
-            })
+            }).catch((err)=>console.log(err))
         })
 
         it('OK, Should save a video without an artist as `Unknown artist`', (done)=>{
@@ -155,7 +155,7 @@ describe ('Video Modal', ()=>{
                 expect(res).to.contain.property('accessList');
                 expect(res).to.be.deep.contain({artist: "Unknown artist"});
                 done();
-            })
+            }).catch((err)=>console.log(err))
         })
 
         it('OK, Should save a video correctly if all details are provided', (done)=>{
@@ -177,7 +177,7 @@ describe ('Video Modal', ()=>{
                 expect(res).to.contain.property('folder');
                 expect(res).to.contain.property('accessList');
                 done();
-            })
+            }).catch((err)=>console.log(err))
         })
     })
     

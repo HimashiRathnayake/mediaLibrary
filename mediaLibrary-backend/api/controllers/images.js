@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const fs = require('fs');
 
 const Image =  require('../models/image'); 
 
@@ -59,8 +60,6 @@ exports.images_get_images_from_folder = (req, res, next) =>{
 }
 
 exports.images_upload_image = (req, res, next) =>{
-    console.log(req.data)
-    console.log(req.file)
     const image =new Image({
         _id: new mongoose.Types.ObjectId(),
         imageName: req.file.originalname,
@@ -85,13 +84,27 @@ exports.images_upload_image = (req, res, next) =>{
 }
 
 exports.images_rename_image = (req, res, next) =>{
-    Image.update({_id: req.params.imageId},{imageName: req.body.imageName})
-    .exec()
-    .then(result => {
-        console.log(result);
-        res.status(200).json({
-            message: 'Image renamed successfully'
-        });
+    Image.findOne({_id: req.params.imageId})
+    .then(result=>{
+        if (result===null){
+            res.status(404).json({
+                message: 'Image not found'
+            })
+        }
+        else if (req.body.imageName===undefined){
+            res.status(409).json({
+                message: 'Image name is required'
+            });
+        }
+        else{
+            Image.updateOne({_id: req.params.imageId},{imageName: req.body.imageName})
+            .exec()
+            .then(result => {
+                res.status(200).json({
+                    message: 'Image renamed successfully'
+                });
+            })
+        }
     })
     .catch(err=>{
         console.log(err);
@@ -102,12 +115,24 @@ exports.images_rename_image = (req, res, next) =>{
 }
 
 exports.images_delete_image = (req, res, next) => {
-    Image.remove({_id: req.params.imageId})
-    .exec()
-    .then(result => {
-        res.status(200).json({
-            message: "Image deleted"
-        });
+    Image.findOne({_id: req.params.imageId})
+    .then(result=>{
+        if (result===null){
+            res.status(404).json({
+                message: 'Image not found'
+            })
+        }
+        else{
+            var imagePath = result.path.split('/');
+            fs.unlinkSync('uploads/'+imagePath[imagePath.length-1]);
+            Image.deleteOne({_id: req.params.imageId})
+            .exec()
+            .then(result => {
+                res.status(200).json({
+                    message: "Image deleted"
+                });
+            })
+        }
     })
     .catch(err=>{
         console.log(err);

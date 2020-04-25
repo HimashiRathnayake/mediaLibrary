@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const fs = require('fs');
 
 const Video =  require('../models/video'); 
 
@@ -71,6 +72,7 @@ exports.videos_upload_video = (req, res, next) =>{
         console.log(result);
         res.status(201).json({
             message: 'Video uploaded successfully',
+            video: result
         });
     }).catch(err=>{
         console.log(err);
@@ -81,13 +83,25 @@ exports.videos_upload_video = (req, res, next) =>{
 }
 
 exports.videos_rename_video = (req, res, next) =>{
-    Video.update({_id: req.params.videoId},{videoName: req.body.videoName})
-    .exec()
-    .then(result => {
-        console.log(result);
-        res.status(200).json({
-            message: 'Video renamed successfully'
-        });
+    Video.findOne({_id: req.params.videoId})
+    .then(result=>{
+        if (result===null){
+            res.status(404).json({
+                message: 'Video not found'
+            })
+        }else if (req.body.videoName===undefined){
+            res.status(409).json({
+                message: 'Video name is required'
+            });
+        }else{
+            Video.updateOne({_id: req.params.videoId},{videoName: req.body.videoName})
+            .exec()
+            .then(result => {
+                res.status(200).json({
+                    message: 'Video renamed successfully'
+                });
+            })
+        }
     })
     .catch(err=>{
         console.log(err);
@@ -98,12 +112,24 @@ exports.videos_rename_video = (req, res, next) =>{
 }
 
 exports.videos_delete_video = (req, res, next) => {
-    Video.remove({_id: req.params.videoId})
-    .exec()
-    .then(result => {
-        res.status(200).json({
-            message: "Video deleted"
-        });
+    Video.findOne({_id: req.params.videoId})
+    .then(result=>{
+        if (result===null){
+            res.status(404).json({
+                message: 'Video not found'
+            })
+        }
+        else{
+            var videoPath = result.path.split('/');
+            fs.unlinkSync('uploads/'+videoPath[videoPath.length-1]);
+            Video.deleteOne({_id: req.params.videoId})
+            .exec()
+            .then(result => {
+                res.status(200).json({
+                    message: "Video deleted"
+                });
+            })
+        }
     })
     .catch(err=>{
         console.log(err);

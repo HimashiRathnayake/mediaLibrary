@@ -8,7 +8,7 @@ module.exports = (req, res, next)=>{
         ep
         .open()
         .then((pid) => {console.log('Started exiftool process %s', pid);
-        console.log(req.file)})
+        })
         .then(() => ep.readMetadata(req.file.path, ['-File:all']))
         .then((result)=>{
             req.data = result.data[0];
@@ -18,7 +18,9 @@ module.exports = (req, res, next)=>{
             console.log('Closed exiftool');
             next();
         })
-        .catch(console.error)
+        .catch((error)=>{
+            res.status(401).json({message: 'File Not Found'})
+        })
         
     }catch(error){
         return res.status(401).json({
