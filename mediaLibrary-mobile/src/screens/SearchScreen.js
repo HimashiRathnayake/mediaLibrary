@@ -10,7 +10,7 @@ export const SearchScreen = ({route,navigation}) => {
     return(
         <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
             <Header navigation={navigation}>Search {type}s</Header>
-            <KeyboardAvoidingView flex={1} behavior='height'>
+            <KeyboardAvoidingView flex={1} behavior='padding' keyboardVerticalOffset={-200}>
 
             <Formik 
                 initialValues={{title:'', subject:'', artist:'', album:'', year:''}}

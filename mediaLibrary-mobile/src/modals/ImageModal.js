@@ -1,11 +1,12 @@
 import React from 'react';
-import {Text, View, Modal, Image, Alert} from 'react-native';
+import {Text, View, Modal, Image, Alert, TouchableOpacity} from 'react-native';
 import {Ionicons, MaterialIcons, MaterialCommunityIcons, Entypo, AntDesign } from '@expo/vector-icons';
 import {stylesScreen} from '../styles/modals/image';
 import {deleteImage} from '../api/image';
 
 export const ImageModal = ({modelImage, modelVisible, setVisible, setRefresh}) => {
     const [detailsModal, setDetailsModal] = React.useState(false);
+    const [renameModal, setRenameModal] = React.useState(false);
 
     function deleteimage(imageId){
         setVisible(false); 
@@ -36,7 +37,9 @@ export const ImageModal = ({modelImage, modelVisible, setVisible, setRefresh}) =
                         <Ionicons name='md-share' style={stylesScreen.icon} onPress={()=>setVisible(false)}/>
                         <AntDesign name='left' style={stylesScreen.iconLeft} onPress={()=>setVisible(false)}/>
                     </View>
-                    <Image source={{uri:modelImage.path}} style={stylesScreen.originalImage}/>
+                    <View style={{justifyContent:'center'}}>
+                        <Image source={{uri:modelImage.path}} style={stylesScreen.originalImage}/>
+                    </View>
                 </View>
             </Modal>
             <Modal style={stylesScreen.modal} transparent={false} animationType='fade' visible={detailsModal} onRequestClose={()=>{}}>
@@ -46,7 +49,13 @@ export const ImageModal = ({modelImage, modelVisible, setVisible, setRefresh}) =
                         <Text style={stylesScreen.text}>Details</Text>
                     </View>
                     <View style={stylesScreen.details}>
-                        <View flexDirection='row'><Text style={stylesScreen.detailTextLeft}>Image Name :</Text><Text style={stylesScreen.detailTextRight}>{modelImage.imageName}</Text></View>
+                        <View flexDirection='row'>
+                            <Text style={stylesScreen.detailTextLeft}>Image Name :</Text>
+                            <Text style={stylesScreen.detailTextName}>{modelImage.imageName}</Text>
+                            <TouchableOpacity onPress={()=>alert('awsedrtfgyuhij')}>
+                                <AntDesign name='edit' style={stylesScreen.iconEdit}/>
+                            </TouchableOpacity>
+                        </View>
                         <View flexDirection='row'><Text style={stylesScreen.detailTextLeft}>Title :</Text><Text style={stylesScreen.detailTextRight}>{modelImage.title}</Text></View>
                         <View flexDirection='row'><Text style={stylesScreen.detailTextLeft}>Subject :</Text><Text style={stylesScreen.detailTextRight}>{modelImage.subject}</Text></View>
                         <View flexDirection='row'><Text style={stylesScreen.detailTextLeft}>Artist :</Text><Text style={stylesScreen.detailTextRight}>{modelImage.artist}</Text></View>

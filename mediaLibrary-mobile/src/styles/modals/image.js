@@ -17,6 +17,12 @@ export const stylesScreen = StyleSheet.create({
         paddingHorizontal: 15,
         paddingTop: 15,
     },
+    iconEdit: {
+        color: '#fff',
+        fontSize: 20,
+        marginLeft: 5,
+        paddingTop: 20,
+    },
     iconLeft:{
         color: '#fff',
         fontSize: 20,
@@ -46,7 +52,7 @@ export const stylesScreen = StyleSheet.create({
         alignSelf: 'stretch',
         resizeMode: 'center',
         width: Dimensions.get('screen').width,
-        height: Dimensions.get('screen').height
+        height: Dimensions.get('screen').height-100
     },
     detailTextLeft: {
         color: '#fff',
@@ -60,5 +66,12 @@ export const stylesScreen = StyleSheet.create({
         marginLeft: 20,
         paddingTop: 20,
         width: Dimensions.get('screen').width /2 
+    },
+    detailTextName: {
+        color: '#fff',
+        fontSize: 16,
+        marginLeft: 20,
+        paddingTop: 20,
+        width: Dimensions.get('screen').width /2 -40
     },
 });
