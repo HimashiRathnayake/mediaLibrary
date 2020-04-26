@@ -5,6 +5,7 @@ const Video =  require('../models/video');
 
 exports.videos_get_all = (req, res, next) =>{
     Video.find({accessList: req.userData.userId})
+    .populate('accessList')
     .exec()
     .then(docs=>{
         const response={
@@ -32,6 +33,7 @@ exports.videos_get_all = (req, res, next) =>{
 
 exports.videos_get_videos_from_folder = (req, res, next) =>{
     Video.find({folder: req.params.folderId})
+    .populate('accessList')
     .exec()
     .then(docs=>{
         const response={

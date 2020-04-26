@@ -45,7 +45,7 @@ export const HomeSearch = ({visible, setVisible}) => {
     },[selected, value, criteria, refresh])
 
     return(
-        <Modal flex={1} transparent={false} animationType='none' visible={visible} onRequestClose={()=>{}}>
+        <Modal flex={1} transparent={false} animationType='fade' visible={visible} onRequestClose={()=>{}}>
             <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
 
                 <View flexDirection='row' style={[styleHome.searchHeader, {marginTop:7}]}>

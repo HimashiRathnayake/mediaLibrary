@@ -10,7 +10,6 @@ export const styles = StyleSheet.create({
         marginTop: 30,
         fontSize: 22,
         marginLeft: 10,
-        width: Dimensions.get('screen').width/2,
         fontWeight: "bold",
         color: '#1976d2',
     },
@@ -22,10 +21,8 @@ export const styles = StyleSheet.create({
     },
     searchHeader:{
         color: 'white',
-        backgroundColor: 'rgba(255, 255, 255, 0.4)',
         width : Dimensions.get('screen').width-30,
         alignSelf: 'center',
-        borderRadius: 10,
         height: 50,
         marginTop: 30,
     },

@@ -5,6 +5,7 @@ const Image =  require('../models/image');
 
 exports.images_get_all = (req, res, next) =>{
     Image.find({accessList: req.userData.userId})
+    .populate('accessList')
     .exec() 
     .then(docs=>{
         const response={
@@ -33,6 +34,7 @@ exports.images_get_all = (req, res, next) =>{
 
 exports.images_get_images_from_folder = (req, res, next) =>{
     Image.find({folder: req.params.folderId})
+    .populate('accessList')
     .exec()
     .then(docs=>{
         const response={

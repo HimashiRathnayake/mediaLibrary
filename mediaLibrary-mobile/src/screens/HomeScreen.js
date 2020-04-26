@@ -1,69 +1,54 @@
 import React, { useState } from 'react';
-import {ImageBackground, Text, View, StyleSheet, Dimensions, TouchableOpacity, Modal, Picker} from 'react-native';
-import {HomeHeader} from '../commons/Header';
-import {styles} from '../styles/commons';
-import { Entypo } from '@expo/vector-icons';
-import { MediaButton } from '../commons/MediaButton';
+import {ImageBackground, Text, View, Image, TouchableWithoutFeedback} from 'react-native';
+import {styleHome} from '../styles/homeStyle';
 import {HomeSearch} from '../modals/HomeSearch';
+import { FontAwesome, AntDesign } from '@expo/vector-icons';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 
 export const HomeScreen = ({navigation}) => {
     const [visible, setVisible] = useState(false);
-    const [selected, setSelected] = useState('Image');
     
     return (
-        <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
-            <HomeHeader navigation={navigation} setVisible={setVisible} selected={selected}>Home</HomeHeader>
-            <View style={styleHome.headerContainer}>
-                    <Entypo name="folder-video" color="white" size={40} /> 
-                    <Text style={styleHome.headerText}>Welcome to MyMedia</Text>
+        <ImageBackground source={require('../../assets/bg.jpeg')} style={styleHome.backgroundImage}>
+            <View flexDirection='row' marginBottom={20}>
+                <FontAwesome.Button name="navicon" underlayColor='transparent' backgroundColor="transparent" color="#fff" size={20} marginTop={25} marginLeft={10} onPress={()=>navigation.toggleDrawer()}/>  
+                <Text style={{fontSize: 20, color:'#fff', marginTop: 30}}>
+                    MyMedia
+                </Text>
+                <Text style={styleHome.nextHeader}>Home</Text> 
+                <FontAwesome.Button name='search' underlayColor='transparent' backgroundColor="transparent" color="#fff" size={20} marginTop={25} marginLeft={100} onPress={()=>setVisible(true)}/>
             </View>
 
-            <View style={styleHome.container}>
-                {/* <Text style={styleHome.containerHeader}>Store Your All Multimedia Files,</Text>
-                <Text style={styleHome.containerHeader}>Share & Manage Them at One Place</Text> */}
-                <MediaButton type='Image' onPress={()=>{navigation.navigate('Images')}}>Images</MediaButton>
-                <MediaButton type='Audio' onPress={()=>{navigation.navigate('Audios')}}>Audios</MediaButton>
-                <MediaButton type='Video' onPress={()=>{navigation.navigate('Videos')}}>Videos</MediaButton>
-            </View>
+            <ScrollView style={styleHome.container}>
+                <View style={styleHome.container}>
+                    <TouchableWithoutFeedback onPress={()=>navigation.navigate('Images')}>
+                        <View style={styleHome.imageContainer}>
+                            <Image source={require('../../assets/image.png')} style={styleHome.image}/>
+                            <View style={styleHome.imageBottom}>
+                                <Text style={styleHome.imageText}>Store & Manage Your Images</Text>
+                            </View>
+                        </View>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback onPress={()=>navigation.navigate('Audios')}>
+                        <View style={styleHome.imageContainer}>
+                            <Image source={require('../../assets/audio.jpg')} style={styleHome.image}/>
+                            <View style={styleHome.imageBottom}>
+                                <Text style={styleHome.imageText}>Store & Manage Your Audios</Text>
+                            </View>
+                        </View>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback onPress={()=>navigation.navigate('Videos')}>
+                        <View style={styleHome.imageContainer}>
+                            <Image source={require('../../assets/video.jpg')} style={styleHome.image}/>
+                            <View style={styleHome.imageBottom}>
+                                <Text style={styleHome.imageText}>Store & Manage Your Videos</Text>
+                            </View>
+                        </View>
+                    </TouchableWithoutFeedback>
+                </View>
+            </ScrollView>
             <HomeSearch visible={visible} setVisible={setVisible}/>
         </ImageBackground>
     );
 }
 
-const styleHome = StyleSheet.create({
-    container: {
-        alignContent: 'center',
-        flex: 2
-    },
-    containerHeader:{
-        marginLeft: 10,
-        marginTop: 10,
-        fontSize: 18,
-        marginBottom: 60,
-        alignSelf: 'center'
-    },
-    headerContainer: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    headerText: {
-        color: 'white',
-        fontWeight: 'bold',
-        backgroundColor: 'transparent',
-        fontSize: 26
-    },
-    searchView:{
-        marginTop: 20,
-        flexDirection:'row',
-        alignSelf: 'center',
-    },
-    criteria: {
-        fontSize: 14,
-        width: Dimensions.get('screen').width/3 - 30,
-        borderBottomColor: 'black',
-        borderBottomWidth: 2,
-        marginHorizontal: 10,
-        textAlign: 'center' 
-    }
-});

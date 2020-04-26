@@ -7,6 +7,7 @@ const folderType= ['Image', 'Audio', 'Video'];
 exports.folders_get_folders = (req, res, next) =>{
     if(folderType.includes(req.params.type)){
         Folder.find({userList: req.userData.userId, folderType: req.params.type})
+        .populate('userList')
         .exec()
         .then(docs=>{
             const response={
@@ -101,8 +102,6 @@ exports.folders_rename_folder = (req, res, next) =>{
     });
 }
 
-
-
 exports.folders_delete_folder = (req, res, next) =>{
     Folder.findOne({_id: req.params.folderId})
     .then(result => {
@@ -145,5 +144,4 @@ exports.folders_delete_folder = (req, res, next) =>{
         });
     });
 }
-
 
