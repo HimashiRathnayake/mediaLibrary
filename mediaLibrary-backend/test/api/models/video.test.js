@@ -158,6 +158,26 @@ describe ('Video Modal', ()=>{
             }).catch((err)=>console.log(err))
         })
 
+        it('OK, Should save a video without title & artist as `Untitled` & `Unknown artist`', (done)=>{
+            var video = new Video({
+                _id: mongoose.Types.ObjectId(),
+                videoName: 'Test Video',
+                folder: mongoose.Types.ObjectId(),
+                accessList: [mongoose.Types.ObjectId()],
+                path: faker.system.filePath,
+            });
+            video.save().then((res)=>{
+                expect(res).not.to.be.empty;
+                expect(res).to.contain.property('_id');
+                expect(res).to.be.deep.contain({videoName: "Test Video"});
+                expect(res).to.be.deep.contain({title: "Untitled"});
+                expect(res).to.be.deep.contain({artist: "Unknown artist"});
+                expect(res).to.contain.property('folder');
+                expect(res).to.contain.property('accessList');
+                done();
+            }).catch((err)=>console.log(err))
+        })
+
         it('OK, Should save a video correctly if all details are provided', (done)=>{
             var video = new Video({
                 _id: mongoose.Types.ObjectId(),

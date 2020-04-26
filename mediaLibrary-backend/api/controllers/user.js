@@ -110,3 +110,25 @@ exports.user_delete = (req, res, next)=>{
     });
 }
 
+exports.get_other_users =  (req, res, next) => {
+    const email = new RegExp(req.params.email, 'i');
+    User.find({email: email, _id:{$ne: req.userData.userId}})
+    .exec()
+    .then(docs=>{
+        const response={
+            count: docs.length,
+            Users: docs.map(doc=>{
+                return{
+                    _id: doc._id,
+                    email: doc.email
+                }
+            })
+        };
+        res.status(200).json(response);
+    })
+    .catch(err=>{
+        res.status(500).json({
+            error:err
+        });
+    });
+}

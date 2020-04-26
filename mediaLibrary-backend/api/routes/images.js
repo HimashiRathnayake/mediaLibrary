@@ -10,6 +10,7 @@ router.get('/', checkAuth, ImagesController.images_get_all);
 router.get('/:folderId', checkAuth, ImagesController.images_get_images_from_folder);
 router.post('/:folderId', checkAuth, uploader.single('file'), getMetadata, ImagesController.images_upload_image);
 router.patch('/:imageId', checkAuth, ImagesController.images_rename_image);
+router.patch('/:imageId/:folderId', checkAuth, ImagesController.images_move_image);
 router.delete('/:imageId', checkAuth, ImagesController.images_delete_image);
 
 module.exports = router;

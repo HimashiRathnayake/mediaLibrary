@@ -10,6 +10,7 @@ router.get('/', checkAuth, VideosController.videos_get_all);
 router.get('/:folderId', checkAuth, VideosController.videos_get_videos_from_folder);
 router.post('/:folderId', checkAuth, uploader.single('file'), getMetadata, VideosController.videos_upload_video);
 router.patch('/:videoId', checkAuth, VideosController.videos_rename_video);
+router.patch('/:videoId/:folderId', checkAuth, VideosController.videos_move_video);
 router.delete('/:videoId', checkAuth, VideosController.videos_delete_video);
 
 module.exports = router;

@@ -83,7 +83,7 @@ exports.folders_rename_folder = (req, res, next) =>{
             });
         }
         else{
-            Folder.update({_id: req.params.folderId},{folderName: req.body.folderName})
+            Folder.updateOne({_id: req.params.folderId},{folderName: req.body.folderName})
             .exec()
             .then(result => {
                 //console.log(result);

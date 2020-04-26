@@ -143,3 +143,29 @@ exports.images_delete_image = (req, res, next) => {
         });
     });
 }
+
+exports.images_move_image = (req, res, next) => {
+    Image.findOne({_id: req.params.imageId})
+    .then(result=>{
+        if (result===null){
+            res.status(404).json({
+                message: 'Image not found'
+            })
+        }
+        else{
+            Image.updateOne({_id: req.params.imageId},{folder: req.params.folderId})
+            .exec()
+            .then(result => {
+                res.status(200).json({
+                    message: 'Image moved successfully'
+                });
+            })
+        }
+    })
+    .catch(err=>{
+        console.log(err);
+        res.status(500).json({
+            error:err
+        });
+    });
+}

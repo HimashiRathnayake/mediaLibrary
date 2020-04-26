@@ -108,5 +108,38 @@ describe ('User routes', ()=>{
         });
     })
 
+    describe('\nget other users', ()=>{
+        it('OK, should get all other users', done => {
+            request(app)
+            .get('/user/test')
+            .set("Authorization", "Bearer " + token) 
+            .then((res)=>{
+                expect(res.status).to.equal(200);
+                expect(res.body).not.to.be.empty;
+                expect(res.body).to.contain.property('count');
+                expect(res.body).to.contain.property('Users')
+                done();
+            })
+            .catch((err)=>{
+                console.log(err);
+                done();
+            });
+        });
+
+        it("OK, should not get other users if token doesn't exist", done => {
+            request(app)
+            .get('/user/test')
+            .then((res)=>{
+                expect(res.status).to.equal(401);
+                expect(res.body).not.to.be.empty;
+                expect(res.body).to.deep.contain({ message: 'Auth failed' })
+                done();
+            })
+            .catch((err)=>{
+                console.log(err);
+                done();
+            });
+        });
+    })
 
 })

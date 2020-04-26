@@ -69,13 +69,13 @@ exports.videos_upload_video = (req, res, next) =>{
         path: process.env.SERVER+req.file.filename
     });
     video.save().then(result => {
-        console.log(result);
+        // console.log(result);
         res.status(201).json({
             message: 'Video uploaded successfully',
             video: result
         });
     }).catch(err=>{
-        console.log(err);
+        // console.log(err);
         res.status(500).json({
             error: err
         });
@@ -135,6 +135,33 @@ exports.videos_delete_video = (req, res, next) => {
         console.log(err);
         res.status(500).json({
             error: err
+        });
+    });
+}
+
+exports.videos_move_video = (req, res, next) => {
+    Video.findOne({_id: req.params.videoId})
+    .then(result=>{
+        if (result===null){
+            res.status(404).json({
+                message: 'Video not found'
+            })
+        }
+        else{
+            Video.updateOne({_id: req.params.videoId},{folder: req.params.folderId})
+            .exec()
+            .then(result => {
+                console.log(result);
+                res.status(200).json({
+                    message: 'Video moved successfully'
+                });
+            })
+        }
+    })
+    .catch(err=>{
+        console.log(err);
+        res.status(500).json({
+            error:err
         });
     });
 }

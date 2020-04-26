@@ -74,13 +74,13 @@ exports.audios_upload_audio = (req, res, next) =>{
         path: process.env.SERVER+req.file.filename
     });
     audio.save().then(result => {
-        console.log(result);
+        // console.log(result);
         res.status(201).json({
             message: 'Audio uploaded successfully',
             audio: result
         });
     }).catch(err=>{
-        console.log(err);
+        // console.log(err);
         res.status(500).json({
             error: err
         });
@@ -143,6 +143,33 @@ exports.audios_delete_audio = (req, res, next) => {
         console.log(err);
         res.status(500).json({
             error: err
+        });
+    });
+}
+
+exports.audios_move_audio = (req, res, next) => {
+    Audio.findOne({_id: req.params.audioId})
+    .then(result=>{
+        if (result===null){
+            res.status(404).json({
+                message: 'Audio not found'
+            })
+        }
+        else{
+            Audio.updateOne({_id: req.params.audioId},{folder: req.params.folderId})
+            .exec()
+            .then(result => {
+                console.log(result);
+                res.status(200).json({
+                    message: 'Audio moved successfully'
+                });
+            })
+        }
+    })
+    .catch(err=>{
+        console.log(err);
+        res.status(500).json({
+            error:err
         });
     });
 }

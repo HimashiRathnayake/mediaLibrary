@@ -7,7 +7,8 @@ module.exports = (req, res, next)=>{
         
         ep
         .open()
-        .then((pid) => {console.log('Started exiftool process %s', pid);
+        .then((pid) => {
+            // console.log('Started exiftool process %s', pid);
         })
         .then(() => ep.readMetadata(req.file.path, ['-File:all']))
         .then((result)=>{
@@ -15,7 +16,7 @@ module.exports = (req, res, next)=>{
         })
         .then(() => ep.close())
         .then(() => {
-            console.log('Closed exiftool');
+            // console.log('Closed exiftool');
             next();
         })
         .catch((error)=>{

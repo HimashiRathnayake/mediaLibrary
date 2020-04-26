@@ -205,6 +205,101 @@ describe ('Audio Modal', ()=>{
             }).catch((err)=>console.log(err))
         })
 
+        it('OK, Should save an audio without title & album as `Untitled` & `Unknown album`', (done)=>{
+            var audio = new Audio({
+                _id: mongoose.Types.ObjectId(),
+                audioName: 'Test Audio',
+                artist: 'Test Artist',
+                year: 2019,
+                folder: mongoose.Types.ObjectId(),
+                accessList: [mongoose.Types.ObjectId()],
+                path: faker.system.filePath,
+            });
+            audio.save().then((res)=>{
+                expect(res).not.to.be.empty;
+                expect(res).to.contain.property('_id');
+                expect(res).to.be.deep.contain({audioName: "Test Audio"});
+                expect(res).to.be.deep.contain({album: "Unknown album"});
+                expect(res).to.be.deep.contain({artist: "Test Artist"});
+                expect(res).to.be.deep.contain({year: '2019'});
+                expect(res).to.contain.property('folder');
+                expect(res).to.contain.property('accessList');
+                expect(res).to.be.deep.contain({title: "Untitled"});
+                done();
+            }).catch((err)=>console.log(err))
+        })
+
+        it('OK, Should save an audio without album & artist as `Unknown album` & `Unknown artist`', (done)=>{
+            var audio = new Audio({
+                _id: mongoose.Types.ObjectId(),
+                audioName: 'Test Audio',
+                title: 'Test Title',
+                year: 2019,
+                folder: mongoose.Types.ObjectId(),
+                accessList: [mongoose.Types.ObjectId()],
+                path: faker.system.filePath,
+            });
+            audio.save().then((res)=>{
+                expect(res).not.to.be.empty;
+                expect(res).to.contain.property('_id');
+                expect(res).to.be.deep.contain({audioName: "Test Audio"});
+                expect(res).to.be.deep.contain({album: "Unknown album"});
+                expect(res).to.be.deep.contain({artist: "Unknown artist"});
+                expect(res).to.be.deep.contain({year: '2019'});
+                expect(res).to.contain.property('folder');
+                expect(res).to.contain.property('accessList');
+                expect(res).to.be.deep.contain({title: "Test Title"});
+                done();
+            }).catch((err)=>console.log(err))
+        })
+
+        it('OK, Should save an audio without title & artist as `Untitled` & `Unknown artist`', (done)=>{
+            var audio = new Audio({
+                _id: mongoose.Types.ObjectId(),
+                audioName: 'Test Audio',
+                album: 'Test Album',
+                year: 2019,
+                folder: mongoose.Types.ObjectId(),
+                accessList: [mongoose.Types.ObjectId()],
+                path: faker.system.filePath,
+            });
+            audio.save().then((res)=>{
+                expect(res).not.to.be.empty;
+                expect(res).to.contain.property('_id');
+                expect(res).to.be.deep.contain({audioName: "Test Audio"});
+                expect(res).to.be.deep.contain({album: "Test Album"});
+                expect(res).to.be.deep.contain({artist: "Unknown artist"});
+                expect(res).to.be.deep.contain({year: '2019'});
+                expect(res).to.contain.property('folder');
+                expect(res).to.contain.property('accessList');
+                expect(res).to.be.deep.contain({title: "Untitled"});
+                done();
+            }).catch((err)=>console.log(err))
+        })
+
+        it('OK, Should save an audio without title, album & artist as `Untitled`, `Unknown album` & `Unknown artist`', (done)=>{
+            var audio = new Audio({
+                _id: mongoose.Types.ObjectId(),
+                audioName: 'Test Audio',
+                year: 2019,
+                folder: mongoose.Types.ObjectId(),
+                accessList: [mongoose.Types.ObjectId()],
+                path: faker.system.filePath,
+            });
+            audio.save().then((res)=>{
+                expect(res).not.to.be.empty;
+                expect(res).to.contain.property('_id');
+                expect(res).to.be.deep.contain({audioName: "Test Audio"});
+                expect(res).to.be.deep.contain({album: "Unknown album"});
+                expect(res).to.be.deep.contain({artist: "Unknown artist"});
+                expect(res).to.be.deep.contain({year: '2019'});
+                expect(res).to.contain.property('folder');
+                expect(res).to.contain.property('accessList');
+                expect(res).to.be.deep.contain({title: "Untitled"});
+                done();
+            }).catch((err)=>console.log(err))
+        })
+
         it('OK, Should save an audio correctly if all details are provided', (done)=>{
             var audio = new Audio({
                 _id: mongoose.Types.ObjectId(),
@@ -230,6 +325,7 @@ describe ('Audio Modal', ()=>{
                 done();
             }).catch((err)=>console.log(err))
         })
+        
     })
     
 })
