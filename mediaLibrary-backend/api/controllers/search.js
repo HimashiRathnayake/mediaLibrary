@@ -30,7 +30,14 @@ exports.search_audio_by_artist =  (req, res, next) => {
                 }
             })
         };
-        res.status(200).json(response);
+        if(response.count > 0){
+            res.status(200).json(response);
+        }
+        else{
+            res.status(404).json({
+                message: 'Artist not Found'
+            });
+        }
     })
     .catch(err=>{
         res.status(500).json({
@@ -61,7 +68,14 @@ exports.search_video_by_artist =  (req, res, next) => {
                 }
             })
         };
-        res.status(200).json(response);
+        if(response.count > 0){
+            res.status(200).json(response);
+        }
+        else{
+            res.status(404).json({
+                message: 'Artist not Found'
+            });
+        }
     })
     .catch(err=>{
         res.status(500).json({
@@ -93,7 +107,15 @@ exports.search_image_by_artist =  (req, res, next) => {
                 }
             })
         };
-        res.status(200).json(response);
+        if(response.count > 0){
+            res.status(200).json(response);
+        }
+        else{
+            res.status(404).json({
+                message: 'Artist not Found'
+            });
+        }
+        
     })
     .catch(err=>{
         res.status(500).json({
@@ -126,7 +148,14 @@ exports.search_audio_by_title =  (req, res, next) => {
                 }
             })
         };
-        res.status(200).json(response);
+        if(response.count > 0){
+            res.status(200).json(response);
+        }
+        else{
+            res.status(404).json({
+                message: 'Title not Found'
+            });
+        }
     })
     .catch(err=>{
         res.status(500).json({
@@ -157,7 +186,14 @@ exports.search_video_by_title =  (req, res, next) => {
                 }
             })
         };
-        res.status(200).json(response);
+        if(response.count > 0){
+            res.status(200).json(response);
+        }
+        else{
+            res.status(404).json({
+                message: 'Title not Found'
+            });
+        }
     })
     .catch(err=>{
         res.status(500).json({
@@ -189,7 +225,14 @@ exports.search_image_by_title =  (req, res, next) => {
                 }
             })
         };
-        res.status(200).json(response);
+        if(response.count > 0){
+            res.status(200).json(response);
+        }
+        else{
+            res.status(404).json({
+                message: 'Title not Found'
+            });
+        }
     })
     .catch(err=>{
         res.status(500).json({
@@ -202,69 +245,100 @@ exports.search_image_by_title =  (req, res, next) => {
 
 exports.search_audio =  (req, res, next) => {
     const accessList = req.userData.userId;
-    let parsedUrl = url.parse(req.url+('&'+"accessList="+accessList)); 
-    let parsedQs = querystring.parse(parsedUrl.query);
 
-    Audio.find(parsedQs)
-    .exec()
-    .then(docs=>{
-        const response={
-            count: docs.length,
-            Audios: docs.map(doc=>{
-                return{
-                    _id: doc._id,
-                    audioName: doc.audioName,
-                    title: doc.title,
-                    album: doc.album,
-                    artist: doc.artist,
-                    year: doc.year,
-                    accessList: doc.accessList,
-                    folder: doc.folder,
-                    path: doc.path
-                }
-            })
-        };
-        res.status(200).json(response);
-    })
-    .catch(err=>{
-        res.status(500).json({
-            error:err
+    if(req.url.split('?')[1].length){
+        let parsedUrl = url.parse(req.url+('&'+"accessList="+accessList)); 
+        let parsedQs = querystring.parse(parsedUrl.query);
+    
+        Audio.find(parsedQs)
+        .exec()
+        .then(docs=>{
+            const response={
+                count: docs.length,
+                Audios: docs.map(doc=>{
+                    return{
+                        _id: doc._id,
+                        audioName: doc.audioName,
+                        title: doc.title,
+                        album: doc.album,
+                        artist: doc.artist,
+                        year: doc.year,
+                        accessList: doc.accessList,
+                        folder: doc.folder,
+                        path: doc.path
+                    }
+                })
+            };
+            if(response.count > 0){
+                res.status(200).json(response);
+            }
+            else{
+                res.status(404).json({
+                    message: 'URL not Found'
+                });
+            }
+        })
+        .catch(err=>{
+            res.status(500).json({
+                error:err
+            });
         });
-    });
+    }
+    else{
+        res.status(409).json({
+            message: 'Doen`t pass any value'
+        });
+    }
+    
 }
 
 //search video
 
 exports.search_video =  (req, res, next) => {
     const accessList = req.userData.userId;
-    let parsedUrl = url.parse(req.url+('&'+"accessList="+accessList)); 
-    let parsedQs = querystring.parse(parsedUrl.query);
+    if(req.url.split('?')[1].length){
+        let parsedUrl = url.parse(req.url+('&'+"accessList="+accessList)); 
+        let parsedQs = querystring.parse(parsedUrl.query);
 
-    Video.find(parsedQs)
-    .exec()
-    .then(docs=>{
-        const response={
-            count: docs.length,
-            Videos: docs.map(doc=>{
-                return{
-                    _id: doc._id,
-                    videoName: doc.videoName,
-                    title: doc.title,
-                    artist: doc.artist,
-                    year: doc.year,
-                    accessList: doc.accessList,
-                    folder: doc.folder,
-                    path: doc.path
-                }
-            })
-        };
-        res.status(200).json(response);
-    })
-    .catch(err=>{
-        res.status(500).json({
-            error:err
+        Video.find(parsedQs)
+        .exec()
+        .then(docs=>{
+            const response={
+                count: docs.length,
+                Videos: docs.map(doc=>{
+                    return{
+                        _id: doc._id,
+                        videoName: doc.videoName,
+                        title: doc.title,
+                        artist: doc.artist,
+                        year: doc.year,
+                        accessList: doc.accessList,
+                        folder: doc.folder,
+                        path: doc.path
+                    }
+                })
+            };
+            if(response.count > 0){
+                res.status(200).json(response);
+            }
+            else{
+                res.status(404).json({
+                    message: 'URL not Found'
+                });
+            }
+        })
+        .catch(err=>{
+            res.status(500).json({
+                error:err
+            });
         });
-    });
+    }
+    else{
+        res.status(409).json({
+            message: 'Doen`t pass any value'
+        });
+    }
+    
 }
 
 
@@ -272,32 +346,50 @@ exports.search_video =  (req, res, next) => {
 
 exports.search_image =  (req, res, next) => {
     const accessList = req.userData.userId;
-    let parsedUrl = url.parse(req.url+('&'+"accessList="+accessList)); 
-    let parsedQs = querystring.parse(parsedUrl.query);
-    
-    Image.find( parsedQs)
-    .exec()
-    .then(docs=>{
-        const response={
-            count: docs.length,
-            Images: docs.map(doc=>{
-                return{
-                    _id: doc._id,
-                    imageName: doc.imageName,
-                    title: doc.title,
-                    subject: doc.subject,
-                    artist: doc.artist,
-                    accessList: doc.accessList,
-                    folder: doc.folder,
-                    path: doc.path
-                }
-            })
-        };
-        res.status(200).json(response);
-    })
-    .catch(err=>{
-        res.status(500).json({
-            error:err
+    //console.log("req.url:",req.url.split('?')[1].length);
+    if(req.url.split('?')[1].length){
+        let parsedUrl = url.parse(req.url+('&'+"accessList="+accessList)); 
+        let parsedQs = querystring.parse(parsedUrl.query);
+
+        Image.find( parsedQs)
+        .exec()
+        .then(docs=>{
+            const response={
+                count: docs.length,
+                Images: docs.map(doc=>{
+                    return{
+                        _id: doc._id,
+                        imageName: doc.imageName,
+                        title: doc.title,
+                        subject: doc.subject,
+                        artist: doc.artist,
+                        accessList: doc.accessList,
+                        folder: doc.folder,
+                        path: doc.path
+                    }
+                })
+            };
+            if(response.count > 0){
+                res.status(200).json(response);
+            }
+            else{
+                res.status(404).json({
+                    message: 'URL not Found'
+                });
+            }
+        })
+        .catch(err=>{
+            res.status(500).json({
+                error:err
+            });
         });
-    });
+    }
+    else{
+        res.status(409).json({
+            message: 'Doen`t pass any value'
+        });
+    }
+    
+    
+    
 }
