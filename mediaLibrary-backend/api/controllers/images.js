@@ -37,7 +37,7 @@ exports.images_get_images_from_folder = (req, res, next) =>{
     .then(docs=>{
         const response={
             count: docs.length,
-            images: docs.map(doc=>{
+            Images: docs.map(doc=>{
                 return{
                     _id: doc._id,
                     imageName: doc.imageName,
@@ -53,13 +53,15 @@ exports.images_get_images_from_folder = (req, res, next) =>{
         res.status(200).json(response);
     }).
     catch(err => {
-        console.log(err);  
+        //console.log(err);  
         res.status(500).json({error: err});
     }
     );
 }
 
 exports.images_upload_image = (req, res, next) =>{
+    //console.log(req.data)
+    //console.log(req.file)
     const image =new Image({
         _id: new mongoose.Types.ObjectId(),
         imageName: req.file.originalname,
@@ -71,12 +73,13 @@ exports.images_upload_image = (req, res, next) =>{
         path: process.env.SERVER+req.file.filename
     });
     image.save().then(result => {
-        console.log(result);
+        //console.log(result);
         res.status(201).json({
             message: 'Image uploaded successfully',
+            image: result
         });
     }).catch(err=>{
-        console.log(err);
+        //console.log(err);
         res.status(500).json({
             error: err
         });
@@ -90,16 +93,15 @@ exports.images_rename_image = (req, res, next) =>{
             res.status(404).json({
                 message: 'Image not found'
             })
-        }
-        else if (req.body.imageName===undefined){
+        }else if (req.body.imageName===undefined){
             res.status(409).json({
-                message: 'Image name is required'
+                message: 'imageName is required'
             });
-        }
-        else{
+        }else{
             Image.updateOne({_id: req.params.imageId},{imageName: req.body.imageName})
             .exec()
             .then(result => {
+                //console.log(result);
                 res.status(200).json({
                     message: 'Image renamed successfully'
                 });
@@ -107,7 +109,7 @@ exports.images_rename_image = (req, res, next) =>{
         }
     })
     .catch(err=>{
-        console.log(err);
+        //console.log(err);
         res.status(500).json({
             error:err
         });
