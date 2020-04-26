@@ -30,14 +30,7 @@ exports.search_audio_by_artist =  (req, res, next) => {
                 }
             })
         };
-        if(response.count > 0){
-            res.status(200).json(response);
-        }
-        else{
-            res.status(404).json({
-                message: 'Artist not Found'
-            });
-        }
+        res.status(200).json(response);
     })
     .catch(err=>{
         res.status(500).json({
@@ -68,14 +61,7 @@ exports.search_video_by_artist =  (req, res, next) => {
                 }
             })
         };
-        if(response.count > 0){
-            res.status(200).json(response);
-        }
-        else{
-            res.status(404).json({
-                message: 'Artist not Found'
-            });
-        }
+        res.status(200).json(response);
     })
     .catch(err=>{
         res.status(500).json({
@@ -107,15 +93,8 @@ exports.search_image_by_artist =  (req, res, next) => {
                 }
             })
         };
-        if(response.count > 0){
-            res.status(200).json(response);
-        }
-        else{
-            res.status(404).json({
-                message: 'Artist not Found'
-            });
-        }
-        
+        res.status(200).json(response);
+    
     })
     .catch(err=>{
         res.status(500).json({
@@ -148,14 +127,7 @@ exports.search_audio_by_title =  (req, res, next) => {
                 }
             })
         };
-        if(response.count > 0){
-            res.status(200).json(response);
-        }
-        else{
-            res.status(404).json({
-                message: 'Title not Found'
-            });
-        }
+        res.status(200).json(response);
     })
     .catch(err=>{
         res.status(500).json({
@@ -186,14 +158,7 @@ exports.search_video_by_title =  (req, res, next) => {
                 }
             })
         };
-        if(response.count > 0){
-            res.status(200).json(response);
-        }
-        else{
-            res.status(404).json({
-                message: 'Title not Found'
-            });
-        }
+        res.status(200).json(response);
     })
     .catch(err=>{
         res.status(500).json({
@@ -225,14 +190,7 @@ exports.search_image_by_title =  (req, res, next) => {
                 }
             })
         };
-        if(response.count > 0){
-            res.status(200).json(response);
-        }
-        else{
-            res.status(404).json({
-                message: 'Title not Found'
-            });
-        }
+        res.status(200).json(response);
     })
     .catch(err=>{
         res.status(500).json({
@@ -269,14 +227,7 @@ exports.search_audio =  (req, res, next) => {
                     }
                 })
             };
-            if(response.count > 0){
-                res.status(200).json(response);
-            }
-            else{
-                res.status(404).json({
-                    message: 'URL not Found'
-                });
-            }
+            res.status(200).json(response);
         })
         .catch(err=>{
             res.status(500).json({
@@ -286,7 +237,7 @@ exports.search_audio =  (req, res, next) => {
     }
     else{
         res.status(409).json({
-            message: 'Doen`t pass any value'
+            message: 'Didn`t pass any value'
         });
     }
     
@@ -318,14 +269,7 @@ exports.search_video =  (req, res, next) => {
                     }
                 })
             };
-            if(response.count > 0){
-                res.status(200).json(response);
-            }
-            else{
-                res.status(404).json({
-                    message: 'URL not Found'
-                });
-            }
+            res.status(200).json(response);
         })
         .catch(err=>{
             res.status(500).json({
@@ -335,7 +279,7 @@ exports.search_video =  (req, res, next) => {
     }
     else{
         res.status(409).json({
-            message: 'Doen`t pass any value'
+            message: 'Didn`t pass any value'
         });
     }
     
@@ -369,14 +313,7 @@ exports.search_image =  (req, res, next) => {
                     }
                 })
             };
-            if(response.count > 0){
-                res.status(200).json(response);
-            }
-            else{
-                res.status(404).json({
-                    message: 'URL not Found'
-                });
-            }
+            res.status(200).json(response);
         })
         .catch(err=>{
             res.status(500).json({
@@ -386,7 +323,7 @@ exports.search_image =  (req, res, next) => {
     }
     else{
         res.status(409).json({
-            message: 'Doen`t pass any value'
+            message: 'Didn`t pass any value'
         });
     }
     
