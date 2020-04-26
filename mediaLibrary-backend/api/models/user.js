@@ -10,6 +10,7 @@ const userSchema = mongoose.Schema({
     password: {type: String, required: true},
     favourites: [{
         id: mongoose.Schema.Types.ObjectId,
+        type: {type: String},
         addedDate: Date
     }]
 });
