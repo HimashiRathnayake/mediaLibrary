@@ -6,5 +6,9 @@ export const styles = StyleSheet.create({
         height:700,
         resizeMode:'contain',
     },
+    container: {
+        flex: 1,
+        backgroundColor: "#EAEAEC"
+    },
 });
 

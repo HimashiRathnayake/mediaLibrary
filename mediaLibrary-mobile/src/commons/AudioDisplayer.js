@@ -7,9 +7,12 @@ import { MaterialIcons } from '@expo/vector-icons';
 export const AudioDisplayer = ({setRefresh, audios, count}) => {
     const [audioModal, setAudioModal] = useState(null);
     const [visible, setVisible] = useState(false);
+    const [index, setIndex] = useState(0);
     
     async function openModal(visible,key){
-        await setAudioModal(audios[key]);
+        const id = (key+audios.length)%audios.length;
+        await setIndex(id);
+        await setAudioModal(audios[id]);
         setVisible(visible);
     }
 
@@ -33,7 +36,7 @@ export const AudioDisplayer = ({setRefresh, audios, count}) => {
                 (<ScrollView style={styleAudio.container}>
                     <View style={styleAudio.container}>
                         {(audioModal !== null) && (
-                        <AudioModal visible={visible} setVisible={setVisible} audio={audioModal} setRefresh={setRefresh}/>
+                        <AudioModal visible={visible} setVisible={setVisible} openModal={openModal} index={index} audio={audioModal} setRefresh={setRefresh} setAudioModal={setAudioModal}/>
                         )}
                         {audioSet}
                     </View>

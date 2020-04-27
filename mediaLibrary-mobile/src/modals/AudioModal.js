@@ -1,15 +1,17 @@
 import React, {useState} from 'react';
-import {Text, View, Modal, TouchableOpacity, Slider, Alert} from 'react-native';
+import {Text, View, Modal, TouchableOpacity, Alert, Image, Dimensions} from 'react-native';
+import {Slider} from 'react-native-elements';
 import {Audio} from 'expo-av';
-import { Foundation, Ionicons, FontAwesome, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Foundation, Ionicons, FontAwesome, MaterialIcons, MaterialCommunityIcons, FontAwesome5, AntDesign } from '@expo/vector-icons';
 import {stylesScreen} from '../styles/modals/audio';
 import {deleteAudio} from '../api/audio';
+import { TouchableHighlight, ScrollView, TextInput } from 'react-native-gesture-handler';
 
 const DISABLED_OPACITY = 0.6;
 const LOADING_STRING = "... loading ...";
 const BUFFERING_STRING = "... buffering ...";
 
-export const AudioModal = ({audio, visible, setVisible, setRefresh}) => {
+export const AudioModal = ({audio, index, visible, setVisible, openModal, setRefresh}) => {
 
     const [playbackInstance, setInstance] = useState(null); 
     const [isSeeking, setSeeking] = useState(false);
@@ -22,6 +24,8 @@ export const AudioModal = ({audio, visible, setVisible, setRefresh}) => {
     const [isPlaying, setIsPlaying]= useState(false);
     const [isBuffering, setBuffering]= useState(false);
     const [isLoading, setLoading]= useState(true);
+    const [detailsModal, setDetailsModal] = useState(false);
+    const [pressed, setPressed] = useState(false);
 
     function deleteaudio(audioId){
         setVisible(false);
@@ -36,7 +40,6 @@ export const AudioModal = ({audio, visible, setVisible, setRefresh}) => {
     }
     
     async function loadNewPlaybackInstance(playing){
-        console.log(audio)
         if (playbackInstance != null) {
             await playbackInstance.unloadAsync();
             setInstance(null);
@@ -124,8 +127,9 @@ export const AudioModal = ({audio, visible, setVisible, setRefresh}) => {
 
     function stopPlaying(){
         if (playbackInstance != null) {
-            playbackInstance.stopAsync();
+            playbackInstance.pauseAsync();
         }
+        setRefresh(true);
         setInstance(null);
         updateScreenForLoading(true);
         setVisible(false);
@@ -154,6 +158,16 @@ export const AudioModal = ({audio, visible, setVisible, setRefresh}) => {
         }
     }
 
+    function backPressed(){
+        setVisible(false);
+        openModal(true, index-1)
+    }
+
+    function forwardPressed(){
+        setVisible(false);
+        openModal(true, index+1);
+    }
+
     React.useEffect(()=>{
         Audio.setAudioModeAsync({
             allowsRecordingIOS: false,
@@ -167,54 +181,151 @@ export const AudioModal = ({audio, visible, setVisible, setRefresh}) => {
         loadNewPlaybackInstance(false);
     },[audio]);
 
+    const userSet = audio.accessList.map((val,key)=>{
+        return(
+            <View style={stylesScreen.userContainer} key={key}>
+                <FontAwesome name='user-circle' style={stylesScreen.userIcon}/>
+                <Text style={stylesScreen.userName}>{val.email.substring(0, 32)}</Text>
+                <TouchableOpacity onPress={()=>alert('user removed')}>
+                    <MaterialIcons name='remove-circle' style={stylesScreen.removeIcon}/>
+                </TouchableOpacity>
+            </View>
+        )
+    })
+
     return(
-        <Modal style={stylesScreen.modal} transparent={true} animationType='fade' visible={visible} onRequestClose={()=>{}}>
+        <View>
+        <Modal style={stylesScreen.modal} transparent={true} animationType='slide' visible={visible} onRequestClose={()=>{stopPlaying()}}>
             <View style={stylesScreen.modal}>
                 <View style={[stylesScreen.modalView, {opacity: isLoading ? DISABLED_OPACITY : 1.0}]}>
-                    <TouchableOpacity onPress={()=>{stopPlaying()}} style={{flexDirection:'row-reverse', marginLeft: 10, marginTop: 10}}>
-                        <MaterialCommunityIcons name='close-box' style={stylesScreen.icon}/>  
+                    <TouchableOpacity onPress={()=>{stopPlaying()}} style={{flexDirection:'row-reverse', marginLeft: 20, marginTop: 20, position: 'absolute'}}>
+                        <Ionicons name='md-arrow-back' style={stylesScreen.icon}/>  
                     </TouchableOpacity>
-                    <Text style={stylesScreen.header}>{audioName}</Text>
-                    <View style={stylesScreen.audioController} >
-                        <Slider style={stylesScreen.audioSlider} 
-                                value={getSeekSliderPosition()}
-                                onValueChange={onSeekSliderValueChange()}
-                                onSlidingComplete={onSeekSliderSlidingComplete}
-                                disabled={isLoading}
-                                />
-                        <View style={stylesScreen.audioTextContainer}>
-                            <Text style={stylesScreen.audioText}>{getTimeStamp()}</Text>
-                            <Text style={stylesScreen.audioText}>{isBuffering ? BUFFERING_STRING : ""}</Text>
-                        </View>
-                    </View>
-                    <View style={stylesScreen.mainController}>
-                        <TouchableOpacity disabled={isLoading} onPress={()=>onPlayPausePressed()}><FontAwesome name={isPlaying? 'pause' :'play'} style={stylesScreen.icon}/></TouchableOpacity> 
-                        <TouchableOpacity disabled={isLoading} onPress={()=>onStopPressed()}><Foundation name='stop' style={stylesScreen.icon}/></TouchableOpacity>
-                        <TouchableOpacity disabled={isLoading} onPress={()=>onMutePressed()}><Ionicons name={isMuted?'md-volume-off':'md-volume-high'} style={stylesScreen.icon}/></TouchableOpacity> 
-
-                    </View>
-                
-                    
-                    <View flexDirection='row' marginTop={50} marginLeft={30} flexDirection='row-reverse'>
-                        <MaterialCommunityIcons name='delete-outline' style={stylesScreen.iconBottom} 
+                    <View flexDirection='row' marginTop={20} marginLeft={Dimensions.get('screen').width-100} flexDirection='row-reverse' position='absolute'>
+                        <MaterialCommunityIcons name='delete-outline' style={stylesScreen.iconTop} 
                             onPress={()=>{ 
                                 Alert.alert('Do you want to delete audio','',[
                                     {text: 'Cancel'},
                                     {text: "Yes", onPress: ()=>deleteaudio(audio._id)}
                             ],{cancelable:false})}}                        
                         />
-                        <MaterialIcons name='favorite-border' style={stylesScreen.iconBottom} onPress={()=>setVisible(false)}/>
-                        <Ionicons name='md-share' style={stylesScreen.iconBottom} onPress={()=>setVisible(false)}/>
-                    </View>    
-                    <View style={stylesScreen.bottomView}>
-                        <Text style={{fontWeight: 'bold', fontSize:20}}>Details: </Text>
-                        <View flexDirection='row'><Text style={stylesScreen.detailTextLeft}>Title :</Text><Text style={stylesScreen.detailTextRight}>{audio.title}</Text></View>
-                        <View flexDirection='row'><Text style={stylesScreen.detailTextLeft}>Album :</Text><Text style={stylesScreen.detailTextRight}>{audio.album}</Text></View>
-                        <View flexDirection='row'><Text style={stylesScreen.detailTextLeft}>Artist :</Text><Text style={stylesScreen.detailTextRight}>{audio.artist}</Text></View>
-                        <View flexDirection='row'><Text style={stylesScreen.detailTextLeft}>Year :</Text><Text style={stylesScreen.detailTextRight}>{audio.year}</Text></View>
+                        <MaterialIcons name='favorite-border' style={stylesScreen.iconTop} onPress={()=>setVisible(false)}/>
+                    </View> 
+                    <View style={{ alignItems: "center", marginTop: 24 }}>
+                        <Text style={stylesScreen.headerTop}>MyMedia Audio</Text>
+                        <Text style={stylesScreen.header}>{audio.audioName.substring(0,25)}</Text>
+                    </View>
+
+                    <View style={stylesScreen.coverContainer}>
+                        <Image source={require('../../assets/audio.jpg')} style={stylesScreen.image}/>
+                    </View>
+
+                    <View style={{ alignItems: "center", marginTop: 22 }}>
+                        <Text style={stylesScreen.title}>{audio.title}</Text>
+                        <Text style={stylesScreen.artist}>{audio.artist}</Text>
+                    </View>
+
+                    <View style={stylesScreen.audioController} >
+                        <Slider style={stylesScreen.audioSlider} 
+                                value={getSeekSliderPosition()}
+                                onValueChange={onSeekSliderValueChange()}
+                                onSlidingComplete={onSeekSliderSlidingComplete}
+                                disabled={isLoading}
+                                trackStyle={stylesScreen.track}
+                                thumbStyle={stylesScreen.thumb}
+                                minimumTrackTintColor="#93A8B3"
+                                />
+                        <View style={stylesScreen.audioTextContainer}>
+                            <Text style={stylesScreen.audioText}>{getTimeStamp()}</Text>
+                            <Text style={stylesScreen.audioText}>{isBuffering ? BUFFERING_STRING : ""}</Text>
+                        </View>
+                    </View>
+                
+                    <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
+                        <TouchableOpacity onPress={()=>backPressed()}>
+                            <FontAwesome5 name="backward" size={32} color="#93A8B3"></FontAwesome5>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={stylesScreen.playButtonContainer} disabled={isLoading} onPress={()=>onPlayPausePressed()}>
+                            <FontAwesome5
+                                name = {isPlaying? 'pause' :'play'}
+                                size={32}
+                                color="#3D425C"
+                            />
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={()=>forwardPressed()}>
+                            <FontAwesome5 name="forward" size={32} color="#93A8B3"></FontAwesome5>
+                        </TouchableOpacity>
+                    </View>
+                    
+                    <View style={stylesScreen.bottom}>
+                        <TouchableOpacity onPress={()=>setDetailsModal(true)}>
+                            <View flexDirection='row'>
+                                <Text style={[stylesScreen.bottomText, {marginRight:10}]}>View & edit Details</Text>
+                                <AntDesign name='caretdown' style={stylesScreen.bottomText}/>
+                            </View>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </View>
         </Modal>
+        <Modal style={stylesScreen.modal} transparent={false} animationType='slide' visible={detailsModal} onRequestClose={()=>{stopPlaying()}}>
+            <View style={stylesScreen.modal}>
+                <View style={{backgroundColor:'#fff', flex:1, justifyContent:'center'}}>
+                    <View flexDirection='row' style={stylesScreen.detailsHeader}>
+                        <TouchableOpacity onPress={()=>{setDetailsModal(false); setPressed(false);}} style={{marginLeft: 20, marginTop:12}}>
+                            <Ionicons name='md-arrow-back' style={stylesScreen.icon}/>  
+                        </TouchableOpacity>
+                        <Text style={{fontWeight: 'bold', fontSize:20, marginTop:15, marginLeft:20}}>Details: </Text>
+                    </View>
+                    <ScrollView>
+                        <View style={stylesScreen.detailsView}>
+                            <View flexDirection='row'>
+                                <Text style={stylesScreen.detailTextLeft}>Audio Name :</Text>
+                                {pressed===false ? 
+                                (<View flexDirection='row'>
+                                    <Text style={stylesScreen.detailTextRight}>{audio.audioName}</Text>
+                                    <TouchableOpacity onPress={()=>setPressed(true)}>
+                                        <AntDesign name='edit' style={stylesScreen.renameIcon}/>
+                                    </TouchableOpacity>
+                                </View>):
+                                (<View>
+                                    <View flexDirection='row'>
+                                        <TextInput 
+                                            style={stylesScreen.detailTextRight} 
+                                            placeholder={audio.audioName}
+                                        />
+                                    </View>
+                                    <View flexDirection='row'>
+                                        <TouchableOpacity>
+                                            <Text style={stylesScreen.button}>Rename</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity onPress={()=>{setPressed(false)}}>
+                                            <Text style={stylesScreen.button}>Cancel</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>)
+                                }
+                            </View>
+                            <View flexDirection='row'><Text style={stylesScreen.detailTextLeft}>Title :</Text><Text style={stylesScreen.detailTextRight}>{audio.title}</Text></View>
+                            <View flexDirection='row'><Text style={stylesScreen.detailTextLeft}>Album :</Text><Text style={stylesScreen.detailTextRight}>{audio.album}</Text></View>
+                            <View flexDirection='row'><Text style={stylesScreen.detailTextLeft}>Artist :</Text><Text style={stylesScreen.detailTextRight}>{audio.artist}</Text></View>
+                            <View flexDirection='row'><Text style={stylesScreen.detailTextLeft}>Year :</Text><Text style={stylesScreen.detailTextRight}>{audio.year}</Text></View>
+                        </View>
+                            
+                        <View>
+                            <Text style={stylesScreen.accessText}>Who have access :</Text>
+                        </View>
+                        <TouchableOpacity>
+                            <View style={stylesScreen.userContainer}>
+                                <MaterialCommunityIcons name='share' style={stylesScreen.userIcon}/>
+                                <Text style={stylesScreen.userName}>Share with other users</Text>
+                            </View>
+                        </TouchableOpacity>
+                        {userSet}
+                    </ScrollView>
+                </View>
+            </View>
+        </Modal>
+        </View>
 );
 }

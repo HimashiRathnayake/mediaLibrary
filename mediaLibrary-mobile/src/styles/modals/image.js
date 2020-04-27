@@ -9,7 +9,7 @@ export const stylesScreen = StyleSheet.create({
          flex:1,
          padding: 0,
          backgroundColor: 'black',
-         color: '#fff'
+         color: '#fff',
     },
     icon: {
         color: '#fff',
@@ -43,10 +43,17 @@ export const stylesScreen = StyleSheet.create({
         paddingTop: 5
     },
     details: {
-        marginTop: 140,
         width: Dimensions.get('screen').width - 80,
         height: Dimensions.get('screen').height/2,
-        alignSelf: 'center'
+        alignSelf: 'center',
+        justifyContent:'center'
+    },
+    detailsContainer:{
+        textAlign: 'center',
+        width: Dimensions.get('screen').width,
+        height: Dimensions.get('screen').height,
+        alignSelf: 'center',
+        backgroundColor: 'black'
     },
     originalImage:{
         alignSelf: 'stretch',

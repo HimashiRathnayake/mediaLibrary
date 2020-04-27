@@ -31,7 +31,7 @@ export const HomeScreen = ({navigation}) => {
                     </TouchableWithoutFeedback>
                     <TouchableWithoutFeedback onPress={()=>navigation.navigate('Audios')}>
                         <View style={styleHome.imageContainer}>
-                            <Image source={require('../../assets/audio.jpg')} style={styleHome.image}/>
+                            <Image source={require('../../assets/audio1.jpg')} style={styleHome.image}/>
                             <View style={styleHome.imageBottom}>
                                 <Text style={styleHome.imageText}>Store & Manage Your Audios</Text>
                             </View>
