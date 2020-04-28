@@ -481,6 +481,62 @@ export function SearchVideobyCriteria(userdata, criteria, parameter){
             reject(error);
         })
     });
-
+}
+export function Favourite(userdata, type){
+    return new Promise((resolve, reject) => {
+        fetch(`http://localhost:3000/favorite/${type}`, {
+            method: 'Get',
+            headers: {
+                'Authorization': `Bearer ${userdata}`,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            resolve(responseJson);
+        })
+        .catch((error) => {
+            reject(error);
+        })
+    });
+}
+export function RemoveFavourite(userdata, type, Id){
+    return new Promise((resolve, reject) => {
+        fetch(`http://localhost:3000/favorite/remove/${type}/${Id}`, {
+            method: 'Delete',
+            headers: {
+                'Authorization': `Bearer ${userdata}`,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            resolve(responseJson);
+        })
+        .catch((error) => {
+            reject(error);
+        })
+    });
+}
+export function AddFavourite(userdata, type, Id){
+    return new Promise((resolve, reject) => {
+        fetch(`http://localhost:3000/favorite/add/${type}/${Id}`, {
+            method: 'Post',
+            headers: {
+                'Authorization': `Bearer ${userdata}`,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            resolve(responseJson);
+        })
+        .catch((error) => {
+            reject(error);
+        })
+    });
 }
 

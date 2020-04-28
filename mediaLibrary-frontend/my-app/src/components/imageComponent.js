@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Redirect, Link} from "react-router-dom";
 import './componentCss/files.css';
-import {GetFolders, GetAll, GetFromFolder, DeleteFolder, DeleteImage, CreateFolders, SearchImages} from '../services/PostData';
+import {GetFolders, GetAll, GetFromFolder, DeleteFolder, DeleteImage, CreateFolders, SearchImages, Favourite, RemoveFavourite, AddFavourite} from '../services/PostData';
 import ResultList from './resultList';
 import CreateFolder from './createFolder';
 import ImageSearch from './ImageSearch';
@@ -21,6 +21,8 @@ export default class Image extends Component{
         this.createFolder=this.createFolder.bind(this);
         this.SearchImage=this.SearchImage.bind(this);
         this.search=this.search.bind(this);
+        this.imgfavourites=this.imgfavourites.bind(this);
+        this.favourite=this.favourite.bind(this);
         this.logout = this.logout.bind(this);
         
         this.state = {
@@ -32,9 +34,11 @@ export default class Image extends Component{
           nurl: '',
           redirect: false,
           createFolderShow: false,
-          searchShow: false
+          searchShow: false,
+          imgfavourites:[]
         }
         this.allfolders();
+        this.imgfavourites();
     }
       
     addActiveClass() {
@@ -55,6 +59,52 @@ export default class Image extends Component{
                 folders: result
             })
         }) 
+    }
+
+    imgfavourites(){
+        Favourite(JSON.parse(sessionStorage.getItem('userData')).token, this.state.type).then((result) => {
+            console.log("results: ", result) ;
+            this.setState({
+                imgfavourites: result
+            });
+        });
+    }
+
+    favourite(favourite, Id){
+        let cond= false;
+        if(favourite){
+            RemoveFavourite(JSON.parse(sessionStorage.getItem('userData')).token, this.state.type, Id).then((result) => {
+                alert(result.message);
+                if(result.message === 'Remove image from favorites'){
+                    this.setState({
+                        imgfavourites: result
+                    });
+                    cond= true;
+                }  
+            })
+        }
+        else{
+            AddFavourite(JSON.parse(sessionStorage.getItem('userData')).token, this.state.type, Id).then((result) => {
+                alert(result.message);
+                if(result.message === 'Add image to favourites'){
+                    this.setState({
+                        imgfavourites: result
+                    });
+                    cond= true;
+                }
+            })
+        }
+        if(cond){
+            if(Object.keys(this.state.folder).length){
+                this.getImage(this.state.folder);
+            }
+            else if(this.state.nurl.length){
+                this.SearchImage(this.state.nurl)
+            }
+            else{
+                this.allImages();
+            }
+        } 
     }
 
     allImages(){
@@ -193,7 +243,7 @@ export default class Image extends Component{
                                 <Link className="nav-link" to={"/search"}>Search</Link>
                             </li>
                             <li className="nav-item "> 
-                                <Link className="nav-link" to={"/start"}>Favourites</Link>
+                                <Link className="nav-link" to={"/favourites"}>Favourites</Link>
                             </li> 
                         </ul>
                         <form className="form-inline my-2 my-md-0"> </form>
@@ -226,6 +276,8 @@ export default class Image extends Component{
                                         deleteImage={this.deleteImage}
                                         allfolders={this.allfolders}
                                         RenameImage={this.RenameImage}
+                                        imgfavourites={this.state.imgfavourites}
+                                        favourite={this.favourite}
                             />
                             <CreateFolder show={this.state.createFolderShow}
                                           onHide={createFolderClose}

@@ -42,7 +42,7 @@ export default class Start extends Component{
                             <Link className="nav-link js-scroll-trigger" to={"/search"}>Search</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link js-scroll-trigger" to={"/start"}>Favourites</Link>
+                            <Link className="nav-link js-scroll-trigger" to={"/favourites"}>Favourites</Link>
                         </li>
                         {/* <li className="nav-item">
                             <Link className="nav-link js-scroll-trigger" to={"/audio"}>Audio</Link>

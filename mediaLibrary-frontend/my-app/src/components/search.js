@@ -4,7 +4,7 @@ import {Dropdown, DropdownButton, InputGroup, FormControl, Button, Nav} from "re
 import './componentCss/login.css';
 import './componentCss/start.css';
 import SearchList from './SearchList';
-import {SearchImagebyCriteria, SearchAudiobyCriteria, SearchVideobyCriteria, DeleteImage, DeleteAudio, DeleteVideo}from '../services/PostData';
+import {SearchImagebyCriteria, SearchAudiobyCriteria, SearchVideobyCriteria, DeleteImage, DeleteAudio, DeleteVideo, Favourite, RemoveFavourite, AddFavourite}from '../services/PostData';
 
 const formValid = formErrors => {
     let valid = true;
@@ -20,6 +20,7 @@ export default class Search extends Component{
 
     constructor(props){
         super(props);
+        
 
         this.state={
             criteria: ' Select Criteria',
@@ -29,6 +30,9 @@ export default class Search extends Component{
                 error: ''
             },
             searchresult: [],
+            imgresults: [],
+            vidresults: [],
+            audresults: [],
             redirect: false
         }
         this.logout = this.logout.bind(this);
@@ -38,6 +42,10 @@ export default class Search extends Component{
         this.searchAudio= this.searchAudio.bind(this);
         this.searchVideo= this.searchVideo.bind(this);
         this.deleteMedia=this.deleteMedia.bind(this);
+        this.favourites= this.favourites.bind(this);
+        this.AddRemovefavourite=this.AddRemovefavourite.bind(this);
+
+        this.favourites();
     }
 
     getKey(){
@@ -47,6 +55,97 @@ export default class Search extends Component{
         this.setState({
             key: this.refs.inputword.value
         })
+
+    }
+
+    favourites(){
+        Favourite(JSON.parse(sessionStorage.getItem('userData')).token, 'Image').then((result) => {
+            console.log("results: ", result) ;
+            this.setState({
+                imgresults: result
+            });
+        })  ;
+        Favourite(JSON.parse(sessionStorage.getItem('userData')).token, 'Audio').then((result) => {
+            console.log("results: ", result) ;
+            this.setState({
+                audresults: result
+            });
+        })  ;
+        Favourite(JSON.parse(sessionStorage.getItem('userData')).token, 'Video').then((result) => {
+            console.log("results: ", result) ;
+            this.setState({
+                vidresults: result
+            });
+        })  ;
+    }
+
+    AddRemovefavourite(favourite, type, Id){
+        let cond= false;
+        if(favourite){
+            RemoveFavourite(JSON.parse(sessionStorage.getItem('userData')).token, type, Id).then((result) => {
+                alert(result.message);
+                if(type==='Image'){
+                    if(result.message === 'Remove image from favorites'){
+                        this.setState({
+                            imgresults: result
+                        });
+                        cond= true;
+                    } 
+                }else if(type==='Audio'){
+                    if(result.message === 'Remove audio from favorites'){
+                        this.setState({
+                            audresults: result
+                        });
+                        cond= true;
+                    } 
+                }else{
+                    if(result.message === 'Remove video from favorites'){
+                        this.setState({
+                            vidresults: result
+                        });
+                        cond= true;
+                    } 
+                }  
+            })
+        }
+        else{
+            AddFavourite(JSON.parse(sessionStorage.getItem('userData')).token, type, Id).then((result) => {
+                alert(result.message);
+                if(type==='Image'){
+                    if(result.message === 'Add image to favourites'){
+                        this.setState({
+                            imgresults: result
+                        });
+                        cond= true;
+                    } 
+                }else if(type==='Audio'){
+                    if(result.message === 'Add audio to favourites'){
+                        this.setState({
+                            audresults: result
+                        });
+                        cond= true;
+                    } 
+                }else{
+                    if(result.message === 'Add video to favourites'){
+                        this.setState({
+                            vidresults: result
+                        });
+                        cond= true;
+                    } 
+                }
+            })
+        }
+        if(cond){
+            if(type ==='Image'){
+                this.searchImage(this.state.criteria);
+            }
+            else if(type==='Audio'){
+                this.searchAudio(this.state.criteria);
+            }
+            else{
+                this.searchVideo(this.state.criteria);
+            }
+        }
 
     }
 
@@ -222,7 +321,7 @@ export default class Search extends Component{
                                 <Link className="nav-link js-scroll-trigger" to={"/search"}>Search</Link>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link js-scroll-trigger" to={"/start"}>Favourites</Link>
+                                <Link className="nav-link js-scroll-trigger" to={"/favourites"}>Favourites</Link>
                             </li>
                             <li className="nav-item">
                                 <button  className="nav-link js-scroll-trigger link-button" onClick={this.logout}>Logout</button> 
@@ -279,7 +378,11 @@ export default class Search extends Component{
                                     criteria={this.state.criteria}
                                     searchImage={this.searchImage}
                                     searchAudio={this.searchAudio}
-                                    searchVideo={this.searchVideo}/>
+                                    searchVideo={this.searchVideo}
+                                    imgresults={this.state.imgresults}
+                                    audresults={this.state.audresults}
+                                    vidresults={this.state.vidresults}
+                                    AddRemovefavourite={this.AddRemovefavourite}/>
                     </div>
                 </div>
             </div>

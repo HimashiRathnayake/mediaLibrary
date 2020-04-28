@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Redirect, Link} from "react-router-dom";
 import './componentCss/files.css';
-import {GetFolders, GetAll, GetFromFolder, CreateFolders, DeleteFolder, DeleteAudio, SearchAudios} from '../services/PostData';
+import {GetFolders, GetAll, GetFromFolder, CreateFolders, DeleteFolder, DeleteAudio, SearchAudios, Favourite, RemoveFavourite, AddFavourite} from '../services/PostData';
 import ResultList from './resultList';
 import CreateFolder from './createFolder';
 import AudioSearch from './AudioSearch';
@@ -21,6 +21,8 @@ export default class Audio extends Component{
         this.deleteAudio=this.deleteAudio.bind(this);
         this.SearchAudio=this.SearchAudio.bind(this);
         this.search=this.search.bind(this);
+        this.audfavourites=this.audfavourites.bind(this);
+        this.favourite=this.favourite.bind(this);
         this.logout = this.logout.bind(this);
         
         this.state = {
@@ -32,9 +34,11 @@ export default class Audio extends Component{
           nurl: '',
           createFolderShow: false,
           redirect: false,
-          searchShow: false
+          searchShow: false,
+          audfavourites:[]
         }
         this.allfolders();
+        this.audfavourites();
     }
       
     addActiveClass() {
@@ -55,6 +59,52 @@ export default class Audio extends Component{
                 folders: result
             })
         }) 
+    }
+
+    audfavourites(){
+        Favourite(JSON.parse(sessionStorage.getItem('userData')).token, this.state.type).then((result) => {
+            console.log("results: ", result) ;
+            this.setState({
+                audfavourites: result
+            });
+        });
+    }
+
+    favourite(favourite, Id){
+        let cond= false;
+        if(favourite){
+            RemoveFavourite(JSON.parse(sessionStorage.getItem('userData')).token, this.state.type, Id).then((result) => {
+                alert(result.message);
+                if(result.message === 'Remove audio from favorites'){
+                    this.setState({
+                        audfavourites: result
+                    });
+                    cond= true;
+                } 
+            })
+        }
+        else{
+            AddFavourite(JSON.parse(sessionStorage.getItem('userData')).token, this.state.type, Id).then((result) => {
+                alert(result.message);
+                if(result.message === 'Add audio to favourites'){
+                    this.setState({
+                        audfavourites: result
+                    });
+                    cond= true;
+                }
+            })
+        }
+        if(cond){
+            if(Object.keys(this.state.folder).length){
+                this.getAudio(this.state.folder);
+            }
+            else if(this.state.nurl.length){
+                this.SearchAudio(this.state.nurl)
+            }
+            else{
+                this.allAudios();
+            }
+        } 
     }
 
     allAudios(){
@@ -194,7 +244,7 @@ export default class Audio extends Component{
                                 <Link className="nav-link" to={"/search"}>Search</Link>
                             </li>
                             <li className="nav-item "> 
-                                <Link className="nav-link" to={"/start"}>Favourites</Link>
+                                <Link className="nav-link" to={"/favourites"}>Favourites</Link>
                             </li> 
                         </ul>
                         <form className="form-inline my-2 my-md-0"> </form>
@@ -226,7 +276,10 @@ export default class Audio extends Component{
                                         deleteAudio={this.deleteAudio}
                                         allfolders={this.allfolders}
                                         routeType={this.state.routeType}
-                                        RenameAudio={this.RenameAudio}/>
+                                        RenameAudio={this.RenameAudio}
+                                        audfavourites={this.state.audfavourites}
+                                        favourite={this.favourite}
+                                        />
                             <CreateFolder show={this.state.createFolderShow}
                                           onHide={createFolderClose}
                                           createfolder={this.createFolder}

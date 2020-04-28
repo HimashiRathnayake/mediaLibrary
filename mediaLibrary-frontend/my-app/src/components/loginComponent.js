@@ -44,6 +44,7 @@ export default class Login extends Component{
             `)
             LoginData(this.state).then((result) => {
                 let responseJSON = result;
+                //console.log('login results:', result);
                 
                 if(responseJSON.token){
                     sessionStorage.setItem('userData', JSON.stringify(responseJSON));

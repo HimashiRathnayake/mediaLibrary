@@ -39,8 +39,16 @@ class SearchList extends Component {
         if(this.props.searchresult.count){
            
             if(this.props.searchresult.Images){
+                let ary=this.props.imgresults.imgfavourites;
+                
                 result= this.props.searchresult.Images.map(imageName => {
                     var imgsrc=  imageName.path;
+                    var favourite= false;
+                    let classname="fa fa-star-o fa-fw";
+                    if(ary.some(ary => ary._id === imageName._id)){
+                        favourite= true;
+                        classname="fa fa-star fa-fw"
+                    } 
                 
                     return(
                         <li className="list-group-item" key={imageName._id} > 
@@ -52,16 +60,22 @@ class SearchList extends Component {
                                 <button className="link-button" onClick={() => this.props.deleteMedia(imageName)}><span className="fa fa-trash-o fa-fw" > </span></button>
                                 <button className="link-button" onClick={()=> this.setState({renameShow: true,type: 'images', folderId: imageName._id})}><span className="fa fa-pencil-square-o fa-fw" ></span></button>
                                 <button className="link-button"><span className="fa fa-share-alt fa-fw" > </span></button>
-                                <button className="link-button"><span className="fa fa-star fa-fw" > </span></button>      
+                                <button className="link-button" onClick={() => this.props.AddRemovefavourite(favourite, 'Image', imageName._id)}><span className={classname} > </span></button>      
                             </div>
                         </li>
                     )
                 })   
             }
             else if(this.props.searchresult.Audios){
+                let ary=this.props.audresults.audfavourites;
                 result= this.props.searchresult.Audios.map(audioName => {
                     var audiosrc=  audioName.path;
-                    console.log("audiosrc: ", audiosrc);
+                    var favourite= false;
+                    let classname="fa fa-star-o fa-fw";
+                    if(ary.some(ary => ary._id === audioName._id)){
+                        favourite= true;
+                        classname="fa fa-star fa-fw"
+                    }
                     
                     return(
                         <li className="list-group-item" key={audioName._id} > 
@@ -80,7 +94,7 @@ class SearchList extends Component {
                                     <button className="link-button" onClick={() => this.props.deleteMedia(audioName)}><span className="fa fa-trash-o fa-fw" > </span></button>
                                     <button className="link-button" onClick={()=> this.setState({renameShow: true, type: 'audios', folderId: audioName._id})}><span className="fa fa-pencil-square-o fa-fw" ></span></button>
                                     <button className="link-button"><span className="fa fa-share-alt fa-fw" > </span></button>
-                                    <button className="link-button"><span className="fa fa-star fa-fw" > </span></button>   
+                                    <button className="link-button" onClick={() => this.props.AddRemovefavourite(favourite, 'Audio', audioName._id)}><span className={classname} > </span></button>   
                                 </div>
                             </div>
                         </div>
@@ -90,9 +104,15 @@ class SearchList extends Component {
             }
 
             else if(this.props.searchresult.Videos){
+                let ary=this.props.vidresults.vidfavourites;
                 result= this.props.searchresult.Videos.map(videoName => {
                     var videosrc=  videoName.path;
-                    console.log("videosrc: ", videosrc);
+                    var favourite= false;
+                    let classname="fa fa-star-o fa-fw";
+                    if(ary.some(ary => ary._id === videoName._id)){
+                        favourite= true;
+                        classname="fa fa-star fa-fw"
+                    }
                 
                     return(
                     <li className="list-group-item" key={videoName._id} > 
@@ -110,7 +130,7 @@ class SearchList extends Component {
                                     <button className="link-button" onClick={() => this.props.deleteMedia(videoName)}><span className="fa fa-trash-o fa-fw" > </span></button>
                                     <button className="link-button" onClick={()=> this.setState({renameShow: true, type: 'videos', folderId: videoName._id})}><span className="fa fa-pencil-square-o fa-fw" ></span></button>
                                     <button className="link-button"><span className="fa fa-share-alt fa-fw" > </span></button>
-                                    <button className="link-button"><span className="fa fa-star fa-fw" > </span></button>      
+                                    <button className="link-button" onClick={() => this.props.AddRemovefavourite(favourite, 'Video', videoName._id)}><span className={classname} > </span></button>      
                                 </div>
                             </div>
                         </div>

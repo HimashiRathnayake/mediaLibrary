@@ -11,6 +11,7 @@ import Image from './components/imageComponent';
 import Audio from './components/audioComponent';
 import Video from './components/videoComponent'; 
 import Search from './components/search'; 
+import Favourites from './components/favourites'; 
 
 export default class Routes extends Component {
 
@@ -26,6 +27,7 @@ export default class Routes extends Component {
                     <Route path="/audio" component={Audio} />
                     <Route path="/video" component={Video} /> 
                     <Route path="/search" component={Search} /> 
+                    <Route path="/favourites" component={Favourites} /> 
                 </Switch>
             </Router>
            
