@@ -19,6 +19,7 @@ exports.addFavorites =  (req, res, next) => {
             }
             else{
                 User.findOne({_id: id})
+                .populate('imgfavourites')
                 .exec()
                 .then(function(user){
                     const isInFavourite= user.imgfavourites.some(function(favourite){
@@ -64,6 +65,7 @@ exports.addFavorites =  (req, res, next) => {
             }
             else{
                 User.findOne({_id: id})
+                .populate('audfavourites')
                 .exec()
                 .then(function(user){
                     const isInFavourite= user.audfavourites.some(function(favourite){
@@ -107,6 +109,7 @@ exports.addFavorites =  (req, res, next) => {
             }
             else{
                 User.findOne({_id: id})
+                .populate('vidfavourites')
                 .exec()
                 .then(function(user){
                     const isInFavourite= user.vidfavourites.some(function(favourite){
@@ -157,6 +160,7 @@ exports.removeFavorites =  (req, res, next) => {
             }
             else{
                 User.findOne({_id: id})
+                .populate('imgfavourites')
                 .exec()
                 .then(function(user){
                     const isInFavourite= user.imgfavourites.some(function(favourite){
@@ -201,6 +205,7 @@ exports.removeFavorites =  (req, res, next) => {
             }
             else{
                 User.findOne({_id: id})
+                .populate('audfavourites')
                 .exec()
                 .then(function(user){
                     const isInFavourite= user.audfavourites.some(function(favourite){
@@ -245,6 +250,7 @@ exports.removeFavorites =  (req, res, next) => {
             }
             else{
                 User.findOne({_id: id})
+                .populate('vidfavourites')
                 .exec()
                 .then(function(user){
                     const isInFavourite= user.vidfavourites.some(function(favourite){
