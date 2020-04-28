@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
-import { Text, View, Modal, StyleSheet, Dimensions, TouchableOpacity, Alert } from 'react-native';
-import {styles} from '../styles/commons';
+import { Text, View, Modal, Dimensions, TouchableOpacity, Alert } from 'react-native';
 import {Video} from 'expo-av';
-import { Ionicons, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
-import {deleteVideo} from '../api/video';
+import { Ionicons, MaterialIcons, MaterialCommunityIcons, FontAwesome, AntDesign } from '@expo/vector-icons';
+import {deleteVideo, renameVideo} from '../api/video';
+import {stylesScreen} from '../styles/modals/video';
+import { ScrollView, TextInput } from 'react-native-gesture-handler';
+import { DetailsModal } from './DetailsModal';
 
 const DISABLED_OPACITY = 0.3;
-const { width: DEVICE_WIDTH, height: DEVICE_HEIGHT } = Dimensions.get("window");
-const LOADING_STRING = "... loading ...";
-const VIDEO_CONTAINER_HEIGHT = (DEVICE_HEIGHT * 2.0) / 5.0 ;
 
 export const VideoModal = ({visible, setVisible, videoModal, setRefresh}) => {
 
-    const [videoName, setName] = useState(LOADING_STRING);
     const [isLoading, setLoading]= useState(true);
+    const [detailsModal, setDetailsModal] = useState(false);
+    const [name, setName] = useState(null);
 
     function deletevideo(videoId){
         setVisible(false);
@@ -27,15 +27,23 @@ export const VideoModal = ({visible, setVisible, videoModal, setRefresh}) => {
         })
     }
 
+    function renamevideo(videoId,name){
+        renameVideo({videoId: videoId, name:name})
+        .then((response)=>{
+            setRefresh(true);
+        })
+        .catch((error)=>{
+            console.log(error);
+        })
+    }
+
     function onLoadStart(){
         setLoading(true);
-        setName(LOADING_STRING);
         console.log(`ON LOAD START`);
     };
     
     function onLoad (status){
         setLoading(false);
-        setName(videoModal.videoName)
         console.log(`ON LOAD : ${JSON.stringify(status)}`);
       };
     
@@ -44,91 +52,63 @@ export const VideoModal = ({visible, setVisible, videoModal, setRefresh}) => {
     };
 
     return(
-        <Modal style={stylesScreen.modal} transparent={false} animationType='fade' visible={visible} onRequestClose={()=>{}}>
-            <View style={[stylesScreen.modal,  {opacity: isLoading ? DISABLED_OPACITY : 1.0}]}>
-                <TouchableOpacity onPress={()=>{setVisible(false)}} style={{flexDirection:'row-reverse', marginLeft: 10, marginTop: 10}}>
-                    <MaterialCommunityIcons name='close-box' style={stylesScreen.icon}/>  
-                </TouchableOpacity>
-                <Text style={stylesScreen.header}>{videoName}</Text>
-                <View style={styles.videoContainer}>
-                    <Video
-                        source={{uri: videoModal.path}}
-                        style={[
-                        styles.video,
-                        {
-                            opacity: isLoading ? 0.0 : 1.0,
-                            width: Dimensions.get('screen').width,
-                            height: VIDEO_CONTAINER_HEIGHT
-                        }
-                        ]}
-                        resizeMode={Video.RESIZE_MODE_CONTAIN}
-                        onLoadStart={onLoadStart}
-                        onLoad={onLoad}
-                        onError={onError}
-                        useNativeControls = {true}
-                    />
-                </View>
-                
-                <View flexDirection='row-reverse'>
-                    <MaterialCommunityIcons name='delete-outline' style={stylesScreen.iconBottom} 
-                        onPress={()=>{ 
-                            Alert.alert('Do you want to delete video','',[
-                                {text: 'Cancel'},
-                                {text: "Yes", onPress: ()=>deletevideo(videoModal._id)}
-                        ],{cancelable:false})}}
-                    />
-                    <MaterialIcons name='favorite-border' style={stylesScreen.iconBottom} onPress={()=>setVisible(false)}/>
-                    <Ionicons name='md-share' style={stylesScreen.iconBottom} onPress={()=>setVisible(false)}/>
-                </View> 
+        <View>
+        <Modal style={stylesScreen.modal} transparent={true} animationType='slide' visible={visible} onRequestClose={()=>{setVisible(false); setName(null)}}>
+            <View style={[stylesScreen.modal]}>
+                <View style={[stylesScreen.modalView, {opacity: isLoading ? DISABLED_OPACITY : 1.0}]}>
 
-                <View style={stylesScreen.bottomView}>
-                    <Text style={{fontWeight: 'bold', fontSize:20}}>Details: </Text>
-                    <View flexDirection='row'><Text style={stylesScreen.detailTextLeft}>Title :</Text><Text style={stylesScreen.detailTextRight}>{videoModal.title}</Text></View>
-                    <View flexDirection='row'><Text style={stylesScreen.detailTextLeft}>Artist :</Text><Text style={stylesScreen.detailTextRight}>{videoModal.artist}</Text></View>
+                    <TouchableOpacity onPress={()=>{setVisible(false); setName(null)}} style={{flexDirection:'row-reverse', marginLeft: 20, marginTop: 30, position: 'absolute'}}>
+                        <Ionicons name='md-arrow-back' style={stylesScreen.icon}/>  
+                    </TouchableOpacity>
+                    <View style={{ alignItems: "center", marginTop: 24 }}>
+                        <Text style={stylesScreen.headerTop}>MyMedia Video</Text>
+                        <Text style={stylesScreen.header}>{name===null? videoModal.videoName.substring(0,25): name.substring(0,25)}</Text>
+                    </View>
+                    <View style={stylesScreen.videoContainer}>
+                        <Video
+                            source={{uri: videoModal.path}}
+                            style={[stylesScreen.video,{opacity: isLoading ? 0.0 : 1.0,}]}
+                            resizeMode={Video.RESIZE_MODE_CONTAIN}
+                            onLoadStart={onLoadStart}
+                            onLoad={onLoad}
+                            onError={onError}
+                            useNativeControls = {true}
+                        />
+                    </View>
+                    
+                    <View flexDirection='row-reverse'>
+                        <MaterialCommunityIcons name='delete-outline' style={stylesScreen.iconBottom} 
+                            onPress={()=>{ 
+                                Alert.alert('Do you want to delete video','',[
+                                    {text: 'Cancel'},
+                                    {text: "Yes", onPress: ()=>deletevideo(videoModal._id)}
+                            ],{cancelable:false})}}
+                        />
+                        <MaterialIcons name='favorite-border' style={stylesScreen.iconBottom} onPress={()=>setVisible(false)}/>
+                        <Ionicons name='md-share' style={stylesScreen.iconBottom} onPress={()=>setVisible(false)}/>
+                    </View> 
+
+                    <View style={stylesScreen.bottom}>
+                        <TouchableOpacity onPress={()=>setDetailsModal(true)}>
+                            <View flexDirection='row'>
+                                <Text style={[stylesScreen.bottomText, {marginRight:10}]}>View & edit Details</Text>
+                                <AntDesign name='caretdown' style={stylesScreen.bottomText}/>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </View>
         </Modal>
+
+        <DetailsModal 
+            file={videoModal} type='Video' 
+            detailsModal={detailsModal} 
+            setDetailsModal={setDetailsModal} 
+            renameFile={renamevideo} 
+            setName={setName} 
+            name={name}
+        />
+
+        </View>
 );
 }
-
-const stylesScreen = StyleSheet.create({
-    modal: {
-        flex:1,
-        padding: 0,
-        backgroundColor: 'white',
-        color: '#fff'
-    },
-    header:{
-        marginTop: 0,
-        marginLeft: 20,
-        marginBottom: 10,
-        fontSize: 18,
-        fontWeight: 'bold'
-    },
-    icon: {
-        fontSize: 30,
-    },
-    iconBottom:{
-        marginTop: 10,
-        fontSize: 20,
-        marginHorizontal: 20
-    },
-    bottomView:{
-        marginTop: 20,
-        marginLeft: 20
-    },
-    detailTextLeft: {
-        color: 'black',
-        fontSize: 16,
-        marginLeft: 50,
-        paddingTop: 20,
-        width: 100
-    },
-    detailTextRight: {
-        color: 'black',
-        fontSize: 16,
-        marginLeft: 20,
-        paddingTop: 20,
-        width: Dimensions.get('screen').width/2,
-    },
-});

@@ -80,5 +80,25 @@ export async function deleteImage({imageId}){
     })
 }
 
-
+export async function renameImage({imageId, name}){
+    var token = await AsyncStorage.getItem('userToken')
+    return fetch(serverUrl+'/images/'+imageId,{
+        method: 'PATCH',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type':'application/json',
+            'Authorization': 'Bearer '+token 
+        },
+        body: JSON.stringify({
+            imageName: name
+        })
+    })
+    .then((response)=>response.json())
+    .then((json)=>{
+        return json;
+    })
+    .catch((error)=>{
+        console.log(error)
+    })
+}
 

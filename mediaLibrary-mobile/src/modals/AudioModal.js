@@ -2,21 +2,28 @@ import React, {useState} from 'react';
 import {Text, View, Modal, TouchableOpacity, Alert, Image, Dimensions} from 'react-native';
 import {Slider} from 'react-native-elements';
 import {Audio} from 'expo-av';
-import { Foundation, Ionicons, FontAwesome, MaterialIcons, MaterialCommunityIcons, FontAwesome5, AntDesign } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons, MaterialCommunityIcons, FontAwesome5, AntDesign } from '@expo/vector-icons';
 import {stylesScreen} from '../styles/modals/audio';
-import {deleteAudio} from '../api/audio';
-import { TouchableHighlight, ScrollView, TextInput } from 'react-native-gesture-handler';
+import {deleteAudio, renameAudio} from '../api/audio';
+import { DetailsModal } from './DetailsModal';
 
 const DISABLED_OPACITY = 0.6;
 const LOADING_STRING = "... loading ...";
 const BUFFERING_STRING = "... buffering ...";
+const imageSet = [
+    require('../../assets/audio.jpg'),
+    require('../../assets/audio2.jpg'),
+    require('../../assets/audio3.jpg'),
+    require('../../assets/audio4.png'),
+    require('../../assets/audio5.jpg'),
+    require('../../assets/audio1.jpg')
+];
 
 export const AudioModal = ({audio, index, visible, setVisible, openModal, setRefresh}) => {
 
     const [playbackInstance, setInstance] = useState(null); 
     const [isSeeking, setSeeking] = useState(false);
     const [shouldPlayAtEndOfSeek, setShouldPlayAtEndOfSeek] = useState(false);
-    const [audioName, setName] = useState(LOADING_STRING);
     const [isMuted, setMute]= useState(false);
     const [playbackInstancePosition, setPosition]= useState(null);
     const [playbackInstanceDuration, setDuration]= useState(null);
@@ -25,13 +32,23 @@ export const AudioModal = ({audio, index, visible, setVisible, openModal, setRef
     const [isBuffering, setBuffering]= useState(false);
     const [isLoading, setLoading]= useState(true);
     const [detailsModal, setDetailsModal] = useState(false);
-    const [pressed, setPressed] = useState(false);
+    const [name, setName] = useState(null);
 
     function deleteaudio(audioId){
         setVisible(false);
         deleteAudio({audioId: audioId})
         .then((response)=>{
             console.log(response);
+            setRefresh(true);
+        })
+        .catch((error)=>{
+            console.log(error);
+        })
+    }
+
+    function renameaudio(audioId,name){
+        renameAudio({audioId: audioId, name:name})
+        .then((response)=>{
             setRefresh(true);
         })
         .catch((error)=>{
@@ -148,23 +165,23 @@ export const AudioModal = ({audio, index, visible, setVisible, openModal, setRef
     function updateScreenForLoading(isLoading){
         if (isLoading) {
             setIsPlaying(false);
-            setName(LOADING_STRING);
             setDuration(null);
             setPosition(null);
             setLoading(true);
         } else {
-            setName(audio.audioName);  
             setLoading(false)  
         }
     }
 
     function backPressed(){
         setVisible(false);
+        setName(null);
         openModal(true, index-1)
     }
 
     function forwardPressed(){
         setVisible(false);
+        setName(null);
         openModal(true, index+1);
     }
 
@@ -180,18 +197,6 @@ export const AudioModal = ({audio, index, visible, setVisible, openModal, setRef
         });
         loadNewPlaybackInstance(false);
     },[audio]);
-
-    const userSet = audio.accessList.map((val,key)=>{
-        return(
-            <View style={stylesScreen.userContainer} key={key}>
-                <FontAwesome name='user-circle' style={stylesScreen.userIcon}/>
-                <Text style={stylesScreen.userName}>{val.email.substring(0, 32)}</Text>
-                <TouchableOpacity onPress={()=>alert('user removed')}>
-                    <MaterialIcons name='remove-circle' style={stylesScreen.removeIcon}/>
-                </TouchableOpacity>
-            </View>
-        )
-    })
 
     return(
         <View>
@@ -217,7 +222,7 @@ export const AudioModal = ({audio, index, visible, setVisible, openModal, setRef
                     </View>
 
                     <View style={stylesScreen.coverContainer}>
-                        <Image source={require('../../assets/audio.jpg')} style={stylesScreen.image}/>
+                        <Image source={imageSet[index]} style={stylesScreen.image}/>
                     </View>
 
                     <View style={{ alignItems: "center", marginTop: 22 }}>
@@ -268,64 +273,9 @@ export const AudioModal = ({audio, index, visible, setVisible, openModal, setRef
                 </View>
             </View>
         </Modal>
-        <Modal style={stylesScreen.modal} transparent={false} animationType='slide' visible={detailsModal} onRequestClose={()=>{stopPlaying()}}>
-            <View style={stylesScreen.modal}>
-                <View style={{backgroundColor:'#fff', flex:1, justifyContent:'center'}}>
-                    <View flexDirection='row' style={stylesScreen.detailsHeader}>
-                        <TouchableOpacity onPress={()=>{setDetailsModal(false); setPressed(false);}} style={{marginLeft: 20, marginTop:12}}>
-                            <Ionicons name='md-arrow-back' style={stylesScreen.icon}/>  
-                        </TouchableOpacity>
-                        <Text style={{fontWeight: 'bold', fontSize:20, marginTop:15, marginLeft:20}}>Details: </Text>
-                    </View>
-                    <ScrollView>
-                        <View style={stylesScreen.detailsView}>
-                            <View flexDirection='row'>
-                                <Text style={stylesScreen.detailTextLeft}>Audio Name :</Text>
-                                {pressed===false ? 
-                                (<View flexDirection='row'>
-                                    <Text style={stylesScreen.detailTextRight}>{audio.audioName}</Text>
-                                    <TouchableOpacity onPress={()=>setPressed(true)}>
-                                        <AntDesign name='edit' style={stylesScreen.renameIcon}/>
-                                    </TouchableOpacity>
-                                </View>):
-                                (<View>
-                                    <View flexDirection='row'>
-                                        <TextInput 
-                                            style={stylesScreen.detailTextRight} 
-                                            placeholder={audio.audioName}
-                                        />
-                                    </View>
-                                    <View flexDirection='row'>
-                                        <TouchableOpacity>
-                                            <Text style={stylesScreen.button}>Rename</Text>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity onPress={()=>{setPressed(false)}}>
-                                            <Text style={stylesScreen.button}>Cancel</Text>
-                                        </TouchableOpacity>
-                                    </View>
-                                </View>)
-                                }
-                            </View>
-                            <View flexDirection='row'><Text style={stylesScreen.detailTextLeft}>Title :</Text><Text style={stylesScreen.detailTextRight}>{audio.title}</Text></View>
-                            <View flexDirection='row'><Text style={stylesScreen.detailTextLeft}>Album :</Text><Text style={stylesScreen.detailTextRight}>{audio.album}</Text></View>
-                            <View flexDirection='row'><Text style={stylesScreen.detailTextLeft}>Artist :</Text><Text style={stylesScreen.detailTextRight}>{audio.artist}</Text></View>
-                            <View flexDirection='row'><Text style={stylesScreen.detailTextLeft}>Year :</Text><Text style={stylesScreen.detailTextRight}>{audio.year}</Text></View>
-                        </View>
-                            
-                        <View>
-                            <Text style={stylesScreen.accessText}>Who have access :</Text>
-                        </View>
-                        <TouchableOpacity>
-                            <View style={stylesScreen.userContainer}>
-                                <MaterialCommunityIcons name='share' style={stylesScreen.userIcon}/>
-                                <Text style={stylesScreen.userName}>Share with other users</Text>
-                            </View>
-                        </TouchableOpacity>
-                        {userSet}
-                    </ScrollView>
-                </View>
-            </View>
-        </Modal>
+
+        <DetailsModal file={audio} type='Audio' detailsModal={detailsModal} setDetailsModal={setDetailsModal} renameFile={renameaudio} name={name} setName={setName}/>
+        
         </View>
 );
 }

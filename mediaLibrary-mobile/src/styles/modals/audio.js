@@ -64,22 +64,15 @@ export const stylesScreen = StyleSheet.create({
         alignSelf: 'center',
         marginTop: 10
     },
-    volumeController: {
-        flexDirection: 'row-reverse',
-        marginLeft: 20,
-        marginTop: 50,
-        marginBottom: 20
-    },
-    volumeSlider: {
-        width: 120
-    },
-    detailsView:{
-        marginTop: 0,
-        marginLeft: 20,
-    },
-    text:{
-        color: 'white'
-    },
+    // volumeController: {
+    //     flexDirection: 'row-reverse',
+    //     marginLeft: 20,
+    //     marginTop: 50,
+    //     marginBottom: 20
+    // },
+    // volumeSlider: {
+    //     width: 120
+    // },
     audioTextContainer:{
         flexDirection: 'row-reverse'
     },
@@ -87,20 +80,6 @@ export const stylesScreen = StyleSheet.create({
         color: '#9e9e9e',
         marginTop: -12,
         marginRight: 48
-    },
-    detailTextLeft: {
-        color: 'black',
-        fontSize: 16,
-        marginLeft: 5,
-        paddingTop: 16,
-        width: 100
-    },
-    detailTextRight: {
-        color: '#8E97A6',
-        fontSize: 16,
-        marginLeft: 5,
-        paddingTop: 16,
-        width: Dimensions.get('screen').width/2,
     },
     track: {
         height: 3,
@@ -155,61 +134,4 @@ export const stylesScreen = StyleSheet.create({
         fontSize: 16,
         color: '#1976d2'
     },
-    accessText: {
-        color: 'black',
-        fontSize: 17,
-        marginLeft: 5,
-        paddingTop: 20,
-        marginLeft: 24,
-        marginBottom: 10,
-        fontWeight: 'bold'
-    },
-    userContainer: {
-        flexDirection: 'row',
-        backgroundColor: '#93A8B3',
-        alignSelf: 'center',
-        width : Dimensions.get('screen').width - 40,
-        padding: 10,
-        marginVertical: 2,
-        borderRadius: 10        
-    },
-    userName: {
-        color: '#fff',
-        marginHorizontal: 8,
-        fontSize: 16
-    },
-    userIcon:{
-        color: '#fff',
-		fontSize: 24,
-		marginHorizontal: 4
-    },
-    removeIcon: {
-        color: '#fff',
-        fontSize: 24,
-        marginLeft: Dimensions.get('screen').width - 250,
-    },
-    renameIcon:{
-        color: 'black',
-		fontSize: 28,
-        marginHorizontal: 0,
-        marginTop: 16
-    },
-    button: {
-        alignSelf: 'stretch',
-        width: Dimensions.get('screen').width/3,
-        marginBottom: 12,
-        marginTop: 10,
-        marginLeft:5,
-        color: '#1976d2',
-        fontSize: 14
-    },
-    detailsHeader: {
-        elevation:6, 
-        backgroundColor:'#fff',
-        alignSelf:'center', 
-        width:Dimensions.get('screen').width-10, 
-        height:60,
-        marginTop: 4,
-        shadowColor: 'black',  
-    }
 });

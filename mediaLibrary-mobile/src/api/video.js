@@ -80,3 +80,25 @@ export async function deleteVideo({videoId}){
         console.log(error)
     })
 }
+
+export async function renameVideo({videoId, name}){
+    var token = await AsyncStorage.getItem('userToken')
+    return fetch(serverUrl+'/videos/'+videoId,{
+        method: 'PATCH',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type':'application/json',
+            'Authorization': 'Bearer '+token 
+        },
+        body: JSON.stringify({
+            videoName: name
+        })
+    })
+    .then((response)=>response.json())
+    .then((json)=>{
+        return json;
+    })
+    .catch((error)=>{
+        console.log(error)
+    })
+}

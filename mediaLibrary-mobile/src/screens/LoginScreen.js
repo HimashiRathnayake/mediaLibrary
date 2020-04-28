@@ -58,6 +58,7 @@ export const LoginScreen = ({navigation}) => {
                                 placeholderTextColor="white"
                                 underlineColorAndroid="transparent"
                                 secureTextEntry={false}
+                                keyboardType='email-address'
                                 onChangeText={props.handleChange('email')}
                                 value={props.values.email}
                             />
@@ -72,6 +73,7 @@ export const LoginScreen = ({navigation}) => {
                                 placeholderTextColor="white"
                                 underlineColorAndroid="transparent"
                                 secureTextEntry={true}
+                                keyboardType='default'
                                 onChangeText={props.handleChange('password')}
                                 value={props.values.password}
                             />

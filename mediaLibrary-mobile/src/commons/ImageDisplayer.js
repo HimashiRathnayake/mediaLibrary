@@ -6,7 +6,7 @@ import {ImageModal} from '../modals/ImageModal';
 export const ImageDisplayer = ({setRefresh, images, count}) => {
 
     const [modelVisible, setVisible] = React.useState(false);
-    const [modelImage, setImage] = React.useState(require('../../assets/logo.png'));
+    const [modelImage, setImage] = React.useState(null);
 
     function setModelVisible(visible, imageKey){
         setImage(images[imageKey]);
@@ -31,7 +31,9 @@ export const ImageDisplayer = ({setRefresh, images, count}) => {
                 ):
                 (<ScrollView style={stylesScreen.container}>
                     <View style={stylesScreen.container}>
-                        <ImageModal modelImage={modelImage} modelVisible={modelVisible} setVisible={setVisible} setRefresh={setRefresh}/>
+                        {(modelImage !== null) && (
+                            <ImageModal modelImage={modelImage} modelVisible={modelVisible} setVisible={setVisible} setRefresh={setRefresh}/>
+                        )}
                         {imageSet}
                     </View>
                 </ScrollView>)

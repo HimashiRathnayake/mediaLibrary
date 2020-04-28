@@ -1,3 +1,5 @@
+import { AsyncStorage } from "react-native";
+
 const serverUrl = 'http://192.168.1.4:3000';
 
 export function signup({values}){
@@ -41,3 +43,23 @@ export function login({values}){
         return error
     })
 }
+
+export async function getOtherUsers(text){
+    var token = await AsyncStorage.getItem('userToken')
+    return fetch(serverUrl+'/user/'+text,{
+        method: 'GET',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type':'application/json',
+            'Authorization': 'Bearer '+token 
+        }
+    })
+    .then((response)=>response.json())
+    .then((json)=>{
+        return json;
+    })
+    .catch((error)=>{
+        console.log(error)
+    })
+}
+

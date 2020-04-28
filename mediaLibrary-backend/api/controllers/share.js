@@ -6,13 +6,22 @@ const Video =  require('../models/video');
 const Folder =  require('../models/folder'); 
 
 exports.image_add_user = (req, res, next) =>{
-    Image.updateOne({_id: req.params.imageId},{$push: { accessList: req.body.userId}})
+    Image.find({_id: req.params.imageId, accessList: {$in:[req.params.userId]}})
     .exec()
     .then(result => {
-        console.log(result);
-        res.status(200).json({
-            message: 'Image shared successfully'
-        });
+        if (result.length===0){
+            Image.updateOne({_id: req.params.imageId},{$push: { accessList: req.params.userId}})
+            .exec()
+            .then(()=>{
+                res.status(200).json({
+                    message: 'Image shared successfully'
+                });
+            })
+        }else{
+            res.status(409).json({
+                message: 'Already Shared'
+            });
+        }        
     })
     .catch(err=>{
         console.log(err);
@@ -23,13 +32,22 @@ exports.image_add_user = (req, res, next) =>{
 };
 
 exports.audio_add_user = (req, res, next) =>{
-    Audio.updateOne({_id: req.params.audioId},{$push: { accessList: req.body.userId}})
+    Audio.find({_id: req.params.audioId, accessList: {$in:[req.params.userId]}})
     .exec()
     .then(result => {
-        console.log(result);
-        res.status(200).json({
-            message: 'Audio shared successfully'
-        });
+        if (result.length===0){
+            Audio.updateOne({_id: req.params.audioId},{$push: { accessList: req.params.userId}})
+            .exec()
+            .then(()=>{
+                res.status(200).json({
+                    message: 'Audio shared successfully'
+                });
+            })
+        }else{
+            res.status(409).json({
+                message: 'Already Shared'
+            });
+        }      
     })
     .catch(err=>{
         console.log(err);
@@ -40,13 +58,23 @@ exports.audio_add_user = (req, res, next) =>{
 };
 
 exports.video_add_user = (req, res, next) =>{
-    Video.updateOne({_id: req.params.videoId},{$push: { accessList: req.body.userId}})
+    Video.find({_id: req.params.videoId, accessList: {$in:[req.body.userId]}})
     .exec()
     .then(result => {
-        console.log(result);
-        res.status(200).json({
-            message: 'Video shared successfully'
-        });
+        if (result.length===0){
+            Video.updateOne({_id: req.params.videoId},{$push: { accessList: req.body.userId}})
+            .exec()
+            .then(result => {
+                console.log(result);
+                res.status(200).json({
+                    message: 'Video shared successfully'
+                });
+            })
+        }else{
+            res.status(409).json({
+                message: 'Already Shared'
+            });
+        }      
     })
     .catch(err=>{
         console.log(err);
@@ -57,12 +85,22 @@ exports.video_add_user = (req, res, next) =>{
 };
 
 exports.folder_add_user = (req, res, next) =>{
-    Folder.updateOne({_id: req.params.folderId},{$push: { userList: req.body.userId}})
+    Folder.find({_id: req.params.folderId, userList: {$in:[req.params.userId]}})
     .exec()
     .then(result => {
-        res.status(200).json({
-            message: 'Folder shared successfully'
-        });
+        if (result.length===0){
+            Folder.updateOne({_id: req.params.folderId},{$push: { userList: req.params.userId}})
+            .exec()
+            .then(result => {
+                res.status(200).json({
+                    message: 'Folder shared successfully'
+                });
+            })
+        }else{
+            res.status(409).json({
+                message: 'Already Shared'
+            });
+        }      
     })
     .catch(err=>{
         console.log(err);
@@ -129,7 +167,7 @@ exports.user_get_shared_folders = (req, res, next) => {
 };
 
 exports.image_remove_user = (req, res, next) =>{
-    Image.updateOne({_id: req.params.imageId},{$pull: { accessList: req.body.userId}})
+    Image.updateOne({_id: req.params.imageId},{$pull: { accessList: req.params.userId}})
     .exec()
     .then(result => {
         console.log(result);
@@ -146,7 +184,7 @@ exports.image_remove_user = (req, res, next) =>{
 }
 
 exports.audio_remove_user = (req, res, next) =>{
-    Audio.updateOne({_id: req.params.audioId},{$pull: { accessList: req.body.userId}})
+    Audio.updateOne({_id: req.params.audioId},{$pull: { accessList: req.params.userId}})
     .exec()
     .then(result => {
         console.log(result);
@@ -163,7 +201,7 @@ exports.audio_remove_user = (req, res, next) =>{
 }
 
 exports.video_remove_user = (req, res, next) =>{
-    Video.updateOne({_id: req.params.videoId},{$pull: { accessList: req.body.userId}})
+    Video.updateOne({_id: req.params.videoId},{$pull: { accessList: req.params.userId}})
     .exec()
     .then(result => {
         console.log(result);
@@ -180,7 +218,7 @@ exports.video_remove_user = (req, res, next) =>{
 }
 
 exports.folder_remove_user = (req, res, next) =>{
-    Folder.updateOne({_id: req.params.folderId},{$pull: { userList: req.body.userId}})
+    Folder.updateOne({_id: req.params.folderId},{$pull: { userList: req.params.userId}})
     .exec()
     .then(result => {
         res.status(200).json({

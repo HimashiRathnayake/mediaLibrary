@@ -80,3 +80,25 @@ export async function deleteAudio({audioId}){
         console.log(error)
     })
 }
+
+export async function renameAudio({audioId, name}){
+    var token = await AsyncStorage.getItem('userToken')
+    return fetch(serverUrl+'/audios/'+audioId,{
+        method: 'PATCH',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type':'application/json',
+            'Authorization': 'Bearer '+token 
+        },
+        body: JSON.stringify({
+            audioName: name
+        })
+    })
+    .then((response)=>response.json())
+    .then((json)=>{
+        return json;
+    })
+    .catch((error)=>{
+        console.log(error)
+    })
+}
