@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
 import { Redirect, Link} from "react-router-dom";
 import './componentCss/files.css';
-import {GetFolders, GetAll, GetFromFolder, DeleteFolder, DeleteImage, CreateFolders, SearchImages, Favourite, RemoveFavourite, AddFavourite} from '../services/PostData';
+import {GetFolders, GetAll, GetFromFolder, DeleteFolder, DeleteImage, CreateFolders, SearchImages, Favourite, RemoveFavourite, AddFavourite, MoveFile} from '../services/PostData';
 import ResultList from './resultList';
 import CreateFolder from './createFolder';
 import ImageSearch from './ImageSearch';
+import Move from './move';
 
 export default class Image extends Component{
 
@@ -23,6 +24,9 @@ export default class Image extends Component{
         this.search=this.search.bind(this);
         this.imgfavourites=this.imgfavourites.bind(this);
         this.favourite=this.favourite.bind(this);
+        this.Move=this.Move.bind(this);
+        this.selectTitle=this.selectTitle.bind(this);
+        this.Movefile=this.Movefile.bind(this);
         this.logout = this.logout.bind(this);
         
         this.state = {
@@ -30,12 +34,18 @@ export default class Image extends Component{
           type: 'Image',
           routeType: 'images',
           folders: {},
+          allfolders: {},
           folder: {},
           nurl: '',
           redirect: false,
           createFolderShow: false,
           searchShow: false,
-          imgfavourites:[]
+          moveShow: false,
+          imgfavourites:[],
+          title: 'Select a folder',
+          movefolder: {},
+          selectimg: '',
+          move: false
         }
         this.allfolders();
         this.imgfavourites();
@@ -56,7 +66,8 @@ export default class Image extends Component{
     allfolders() {
         GetFolders(JSON.parse(sessionStorage.getItem('userData')).token, this.state.type).then((result) => {
             this.setState({
-                folders: result
+                folders: result,
+                allfolders: result
             })
         }) 
     }
@@ -112,6 +123,7 @@ export default class Image extends Component{
             console.log("All images results: ", result);
             this.setState({
                 folders: result,
+                move: false,
                 folder: {},
                 nurl: ''
             })
@@ -121,8 +133,10 @@ export default class Image extends Component{
     getImage(folder){
         console.log("folder in getImage function: ", folder);
         console.log("folder state: ", Object.keys(folder).length  );
+        
         this.setState({
             folder: folder,
+            move: true,
             nurl:''
         })
         GetFromFolder(JSON.parse(sessionStorage.getItem('userData')).token, this.state.routeType, folder._id).then((result) => {
@@ -197,6 +211,7 @@ export default class Image extends Component{
         var newurl = eurl.substring(0, eurl.length-1);
         console.log("newurl: ", newurl);
         this.setState({
+            move: false,
             nurl: newurl
         })
         this.SearchImage(newurl);
@@ -209,6 +224,33 @@ export default class Image extends Component{
                 folders: result
             })
         })   
+    }
+
+    Move(file){
+        this.setState({
+            moveShow: true,
+            title: 'Select a folder',
+            selectimg: file
+        })
+    }
+
+    selectTitle(folderName){
+        this.setState({
+            title: folderName.folderName,
+            movefolder: folderName
+        });
+    }
+
+    Movefile(e){
+        e.preventDefault(e);
+
+        MoveFile(JSON.parse(sessionStorage.getItem('userData')).token, this.state.routeType, this.state.selectimg._id, this.state.movefolder._id).then((result) => {
+            alert(result.message);
+            if(result.message === "Image moved successfully"){
+                this.getImage(this.state.folder);
+            }  
+        });
+
     }
 
     logout(){
@@ -226,6 +268,7 @@ export default class Image extends Component{
 
         let createFolderClose=()=> this.setState({createFolderShow: false})
         let searchClose=()=> this.setState({searchShow: false})
+        let moveClose=()=> this.setState({moveShow: false})
 
         return(
             
@@ -278,6 +321,8 @@ export default class Image extends Component{
                                         RenameImage={this.RenameImage}
                                         imgfavourites={this.state.imgfavourites}
                                         favourite={this.favourite}
+                                        move={this.state.move}
+                                        Move={this.Move}
                             />
                             <CreateFolder show={this.state.createFolderShow}
                                           onHide={createFolderClose}
@@ -286,7 +331,15 @@ export default class Image extends Component{
                             <ImageSearch show={this.state.searchShow}
                                          onHide={searchClose}
                                          search= {this.search}
-                            />     
+                            />   
+                            <Move show={this.state.moveShow}
+                                         onHide={moveClose}
+                                         movefile= {this.Movefile}
+                                         allfolders={this.state.allfolders}
+                                         currentfolder={this.state.folder}
+                                         selectTitle={this.selectTitle}
+                                         title={this.state.title}
+                            />   
                         </div>
                     </div>
                 </div>

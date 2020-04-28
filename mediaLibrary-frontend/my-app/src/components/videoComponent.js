@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
 import { Redirect, Link} from "react-router-dom";
 import './componentCss/files.css';
-import {GetFolders, GetAll, GetFromFolder, CreateFolders, DeleteFolder, DeleteVideo, SearchVideos, Favourite, RemoveFavourite, AddFavourite} from '../services/PostData';
+import {GetFolders, GetAll, GetFromFolder, CreateFolders, DeleteFolder, DeleteVideo, SearchVideos, Favourite, RemoveFavourite, AddFavourite, MoveFile} from '../services/PostData';
 import ResultList from './resultList';
 import CreateFolder from './createFolder';
 import VideoSearch from './VideoSearch';
+import Move from './move';
 
 export default class Video extends Component{
 
@@ -23,6 +24,9 @@ export default class Video extends Component{
         this.search=this.search.bind(this);
         this.vidfavourites=this.vidfavourites.bind(this);
         this.favourite=this.favourite.bind(this);
+        this.Move=this.Move.bind(this);
+        this.selectTitle=this.selectTitle.bind(this);
+        this.Movefile=this.Movefile.bind(this);
         this.logout = this.logout.bind(this);
         
         this.state = {
@@ -30,12 +34,18 @@ export default class Video extends Component{
           type: 'Video',
           routeType:'videos',
           folders: {},
+          allfolders: {},
           folder: {},
           nurl: '',
           createFolderShow: false,
           redirect: false,
           searchShow: false,
-          vidfavourites:[]
+          vidfavourites:[],
+          moveShow: false,
+          title: 'Select a folder',
+          movefolder: {},
+          selectvid: '',
+          move: false
         }
         this.allfolders();
         this.vidfavourites();
@@ -56,7 +66,8 @@ export default class Video extends Component{
     allfolders() {
         GetFolders(JSON.parse(sessionStorage.getItem('userData')).token, this.state.type).then((result) => {
             this.setState({
-                folders: result
+                folders: result,
+                allfolders: result
             })
         }) 
     }
@@ -112,6 +123,7 @@ export default class Video extends Component{
             console.log("result:", result);
             this.setState({
                 folders: result,
+                move: false,
                 folder: {},
                 nurl: ''
             })
@@ -121,6 +133,7 @@ export default class Video extends Component{
     getVideo(folder){
         this.setState({
             folder: folder,
+            move: true,
             nurl:''
         })
         GetFromFolder(JSON.parse(sessionStorage.getItem('userData')).token, this.state.routeType, folder._id).then((result) => {
@@ -192,6 +205,7 @@ export default class Video extends Component{
         var newurl=eurl.substring(0, eurl.length-1);
         console.log("newurl: ", newurl);
         this.setState({
+            move: false,
             nurl: newurl
         })
         this.SearchVideo(newurl);
@@ -206,6 +220,31 @@ export default class Video extends Component{
         })   
     }
 
+    Move(file){
+        this.setState({
+            moveShow: true,
+            title: 'Select a folder',
+            selectvid: file
+        })
+    }
+
+    selectTitle(folderName){
+        this.setState({
+            title: folderName.folderName,
+            movefolder: folderName
+        });
+    }
+
+    Movefile(e){
+        e.preventDefault(e);
+
+        MoveFile(JSON.parse(sessionStorage.getItem('userData')).token, this.state.routeType, this.state.selectvid._id, this.state.movefolder._id).then((result) => {
+            alert(result.message);
+            if(result.message === "Video moved successfully"){
+                this.getVideo(this.state.folder);
+            }  
+        });
+    }
     
     logout(){
         sessionStorage.setItem('userData', '');
@@ -222,6 +261,7 @@ export default class Video extends Component{
 
         let createFolderClose=()=> this.setState({createFolderShow: false})
         let searchClose=()=> this.setState({searchShow: false}) 
+        let moveClose=()=> this.setState({moveShow: false})
 
         return(
             <div>
@@ -273,6 +313,8 @@ export default class Video extends Component{
                                         RenameVideo={this.RenameVideo}
                                         vidfavourites={this.state.vidfavourites}
                                         favourite={this.favourite}
+                                        move={this.state.move}
+                                        Move={this.Move}
                                         />
                             <CreateFolder show={this.state.createFolderShow}
                                           onHide={createFolderClose}
@@ -282,6 +324,14 @@ export default class Video extends Component{
                                          onHide={searchClose}
                                          search= {this.search}
                             />
+                            <Move show={this.state.moveShow}
+                                  onHide={moveClose}
+                                  movefile= {this.Movefile}
+                                  allfolders={this.state.allfolders}
+                                  currentfolder={this.state.folder}
+                                  selectTitle={this.selectTitle}
+                                  title={this.state.title}
+                            /> 
                         </div>
                     </div>
                 </div>

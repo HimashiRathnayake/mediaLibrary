@@ -539,4 +539,23 @@ export function AddFavourite(userdata, type, Id){
         })
     });
 }
+export function MoveFile(userdata, type, fileId, folderId){
+    return new Promise((resolve, reject) => {
+        fetch(`http://localhost:3000/${type}/${fileId}/${folderId}`, {
+            method: 'PATCH',
+            headers: {
+                'Authorization': `Bearer ${userdata}`,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            resolve(responseJson);
+        })
+        .catch((error) => {
+            reject(error);
+        })
+    });
+}
 

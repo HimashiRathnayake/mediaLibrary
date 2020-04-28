@@ -63,11 +63,13 @@ class ResultList extends Component{
         let renameClose=()=> this.setState({renameShow: false})
         let uploadClose=()=> this.setState({uploadShow: false})
         var folderlist='No Result Found';
+        
         if(this.props.resultFolders.count){
-           
+            let style={display: 'none'};
+            
             if(this.props.resultFolders.folders){
                 folderlist= this.props.resultFolders.folders.map(folderName => {
-                
+                    
                 return(
                     <li className="list-group-item" key={folderName._id} > 
                         <div className="checkbox">
@@ -84,9 +86,10 @@ class ResultList extends Component{
                 }) 
             }
             else if(this.props.resultFolders.Images){
-
+                if(this.props.move){
+                    style= {display: 'inline'}
+                }
                 let ary=this.props.imgfavourites.imgfavourites;
-                
                 folderlist= this.props.resultFolders.Images.map(imageName => {
                     var imgsrc=  imageName.path;
                     var favourite= false;
@@ -105,14 +108,19 @@ class ResultList extends Component{
                             <div className="pull-right action-buttons">
                                 <button className="link-button" onClick={() => this.props.deleteImage(imageName)}><span className="fa fa-trash-o fa-fw" > </span></button>
                                 <button className="link-button" onClick={()=> this.setState({renameShow: true,type: 'images', folderId: imageName._id})}><span className="fa fa-pencil-square-o fa-fw" ></span></button>
-                                <button className="link-button"><span className="fa fa-share-alt fa-fw" > </span></button>
-                                <button className="link-button" onClick={() => this.props.favourite(favourite, imageName._id)}><span className={classname} > </span></button>      
+                                <button className="link-button" ><span className="fa fa-share-alt fa-fw" > </span></button>
+                                <button className="link-button" onClick={() => this.props.favourite(favourite, imageName._id)}><span className={classname} > </span></button> 
+                                <button className="link-button" style={style} onClick={()=>this.props.Move(imageName)}><span className="fa fa-arrow-right"> </span></button>    
                             </div>
                         </li>
                    )
                 })   
             }
             else if(this.props.resultFolders.Videos){
+                if(this.props.move){
+                    style= {display: 'inline'}
+                }
+
                 let ary=this.props.vidfavourites.vidfavourites;
                 folderlist= this.props.resultFolders.Videos.map(videoName => {
                     var videosrc=  videoName.path;
@@ -139,7 +147,8 @@ class ResultList extends Component{
                                     <button className="link-button" onClick={() => this.props.deleteVideo(videoName)}><span className="fa fa-trash-o fa-fw" > </span></button>
                                     <button className="link-button" onClick={()=> this.setState({renameShow: true, type: 'videos', folderId: videoName._id})}><span className="fa fa-pencil-square-o fa-fw" ></span></button>
                                     <button className="link-button"><span className="fa fa-share-alt fa-fw" > </span></button>
-                                    <button className="link-button" onClick={() => this.props.favourite(favourite, videoName._id)}><span className={classname} > </span></button>      
+                                    <button className="link-button" onClick={() => this.props.favourite(favourite, videoName._id)}><span className={classname} > </span></button> 
+                                    <button className="link-button" style={style} onClick={()=>this.props.Move(videoName)}><span className="fa fa-arrow-right"> </span></button>    
                                 </div>
                             </div>
                         </div>
@@ -148,6 +157,9 @@ class ResultList extends Component{
                 })   
             }
             else if(this.props.resultFolders.Audios){
+                if(this.props.move){
+                    style= {display: 'inline'}
+                }
                 let ary=this.props.audfavourites.audfavourites;
                 folderlist= this.props.resultFolders.Audios.map(audioName => {
                     var audiosrc=  audioName.path;
@@ -175,7 +187,8 @@ class ResultList extends Component{
                                     <button className="link-button" onClick={() => this.props.deleteAudio(audioName)}><span className="fa fa-trash-o fa-fw" > </span></button>
                                     <button className="link-button" onClick={()=> this.setState({renameShow: true, type: 'audios', folderId: audioName._id})}><span className="fa fa-pencil-square-o fa-fw" ></span></button>
                                     <button className="link-button"><span className="fa fa-share-alt fa-fw" > </span></button>
-                                    <button className="link-button" onClick={() => this.props.favourite(favourite, audioName._id)}><span className={classname} > </span></button>   
+                                    <button className="link-button" onClick={() => this.props.favourite(favourite, audioName._id)}><span className={classname} > </span></button> 
+                                    <button className="link-button" style={style} onClick={()=>this.props.Move(audioName)}><span className="fa fa-arrow-right"> </span></button>
                                 </div>
                             </div>
                         </div>

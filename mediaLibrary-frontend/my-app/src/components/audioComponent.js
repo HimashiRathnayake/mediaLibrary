@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
 import { Redirect, Link} from "react-router-dom";
 import './componentCss/files.css';
-import {GetFolders, GetAll, GetFromFolder, CreateFolders, DeleteFolder, DeleteAudio, SearchAudios, Favourite, RemoveFavourite, AddFavourite} from '../services/PostData';
+import {GetFolders, GetAll, GetFromFolder, CreateFolders, DeleteFolder, DeleteAudio, SearchAudios, Favourite, RemoveFavourite, AddFavourite, MoveFile} from '../services/PostData';
 import ResultList from './resultList';
 import CreateFolder from './createFolder';
 import AudioSearch from './AudioSearch';
+import Move from './move';
 
 export default class Audio extends Component{
 
@@ -23,6 +24,9 @@ export default class Audio extends Component{
         this.search=this.search.bind(this);
         this.audfavourites=this.audfavourites.bind(this);
         this.favourite=this.favourite.bind(this);
+        this.Move=this.Move.bind(this);
+        this.selectTitle=this.selectTitle.bind(this);
+        this.Movefile=this.Movefile.bind(this);
         this.logout = this.logout.bind(this);
         
         this.state = {
@@ -30,12 +34,18 @@ export default class Audio extends Component{
           type: 'Audio',
           routeType:'audios',
           folders: {},
+          allfolders: {},
           folder: {},
           nurl: '',
           createFolderShow: false,
           redirect: false,
           searchShow: false,
-          audfavourites:[]
+          audfavourites:[],
+          moveShow: false,
+          title: 'Select a folder',
+          movefolder: {},
+          selectaud: '',
+          move: false
         }
         this.allfolders();
         this.audfavourites();
@@ -56,7 +66,8 @@ export default class Audio extends Component{
     allfolders() {
         GetFolders(JSON.parse(sessionStorage.getItem('userData')).token, this.state.type).then((result) => {
             this.setState({
-                folders: result
+                folders: result,
+                allfolders: result
             })
         }) 
     }
@@ -112,6 +123,7 @@ export default class Audio extends Component{
             console.log("result:", result);
             this.setState({
                 folders: result,
+                move: false,
                 folder: {},
                 nurl: ''
             })
@@ -121,6 +133,7 @@ export default class Audio extends Component{
     getAudio(folder){
         this.setState({
             folder: folder,
+            move: true,
             nurl:''
         })
         GetFromFolder(JSON.parse(sessionStorage.getItem('userData')).token, this.state.routeType, folder._id).then((result) => {
@@ -199,6 +212,7 @@ export default class Audio extends Component{
         console.log("newurl: ", newurl);
 
         this.setState({
+            move: false,
             nurl: newurl
         })
         this.SearchAudio(newurl);
@@ -211,6 +225,32 @@ export default class Audio extends Component{
                 folders: result
             })
         })   
+    }
+
+    Move(file){
+        this.setState({
+            moveShow: true,
+            title: 'Select a folder',
+            selectaud: file
+        })
+    }
+
+    selectTitle(folderName){
+        this.setState({
+            title: folderName.folderName,
+            movefolder: folderName
+        });
+    }
+
+    Movefile(e){
+        e.preventDefault(e);
+
+        MoveFile(JSON.parse(sessionStorage.getItem('userData')).token, this.state.routeType, this.state.selectaud._id, this.state.movefolder._id).then((result) => {
+            alert(result.message);
+            if(result.message === "Audio moved successfully"){
+                this.getAudio(this.state.folder);
+            }  
+        });
     }
 
     logout(){
@@ -228,6 +268,7 @@ export default class Audio extends Component{
 
         let createFolderClose=()=> this.setState({createFolderShow: false})
         let searchClose=()=> this.setState({searchShow: false}) 
+        let moveClose=()=> this.setState({moveShow: false})
 
         return(
             <div>
@@ -279,6 +320,8 @@ export default class Audio extends Component{
                                         RenameAudio={this.RenameAudio}
                                         audfavourites={this.state.audfavourites}
                                         favourite={this.favourite}
+                                        move={this.state.move}
+                                        Move={this.Move}
                                         />
                             <CreateFolder show={this.state.createFolderShow}
                                           onHide={createFolderClose}
@@ -288,6 +331,14 @@ export default class Audio extends Component{
                                          onHide={searchClose}
                                          search= {this.search}
                             />
+                            <Move show={this.state.moveShow}
+                                  onHide={moveClose}
+                                  movefile= {this.Movefile}
+                                  allfolders={this.state.allfolders}
+                                  currentfolder={this.state.folder}
+                                  selectTitle={this.selectTitle}
+                                  title={this.state.title}
+                            /> 
                         </div>
                     </div>
                 </div>
