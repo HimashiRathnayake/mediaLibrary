@@ -23,7 +23,7 @@ export const HomeScreen = ({navigation}) => {
                 <View style={styleHome.container}>
                     <TouchableWithoutFeedback onPress={()=>navigation.navigate('Images')}>
                         <View style={styleHome.imageContainer}>
-                            <Image source={require('../../assets/image.png')} style={styleHome.image}/>
+                            <Image source={require('../../assets/image.jpg')} style={styleHome.image}/>
                             <View style={styleHome.imageBottom}>
                                 <Text style={styleHome.imageText}>Store & Manage Your Images</Text>
                             </View>
@@ -39,7 +39,7 @@ export const HomeScreen = ({navigation}) => {
                     </TouchableWithoutFeedback>
                     <TouchableWithoutFeedback onPress={()=>navigation.navigate('Videos')}>
                         <View style={styleHome.imageContainer}>
-                            <Image source={require('../../assets/video.jpg')} style={styleHome.image}/>
+                            <Image source={require('../../assets/videos.jpg')} style={styleHome.image}/>
                             <View style={styleHome.imageBottom}>
                                 <Text style={styleHome.imageText}>Store & Manage Your Videos</Text>
                             </View>

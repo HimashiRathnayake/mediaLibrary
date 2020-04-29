@@ -113,6 +113,7 @@ exports.folder_add_user = (req, res, next) =>{
 exports.user_get_shared_images = (req, res, next) => {
     Image.find({ accessList: req.userData.userId, 'accessList.1' : {$exists: true }})
     .populate('accessList')
+    .populate('folder')
     .exec()
     .then(docs=>{
         res.status(200).json(docs);
@@ -127,6 +128,7 @@ exports.user_get_shared_images = (req, res, next) => {
 exports.user_get_shared_audios = (req, res, next) => {
     Audio.find({ accessList: req.userData.userId, 'accessList.1' : {$exists: true }})
     .populate('accessList')
+    .populate('folder')
     .exec()
     .then(docs=>{
         res.status(200).json(docs);
@@ -141,6 +143,7 @@ exports.user_get_shared_audios = (req, res, next) => {
 exports.user_get_shared_videos = (req, res, next) => {
     Video.find({ accessList: req.userData.userId, 'accessList.1' : {$exists: true }})
     .populate('accessList')
+    .populate('folder')
     .exec()
     .then(docs=>{
         res.status(200).json(docs);

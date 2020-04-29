@@ -1,31 +1,66 @@
 import React, {useState} from 'react';
 import {Text, View, Modal, TouchableOpacity, TextInput} from 'react-native';
-import { Ionicons, FontAwesome, MaterialIcons, MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
+import { Ionicons, FontAwesome, MaterialIcons, AntDesign } from '@expo/vector-icons';
 import {stylesScreen} from '../styles/modals/details';
 import { ScrollView } from 'react-native-gesture-handler';
 import {ShareModal} from './ShareModal';
+import {removeUser} from '../api/share';
 
-export const DetailsModal = ({file, type, detailsModal, setDetailsModal, renameFile, name, setName}) => {
+export const DetailsModal = ({file, type, detailsModal, setDetailsModal, renameFile, setRefresh}) => {
 
     const [pressed, setPressed] = useState(false);
     const [shareModal, setShareModal] = useState(false);
 
-    let fileName, title, artist, album, subject, year;
-    title=file.title; artist=file.artist; album=file.album; subject=file.subject; year=file.year;
-    if (type==='Audio'){fileName = file.audioName; }
-    else if (type==='Video'){fileName = file.videoName; }
-    else {fileName=file.imageName}
+    const[fileName, setFileName] = useState('');
+    const [title, setTitle] = useState('');
+    const [artist, setArtist] = useState('');
+    const [album, setAlbum] = useState('');
+    const [subject, setSubject] = useState('');
+    const [year, setYear] = useState('');
+    const [name, setName] = useState(null);
+    
+    function removeFromShared(userId, fileId){
+        removeUser(userId, fileId, type)
+        .then((response)=>{
+            console.log(response);
+            setRefresh(true);
+        })
+        .catch((error)=>{
+            console.log(error);
+        })
+    }
+
+    React.useEffect(()=>{  
+        setTitle(file.title); 
+        setArtist(file.artist); 
+        setAlbum(file.album);
+        setSubject(file.subject); 
+        setYear(file.year);
+        if (type==='Audio'){setFileName(file.audioName); }
+        else if (type==='Video'){setFileName(file.videoName)}
+        else {setFileName(file.imageName)}        
+    },[file])
 
     const userSet = file.accessList.map((val,key)=>{
-        return(
-            <View style={stylesScreen.userContainer} key={key}>
-                <FontAwesome name='user-circle' style={stylesScreen.userIcon}/>
-                <Text style={stylesScreen.userName}>{val.email.substring(0, 32)}</Text>
-                <TouchableOpacity onPress={()=>alert('user removed')}>
-                    <MaterialIcons name='remove-circle' style={stylesScreen.removeIcon}/>
-                </TouchableOpacity>
-            </View>
-        )
+        if (key===0){
+            return(
+                <View style={stylesScreen.userContainer} key={key}>
+                    <FontAwesome name='user-circle' style={stylesScreen.userIcon}/>
+                    <Text style={stylesScreen.userName}>{val.email.substring(0, 25)}</Text>
+                    <Text style={stylesScreen.owner}>Owner</Text>
+                </View>
+            )
+        }else{
+            return(
+                <View style={stylesScreen.userContainer} key={key}>
+                    <FontAwesome name='user-circle' style={stylesScreen.userIcon}/>
+                    <Text style={stylesScreen.userName}>{val.email.substring(0, 25)}</Text>
+                    <TouchableOpacity onPress={()=>removeFromShared(val._id, file._id)}>
+                        <MaterialIcons name='remove-circle' style={stylesScreen.removeIcon}/>
+                    </TouchableOpacity>
+                </View>
+            )
+        }
     })
 
     return(
@@ -46,7 +81,7 @@ export const DetailsModal = ({file, type, detailsModal, setDetailsModal, renameF
                                 <Text style={stylesScreen.detailTextLeft}>{type} Name :</Text>
                                 {pressed===false ? 
                                 (<View flexDirection='row'>
-                                    <Text style={stylesScreen.detailTextRight}>{name===null?fileName:name}</Text>
+                                    <Text style={stylesScreen.detailTextRight}>{fileName}</Text>
                                     <TouchableOpacity onPress={()=>setPressed(true)}>
                                         <AntDesign name='edit' style={stylesScreen.renameIcon}/>
                                     </TouchableOpacity>
@@ -64,7 +99,7 @@ export const DetailsModal = ({file, type, detailsModal, setDetailsModal, renameF
                                         <TouchableOpacity onPress={()=>{renameFile(file._id, name); setPressed(false)}}>
                                             <Text style={stylesScreen.button}>Rename</Text>
                                         </TouchableOpacity>
-                                        <TouchableOpacity onPress={()=>{setPressed(false); setName(null);}}>
+                                        <TouchableOpacity onPress={()=>{setPressed(false);}}>
                                             <Text style={stylesScreen.button}>Cancel</Text>
                                         </TouchableOpacity>
                                     </View>
@@ -76,6 +111,7 @@ export const DetailsModal = ({file, type, detailsModal, setDetailsModal, renameF
                             {(subject!=null) && <View flexDirection='row'><Text style={stylesScreen.detailTextLeft}>Subject :</Text><Text style={stylesScreen.detailTextRight}>{subject}</Text></View>}
                             {(artist!=null) && <View flexDirection='row'><Text style={stylesScreen.detailTextLeft}>Artist :</Text><Text style={stylesScreen.detailTextRight}>{artist}</Text></View>}
                             {(year!=null) && <View flexDirection='row'><Text style={stylesScreen.detailTextLeft}>Year :</Text><Text style={stylesScreen.detailTextRight}>{year}</Text></View>}
+                            {(file!=null) && <View flexDirection='row'><Text style={stylesScreen.detailTextLeft}>Folder :</Text><Text style={stylesScreen.detailTextRight}>{file.folder.folderName}</Text></View>}
                         </View>
                             
                         <View style={{backgroundColor: 'white'}}>
@@ -92,7 +128,7 @@ export const DetailsModal = ({file, type, detailsModal, setDetailsModal, renameF
                 </View>
             </View>
         </Modal>
-        <ShareModal shareModal={shareModal} setShareModal={setShareModal} type={type} fileId={file._id}/>
+        <ShareModal shareModal={shareModal} setShareModal={setShareModal} type={type} fileId={file._id} setRefresh={setRefresh}/>
     
         </View>
 

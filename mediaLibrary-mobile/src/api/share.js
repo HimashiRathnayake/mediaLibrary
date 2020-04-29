@@ -8,9 +8,7 @@ export async function shareFile(userId, type, fileId){
     if (type==='Audio'){shareUrl+='audio'}
     else if (type==='Video'){shareUrl+='video'}
     else{shareUrl+='image'}
-    shareUrl = shareUrl + '/'+fileId;
-    console.log(shareUrl);
-    console.log(userId);
+    shareUrl = shareUrl + '/'+fileId+'/'+userId;
 
     return fetch(shareUrl,{
         method: 'PATCH',
@@ -19,9 +17,32 @@ export async function shareFile(userId, type, fileId){
             'Content-Type':'application/json',
             'Authorization': 'Bearer '+token 
         },
-        body: JSON.stringify({
-            userId: userId
-        })
+    })
+    .then((response)=>response.json())
+    .then((json)=>{
+        console.log(json)
+        return json;
+    })
+    .catch((error)=>{
+        console.log(error)
+    })
+}
+
+export async function removeUser(userId, fileId, type){
+    var token = await AsyncStorage.getItem('userToken')
+    let shareUrl = serverUrl+'/share/remove/';
+    if (type==='Audio'){shareUrl+='audio'}
+    else if (type==='Video'){shareUrl+='video'}
+    else{shareUrl+='image'}
+    shareUrl = shareUrl + '/'+fileId+'/'+userId;
+
+    return fetch(shareUrl,{
+        method: 'PATCH',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type':'application/json',
+            'Authorization': 'Bearer '+token 
+        },
     })
     .then((response)=>response.json())
     .then((json)=>{

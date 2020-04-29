@@ -13,6 +13,7 @@ exports.search_audio_by_artist =  (req, res, next) => {
     const accessList = req.userData.userId;
     Audio.find({artist: artist , accessList: accessList  })
     .populate('accessList')
+    .populate('folder')
     .exec()
     .then(docs=>{
         const response={
@@ -46,6 +47,7 @@ exports.search_video_by_artist =  (req, res, next) => {
     const accessList = req.userData.userId;
     Video.find({artist: artist, accessList: accessList })
     .populate('accessList')
+    .populate('folder')
     .exec()
     .then(docs=>{
         const response={
@@ -79,6 +81,7 @@ exports.search_image_by_artist =  (req, res, next) => {
     const accessList = req.userData.userId;
     Image.find({artist: artist, accessList: accessList })
     .populate('accessList')
+    .populate('folder')
     .exec()
     .then(docs=>{
         const response={
@@ -113,6 +116,7 @@ exports.search_audio_by_title =  (req, res, next) => {
     const accessList = req.userData.userId;
     Audio.find({title: title, accessList: accessList })
     .populate('accessList')
+    .populate('folder')
     .exec()
     .then(docs=>{
         const response={
@@ -146,6 +150,7 @@ exports.search_video_by_title =  (req, res, next) => {
     const accessList = req.userData.userId;
     Video.find({title: title, accessList: accessList })
     .populate('accessList')
+    .populate('folder')
     .exec()
     .then(docs=>{
         const response={
@@ -179,6 +184,7 @@ exports.search_image_by_title =  (req, res, next) => {
     const accessList = req.userData.userId;
     Image.find({title: title, accessList: accessList })
     .populate('accessList')
+    .populate('folder')
     .exec()
     .then(docs=>{
         const response={
@@ -216,6 +222,7 @@ exports.search_audio =  (req, res, next) => {
     
         Audio.find(parsedQs)
         .populate('accessList')
+        .populate('folder')
         .exec()
         .then(docs=>{
             const response={
@@ -260,6 +267,7 @@ exports.search_video =  (req, res, next) => {
 
         Video.find(parsedQs)
         .populate('accessList')
+        .populate('folder')
         .exec()
         .then(docs=>{
             const response={
@@ -305,6 +313,7 @@ exports.search_image =  (req, res, next) => {
 
         Image.find( parsedQs)
         .populate('accessList')
+        .populate('folder')
         .exec()
         .then(docs=>{
             const response={

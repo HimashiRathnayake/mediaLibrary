@@ -17,10 +17,10 @@ export const ImageTabNavigator = () => {
                 <Entypo name="images" color={color} size={size} />)}}/>
             <Tabs.Screen name="Folders" component={FolderStackScreen} initialParams={{type:'Image'}} options={{tabBarLabel: 'Folders', tabBarIcon: ({ color, size }) => (
                 <FontAwesome name="folder-open" color={color} size={size} />)}}/>
+            <Tabs.Screen name="Share" component={ShareScreen} initialParams={{type:'Image'}} options={{tabBarLabel: 'Shared', tabBarIcon: ({ color, size }) => (
+                <FontAwesome name="slideshare" color={color} size={size} />)}}/>
             <Tabs.Screen name="Search" component={SearchStackScreen} initialParams={{type:'Image'}} options={{tabBarLabel: 'Search', tabBarIcon: ({ color, size }) => (
                 <FontAwesome name="search" color={color} size={size} />)}}/>
-            <Tabs.Screen name="Share" component={ShareScreen} initialParams={{type:'Image'}} options={{tabBarLabel: 'Share', tabBarIcon: ({ color, size }) => (
-                <FontAwesome name="slideshare" color={color} size={size} />)}}/>
         </Tabs.Navigator>
     );
 }
@@ -33,10 +33,10 @@ export const AudioTabNavigator = () => {
                 <Entypo name="beamed-note" color={color} size={size} />)}}/>
             <Tabs.Screen name="Folders" component={FolderStackScreen} initialParams={{type:'Audio'}} options={{tabBarLabel: 'Folders', tabBarIcon: ({ color, size }) => (
                 <FontAwesome name="folder-open" color={color} size={size} />)}}/>
+            <Tabs.Screen name="Share" component={ShareScreen} initialParams={{type:'Audio'}} options={{tabBarLabel: 'Shared', tabBarIcon: ({ color, size }) => (
+                <FontAwesome name="slideshare" color={color} size={size} />)}}/>
             <Tabs.Screen name="Search" component={SearchStackScreen} initialParams={{type:'Audio'}} options={{tabBarLabel: 'Search', tabBarIcon: ({ color, size }) => (
                 <FontAwesome name="search" color={color} size={size} />)}}/>
-            <Tabs.Screen name="Share" component={ShareScreen} initialParams={{type:'Audio'}} options={{tabBarLabel: 'Share', tabBarIcon: ({ color, size }) => (
-                <FontAwesome name="slideshare" color={color} size={size} />)}}/>
         </Tabs.Navigator>
     );
 }
@@ -49,10 +49,10 @@ export const VideoTabNavigator = (route) => {
                 <MaterialIcons name="video-library" color={color} size={size} />)}}/>
             <Tabs.Screen name="Folders" component={FolderStackScreen} initialParams={{type:'Video'}} options={{tabBarLabel: 'Folders', tabBarIcon: ({ color, size }) => (
                 <FontAwesome name="folder-open" color={color} size={size} />)}}/>
+            <Tabs.Screen name="Share" component={ShareScreen} initialParams={{type:'Video'}} options={{tabBarLabel: 'Shared', tabBarIcon: ({ color, size }) => (
+                <FontAwesome name="slideshare" color={color} size={size} />)}}/>
             <Tabs.Screen name="Search" component={SearchStackScreen} initialParams={{type:'Video'}} options={{tabBarLabel: 'Search', tabBarIcon: ({ color, size }) => (
                 <FontAwesome name="search" color={color} size={size} />)}}/>
-            <Tabs.Screen name="Share" component={ShareScreen} initialParams={{type:'Video'}} options={{tabBarLabel: 'Share', tabBarIcon: ({ color, size }) => (
-                <FontAwesome name="slideshare" color={color} size={size} />)}}/>
         </Tabs.Navigator>
     );
 } 

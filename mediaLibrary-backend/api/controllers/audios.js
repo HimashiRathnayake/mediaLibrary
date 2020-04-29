@@ -6,6 +6,7 @@ const Audio =  require('../models/audio');
 exports.audios_get_all = (req, res, next) =>{
     Audio.find({accessList: req.userData.userId})
     .populate('accessList')
+    .populate('folder')
     .exec()
     .then(docs=>{
         const response={
@@ -36,6 +37,7 @@ exports.audios_get_all = (req, res, next) =>{
 exports.audios_get_audios_from_folder = (req, res, next) =>{
     Audio.find({folder: req.params.folderId})
     .populate('accessList')
+    .populate('folder')
     .exec()
     .then(docs=>{
         const response={

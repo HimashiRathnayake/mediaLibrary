@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { Text, View, Modal, Dimensions, TouchableOpacity, Alert } from 'react-native';
+import { Text, View, Modal, TouchableOpacity, Alert } from 'react-native';
 import {Video} from 'expo-av';
-import { Ionicons, MaterialIcons, MaterialCommunityIcons, FontAwesome, AntDesign } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons, MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
 import {deleteVideo, renameVideo} from '../api/video';
 import {stylesScreen} from '../styles/modals/video';
-import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import { DetailsModal } from './DetailsModal';
 
 const DISABLED_OPACITY = 0.3;
@@ -13,7 +12,6 @@ export const VideoModal = ({visible, setVisible, videoModal, setRefresh}) => {
 
     const [isLoading, setLoading]= useState(true);
     const [detailsModal, setDetailsModal] = useState(false);
-    const [name, setName] = useState(null);
 
     function deletevideo(videoId){
         setVisible(false);
@@ -53,16 +51,16 @@ export const VideoModal = ({visible, setVisible, videoModal, setRefresh}) => {
 
     return(
         <View>
-        <Modal style={stylesScreen.modal} transparent={true} animationType='slide' visible={visible} onRequestClose={()=>{setVisible(false); setName(null)}}>
+        <Modal style={stylesScreen.modal} transparent={true} animationType='slide' visible={visible} onRequestClose={()=>{setVisible(false);}}>
             <View style={[stylesScreen.modal]}>
                 <View style={[stylesScreen.modalView, {opacity: isLoading ? DISABLED_OPACITY : 1.0}]}>
 
-                    <TouchableOpacity onPress={()=>{setVisible(false); setName(null)}} style={{flexDirection:'row-reverse', marginLeft: 20, marginTop: 30, position: 'absolute'}}>
+                    <TouchableOpacity onPress={()=>{setVisible(false);}} style={{flexDirection:'row-reverse', marginLeft: 20, marginTop: 30, position: 'absolute'}}>
                         <Ionicons name='md-arrow-back' style={stylesScreen.icon}/>  
                     </TouchableOpacity>
                     <View style={{ alignItems: "center", marginTop: 24 }}>
                         <Text style={stylesScreen.headerTop}>MyMedia Video</Text>
-                        <Text style={stylesScreen.header}>{name===null? videoModal.videoName.substring(0,25): name.substring(0,25)}</Text>
+                        <Text style={stylesScreen.header}>{videoModal.videoName.substring(0,25)}</Text>
                     </View>
                     <View style={stylesScreen.videoContainer}>
                         <Video
@@ -105,8 +103,7 @@ export const VideoModal = ({visible, setVisible, videoModal, setRefresh}) => {
             detailsModal={detailsModal} 
             setDetailsModal={setDetailsModal} 
             renameFile={renamevideo} 
-            setName={setName} 
-            name={name}
+            setRefresh={setRefresh}
         />
 
         </View>

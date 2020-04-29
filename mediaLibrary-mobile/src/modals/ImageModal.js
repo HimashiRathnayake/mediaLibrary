@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import {Text, View, Modal, Image, Alert, TouchableOpacity} from 'react-native';
-import {Ionicons, MaterialIcons, MaterialCommunityIcons, Entypo, AntDesign, FontAwesome } from '@expo/vector-icons';
+import {Text, View, Modal, Image, Alert} from 'react-native';
+import {Ionicons, MaterialIcons, MaterialCommunityIcons, Entypo, AntDesign} from '@expo/vector-icons';
 import {stylesScreen} from '../styles/modals/image';
 import {deleteImage, renameImage} from '../api/image';
 import { DetailsModal } from './DetailsModal';
 
 export const ImageModal = ({modelImage, modelVisible, setVisible, setRefresh}) => {
     const [detailsModal, setDetailsModal] = useState(false);
-    const [name, setName] = useState(null);
 
     function deleteimage(imageId){
         setVisible(false); 
@@ -31,13 +30,9 @@ export const ImageModal = ({modelImage, modelVisible, setVisible, setRefresh}) =
         })
     }
 
-    function shareImage(){
-
-    }
-
     return(
         <View style={{backgroundColor:'#fff'}}>
-            <Modal style={stylesScreen.modal} transparent={false} animationType='slide' visible={modelVisible} onRequestClose={()=>{setVisible(false); setName(null)}}>
+            <Modal style={stylesScreen.modal} transparent={false} animationType='slide' visible={modelVisible} onRequestClose={()=>{setVisible(false);}}>
                 <View style={stylesScreen.modal}>
                     <View style={stylesScreen.modalView}>
                         <View flexDirection= 'row-reverse'>
@@ -53,7 +48,7 @@ export const ImageModal = ({modelImage, modelVisible, setVisible, setRefresh}) =
                             />
                             <MaterialIcons name='favorite-border' style={stylesScreen.icon} onPress={()=>setVisible(false)}/>
                             <Ionicons name='md-share' style={stylesScreen.icon} onPress={()=>setVisible(false)}/>
-                            <AntDesign name='left' style={stylesScreen.iconLeft} onPress={()=>{setVisible(false); setName(null)}}/>
+                            <AntDesign name='left' style={stylesScreen.iconLeft} onPress={()=>{setVisible(false);}}/>
                         </View>
                         <View style={{justifyContent:'center'}}>
                             <Image source={{uri:modelImage.path}} style={stylesScreen.originalImage}/>
@@ -62,7 +57,7 @@ export const ImageModal = ({modelImage, modelVisible, setVisible, setRefresh}) =
                 </View>
             </Modal>
             
-            <DetailsModal file={modelImage} type='Image' setDetailsModal={setDetailsModal} detailsModal={detailsModal} renameFile={renameimage} name={name} setName={setName}/>
+            <DetailsModal file={modelImage} type='Image' setDetailsModal={setDetailsModal} detailsModal={detailsModal} renameFile={renameimage} setRefresh={setRefresh}/>
             
         </View>
     );

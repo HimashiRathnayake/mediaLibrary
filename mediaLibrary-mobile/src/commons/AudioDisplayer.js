@@ -26,6 +26,13 @@ export const AudioDisplayer = ({setRefresh, audios, count}) => {
             </TouchableOpacity>
         )
     })
+
+    React.useEffect(()=>{  
+        if (audioModal!==null){
+            openModal(visible, index)
+        }
+    },[audios])
+
     
     return(
         <View>

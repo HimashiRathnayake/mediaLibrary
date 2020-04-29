@@ -6,7 +6,7 @@ import {getOtherUsers} from '../api/user';
 import {shareFile} from '../api/share';
 import { ScrollView } from 'react-native-gesture-handler';
 
-export const ShareModal = ({shareModal, setShareModal, type, fileId}) => {
+export const ShareModal = ({shareModal, setShareModal, type, fileId, setRefresh}) => {
 
     const[users, setUsers] = useState([]);
 
@@ -28,7 +28,12 @@ export const ShareModal = ({shareModal, setShareModal, type, fileId}) => {
     function sharefile(userId){
         shareFile(userId, type, fileId)
         .then((response)=>{
-            console.log(response);
+            if (response.message === 'Already Shared'){
+                alert('Already Shared');
+            }
+            else{
+                setRefresh(true);
+            }
         })
         .catch((error)=>{
             console.log(error);
@@ -38,11 +43,16 @@ export const ShareModal = ({shareModal, setShareModal, type, fileId}) => {
 
     const userSet = users.map((val,key)=>{
         return(
-            <View style={stylesScreen.userContainer} key={key}>
-                <TouchableOpacity onPress={()=>sharefile(val._id)}>
-                    <View flexDirection='row'>
-                        <FontAwesome name='user-circle' style={stylesScreen.userIcon}/>
-                        <Text style={stylesScreen.userName}>{val.email.substring(0, 32)}</Text>
+            <View key={key}>
+                <TouchableOpacity onPress={()=>{
+                    sharefile(val._id);
+                    setShareModal(false); setUsers([]);
+                }}>
+                    <View style={stylesScreen.userContainer}>
+                        <View flexDirection='row'>
+                            <FontAwesome name='user-circle' style={stylesScreen.userIcon}/>
+                            <Text style={stylesScreen.email}>{val.email.substring(0, 31)}</Text>
+                        </View>
                     </View>
                 </TouchableOpacity>
             </View>

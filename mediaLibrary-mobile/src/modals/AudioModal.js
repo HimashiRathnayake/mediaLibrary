@@ -32,7 +32,6 @@ export const AudioModal = ({audio, index, visible, setVisible, openModal, setRef
     const [isBuffering, setBuffering]= useState(false);
     const [isLoading, setLoading]= useState(true);
     const [detailsModal, setDetailsModal] = useState(false);
-    const [name, setName] = useState(null);
 
     function deleteaudio(audioId){
         setVisible(false);
@@ -175,13 +174,11 @@ export const AudioModal = ({audio, index, visible, setVisible, openModal, setRef
 
     function backPressed(){
         setVisible(false);
-        setName(null);
         openModal(true, index-1)
     }
 
     function forwardPressed(){
         setVisible(false);
-        setName(null);
         openModal(true, index+1);
     }
 
@@ -274,7 +271,14 @@ export const AudioModal = ({audio, index, visible, setVisible, openModal, setRef
             </View>
         </Modal>
 
-        <DetailsModal file={audio} type='Audio' detailsModal={detailsModal} setDetailsModal={setDetailsModal} renameFile={renameaudio} name={name} setName={setName}/>
+        <DetailsModal 
+            file={audio} 
+            type='Audio' 
+            detailsModal={detailsModal} 
+            setDetailsModal={setDetailsModal} 
+            renameFile={renameaudio} 
+            setRefresh={setRefresh}
+        />
         
         </View>
 );

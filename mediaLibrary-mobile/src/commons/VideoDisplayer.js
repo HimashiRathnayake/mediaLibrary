@@ -7,11 +7,19 @@ import {styleVideo} from '../styles/videoStyles';
 export const VideoDisplayer = ({videos, count, setRefresh}) => {
 	const [videoModal, setVideoModal] = useState(null);
 	const [visible, setVisible] = useState(false);
+    const [index, setIndex] = useState(0);
 
 	async function openModal(visible,key){
+		await setIndex(key);
         await setVideoModal(videos[key]);
         setVisible(visible);
-    }
+	}
+	
+	React.useEffect(()=>{  
+        if (videoModal!==null){
+            openModal(visible, index)
+        }
+    },[videos])
 
 	const videoSet = videos.map((val,key)=>{
 		return(

@@ -7,11 +7,19 @@ export const ImageDisplayer = ({setRefresh, images, count}) => {
 
     const [modelVisible, setVisible] = React.useState(false);
     const [modelImage, setImage] = React.useState(null);
+    const [index, setIndex] = React.useState(0);
 
-    function setModelVisible(visible, imageKey){
-        setImage(images[imageKey]);
+    async function setModelVisible(visible, imageKey){
+        await setIndex(imageKey);
+        await setImage(images[imageKey]);
         setVisible(visible);
     }
+
+    React.useEffect(()=>{  
+        if (modelImage!==null){
+            setModelVisible(modelVisible, index)
+        }
+    },[images])
     
     const imageSet = images.map((val,key)=>{
         return(

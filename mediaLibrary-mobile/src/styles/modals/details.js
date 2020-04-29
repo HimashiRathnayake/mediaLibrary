@@ -50,8 +50,16 @@ export const stylesScreen = StyleSheet.create({
     },
     userName: {
         color: '#fff',
+        marginLeft: 8,
+        marginRight: 2,
+        fontSize: 16,
+        width: Dimensions.get('screen').width - 145 ,
+    },
+    email: {
+        color: '#fff',
         marginHorizontal: 8,
-        fontSize: 16
+        fontSize: 16,
+        width: Dimensions.get('screen').width - 90 ,
     },
     userIcon:{
         color: '#fff',
@@ -61,7 +69,8 @@ export const stylesScreen = StyleSheet.create({
     removeIcon: {
         color: '#fff',
         fontSize: 24,
-        marginLeft: Dimensions.get('screen').width - 250,
+        marginLeft: 10,
+        position: 'relative',
     },
     renameIcon:{
         color: 'black',
@@ -121,5 +130,8 @@ export const stylesScreen = StyleSheet.create({
     },
     inputContainer:{
         marginTop: -20
+    },
+    owner: {
+        color: 'rgba(52,52,52,0.5)',
     }
 });
