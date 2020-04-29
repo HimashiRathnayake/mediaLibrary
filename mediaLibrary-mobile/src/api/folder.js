@@ -85,3 +85,26 @@ export async function renameFolder({name, folderId}){
         console.log(error)
     })
 }
+
+export async function moveFile(fileId, folderId, type){
+    var token = await AsyncStorage.getItem('userToken');
+    var moveUrl = serverUrl
+    if (type==='Audio'){moveUrl+='/audios/'}
+    else if (type==='Video'){moveUrl+='/videos/'}
+    else{moveUrl+='/images/'}
+    return fetch(moveUrl+fileId+'/'+folderId,{
+        method: 'PATCH',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type':'application/json',
+            'Authorization': 'Bearer '+token 
+        }
+    })
+    .then((response)=>response.json())
+    .then((json)=>{
+        return json;
+    })
+    .catch((error)=>{
+        console.log(error)
+    })
+}

@@ -19,7 +19,7 @@ export const ImageScreen = ({navigation, route}) => {
         getImagesInFolder({folderId:route.params.folderId})
         .then((response)=>{
             setCount(response.count);
-            setImages(response.images);
+            setImages(response.Images);
         })
         .catch((error)=>{
             console.log(error)

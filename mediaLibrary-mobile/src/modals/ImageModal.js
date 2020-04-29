@@ -30,6 +30,11 @@ export const ImageModal = ({modelImage, modelVisible, setVisible, setRefresh}) =
         })
     }
 
+    if (modelImage===null){
+        setVisible(false);
+        setDetailsModal(false);
+    }
+
     return(
         <View style={{backgroundColor:'#fff'}}>
             <Modal style={stylesScreen.modal} transparent={false} animationType='slide' visible={modelVisible} onRequestClose={()=>{setVisible(false);}}>

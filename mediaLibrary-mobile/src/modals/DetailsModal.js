@@ -1,16 +1,18 @@
 import React, {useState} from 'react';
 import {Text, View, Modal, TouchableOpacity, TextInput} from 'react-native';
-import { Ionicons, FontAwesome, MaterialIcons, AntDesign } from '@expo/vector-icons';
+import { Ionicons, FontAwesome, MaterialIcons, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import {stylesScreen} from '../styles/modals/details';
 import { ScrollView } from 'react-native-gesture-handler';
 import {ShareModal} from './ShareModal';
 import {removeUser} from '../api/share';
+import { FolderModal } from './FolderModal';
+import { FolderList } from './FolderList';
 
 export const DetailsModal = ({file, type, detailsModal, setDetailsModal, renameFile, setRefresh}) => {
 
     const [pressed, setPressed] = useState(false);
     const [shareModal, setShareModal] = useState(false);
-
+    const [folderVisible, setFolderVisible] = useState(false);
     const[fileName, setFileName] = useState('');
     const [title, setTitle] = useState('');
     const [artist, setArtist] = useState('');
@@ -111,7 +113,13 @@ export const DetailsModal = ({file, type, detailsModal, setDetailsModal, renameF
                             {(subject!=null) && <View flexDirection='row'><Text style={stylesScreen.detailTextLeft}>Subject :</Text><Text style={stylesScreen.detailTextRight}>{subject}</Text></View>}
                             {(artist!=null) && <View flexDirection='row'><Text style={stylesScreen.detailTextLeft}>Artist :</Text><Text style={stylesScreen.detailTextRight}>{artist}</Text></View>}
                             {(year!=null) && <View flexDirection='row'><Text style={stylesScreen.detailTextLeft}>Year :</Text><Text style={stylesScreen.detailTextRight}>{year}</Text></View>}
-                            {(file!=null) && <View flexDirection='row'><Text style={stylesScreen.detailTextLeft}>Folder :</Text><Text style={stylesScreen.detailTextRight}>{file.folder.folderName}</Text></View>}
+                            {(file!=null) && <View flexDirection='row'>
+                                <Text style={stylesScreen.detailTextLeft}>Folder :</Text>
+                                <Text style={stylesScreen.detailTextRight}>{file.folder.folderName}</Text>
+                                <TouchableOpacity onPress={()=>setFolderVisible(true)}>
+                                    <MaterialCommunityIcons name='file-move' style={stylesScreen.renameIcon}/>
+                                </TouchableOpacity>
+                            </View>}
                         </View>
                             
                         <View style={{backgroundColor: 'white'}}>
@@ -129,7 +137,7 @@ export const DetailsModal = ({file, type, detailsModal, setDetailsModal, renameF
             </View>
         </Modal>
         <ShareModal shareModal={shareModal} setShareModal={setShareModal} type={type} fileId={file._id} setRefresh={setRefresh}/>
-    
+        <FolderList visible={folderVisible} setVisible={setFolderVisible} fileId={file._id} type={type} setRefresh={setRefresh}/>
         </View>
 
 );
