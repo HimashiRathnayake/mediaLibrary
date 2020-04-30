@@ -10,14 +10,6 @@ import { DetailsModal } from './DetailsModal';
 const DISABLED_OPACITY = 0.6;
 const LOADING_STRING = "... loading ...";
 const BUFFERING_STRING = "... buffering ...";
-const imageSet = [
-    require('../../assets/audio.jpg'),
-    require('../../assets/audio2.jpg'),
-    require('../../assets/audio3.jpg'),
-    require('../../assets/audio4.png'),
-    require('../../assets/audio5.jpg'),
-    require('../../assets/audio1.jpg')
-];
 
 export const AudioModal = ({audio, index, visible, setVisible, openModal, setRefresh}) => {
 
@@ -173,11 +165,13 @@ export const AudioModal = ({audio, index, visible, setVisible, openModal, setRef
     }
 
     function backPressed(){
+        updateScreenForLoading(true);
         setVisible(false);
         openModal(true, index-1)
     }
 
     function forwardPressed(){
+        updateScreenForLoading(true);
         setVisible(false);
         openModal(true, index+1);
     }
@@ -219,7 +213,7 @@ export const AudioModal = ({audio, index, visible, setVisible, openModal, setRef
                     </View>
 
                     <View style={stylesScreen.coverContainer}>
-                        <Image source={imageSet[index]} style={stylesScreen.image}/>
+                        <Image source={require('../../assets/audio.jpg')} style={stylesScreen.image}/>
                     </View>
 
                     <View style={{ alignItems: "center", marginTop: 22 }}>

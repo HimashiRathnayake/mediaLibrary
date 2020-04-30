@@ -340,3 +340,98 @@ exports.favourites_get_all = (req, res, next) =>{
     
 }
 
+exports.favourites_get_is_favorite = (req, res, next) =>{
+    const id= req.userData.userId;
+    const type= req.params.type;
+    const fileId= req.params.Id;
+    
+    if (type=== 'Image'){
+        Image.findOne({_id: fileId})
+        .then(result=>{
+            if (result===null){
+                res.status(404).json({
+                    message: 'Image not found'
+                })
+            }
+            else{
+                User.findOne({_id: id})
+                .populate('imgfavourites')
+                .exec()
+                .then(function(user){
+                    const isInFavourite= user.imgfavourites.some(function(favourite){
+                        return (favourite._id.equals(mongoose.Types.ObjectId(fileId)));
+                    });
+                    res.status(201).json({
+                        isFavorite: isInFavourite,
+                    });
+                });
+            }
+        })
+        .catch(err=>{
+            console.log(err);
+            res.status(500).json({
+                error:err
+            });
+        }); 
+    }
+    else if (type=== 'Audio'){
+        Audio.findOne({_id: fileId})
+        .then(result=>{
+            console.log('results:', result);
+            if (result===null){
+                res.status(404).json({
+                    message: 'Audio not found'
+                })
+            }
+            else{
+                User.findOne({_id: id})
+                .populate('audfavourites')
+                .exec()
+                .then(function(user){
+                    const isInFavourite= user.audfavourites.some(function(favourite){
+                        return (favourite._id.equals(mongoose.Types.ObjectId(fileId)));
+                    });
+                    res.status(201).json({
+                        isFavorite: isInFavourite,
+                    });
+                });
+            }
+        })
+        .catch(err=>{
+            console.log(err);
+            res.status(500).json({
+                error:err
+            });
+        }); 
+    }else{
+        Video.findOne({_id: fileId})
+        .then(result=>{
+            console.log('results:', result);
+            if (result===null){
+                res.status(404).json({
+                    message: 'Video not found'
+                })
+            }
+            else{
+                User.findOne({_id: id})
+                .populate('vidfavourites')
+                .exec()
+                .then(function(user){
+                    const isInFavourite= user.vidfavourites.some(function(favourite){
+                        return (favourite._id.equals(mongoose.Types.ObjectId(fileId)));
+                    });
+                    res.status(201).json({
+                        message: 'Already in favorites',
+                        vidfavourites: user.vidfavourites
+                    });
+                });
+            }
+        })
+        .catch(err=>{
+            console.log(err);
+            res.status(500).json({
+                error:err
+            });
+        }); 
+    }
+}

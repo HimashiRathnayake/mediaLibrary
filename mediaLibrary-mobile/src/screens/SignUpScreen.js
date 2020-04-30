@@ -37,7 +37,12 @@ export const SignUpScreen = ({navigation}) => {
                                         Alert.alert('Alert','Email already exists. Try with different email',[{text: 'OK', onPress: ()=>actions.resetForm()}]);
                                         setIsLoading(false);
                                     }else if (response.message==='User created'){
-                                        signUp({token:response.token, email:values.email});
+                                        console.log(response.token, values.email)
+                                        navigation.navigate('AppIntro', {
+                                            token:response.token, 
+                                            email:values.email
+                                        });
+                                        // signUp({token:response.token, email:values.email});
                                     }
                                     else{
                                         alert('Something went wrong. Try again');

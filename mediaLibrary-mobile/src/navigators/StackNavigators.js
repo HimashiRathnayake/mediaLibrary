@@ -8,6 +8,7 @@ import { SearchScreen } from '../screens/SearchScreen';
 import { SearchResultScreen } from '../screens/SearchResultScreen';
 import {LoginScreen} from '../screens/LoginScreen';
 import {SignUpScreen} from '../screens/SignUpScreen';
+import {AppIntroScreen} from '../screens/AppIntroScreen';
 
 const FolderStack = createStackNavigator();
 
@@ -40,6 +41,7 @@ export const AuthNavigator = () => {
 		<AuthStack.Navigator>
 			<AuthStack.Screen name="Login" component={LoginScreen} options={{title: "LoginScreen", headerShown: false}}/>
 			<AuthStack.Screen name="SignUp" component={SignUpScreen} options={{title: "SignUpScreen", headerShown: false}}/>
+			<AuthStack.Screen name="AppIntro" component={AppIntroScreen} options={{title: "AppIntroScreen", headerShown: false}}/>
 		</AuthStack.Navigator>
 	)
 }

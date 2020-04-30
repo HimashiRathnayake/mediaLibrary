@@ -25,7 +25,7 @@ export const stylesScreen = StyleSheet.create({
         color: 'white'
     },
     noImageContainer:{
-        marginTop: '50%',
+        marginTop: '60%',
         alignSelf: 'center',
     },
     noImageText: {
