@@ -99,7 +99,8 @@ export const VideoModal = ({visible, setVisible, videoModal, setRefresh}) => {
         </Modal>
 
         <DetailsModal 
-            file={videoModal} type='Video' 
+            file={videoModal} 
+            type='Video' 
             detailsModal={detailsModal} 
             setDetailsModal={setDetailsModal} 
             renameFile={renamevideo} 

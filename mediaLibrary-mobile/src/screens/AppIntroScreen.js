@@ -5,23 +5,23 @@ import { AuthContext } from '../navigators/context';
 
 const slides = [
     {
-        key:1,
+        key:'1',
         title: 'Store and Manage',
-        text: 'all your media files at on place',
+        text: 'All your media files at on place',
         image: require('../../assets/intro.jpg'),
         backgroundColor: '#fff'
     },
     {
-        key:2,
-        title: 'Search Media Files',
-        text: 'based on title, artist, year, etc.',
+        key:'2',
+        title: 'Search Your Media Files',
+        text: 'By title, artist, album, year etc.',
         image: require('../../assets/search.png'),
         backgroundColor: '#fff'
     },
     {
-        key:3,
-        title: 'Share media files',
-        text: 'with your friends',
+        key:'3',
+        title: 'Share Your Media Files',
+        text: 'With your friends',
         image: require('../../assets/share.png'),
         backgroundColor: '#fff'
     },
@@ -50,6 +50,8 @@ export const AppIntroScreen = ({route,navigation}) => {
                 data={slides} 
                 onDone={()=>signUp({token:route.params.token, email:route.params.email})} 
                 renderItem={renderItem}
+                onSkip={()=>signUp({token:route.params.token, email:route.params.email})}
+                showSkipButton={true}
             />
         );
     }
@@ -58,22 +60,27 @@ export const AppIntroScreen = ({route,navigation}) => {
 const styles = StyleSheet.create({
     view: {
         flex:1,
+        backgroundColor: 'rgba(51,102,153,1)',
+        justifyContent: 'center'
     },
     text: {
         marginTop:10,
         alignSelf: 'center',
-        fontWeight: 'bold',
-        fontSize: 18,
-        marginBottom: 20
+        // fontWeight: 'bold',
+        fontSize: 17,
+        marginBottom: 40,
+        color: '#fff',
+        opacity: 0.6
     },
     header: {
-        marginTop: 50,
         alignSelf: 'center',
         fontWeight: 'bold',
-        fontSize: 18
+        fontSize: 19,
+        color:'#fff'
     },
     image:{
         height: Dimensions.get('screen').height/2, 
         width: Dimensions.get('window').width,
+        marginBottom: 40,
     }
 });

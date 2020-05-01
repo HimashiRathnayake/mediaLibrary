@@ -4,6 +4,15 @@ const screenHeight = Dimensions.get('screen').height;
 const screenWidth = Dimensions.get('screen').width;
 
 export const styleHome = StyleSheet.create({
+    header:{
+        backgroundColor: 'rgba(254,254,254,0.2)',
+        borderRadius: 10,
+        marginTop:30,
+        height: 50,
+        width: screenWidth-20,
+        alignSelf: 'center',
+        marginBottom: 12,
+    },
     backgroundImage:{
         width:screenWidth,
         height:screenHeight + 100,
@@ -16,7 +25,7 @@ export const styleHome = StyleSheet.create({
     },
     image: {
         alignSelf: 'center',
-        height: 200,
+        height: screenHeight*2/5 - 50,
         width: Dimensions.get('screen').width-20,
         resizeMode: 'cover',
         marginBottom: 10,
@@ -24,7 +33,7 @@ export const styleHome = StyleSheet.create({
         borderTopRightRadius: 5
     },
     nextHeader:{
-        marginTop: 30,
+        marginTop: 8,
         fontSize: 22,
         marginLeft: 10,
         fontWeight: "bold",
@@ -33,7 +42,7 @@ export const styleHome = StyleSheet.create({
     imageContainer: {
         alignSelf: 'center',
         alignItems: 'center',
-        height: 250,
+        height: screenHeight*2/5,
         width: screenWidth-20,
         resizeMode: 'stretch',
         marginTop: 12,

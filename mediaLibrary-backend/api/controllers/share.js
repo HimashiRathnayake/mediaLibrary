@@ -58,11 +58,11 @@ exports.audio_add_user = (req, res, next) =>{
 };
 
 exports.video_add_user = (req, res, next) =>{
-    Video.find({_id: req.params.videoId, accessList: {$in:[req.body.userId]}})
+    Video.find({_id: req.params.videoId, accessList: {$in:[req.params.userId]}})
     .exec()
     .then(result => {
         if (result.length===0){
-            Video.updateOne({_id: req.params.videoId},{$push: { accessList: req.body.userId}})
+            Video.updateOne({_id: req.params.videoId},{$push: { accessList: req.params.userId}})
             .exec()
             .then(result => {
                 console.log(result);

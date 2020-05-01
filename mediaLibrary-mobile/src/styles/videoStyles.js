@@ -8,7 +8,7 @@ export const styleVideo = StyleSheet.create({
         marginBottom: 120,
     },
     noVideoContainer:{
-        marginTop: '50%',
+        marginTop: '60%',
         alignSelf: 'center',
     },
     noVideoText: {

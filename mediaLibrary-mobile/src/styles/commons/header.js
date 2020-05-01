@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
         color: '#9e9e9e',
     },
     nextHeader:{
-        marginTop: 30,
+        marginTop: 28,
         fontSize: 22,
         marginLeft: 10,
         fontWeight: "bold",

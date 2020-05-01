@@ -5,7 +5,7 @@ import {FavouritesScreen} from '../screens/FavouritesScreen';
 import { createDrawerNavigator, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 import {AuthContext} from './context'
 import { styles } from '../styles/drawer';
-import { FontAwesome, Entypo, MaterialIcons, Ionicons, AntDesign } from '@expo/vector-icons';
+import { FontAwesome, Entypo, MaterialIcons, Ionicons, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { ImageTabNavigator, AudioTabNavigator, VideoTabNavigator } from './TabNavigator';
 import { SettingsScreen } from '../screens/SettingsScreen';
 import { HelpScreen } from '../screens/HelpScreen';
@@ -36,8 +36,14 @@ function CustomDrawerContent(props) {
                         <FontAwesome name="user-circle-o" style={styles.drawerIcon}/>
                         <Text style={styles.drawerHeaderText}>{email}</Text>
                     </View>
-                    <DrawerItemList {...props} activeTintColor='#1976d2' inactiveTintColor='#fff'/>
-                    <DrawerItem labelStyle={{color:'#fff', marginLeft: 50}} label="Logout" onPress={() => signOut()}/>
+                    <DrawerItemList {...props} itemStyle={{marginLeft:25}} labelStyle={{marginLeft:-20, fontSize:15}} activeTintColor='#1976d2' inactiveTintColor='#fff'/>
+                    <DrawerItem 
+                        labelStyle={{color:'#fff', marginLeft: -20, fontSize:15}} 
+                        label="Logout" 
+                        onPress={() => signOut()}
+                        style={{marginLeft:25}}
+                        icon ={()=><MaterialCommunityIcons name="logout" color='#fff' size={18}/>}
+                    />
                 </View>       
             </ImageBackground>
         </View>

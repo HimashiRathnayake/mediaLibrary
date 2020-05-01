@@ -84,6 +84,7 @@ export const ImageModal = ({modelImage, modelVisible, setVisible, setRefresh}) =
                             onPress={()=>{setDetailsModal(true);}}
                         />
                         <MaterialCommunityIcons name='delete-outline' style={stylesScreen.icon} 
+                            onLongPress={()=>alert('edrtfgh')}
                             onPress={()=>{
                                 Alert.alert('Do you want to delete image','',[
                                     {text: 'Cancel'},

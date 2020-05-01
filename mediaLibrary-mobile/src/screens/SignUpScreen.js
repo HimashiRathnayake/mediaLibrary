@@ -37,7 +37,7 @@ export const SignUpScreen = ({navigation}) => {
                                         Alert.alert('Alert','Email already exists. Try with different email',[{text: 'OK', onPress: ()=>actions.resetForm()}]);
                                         setIsLoading(false);
                                     }else if (response.message==='User created'){
-                                        console.log(response.token, values.email)
+                                        // console.log(response.token, values.email)
                                         navigation.navigate('AppIntro', {
                                             token:response.token, 
                                             email:values.email
@@ -63,8 +63,10 @@ export const SignUpScreen = ({navigation}) => {
                                     placeholderTextColor="white"
                                     underlineColorAndroid="transparent"
                                     secureTextEntry={false}
+                                    keyboardType='email-address'
                                     onChangeText={props.handleChange('email')}
                                     value={props.values.email}
+                                    onSubmitEditing={()=>props.handleSubmit()}
                                 />
                             </View>  
                             <Text style={styles.errorText}>{props.touched.email && props.errors.email}</Text>
@@ -76,8 +78,10 @@ export const SignUpScreen = ({navigation}) => {
                                     placeholderTextColor="white"
                                     underlineColorAndroid="transparent"
                                     secureTextEntry={true}
+                                    keyboardType='default'
                                     onChangeText={props.handleChange('password')}
                                     value={props.values.password}
+                                    onSubmitEditing={()=>props.handleSubmit()}
                                 />
                             </View>   
                             <Text style={styles.errorText}>{props.touched.password && props.errors.password}</Text>
@@ -89,8 +93,10 @@ export const SignUpScreen = ({navigation}) => {
                                     placeholderTextColor="white"
                                     underlineColorAndroid="transparent"
                                     secureTextEntry={true}
+                                    keyboardType='default'
                                     onChangeText={props.handleChange('confirmPassword')}
                                     value={props.values.confirmPassword}
+                                    onSubmitEditing={()=>props.handleSubmit()}
                                 />
                             </View>   
                             <Text style={styles.errorText}>{props.touched.confirmPassword && props.errors.confirmPassword}</Text>
@@ -103,7 +109,7 @@ export const SignUpScreen = ({navigation}) => {
                     </Formik>
             
                 <View style={styles.bottom}>
-                    <Text style={styles.bottomtext} disabled={isLoading} onPress={()=>navigation.navigate('Login')}>Already have an account?</Text>
+                    <Text style={styles.bottomtext} disabled={isLoading} onPress={()=>navigation.navigate('Login')}>Already have an account? Login</Text>
                 </View>
             </View>
         </ImageBackground>

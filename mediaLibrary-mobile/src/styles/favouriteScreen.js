@@ -11,18 +11,15 @@ export const styles = StyleSheet.create({
         backgroundColor: "#EAEAEC"
     },
     header: {
-        width: Dimensions.get('screen').width - 20,
-        paddingVertical: 12,
+        width: Dimensions.get('screen').width/3,
         alignSelf: 'center',
-        backgroundColor: 'rgba(255, 255, 255, 0.4)',
         justifyContent: 'center',
-        alignContent: 'center',
-        borderRadius: 20,
-        marginTop: 10
+        marginTop: 10,
     },
     headerText: {
         fontSize: 18,
-        color: '#fff'
+        color: '#fff',
+        borderBottomWidth: 2,
     },
     headerIcon: {
         color: '#fff',

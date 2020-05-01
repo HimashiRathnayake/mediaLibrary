@@ -10,13 +10,13 @@ export const HomeScreen = ({navigation}) => {
     
     return (
         <ImageBackground source={require('../../assets/bg.jpeg')} style={styleHome.backgroundImage}>
-            <View flexDirection='row' marginBottom={20}>
-                <FontAwesome.Button name="navicon" underlayColor='transparent' backgroundColor="transparent" color="#fff" size={20} marginTop={25} marginLeft={10} onPress={()=>navigation.toggleDrawer()}/>  
-                <Text style={{fontSize: 20, color:'#fff', marginTop: 30}}>
+            <View flexDirection='row' style={styleHome.header}>
+                <FontAwesome.Button name="navicon" underlayColor='transparent' backgroundColor="transparent" color="#fff" size={20} marginLeft={10} marginTop={8} onPress={()=>navigation.toggleDrawer()}/>  
+                <Text style={{fontSize: 20, color:'#fff', marginTop:10}}>
                     MyMedia
                 </Text>
                 <Text style={styleHome.nextHeader}>Home</Text> 
-                <FontAwesome.Button name='search' underlayColor='transparent' backgroundColor="transparent" color="#fff" size={20} marginTop={25} marginLeft={100} onPress={()=>setVisible(true)}/>
+                <FontAwesome.Button name='search' underlayColor='transparent' backgroundColor="transparent" color="#fff" size={20} marginLeft={100} marginTop={6} onPress={()=>setVisible(true)}/>
             </View>
 
             <ScrollView style={styleHome.container}>
@@ -31,7 +31,7 @@ export const HomeScreen = ({navigation}) => {
                     </TouchableWithoutFeedback>
                     <TouchableWithoutFeedback onPress={()=>navigation.navigate('Audios')}>
                         <View style={styleHome.imageContainer}>
-                            <Image source={require('../../assets/audio5.jpg')} style={styleHome.image}/>
+                            <Image source={require('../../assets/audio1.jpg')} style={styleHome.image}/>
                             <View style={styleHome.imageBottom}>
                                 <Text style={styleHome.imageText}>Store & Manage Your Audios</Text>
                             </View>

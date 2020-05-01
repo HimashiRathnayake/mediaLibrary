@@ -9,10 +9,12 @@ export const styles = StyleSheet.create({
         height: 120,
         marginTop: 40,
         alignItems: 'center',
+        marginBottom: 20,
     },
     drawerIcon:{
         color:'#9e9e9e',
-        fontSize: 80
+        fontSize: 80,
+        marginTop:10,
     },
     drawerHeaderText:{
         fontSize: 16,

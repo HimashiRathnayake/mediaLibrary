@@ -8,7 +8,7 @@ export const styleAudio = StyleSheet.create({
         marginBottom: 120,
     },
     noAudioContainer:{
-        marginTop: '50%',
+        marginTop: '60%',
         alignSelf: 'center',
     },
     noAudioText: {
