@@ -63,5 +63,23 @@ export const stylesScreen = StyleSheet.create({
         borderRadius: 100,
         justifyContent: 'center',
         shadowOpacity: 1
-    }
+    },
+    folderActionModal:{
+        flex:1,
+        padding: 0,
+        backgroundColor: 'rgba(0,0,0,0.7)',
+        justifyContent: 'center'
+    },
+    modalContainer:{
+        backgroundColor: 'white',
+        height: 140,
+        width: Dimensions.get('screen').width/3,
+        borderRadius: 20,
+        alignSelf: 'center',
+    },
+    modalText: {
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        fontSize: 18
+    },
 });

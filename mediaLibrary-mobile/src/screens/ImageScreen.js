@@ -63,7 +63,7 @@ export const ImageScreen = ({navigation, route}) => {
         <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
             <FileHeader navigation={navigation} route={route}/>
             <View>
-                <ImageDisplayer setRefresh={setRefresh} images={images} count={count}/>
+                <ImageDisplayer setRefresh={setRefresh} images={images} count={count} shouldMove={true}/>
                 <View style={stylesScreen.iconContainer}>
                     <TouchableOpacity onPress={()=>{openImagePickerAsync()}}>
                         <Text style={stylesScreen.addImageIcon}>+</Text>
