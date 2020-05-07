@@ -30,7 +30,7 @@ body {
   }
   
   #wrapper.toggled #sidebar-wrapper {
-    width: 250px;
+    width: 100px;
   }
   
   #page-content-wrapper {
@@ -50,6 +50,10 @@ body {
     color: white;
   }
 
+  .nav-item-right .nav-link{
+    float: right;
+  }
+
   
   
   /* Sidebar Styles */
@@ -57,7 +61,7 @@ body {
   .sidebar-nav {
     position: absolute;
     top: 10px;
-    width: 250px;
+    width: 100px;
     margin: 0;
     padding: 0;
     list-style: none;
@@ -71,7 +75,7 @@ body {
   .sidebar-nav .link-button  {
     display: block;
     text-decoration: none;
-    color: #a5e2fa;
+    color: #fafafa;
   }
   
   .sidebar-nav .link-button:hover {
@@ -112,7 +116,7 @@ body {
       width: 0;
     }
     #wrapper.toggled #sidebar-wrapper {
-      width: 250px;
+      width: 200px;
     }
     #page-content-wrapper {
       padding: 20px;

@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
 import { Redirect, Link} from "react-router-dom";
 import './componentCss/files.css';
-import {GetFolders, GetAll, GetFromFolder, CreateFolders, DeleteFolder, DeleteVideo, SearchVideos, Favourite, RemoveFavourite, AddFavourite, MoveFile} from '../services/PostData';
+import {GetFolders, GetAll, GetFromFolder, CreateFolders, DeleteFolder, DeleteVideo, SearchVideos, Favourite, RemoveFavourite, AddFavourite, MoveFile, UploadFiles, ShareFile} from '../services/PostData';
 import ResultList from './resultList';
-import CreateFolder from './createFolder';
 import VideoSearch from './VideoSearch';
-import Move from './move';
+import OverallUpload from './overallUpload';
 
 export default class Video extends Component{
 
@@ -24,9 +23,12 @@ export default class Video extends Component{
         this.search=this.search.bind(this);
         this.vidfavourites=this.vidfavourites.bind(this);
         this.favourite=this.favourite.bind(this);
-        this.Move=this.Move.bind(this);
         this.selectTitle=this.selectTitle.bind(this);
         this.Movefile=this.Movefile.bind(this);
+        this.uploadVideo=this.uploadVideo.bind(this);
+        this.upload=this.upload.bind(this);
+        this.selectedfile=this.selectedfile.bind(this);
+        this.shareVideo=this.shareVideo.bind(this);
         this.logout = this.logout.bind(this);
         
         this.state = {
@@ -37,15 +39,14 @@ export default class Video extends Component{
           allfolders: {},
           folder: {},
           nurl: '',
-          createFolderShow: false,
           redirect: false,
           searchShow: false,
           vidfavourites:[],
-          moveShow: false,
           title: 'Select a folder',
-          movefolder: {},
-          selectvid: '',
-          move: false
+          RLType: "Folders",
+          overallUploadShow: false,
+          uploadfolder: {},
+          selectedVid: {}
         }
         this.allfolders();
         this.vidfavourites();
@@ -67,6 +68,7 @@ export default class Video extends Component{
         GetFolders(JSON.parse(sessionStorage.getItem('userData')).token, this.state.type).then((result) => {
             this.setState({
                 folders: result,
+                RLType: 'Folders',
                 allfolders: result
             })
         }) 
@@ -123,8 +125,8 @@ export default class Video extends Component{
             console.log("result:", result);
             this.setState({
                 folders: result,
-                move: false,
                 folder: {},
+                RLType: 'Videos',
                 nurl: ''
             })
         }) 
@@ -133,7 +135,7 @@ export default class Video extends Component{
     getVideo(folder){
         this.setState({
             folder: folder,
-            move: true,
+            RLType: 'Videos',
             nurl:''
         })
         GetFromFolder(JSON.parse(sessionStorage.getItem('userData')).token, this.state.routeType, folder._id).then((result) => {
@@ -146,7 +148,7 @@ export default class Video extends Component{
 
     createFolder(e){
         e.preventDefault();
-        CreateFolders(JSON.parse(sessionStorage.getItem('userData')).token, this.state.type, e.target.folderName.value).then((result) => {
+        CreateFolders(JSON.parse(sessionStorage.getItem('userData')).token, this.state.type, 'Undefined').then((result) => {
             alert(result.message);
             if(result.message === "Folder created successfully"){
                 this.allfolders();
@@ -192,6 +194,36 @@ export default class Video extends Component{
         }    
     }
 
+    uploadVideo(e){
+        e.preventDefault(e);
+        console.log('within Video upload');
+        this.setState({
+            overallUploadShow: true
+        })
+    }
+
+    upload(e){
+        e.preventDefault(e);
+        console.log('in video component upload');
+        console.log('upload folder:', this.state.uploadfolder);
+        console.log('upload image: ', this.state.selectedVid);
+
+        UploadFiles(JSON.parse(sessionStorage.getItem('userData')).token,this.state.routeType, this.state.uploadfolder._id, this.state.selectedVid).then((result) => {
+            console.log("in upload file");
+            alert(result.message);
+            //this.getImage(this.state.uploadfolder);
+            this.allVideos();
+        });
+
+    }
+
+    selectedfile(e){
+        this.setState({
+            selectedVid: e.target.files[0]    
+        })
+    }
+
+
     search(e){
         e.preventDefault(e);
 
@@ -205,7 +237,8 @@ export default class Video extends Component{
         var newurl=eurl.substring(0, eurl.length-1);
         console.log("newurl: ", newurl);
         this.setState({
-            move: false,
+            folder: {},
+            RLType: 'Search Video',
             nurl: newurl
         })
         this.SearchVideo(newurl);
@@ -220,32 +253,49 @@ export default class Video extends Component{
         })   
     }
 
-    Move(file){
-        this.setState({
-            moveShow: true,
-            title: 'Select a folder',
-            selectvid: file
-        })
-    }
-
     selectTitle(folderName){
         this.setState({
             title: folderName.folderName,
-            movefolder: folderName
+            uploadfolder: folderName
         });
     }
 
-    Movefile(e){
-        e.preventDefault(e);
-
-        MoveFile(JSON.parse(sessionStorage.getItem('userData')).token, this.state.routeType, this.state.selectvid._id, this.state.movefolder._id).then((result) => {
-            alert(result.message);
+    Movefile(vidId, folderId){
+        MoveFile(JSON.parse(sessionStorage.getItem('userData')).token, this.state.routeType, vidId, folderId).then((result) => {
+            //alert(result.message);
             if(result.message === "Video moved successfully"){
-                this.getVideo(this.state.folder);
+                if(Object.keys(this.state.folder).length){
+                    this.getVideo(this.state.folder);
+                }
+                else if(this.state.nurl.length){
+                    this.SearchVideo(this.state.nurl)
+                }
+                else{
+                    this.allVideos();
+                }
             }  
         });
     }
-    
+
+    shareVideo(type, folder, value){
+        ShareFile(JSON.parse(sessionStorage.getItem('userData')).token, type, folder, value).then((result) => {
+            console.log("in share file");
+            alert(result.message);
+            if(result.message === 'Video shared successfully'){
+                if(Object.keys(this.state.folder).length){
+                    this.getVideo(this.state.folder);
+                }
+                else if(this.state.nurl.length){
+                    this.SearchVideo(this.state.nurl)
+                }
+                else{
+                    this.allVideos();
+                }
+            } 
+        })
+
+    }
+
     logout(){
         sessionStorage.setItem('userData', '');
         sessionStorage.clear(); 
@@ -259,9 +309,8 @@ export default class Video extends Component{
             return(<Redirect to={'/login'}/>);
         }
 
-        let createFolderClose=()=> this.setState({createFolderShow: false})
         let searchClose=()=> this.setState({searchShow: false}) 
-        let moveClose=()=> this.setState({moveShow: false})
+        let overalluploadClose=()=> this.setState({overallUploadShow: false, title: 'Select a folder', selectedVid: {}})
 
         return(
             <div>
@@ -269,21 +318,16 @@ export default class Video extends Component{
                     <div className="collapse navbar-collapse" id="navbarsExample02">
                         <ul className="navbar-nav mr-auto">
                             <li className="nav-item"> 
-                                <Link className="nav-link" to={"/audio"}>MyMedia</Link>
+                                <Link className="nav-link" style={{color: 'white'}} to={"/video"}>MyMedia - VIDEOS</Link>
                             </li>
-                            <li className="nav-item "> 
-                                <Link className="nav-link" to={"/start"}>Home</Link>
-                            </li> 
-                            <li className="nav-item "> 
-                                <Link className="nav-link" to={"/search"}>Search</Link>
-                            </li>
-                            <li className="nav-item "> 
-                                <Link className="nav-link" to={"/favourites"}>Favourites</Link>
-                            </li> 
                         </ul>
                         <form className="form-inline my-2 my-md-0"> </form>
                     </div>
                     <div className="navbar-brand">
+                        <button className="link-button" title="All folders"  style={{paddingRight: '20px', color: 'white'}} onClick={this.allfolders}><span className="fa fa-folder" > </span></button>
+                        <button className="link-button" title="All Videos"  style={{paddingRight: '20px', color: 'white'}} onClick={this.allVideos}><span className="fa fa-file-video-o" > </span></button>
+                        <button className="link-button" title="Upload Video"  style={{paddingRight: '20px', color: 'white'}} onClick={this.uploadVideo}><span className="fa fa-cloud-upload" > </span></button>
+                        <button className="link-button" title="Search Video" style={{paddingRight: '20px', color: 'white'}} onClick={() => this.setState({searchShow: true})}><span className="fa fa-search" ></span></button>
                         <button className="navbar-toggler-icon link-button" id="menu-toggle"   onClick={this.addActiveClass} ></button>
                     </div>
                     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample02" aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation" > 
@@ -293,12 +337,12 @@ export default class Video extends Component{
                 <div id="wrapper" className={this.state.isActive ? 'toggled': ''}>
                     <div id="sidebar-wrapper">
                         <ul className="sidebar-nav">
-                            <li className="sidebar-brand"><button className="link-button">VIDEOS</button> </li>
-                            <li> <button className="link-button " onClick={this.allfolders}> All Folders</button></li>
-                            <li> <button className="link-button" onClick={this.allVideos}>All Videos</button> </li>
-                            <li> <button className="link-button" onClick={() => this.setState({createFolderShow: true})} >Create Folder</button> </li>
-                            <li> <button className="link-button" onClick={() => this.setState({searchShow: true})}>Search</button> </li>
-                            <li> <button className="link-button" >Shared Folders & Videos</button> </li>
+                        <li className="sidebar-brand"><button className="link-button">VIDEOS</button> </li>
+                            <li> <Link className="link-button "  to={"/start"}>Home</Link></li>
+                            <li> <Link className="link-button" to={"/image"}>Image</Link> </li>
+                            <li> <Link className="link-button" to={"/audio"}>Audio</Link> </li>
+                            <li> <Link className="link-button" to={"/search"}>Search</Link> </li>
+                            <li> <Link className="link-button" to={"/favourites"}>Favourites</Link> </li>
                             <li> <button className="link-button" onClick={this.logout}>Logout</button> </li>
                         </ul> 
                     </div>
@@ -313,24 +357,25 @@ export default class Video extends Component{
                                         RenameVideo={this.RenameVideo}
                                         vidfavourites={this.state.vidfavourites}
                                         favourite={this.favourite}
-                                        move={this.state.move}
-                                        Move={this.Move}
+                                        RLType={this.state.RLType}
+                                        createfolder={this.createFolder}
+                                        currentfolder={this.state.folder}
+                                        uploadVideo={this.uploadVideo}
+                                        allinfofolders={this.state.allfolders}
+                                        movefile= {this.Movefile}
+                                        share={this.shareVideo}
                                         />
-                            <CreateFolder show={this.state.createFolderShow}
-                                          onHide={createFolderClose}
-                                          createfolder={this.createFolder}
-                            />
                             <VideoSearch show={this.state.searchShow}
                                          onHide={searchClose}
                                          search= {this.search}
                             />
-                            <Move show={this.state.moveShow}
-                                  onHide={moveClose}
-                                  movefile= {this.Movefile}
-                                  allfolders={this.state.allfolders}
-                                  currentfolder={this.state.folder}
-                                  selectTitle={this.selectTitle}
-                                  title={this.state.title}
+                            <OverallUpload show={this.state.overallUploadShow}
+                                           onHide={overalluploadClose}
+                                           allfolders={this.state.allfolders}
+                                           title={this.state.title}
+                                           selectTitle={this.selectTitle}
+                                           selectfile={this.selectedfile}
+                                           upload={this.upload}
                             /> 
                         </div>
                     </div>

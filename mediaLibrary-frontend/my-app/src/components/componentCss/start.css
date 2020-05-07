@@ -87,19 +87,19 @@
     height: 96px;
   }
   .col-md-4{
-    margin-top: 150px;
+    margin-top: 120px;
   }
   .card-img-top-image{
     background-image: url("../img/image.jpg");
-    height: 300px;
+    height: 270px;
   }
   .card-img-top-video{
     background-image: url("../img/video.jpg");
-    height: 300px;
+    height: 270px;
   }
   .card-img-top-audio{
     background-image: url("../img/audio.jpg");
-    height: 300px;
+    height: 270px;
   }
   .social-card-header i {
     font-size: 32px;

@@ -2,28 +2,67 @@ import React, {Component} from 'react';
 import { Redirect, Link } from "react-router-dom";
 import {Tabs, Tab} from 'react-bootstrap';
 import FavouriteResults from './FavouriteResults';
-import {Favourite, RemoveFavourite} from '../services/PostData';
+import {GetFolders, Favourite, RemoveFavourite, MoveFile} from '../services/PostData';
 
 export default class Favourites extends Component{
 
     constructor(props){
         super(props);
-        this.setResults();
-
+        
         this.state={
             imgresults: [],
             audresults: [],
             vidresults: [],
+            imgfolders: {},
+            audfolders: {},
+            vidfolders: {},
+            activeTab: 'Image',
             redirect: false
         }
         this.logout = this.logout.bind(this);
         this.setResults= this.setResults.bind(this);
         this.removeFavourite=this.removeFavourite.bind(this);
-        
+        this.Movefile=this.Movefile.bind(this);
+
+        this.setResults();
+        this.allfolders();
+    }
+
+    allfolders() {
+        GetFolders(JSON.parse(sessionStorage.getItem('userData')).token, 'Image').then((result) => {
+            this.setState({
+                imgfolders: result
+            })
+        }) 
+        GetFolders(JSON.parse(sessionStorage.getItem('userData')).token, 'Audio').then((result) => {
+            this.setState({
+                audfolders: result
+            })
+        })
+        GetFolders(JSON.parse(sessionStorage.getItem('userData')).token, 'Video').then((result) => {
+            this.setState({
+                vidfolders: result
+            })
+        })
+    }
+
+    Movefile(routeType, Id, folderId){
+        console.log('routeType:', this.state.routeType);
+        MoveFile(JSON.parse(sessionStorage.getItem('userData')).token, routeType, Id, folderId).then((result) => {
+            alert(result.message);
+            if(result.message === "Image moved successfully"){
+                this.setResults();
+            }
+            else if(result.message === "Audio moved successfully"){
+                this.setResults();
+            }
+            else if(result.message === "Video moved successfully"){
+               this.setResults();
+            }  
+        });
     }
 
     setResults(){
-        
         Favourite(JSON.parse(sessionStorage.getItem('userData')).token, 'Image').then((result) => {
             console.log("results: ", result) ;
             this.setState({
@@ -68,7 +107,7 @@ export default class Favourites extends Component{
             
         });
     }
-    
+
     logout(e){
         e.preventDefault(e);
         sessionStorage.setItem('userData', '');
@@ -106,22 +145,34 @@ export default class Favourites extends Component{
                     </div>
                 </div>
             </nav>
-            <div className="container" style={{backgroundColor: 'White', marginTop: '100px', height: '100%'}}>
+            {/*<div className="container" style={{backgroundColor: 'White', marginTop: '100px', height: '100%'}}>*/}
+            <div className="container" style={{backgroundColor: 'White', marginTop: '100px', width: '80%', height: '100%'}}>
                 <h3>Favourites</h3>
-                <Tabs defaultActiveKey="Image">
-                    <Tab eventKey="Image" title="Image">
+                <Tabs defaultActiveKey="Image"> 
+                {/* <Tabs activeKey={this.state.activeTab} onChange={this.changeTab}> */}
+                    <Tab eventKey="Image" title="Image" >
                         <FavouriteResults results={this.state.imgresults}
-                                          removeFavourite= {this.removeFavourite}/>
+                                          removeFavourite= {this.removeFavourite}
+                                          allfolders= {this.state.imgfolders}
+                                          movefile= {this.Movefile}
+                                          setresults= {this.setResults}/>
                     </Tab>
-                    <Tab eventKey="Audio" title="Audio">
+                    <Tab eventKey="Audio" title="Audio" >
                         <FavouriteResults results={this.state.audresults}
-                                          removeFavourite= {this.removeFavourite}/>
+                                          removeFavourite= {this.removeFavourite}
+                                          allfolders= {this.state.audfolders}
+                                          movefile= {this.Movefile}
+                                          setresults= {this.setResults}/>
                     </Tab>
-                    <Tab eventKey="Video" title="Video" >
+                    <Tab eventKey="Video" title="Video">
                         <FavouriteResults results={this.state.vidresults}
-                                          removeFavourite= {this.removeFavourite}/>
+                                          removeFavourite= {this.removeFavourite}
+                                          allfolders= {this.state.vidfolders}
+                                          movefile= {this.Movefile}
+                                          setresults= {this.setResults}/>
                     </Tab>
                 </Tabs>
+                
             </div>
             </div>
         )

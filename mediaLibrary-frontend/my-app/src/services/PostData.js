@@ -559,3 +559,62 @@ export function MoveFile(userdata, type, fileId, folderId){
     });
 }
 
+export function GetUsers(userdata, email){
+    return new Promise((resolve, reject) => {
+        fetch(`http://localhost:3000/user/${email}`, {
+            method: 'Get',
+            headers: {
+                'Authorization': `Bearer ${userdata}`,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            resolve(responseJson);
+        })
+        .catch((error) => {
+            reject(error);
+        })
+    });
+}
+export function ShareFile(userdata, type, imageId, sharedId){
+    return new Promise((resolve, reject) => {
+        fetch(`http://localhost:3000/share/${type}/${imageId}/${sharedId}`, {
+            method: 'PATCH',
+            headers: {
+                'Authorization': `Bearer ${userdata}`,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            resolve(responseJson);
+        })
+        .catch((error) => {
+            reject(error);
+        })
+    });
+}
+
+export function RemoveUser(userdata, type, imageId, userId){
+    return new Promise((resolve, reject) => {
+        fetch(`http://localhost:3000/share/remove/${type}/${imageId}/${userId}`, {
+            method: 'PATCH',
+            headers: {
+                'Authorization': `Bearer ${userdata}`,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            resolve(responseJson);
+        })
+        .catch((error) => {
+            reject(error);
+        })
+    });
+}
+

@@ -4,7 +4,7 @@ import {Dropdown, DropdownButton, InputGroup, FormControl, Button, Nav} from "re
 import './componentCss/login.css';
 import './componentCss/start.css';
 import SearchList from './SearchList';
-import {SearchImagebyCriteria, SearchAudiobyCriteria, SearchVideobyCriteria, DeleteImage, DeleteAudio, DeleteVideo, Favourite, RemoveFavourite, AddFavourite}from '../services/PostData';
+import {GetFolders, SearchImagebyCriteria, SearchAudiobyCriteria, SearchVideobyCriteria, DeleteImage, DeleteAudio, DeleteVideo, Favourite, RemoveFavourite, AddFavourite, MoveFile}from '../services/PostData';
 
 const formValid = formErrors => {
     let valid = true;
@@ -26,6 +26,7 @@ export default class Search extends Component{
             criteria: ' Select Criteria',
             key: '',
             type: 'image',
+            routeType: 'images',
             formErrors: {
                 error: ''
             },
@@ -33,6 +34,9 @@ export default class Search extends Component{
             imgresults: [],
             vidresults: [],
             audresults: [],
+            imgfolders: {},
+            audfolders: {},
+            vidfolders: {},
             redirect: false
         }
         this.logout = this.logout.bind(this);
@@ -44,8 +48,10 @@ export default class Search extends Component{
         this.deleteMedia=this.deleteMedia.bind(this);
         this.favourites= this.favourites.bind(this);
         this.AddRemovefavourite=this.AddRemovefavourite.bind(this);
+        this.Movefile=this.Movefile.bind(this);
 
         this.favourites();
+        this.allfolders();
     }
 
     getKey(){
@@ -56,6 +62,24 @@ export default class Search extends Component{
             key: this.refs.inputword.value
         })
 
+    }
+
+    allfolders() {
+        GetFolders(JSON.parse(sessionStorage.getItem('userData')).token, 'Image').then((result) => {
+            this.setState({
+                imgfolders: result
+            })
+        }) 
+        GetFolders(JSON.parse(sessionStorage.getItem('userData')).token, 'Audio').then((result) => {
+            this.setState({
+                audfolders: result
+            })
+        })
+        GetFolders(JSON.parse(sessionStorage.getItem('userData')).token, 'Video').then((result) => {
+            this.setState({
+                vidfolders: result
+            })
+        })
     }
 
     favourites(){
@@ -201,7 +225,8 @@ export default class Search extends Component{
             console.log("results: ", result) ;
             this.setState({
                 searchresult: result,
-                type: 'image'
+                type: 'image',
+                routeType: 'images'
             })
         })
         }  
@@ -228,7 +253,8 @@ export default class Search extends Component{
             console.log("results: ", result) ;
             this.setState({
                 searchresult: result,
-                type: 'audio'
+                type: 'audio',
+                routeType: 'audios'
             })
         }) 
     }
@@ -255,7 +281,8 @@ export default class Search extends Component{
             console.log("results: ", result) ;
             this.setState({
                 searchresult: result,
-                type: 'video'
+                type: 'video',
+                routeType: 'videos'
             })
         })
     }  
@@ -292,6 +319,21 @@ export default class Search extends Component{
         }
         
     } 
+
+    Movefile(Id, folderId){
+        MoveFile(JSON.parse(sessionStorage.getItem('userData')).token, this.state.routeType, Id, folderId).then((result) => {
+            alert(result.message);
+            if(result.message === "Image moved successfully"){
+                this.searchImage(this.state.criteria);
+            }
+            else if(result.message === "Audio moved successfully"){
+                this.searchAudio(this.state.criteria);
+            }
+            else if(result.message === "Video moved successfully"){
+                this.searchVideo(this.state.criteria);
+            }  
+        });
+    }
 
     logout(){
         console.log("logout");
@@ -382,6 +424,10 @@ export default class Search extends Component{
                                     imgresults={this.state.imgresults}
                                     audresults={this.state.audresults}
                                     vidresults={this.state.vidresults}
+                                    imgfolders={this.state.imgfolders}
+                                    audfolders={this.state.audfolders}
+                                    vidfolders={this.state.vidfolders}
+                                    movefile= {this.Movefile}
                                     AddRemovefavourite={this.AddRemovefavourite}/>
                     </div>
                 </div>

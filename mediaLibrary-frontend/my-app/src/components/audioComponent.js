@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
 import { Redirect, Link} from "react-router-dom";
 import './componentCss/files.css';
-import {GetFolders, GetAll, GetFromFolder, CreateFolders, DeleteFolder, DeleteAudio, SearchAudios, Favourite, RemoveFavourite, AddFavourite, MoveFile} from '../services/PostData';
+import {GetFolders, GetAll, GetFromFolder, CreateFolders, DeleteFolder, DeleteAudio, SearchAudios, Favourite, RemoveFavourite, AddFavourite, MoveFile, UploadFiles, ShareFile} from '../services/PostData';
 import ResultList from './resultList';
-import CreateFolder from './createFolder';
 import AudioSearch from './AudioSearch';
-import Move from './move';
+import OverallUpload from './overallUpload';
 
 export default class Audio extends Component{
 
@@ -24,9 +23,12 @@ export default class Audio extends Component{
         this.search=this.search.bind(this);
         this.audfavourites=this.audfavourites.bind(this);
         this.favourite=this.favourite.bind(this);
-        this.Move=this.Move.bind(this);
         this.selectTitle=this.selectTitle.bind(this);
         this.Movefile=this.Movefile.bind(this);
+        this.uploadAudio=this.uploadAudio.bind(this);
+        this.upload=this.upload.bind(this);
+        this.selectedfile=this.selectedfile.bind(this);
+        this.shareAudio=this.shareAudio.bind(this);
         this.logout = this.logout.bind(this);
         
         this.state = {
@@ -37,15 +39,14 @@ export default class Audio extends Component{
           allfolders: {},
           folder: {},
           nurl: '',
-          createFolderShow: false,
           redirect: false,
           searchShow: false,
           audfavourites:[],
-          moveShow: false,
           title: 'Select a folder',
-          movefolder: {},
-          selectaud: '',
-          move: false
+          RLType: "Folders",
+          overallUploadShow: false,
+          uploadfolder: {},
+          selectedAud: {}
         }
         this.allfolders();
         this.audfavourites();
@@ -67,6 +68,7 @@ export default class Audio extends Component{
         GetFolders(JSON.parse(sessionStorage.getItem('userData')).token, this.state.type).then((result) => {
             this.setState({
                 folders: result,
+                RLType: 'Folders',
                 allfolders: result
             })
         }) 
@@ -123,8 +125,8 @@ export default class Audio extends Component{
             console.log("result:", result);
             this.setState({
                 folders: result,
-                move: false,
                 folder: {},
+                RLType: 'Audios',
                 nurl: ''
             })
         }) 
@@ -133,7 +135,7 @@ export default class Audio extends Component{
     getAudio(folder){
         this.setState({
             folder: folder,
-            move: true,
+            RLType: 'Audios',
             nurl:''
         })
         GetFromFolder(JSON.parse(sessionStorage.getItem('userData')).token, this.state.routeType, folder._id).then((result) => {
@@ -146,8 +148,8 @@ export default class Audio extends Component{
 
     createFolder(e){
         e.preventDefault();
-        CreateFolders(JSON.parse(sessionStorage.getItem('userData')).token, this.state.type, e.target.folderName.value).then((result) => {
-            alert(result.message);
+        CreateFolders(JSON.parse(sessionStorage.getItem('userData')).token, this.state.type, 'Undefined').then((result) => {
+            //alert(result.message);
             if(result.message === "Folder created successfully"){
                 this.allfolders();
             } 
@@ -192,6 +194,36 @@ export default class Audio extends Component{
         }    
     }
 
+    uploadAudio(e){
+        e.preventDefault(e);
+        console.log('within Audio upload');
+        this.setState({
+            overallUploadShow: true
+        })
+    }
+
+    upload(e){
+        e.preventDefault(e);
+        console.log('in audio component upload');
+        console.log('upload folder:', this.state.uploadfolder);
+        console.log('upload image: ', this.state.selectedAud);
+
+        UploadFiles(JSON.parse(sessionStorage.getItem('userData')).token,this.state.routeType, this.state.uploadfolder._id, this.state.selectedAud).then((result) => {
+            console.log("in upload file");
+            alert(result.message);
+            //this.getImage(this.state.uploadfolder);
+            this.allAudios();
+        });
+
+    }
+
+    selectedfile(e){
+        this.setState({
+            selectedAud: e.target.files[0]    
+        })
+    }
+
+
     search(e){
         e.preventDefault(e);
 
@@ -212,7 +244,8 @@ export default class Audio extends Component{
         console.log("newurl: ", newurl);
 
         this.setState({
-            move: false,
+            foleder: {},
+            RLType: 'Search Audio',
             nurl: newurl
         })
         this.SearchAudio(newurl);
@@ -227,30 +260,47 @@ export default class Audio extends Component{
         })   
     }
 
-    Move(file){
-        this.setState({
-            moveShow: true,
-            title: 'Select a folder',
-            selectaud: file
-        })
-    }
-
     selectTitle(folderName){
         this.setState({
             title: folderName.folderName,
-            movefolder: folderName
+            uploadfolder: folderName
         });
     }
 
-    Movefile(e){
-        e.preventDefault(e);
-
-        MoveFile(JSON.parse(sessionStorage.getItem('userData')).token, this.state.routeType, this.state.selectaud._id, this.state.movefolder._id).then((result) => {
-            alert(result.message);
+    Movefile(audId, folderId){
+        MoveFile(JSON.parse(sessionStorage.getItem('userData')).token, this.state.routeType, audId, folderId).then((result) => {
+            //alert(result.message);
             if(result.message === "Audio moved successfully"){
-                this.getAudio(this.state.folder);
+                if(Object.keys(this.state.folder).length){
+                    this.getAudio(this.state.folder);
+                }
+                else if(this.state.nurl.length){
+                    this.SearchAudio(this.state.nurl)
+                }
+                else{
+                    this.allAudios();
+                }
             }  
         });
+    }
+
+    shareAudio(type, folder, value){
+        ShareFile(JSON.parse(sessionStorage.getItem('userData')).token, type, folder, value).then((result) => {
+            console.log("in share file");
+            alert(result.message);
+            if(result.message === 'Audio shared successfully'){
+                if(Object.keys(this.state.folder).length){
+                    this.getAudio(this.state.folder);
+                }
+                else if(this.state.nurl.length){
+                    this.SearchAudio(this.state.nurl)
+                }
+                else{
+                    this.allAudios();
+                }
+            } 
+        })
+
     }
 
     logout(){
@@ -266,9 +316,8 @@ export default class Audio extends Component{
             return(<Redirect to={'/login'}/>);
         }
 
-        let createFolderClose=()=> this.setState({createFolderShow: false})
         let searchClose=()=> this.setState({searchShow: false}) 
-        let moveClose=()=> this.setState({moveShow: false})
+        let overalluploadClose=()=> this.setState({overallUploadShow: false, title: 'Select a folder', selectedAud: {}})
 
         return(
             <div>
@@ -276,21 +325,16 @@ export default class Audio extends Component{
                     <div className="collapse navbar-collapse" id="navbarsExample02">
                         <ul className="navbar-nav mr-auto">
                             <li className="nav-item"> 
-                                <Link className="nav-link" to={"/audio"}>MyMedia</Link>
+                                <Link className="nav-link" style={{color: 'white'}} to={"/audio"}>MyMedia - AUDIOS</Link>
                             </li>
-                            <li className="nav-item "> 
-                                <Link className="nav-link" to={"/start"}>Home</Link>
-                            </li> 
-                            <li className="nav-item "> 
-                                <Link className="nav-link" to={"/search"}>Search</Link>
-                            </li>
-                            <li className="nav-item "> 
-                                <Link className="nav-link" to={"/favourites"}>Favourites</Link>
-                            </li> 
                         </ul>
                         <form className="form-inline my-2 my-md-0"> </form>
                     </div>
                     <div className="navbar-brand">
+                        <button className="link-button" title="All folders"  style={{paddingRight: '20px', color: 'white'}} onClick={this.allfolders}><span className="fa fa-folder" > </span></button>
+                        <button className="link-button" title="All Audios"  style={{paddingRight: '20px', color: 'white'}} onClick={this.allAudios}><span className="fa fa-file-audio-o" > </span></button>
+                        <button className="link-button" title="Upload Audio"  style={{paddingRight: '20px', color: 'white'}} onClick={this.uploadAudio}><span className="fa fa-cloud-upload" > </span></button>
+                        <button className="link-button" title="Search Audio" style={{paddingRight: '20px', color: 'white'}} onClick={() => this.setState({searchShow: true})}><span className="fa fa-search" ></span></button>
                         <button className="navbar-toggler-icon link-button" id="menu-toggle"   onClick={this.addActiveClass} ></button>
                     </div>
                     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample02" aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation" > 
@@ -300,12 +344,12 @@ export default class Audio extends Component{
                 <div id="wrapper" className={this.state.isActive ? 'toggled': ''}>
                     <div id="sidebar-wrapper">
                         <ul className="sidebar-nav">
-                            <li className="sidebar-brand"><button className="link-button">AUDIOS</button> </li>
-                            <li> <button className="link-button " onClick={this.allfolders}> All Folders</button></li>
-                            <li> <button className="link-button" onClick={this.allAudios}>All Audios</button> </li>
-                            <li> <button className="link-button" onClick={() => this.setState({createFolderShow: true})} >Create Folder</button> </li>
-                            <li> <button className="link-button" onClick={() => this.setState({searchShow: true})}>Search</button> </li>
-                            <li> <button className="link-button" >Shared Folders & Audios</button> </li>
+                        <li className="sidebar-brand"><button className="link-button">AUDIOS</button> </li>
+                            <li> <Link className="link-button "  to={"/start"}>Home</Link></li>
+                            <li> <Link className="link-button" to={"/image"}>Image</Link> </li>
+                            <li> <Link className="link-button" to={"/video"}>Video</Link> </li>
+                            <li> <Link className="link-button" to={"/search"}>Search</Link> </li>
+                            <li> <Link className="link-button" to={"/favourites"}>Favourites</Link> </li>
                             <li> <button className="link-button" onClick={this.logout}>Logout</button> </li>
                         </ul> 
                     </div>
@@ -320,25 +364,26 @@ export default class Audio extends Component{
                                         RenameAudio={this.RenameAudio}
                                         audfavourites={this.state.audfavourites}
                                         favourite={this.favourite}
-                                        move={this.state.move}
-                                        Move={this.Move}
+                                        RLType={this.state.RLType}
+                                        createfolder={this.createFolder}
+                                        currentfolder={this.state.folder}
+                                        uploadAudio={this.uploadAudio}
+                                        allinfofolders={this.state.allfolders}
+                                        movefile= {this.Movefile}
+                                        share={this.shareAudio}
                                         />
-                            <CreateFolder show={this.state.createFolderShow}
-                                          onHide={createFolderClose}
-                                          createfolder={this.createFolder}
-                            />
                             <AudioSearch show={this.state.searchShow}
                                          onHide={searchClose}
                                          search= {this.search}
                             />
-                            <Move show={this.state.moveShow}
-                                  onHide={moveClose}
-                                  movefile= {this.Movefile}
-                                  allfolders={this.state.allfolders}
-                                  currentfolder={this.state.folder}
-                                  selectTitle={this.selectTitle}
-                                  title={this.state.title}
-                            /> 
+                            <OverallUpload show={this.state.overallUploadShow}
+                                           onHide={overalluploadClose}
+                                           allfolders={this.state.allfolders}
+                                           title={this.state.title}
+                                           selectTitle={this.selectTitle}
+                                           selectfile={this.selectedfile}
+                                           upload={this.upload}
+                            />  
                         </div>
                     </div>
                 </div>

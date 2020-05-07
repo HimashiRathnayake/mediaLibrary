@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
 import { Redirect, Link} from "react-router-dom";
 import './componentCss/files.css';
-import {GetFolders, GetAll, GetFromFolder, DeleteFolder, DeleteImage, CreateFolders, SearchImages, Favourite, RemoveFavourite, AddFavourite, MoveFile} from '../services/PostData';
+import {GetFolders, GetAll, GetFromFolder, DeleteFolder, DeleteImage, CreateFolders, SearchImages, Favourite, RemoveFavourite, AddFavourite, MoveFile, UploadFiles, ShareFile, RemoveUser} from '../services/PostData';
 import ResultList from './resultList';
-import CreateFolder from './createFolder';
 import ImageSearch from './ImageSearch';
-import Move from './move';
+import OverallUpload from './overallUpload';
 
 export default class Image extends Component{
 
@@ -24,10 +23,14 @@ export default class Image extends Component{
         this.search=this.search.bind(this);
         this.imgfavourites=this.imgfavourites.bind(this);
         this.favourite=this.favourite.bind(this);
-        this.Move=this.Move.bind(this);
         this.selectTitle=this.selectTitle.bind(this);
         this.Movefile=this.Movefile.bind(this);
+        this.uploadImage=this.uploadImage.bind(this);
+        this.upload=this.upload.bind(this);
         this.logout = this.logout.bind(this);
+        this.selectedfile=this.selectedfile.bind(this);
+        this.shareImage=this.shareImage.bind(this);
+        this.removeSharedUsers=this.removeSharedUsers.bind(this);
         
         this.state = {
           isActive: false,
@@ -38,14 +41,13 @@ export default class Image extends Component{
           folder: {},
           nurl: '',
           redirect: false,
-          createFolderShow: false,
           searchShow: false,
-          moveShow: false,
           imgfavourites:[],
           title: 'Select a folder',
-          movefolder: {},
-          selectimg: '',
-          move: false
+          RLType: "Folders",
+          overallUploadShow: false,
+          uploadfolder: {},
+          selectedImg: {}
         }
         this.allfolders();
         this.imgfavourites();
@@ -67,6 +69,7 @@ export default class Image extends Component{
         GetFolders(JSON.parse(sessionStorage.getItem('userData')).token, this.state.type).then((result) => {
             this.setState({
                 folders: result,
+                RLType: 'Folders',
                 allfolders: result
             })
         }) 
@@ -123,8 +126,8 @@ export default class Image extends Component{
             console.log("All images results: ", result);
             this.setState({
                 folders: result,
-                move: false,
                 folder: {},
+                RLType: 'Images',
                 nurl: ''
             })
         }) 
@@ -136,7 +139,7 @@ export default class Image extends Component{
         
         this.setState({
             folder: folder,
-            move: true,
+            RLType: 'Images',
             nurl:''
         })
         GetFromFolder(JSON.parse(sessionStorage.getItem('userData')).token, this.state.routeType, folder._id).then((result) => {
@@ -185,14 +188,43 @@ export default class Image extends Component{
     }
 
     createFolder(e){
-        e.preventDefault();
-        CreateFolders(JSON.parse(sessionStorage.getItem('userData')).token,this.state.type, e.target.folderName.value).then((result) => {
-            alert(result.message);
+        e.preventDefault(e);
+        CreateFolders(JSON.parse(sessionStorage.getItem('userData')).token,this.state.type, 'Undefined').then((result) => {
+            //alert(result.message);
             if(result.message === "Folder created successfully"){
                 this.allfolders();
             } 
         })     
     } 
+
+    uploadImage(e){
+        e.preventDefault(e);
+        console.log('within Image upload');
+        this.setState({
+            overallUploadShow: true
+        })
+    }
+
+    upload(e){
+        e.preventDefault(e);
+        console.log('in image component upload');
+        console.log('upload folder:', this.state.uploadfolder);
+        console.log('upload image: ', this.state.selectedImg);
+
+        UploadFiles(JSON.parse(sessionStorage.getItem('userData')).token,this.state.routeType, this.state.uploadfolder._id, this.state.selectedImg).then((result) => {
+            console.log("in upload file");
+            alert(result.message);
+            //this.getImage(this.state.uploadfolder);
+            this.allImages();
+        });
+
+    }
+
+    selectedfile(e){
+        this.setState({
+            selectedImg: e.target.files[0]    
+        })
+    }
 
     search(e){
         e.preventDefault(e);
@@ -211,7 +243,8 @@ export default class Image extends Component{
         var newurl = eurl.substring(0, eurl.length-1);
         console.log("newurl: ", newurl);
         this.setState({
-            move: false,
+            foleder: {},
+            RLType: 'Search Image',
             nurl: newurl
         })
         this.SearchImage(newurl);
@@ -226,30 +259,68 @@ export default class Image extends Component{
         })   
     }
 
-    Move(file){
-        this.setState({
-            moveShow: true,
-            title: 'Select a folder',
-            selectimg: file
-        })
-    }
-
     selectTitle(folderName){
         this.setState({
             title: folderName.folderName,
-            movefolder: folderName
+            uploadfolder: folderName
         });
     }
 
-    Movefile(e){
-        e.preventDefault(e);
-
-        MoveFile(JSON.parse(sessionStorage.getItem('userData')).token, this.state.routeType, this.state.selectimg._id, this.state.movefolder._id).then((result) => {
-            alert(result.message);
+    Movefile(imgId, folderId){
+        MoveFile(JSON.parse(sessionStorage.getItem('userData')).token, this.state.routeType, imgId, folderId).then((result) => {
+            //alert(result.message);
             if(result.message === "Image moved successfully"){
-                this.getImage(this.state.folder);
+                if(Object.keys(this.state.folder).length){
+                    this.getImage(this.state.folder);
+                }
+                else if(this.state.nurl.length){
+                    this.SearchImage(this.state.nurl)
+                }
+                else{
+                    this.allImages();
+                }
             }  
         });
+    }
+
+    shareImage(type, folder, value){
+        ShareFile(JSON.parse(sessionStorage.getItem('userData')).token, type, folder, value).then((result) => {
+            console.log("in share file");
+            alert(result.message);
+            if(result.message === 'Image shared successfully'){
+                if(Object.keys(this.state.folder).length){
+                    this.getImage(this.state.folder);
+                }
+                else if(this.state.nurl.length){
+                    this.SearchImage(this.state.nurl)
+                }
+                else{
+                    this.allImages();
+                }
+            } 
+        })
+
+    }
+
+    removeSharedUsers(userId, imgId){
+        console.log('removeuser:', userId);
+        console.log('remove from:', imgId);
+
+        RemoveUser(JSON.parse(sessionStorage.getItem('userData')).token, 'image', imgId, userId).then((result) => {
+            console.log("in remove user file");
+            alert(result.message);
+            if(result.message === 'Removed user successfully'){
+                if(Object.keys(this.state.folder).length){
+                    this.getImage(this.state.folder);
+                }
+                else if(this.state.nurl.length){
+                    this.SearchImage(this.state.nurl)
+                }
+                else{
+                    this.allImages();
+                } 
+            }
+        })
 
     }
 
@@ -266,9 +337,9 @@ export default class Image extends Component{
             return(<Redirect to={'/login'}/>);
         }
 
-        let createFolderClose=()=> this.setState({createFolderShow: false})
         let searchClose=()=> this.setState({searchShow: false})
-        let moveClose=()=> this.setState({moveShow: false})
+        //let moveClose=()=> this.setState({moveShow: false, title: 'Select a folder'})
+        let overalluploadClose=()=> this.setState({overallUploadShow: false, title: 'Select a folder', selectimg: ''})
 
         return(
             
@@ -277,21 +348,17 @@ export default class Image extends Component{
                     <div className="collapse navbar-collapse" id="navbarsExample02">
                         <ul className="navbar-nav mr-auto">
                             <li className="nav-item"> 
-                                <Link className="nav-link" to={"/image"}>MyMedia</Link>
+                                <Link className="nav-link" style={{color: 'white'}} to={"/image"}>MyMedia - IMAGES</Link>
                             </li>
-                            <li className="nav-item "> 
-                                <Link className="nav-link" to={"/start"}>Home</Link>
-                            </li> 
-                            <li className="nav-item "> 
-                                <Link className="nav-link" to={"/search"}>Search</Link>
-                            </li>
-                            <li className="nav-item "> 
-                                <Link className="nav-link" to={"/favourites"}>Favourites</Link>
-                            </li> 
                         </ul>
+                        
                         <form className="form-inline my-2 my-md-0"> </form>
                     </div>
                     <div className="navbar-brand">
+                        <button className="link-button" title="All folders"  style={{paddingRight: '20px', color: 'white'}} onClick={this.allfolders}><span className="fa fa-folder" > </span></button>
+                        <button className="link-button" title="All Images"  style={{paddingRight: '20px', color: 'white'}} onClick={this.allImages}><span className="fa fa-file-image-o" > </span></button>
+                        <button className="link-button" title="Upload Image"  style={{paddingRight: '20px', color: 'white'}} onClick={this.uploadImage}><span className="fa fa-cloud-upload" > </span></button>
+                        <button className="link-button" title="Search Image" style={{paddingRight: '20px', color: 'white'}} onClick={() => this.setState({searchShow: true})}><span className="fa fa-search" ></span></button>
                         <button className="navbar-toggler-icon link-button" id="menu-toggle"   onClick={this.addActiveClass} ></button>
                     </div>
                     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample02" aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation" > 
@@ -302,11 +369,11 @@ export default class Image extends Component{
                     <div id="sidebar-wrapper">
                         <ul className="sidebar-nav">
                             <li className="sidebar-brand"><button className="link-button">IMAGES</button> </li>
-                            <li> <button className="link-button " onClick={this.allfolders}> All Folders</button></li>
-                            <li> <button className="link-button" onClick={this.allImages}>All Images</button> </li>
-                            <li> <button className="link-button" onClick={() => this.setState({createFolderShow: true})}>Create Folder</button> </li>
-                            <li> <button className="link-button" onClick={() => this.setState({searchShow: true})}>Search</button> </li>
-                            <li> <button className="link-button" >Shared Folders & Images</button> </li>
+                            <li> <Link className="link-button "  to={"/start"}>Home</Link></li>
+                            <li> <Link className="link-button" to={"/audio"}>Audio</Link> </li>
+                            <li> <Link className="link-button" to={"/video"}>Video</Link> </li>
+                            <li> <Link className="link-button" to={"/search"}>Search</Link> </li>
+                            <li> <Link className="link-button" to={"/favourites"}>Favourites</Link> </li>
                             <li> <button className="link-button" onClick={this.logout}>Logout</button> </li>
                         </ul> 
                     </div>
@@ -321,24 +388,26 @@ export default class Image extends Component{
                                         RenameImage={this.RenameImage}
                                         imgfavourites={this.state.imgfavourites}
                                         favourite={this.favourite}
-                                        move={this.state.move}
-                                        Move={this.Move}
-                            />
-                            <CreateFolder show={this.state.createFolderShow}
-                                          onHide={createFolderClose}
-                                          createfolder={this.createFolder}
+                                        RLType={this.state.RLType}
+                                        createfolder={this.createFolder}
+                                        currentfolder={this.state.folder}
+                                        uploadImage={this.uploadImage}
+                                        allinfofolders={this.state.allfolders}
+                                        movefile= {this.Movefile}
+                                        share={this.shareImage}
+                                        remove={this.removeSharedUsers}
                             />
                             <ImageSearch show={this.state.searchShow}
                                          onHide={searchClose}
                                          search= {this.search}
                             />   
-                            <Move show={this.state.moveShow}
-                                         onHide={moveClose}
-                                         movefile= {this.Movefile}
-                                         allfolders={this.state.allfolders}
-                                         currentfolder={this.state.folder}
-                                         selectTitle={this.selectTitle}
-                                         title={this.state.title}
+                            <OverallUpload show={this.state.overallUploadShow}
+                                           onHide={overalluploadClose}
+                                           allfolders={this.state.allfolders}
+                                           title={this.state.title}
+                                           selectTitle={this.selectTitle}
+                                           selectfile={this.selectedfile}
+                                           upload={this.upload}
                             />   
                         </div>
                     </div>
