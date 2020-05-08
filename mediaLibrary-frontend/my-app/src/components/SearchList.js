@@ -221,6 +221,7 @@ class SearchList extends Component {
                 allfolders={this.props.imgfolders}
                 infotitle={this.state.infotitle}
                 selectinfoTitle={this.selectinfoTitle}
+                remove={this.props.remove}
                 />
                 <VidInfo
                 show={this.state.vidInfoShow}
@@ -230,6 +231,7 @@ class SearchList extends Component {
                 allfolders={this.props.vidfolders}
                 infotitle={this.state.infotitle}
                 selectinfoTitle={this.selectinfoTitle}
+                remove={this.props.remove}
                 />
                 <AudInfo
                 show={this.state.audInfoShow}
@@ -239,6 +241,7 @@ class SearchList extends Component {
                 allfolders={this.props.audfolders}
                 infotitle={this.state.infotitle}
                 selectinfoTitle={this.selectinfoTitle}
+                remove={this.props.remove}
                 />
             </ul>
         );

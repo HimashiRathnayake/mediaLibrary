@@ -1,24 +1,19 @@
 import React, {Component} from 'react';
 import {Modal, Button, Row, Col, Form, FormGroup } from 'react-bootstrap';
 import Item from './Item';
+import SharedUser from './sharedUser';
 
 export default class AudInfo extends Component{
     
     render(){
-        let shareusers = 'No shared users';
+        let shareusers = [];
 
         if(this.props.file._id !== undefined){
             if(this.props.file.accessList.length > 1){
                 var myarray = this.props.file.accessList;
                 const [, ...rest] = myarray;
                 console.log('rest: ',rest);
-                shareusers= rest.map(user => {
-                    return(
-                     <li key={user._id}>{user.email} 
-                     <button disabled>remove</button>
-                     </li>
-                    )
-                })
+                shareusers= rest;
             }
             
             return(
@@ -64,8 +59,13 @@ export default class AudInfo extends Component{
                                         <Form.Label>Owner: {this.props.file.accessList[0].email}</Form.Label>
                                     </Row>
                                     <Row>
-                                        <Form.Label>Shared Users:  
-                                            <ul  style={{paddingLeft: '60px'}}>{shareusers}</ul>
+                                        <Form.Label>Shared Users:  <SharedUser users={shareusers} 
+                                                                                resultFolders={this.props.allfolders}
+                                                                                currentfolder={this.props.file.folder}
+                                                                                fileId={this.props.file._id}
+                                                                                remove={this.props.remove}
+                                                                    />
+                                            
                                         </Form.Label>
                                     </Row>
                                 </Form.Group>

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Redirect, Link} from "react-router-dom";
 import './componentCss/files.css';
-import {GetFolders, GetAll, GetFromFolder, CreateFolders, DeleteFolder, DeleteAudio, SearchAudios, Favourite, RemoveFavourite, AddFavourite, MoveFile, UploadFiles, ShareFile} from '../services/PostData';
+import {GetFolders, GetAll, GetFromFolder, CreateFolders, DeleteFolder, DeleteAudio, SearchAudios, Favourite, RemoveFavourite, AddFavourite, MoveFile, UploadFiles, ShareFile, RemoveUser} from '../services/PostData';
 import ResultList from './resultList';
 import AudioSearch from './AudioSearch';
 import OverallUpload from './overallUpload';
@@ -29,6 +29,7 @@ export default class Audio extends Component{
         this.upload=this.upload.bind(this);
         this.selectedfile=this.selectedfile.bind(this);
         this.shareAudio=this.shareAudio.bind(this);
+        this.removeSharedUsers=this.removeSharedUsers.bind(this);
         this.logout = this.logout.bind(this);
         
         this.state = {
@@ -303,6 +304,28 @@ export default class Audio extends Component{
 
     }
 
+    removeSharedUsers(userId, audId){
+        console.log('removeuser:', userId);
+        console.log('remove from:', audId);
+
+        RemoveUser(JSON.parse(sessionStorage.getItem('userData')).token, 'audio', audId, userId).then((result) => {
+            console.log("in remove user file");
+            alert(result.message);
+            if(result.message === 'Removed user successfully'){
+                if(Object.keys(this.state.folder).length){
+                    this.getAudio(this.state.folder);
+                }
+                else if(this.state.nurl.length){
+                    this.SearchAudio(this.state.nurl)
+                }
+                else{
+                    this.allAudios();
+                } 
+            }
+        })
+
+    }
+
     logout(){
         sessionStorage.setItem('userData', '');
         sessionStorage.clear(); 
@@ -371,6 +394,7 @@ export default class Audio extends Component{
                                         allinfofolders={this.state.allfolders}
                                         movefile= {this.Movefile}
                                         share={this.shareAudio}
+                                        remove={this.removeSharedUsers}
                                         />
                             <AudioSearch show={this.state.searchShow}
                                          onHide={searchClose}

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Redirect, Link} from "react-router-dom";
 import './componentCss/files.css';
-import {GetFolders, GetAll, GetFromFolder, CreateFolders, DeleteFolder, DeleteVideo, SearchVideos, Favourite, RemoveFavourite, AddFavourite, MoveFile, UploadFiles, ShareFile} from '../services/PostData';
+import {GetFolders, GetAll, GetFromFolder, CreateFolders, DeleteFolder, DeleteVideo, SearchVideos, Favourite, RemoveFavourite, AddFavourite, MoveFile, UploadFiles, ShareFile, RemoveUser} from '../services/PostData';
 import ResultList from './resultList';
 import VideoSearch from './VideoSearch';
 import OverallUpload from './overallUpload';
@@ -29,6 +29,7 @@ export default class Video extends Component{
         this.upload=this.upload.bind(this);
         this.selectedfile=this.selectedfile.bind(this);
         this.shareVideo=this.shareVideo.bind(this);
+        this.removeSharedUsers=this.removeSharedUsers.bind(this);
         this.logout = this.logout.bind(this);
         
         this.state = {
@@ -296,6 +297,28 @@ export default class Video extends Component{
 
     }
 
+    removeSharedUsers(userId, vidId){
+        console.log('removeuser:', userId);
+        console.log('remove from:', vidId);
+
+        RemoveUser(JSON.parse(sessionStorage.getItem('userData')).token, 'video', vidId, userId).then((result) => {
+            console.log("in remove user file");
+            alert(result.message);
+            if(result.message === 'Removed user successfully'){
+                if(Object.keys(this.state.folder).length){
+                    this.getVideo(this.state.folder);
+                }
+                else if(this.state.nurl.length){
+                    this.SearchVideo(this.state.nurl)
+                }
+                else{
+                    this.allVideos();
+                } 
+            }
+        })
+
+    }
+
     logout(){
         sessionStorage.setItem('userData', '');
         sessionStorage.clear(); 
@@ -364,6 +387,7 @@ export default class Video extends Component{
                                         allinfofolders={this.state.allfolders}
                                         movefile= {this.Movefile}
                                         share={this.shareVideo}
+                                        remove={this.removeSharedUsers}
                                         />
                             <VideoSearch show={this.state.searchShow}
                                          onHide={searchClose}

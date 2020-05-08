@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { Redirect, Link } from "react-router-dom";
 import {Tabs, Tab} from 'react-bootstrap';
 import FavouriteResults from './FavouriteResults';
-import {GetFolders, Favourite, RemoveFavourite, MoveFile} from '../services/PostData';
+import {GetFolders, Favourite, RemoveFavourite, MoveFile, RemoveUser} from '../services/PostData';
 
 export default class Favourites extends Component{
 
@@ -23,6 +23,7 @@ export default class Favourites extends Component{
         this.setResults= this.setResults.bind(this);
         this.removeFavourite=this.removeFavourite.bind(this);
         this.Movefile=this.Movefile.bind(this);
+        this.removeSharedUsers=this.removeSharedUsers.bind(this);
 
         this.setResults();
         this.allfolders();
@@ -108,6 +109,19 @@ export default class Favourites extends Component{
         });
     }
 
+    removeSharedUsers(routeType, userId, fileId){
+        console.log('removeuser:', userId);
+        console.log('remove from:', fileId);
+
+        RemoveUser(JSON.parse(sessionStorage.getItem('userData')).token, routeType, fileId, userId).then((result) => {
+            console.log("in remove user file");
+            alert(result.message);
+            if(result.message === 'Removed user successfully'){
+                this.setResults(); 
+            }
+        })
+    }
+
     logout(e){
         e.preventDefault(e);
         sessionStorage.setItem('userData', '');
@@ -155,21 +169,24 @@ export default class Favourites extends Component{
                                           removeFavourite= {this.removeFavourite}
                                           allfolders= {this.state.imgfolders}
                                           movefile= {this.Movefile}
-                                          setresults= {this.setResults}/>
+                                          setresults= {this.setResults}
+                                          remove={this.removeSharedUsers}/>
                     </Tab>
                     <Tab eventKey="Audio" title="Audio" >
                         <FavouriteResults results={this.state.audresults}
                                           removeFavourite= {this.removeFavourite}
                                           allfolders= {this.state.audfolders}
                                           movefile= {this.Movefile}
-                                          setresults= {this.setResults}/>
+                                          setresults= {this.setResults}
+                                          remove={this.removeSharedUsers}/>
                     </Tab>
                     <Tab eventKey="Video" title="Video">
                         <FavouriteResults results={this.state.vidresults}
                                           removeFavourite= {this.removeFavourite}
                                           allfolders= {this.state.vidfolders}
                                           movefile= {this.Movefile}
-                                          setresults= {this.setResults}/>
+                                          setresults= {this.setResults}
+                                          remove={this.removeSharedUsers}/>
                     </Tab>
                 </Tabs>
                 

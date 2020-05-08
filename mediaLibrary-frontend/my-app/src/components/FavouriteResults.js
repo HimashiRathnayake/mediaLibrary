@@ -27,6 +27,7 @@ class FavouriteResults extends Component {
         this.share=this.share.bind(this);
         this.save=this.save.bind(this);
         this.selectinfoTitle=this.selectinfoTitle.bind(this);
+        this.remove=this.remove.bind(this);
     }
 
     share(e, value){
@@ -60,6 +61,10 @@ class FavouriteResults extends Component {
         this.props.movefile(this.state.routeType, this.state.file._id, folder._id );
     }
 
+    remove(userId, fileId){
+        this.props.remove(this.state.type, userId, fileId);
+    }
+
     render(){
         let shareClose=()=> this.setState({shareShow: false})
         let imgInfoClose=()=> this.setState({imgInfoShow: false})
@@ -80,7 +85,7 @@ class FavouriteResults extends Component {
                                 <p className="card-text">
                                     <button className="link-button" title="remove from favourites" onClick={() => this.props.removeFavourite('Image',imageName)}><span className="fa fa-star fa-fw" > </span></button> 
                                     {imageName.imageName}
-                                    <button className="link-button" title='Details' style={{float: 'right'}} onClick={() => this.setState({imgInfoShow: true, file: imageName, infotitle: imageName.folder.folderName, routeType: 'images'})}><span className="fa fa-info-circle" > </span></button>
+                                    <button className="link-button" title='Details' style={{float: 'right'}} onClick={() => this.setState({imgInfoShow: true, file: imageName, infotitle: imageName.folder.folderName, routeType: 'images', type: 'image'})}><span className="fa fa-info-circle" > </span></button>
                                     <button className="link-button" title='Share' style={{float: 'right'}} onClick={() => this.setState({shareShow: true, folderId: imageName._id, shareType: 'image'})}><span className="fa fa-share-alt fa-fw" > </span></button>
                                 </p>  
                             </div>
@@ -105,7 +110,7 @@ class FavouriteResults extends Component {
                                 <p className="card-text">
                                     <button className="link-button" title='remove from favourite' onClick={() => this.props.removeFavourite('Audio',audioName)}><span className="fa fa-star fa-fw" > </span></button> 
                                     {audioName.audioName}
-                                    <button className="link-button" title='Details' style={{float: 'right'}} onClick={() => this.setState({audInfoShow: true, file: audioName, infotitle: audioName.folder.folderName, routeType: 'audios'})}><span className="fa fa-info-circle" > </span></button>
+                                    <button className="link-button" title='Details' style={{float: 'right'}} onClick={() => this.setState({audInfoShow: true, file: audioName, infotitle: audioName.folder.folderName, routeType: 'audios', type: 'audio'})}><span className="fa fa-info-circle" > </span></button>
                                     <button className="link-button" title='Share' style={{float: 'right'}}onClick={() => this.setState({shareShow: true, folderId: audioName._id, shareType: 'audio'})}><span className="fa fa-share-alt fa-fw" > </span></button>
                                 </p>  
                             </div>
@@ -129,7 +134,7 @@ class FavouriteResults extends Component {
                                 <p className="card-text">
                                     <button className="link-button" title='remove from favourite' onClick={() => this.props.removeFavourite('Video',videoName)}><span className="fa fa-star fa-fw" ></span></button> 
                                     {videoName.videoName}
-                                    <button className="link-button" title='Details' style={{float: 'right'}} onClick={() => this.setState({vidInfoShow: true, file: videoName, infotitle: videoName.folder.folderName, routeType: 'videos'})}><span className="fa fa-info-circle" > </span></button>
+                                    <button className="link-button" title='Details' style={{float: 'right'}} onClick={() => this.setState({vidInfoShow: true, file: videoName, infotitle: videoName.folder.folderName, routeType: 'videos', type: 'video'})}><span className="fa fa-info-circle" > </span></button>
                                     <button className="link-button" title='Share' style={{float: 'right'}}onClick={() => this.setState({shareShow: true, folderId: videoName._id, shareType: 'video'})}><span className="fa fa-share-alt fa-fw" > </span></button>
                                 </p>  
                             </div>
@@ -155,6 +160,7 @@ class FavouriteResults extends Component {
                 allfolders={this.props.allfolders}
                 infotitle={this.state.infotitle}
                 selectinfoTitle={this.selectinfoTitle}
+                remove={this.remove}
                 />
                 <VidInfo
                 show={this.state.vidInfoShow}
@@ -164,6 +170,7 @@ class FavouriteResults extends Component {
                 allfolders={this.props.allfolders}
                 infotitle={this.state.infotitle}
                 selectinfoTitle={this.selectinfoTitle}
+                remove={this.remove}
                 />
                 <AudInfo
                 show={this.state.audInfoShow}
@@ -173,6 +180,7 @@ class FavouriteResults extends Component {
                 allfolders={this.props.allfolders}
                 infotitle={this.state.infotitle}
                 selectinfoTitle={this.selectinfoTitle}
+                remove={this.remove}
                 />
             </ul>
             

@@ -243,7 +243,7 @@ export default class Image extends Component{
         var newurl = eurl.substring(0, eurl.length-1);
         console.log("newurl: ", newurl);
         this.setState({
-            foleder: {},
+            folder: {},
             RLType: 'Search Image',
             nurl: newurl
         })
@@ -321,7 +321,6 @@ export default class Image extends Component{
                 } 
             }
         })
-
     }
 
     logout(){

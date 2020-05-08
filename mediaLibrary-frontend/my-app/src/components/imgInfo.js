@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import {Modal, Button, Row, Col, Form, FormGroup } from 'react-bootstrap';
 import Item from './Item';
-import SharedUser from './sharedUser'
+import SharedUser from './sharedUser';
 
 export default class ImgInfo extends Component{
-    
+  
     render(){
         let shareusers = [];
         console.log('allfolders:', this.props.allfolders);

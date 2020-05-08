@@ -4,7 +4,7 @@ import {Dropdown, DropdownButton, InputGroup, FormControl, Button, Nav} from "re
 import './componentCss/login.css';
 import './componentCss/start.css';
 import SearchList from './SearchList';
-import {GetFolders, SearchImagebyCriteria, SearchAudiobyCriteria, SearchVideobyCriteria, DeleteImage, DeleteAudio, DeleteVideo, Favourite, RemoveFavourite, AddFavourite, MoveFile}from '../services/PostData';
+import {GetFolders, SearchImagebyCriteria, SearchAudiobyCriteria, SearchVideobyCriteria, DeleteImage, DeleteAudio, DeleteVideo, Favourite, RemoveFavourite, AddFavourite, MoveFile, RemoveUser}from '../services/PostData';
 
 const formValid = formErrors => {
     let valid = true;
@@ -49,6 +49,7 @@ export default class Search extends Component{
         this.favourites= this.favourites.bind(this);
         this.AddRemovefavourite=this.AddRemovefavourite.bind(this);
         this.Movefile=this.Movefile.bind(this);
+        this.removeSharedUsers=this.removeSharedUsers.bind(this);
 
         this.favourites();
         this.allfolders();
@@ -335,6 +336,27 @@ export default class Search extends Component{
         });
     }
 
+    removeSharedUsers(userId, fileId){
+        console.log('removeuser:', userId);
+        console.log('remove from:', fileId);
+
+        RemoveUser(JSON.parse(sessionStorage.getItem('userData')).token, this.state.type, fileId, userId).then((result) => {
+            console.log("in remove user file");
+            alert(result.message);
+            if(result.message === 'Removed user successfully'){
+                if(this.state.type === 'image'){
+                    this.searchImage(this.state.criteria);
+                }
+                else if(this.state.type === 'audio'){
+                    this.searchAudio(this.state.criteria);
+                }
+                else if(this.state.type === 'video'){
+                    this.searchVideo(this.state.criteria);
+                } 
+            }
+        })
+    }
+
     logout(){
         console.log("logout");
         sessionStorage.setItem('userData', '');
@@ -428,7 +450,8 @@ export default class Search extends Component{
                                     audfolders={this.state.audfolders}
                                     vidfolders={this.state.vidfolders}
                                     movefile= {this.Movefile}
-                                    AddRemovefavourite={this.AddRemovefavourite}/>
+                                    AddRemovefavourite={this.AddRemovefavourite}
+                                    remove={this.removeSharedUsers}/>
                     </div>
                 </div>
             </div>

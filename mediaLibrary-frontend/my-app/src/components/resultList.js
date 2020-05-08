@@ -198,8 +198,8 @@ class ResultList extends Component{
                     
                     return(
                         <li  key={videoName._id} style={{float: 'left', listStyle: 'none', paddingLeft: '10px', paddingBottom: '10px'}}  > 
-                            <div className='card ' style={{width: '600px', height: '450px'}} >
-                                <video className="card-img-top" style={{width: '598px', height: '400px'}}  controls >
+                            <div className='card ' style={{width: '500px', height: '350px'}} >
+                                <video className="card-img-top" style={{width: '498px', height: '300px'}}  controls >
                                     <source  src = {videosrc} type="video/mp4" />
                                 </video>
                                 <div className="card-body">
@@ -295,6 +295,7 @@ class ResultList extends Component{
                 allfolders={this.props.allinfofolders}
                 infotitle={this.state.infotitle}
                 selectinfoTitle={this.selectinfoTitle}
+                remove={this.props.remove}
                 />
                 <AudInfo
                 show={this.state.audInfoShow}
@@ -304,6 +305,7 @@ class ResultList extends Component{
                 allfolders={this.props.allinfofolders}
                 infotitle={this.state.infotitle}
                 selectinfoTitle={this.selectinfoTitle}
+                remove={this.props.remove}
                 />
             </ul>
         );
