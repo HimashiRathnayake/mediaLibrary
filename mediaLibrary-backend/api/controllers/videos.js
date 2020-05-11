@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const fs = require('fs');
+const deleter = require('../middleware/files-deleter');
 
 const Video =  require('../models/video'); 
 
@@ -40,7 +40,7 @@ exports.videos_get_videos_from_folder = (req, res, next) =>{
     .then(docs=>{
         const response={
             count: docs.length,
-            videos: docs.map(doc=>{
+            Videos: docs.map(doc=>{
                 return{
                     _id: doc._id,
                     videoName: doc.videoName,
@@ -70,7 +70,7 @@ exports.videos_upload_video = (req, res, next) =>{
         artist: req.data.Artist,
         accessList: [req.userData.userId],
         folder: req.params.folderId,
-        path: process.env.SERVER+req.file.filename
+        path: req.file.location
     });
     video.save().then(result => {
         // console.log(result);
@@ -124,8 +124,7 @@ exports.videos_delete_video = (req, res, next) => {
             })
         }
         else{
-            var videoPath = result.path.split('/');
-            fs.unlinkSync('uploads/'+videoPath[videoPath.length-1]);
+            deleter(req, result,);
             Video.deleteOne({_id: req.params.videoId})
             .exec()
             .then(result => {
