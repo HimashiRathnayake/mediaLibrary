@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const fs = require('fs');
+const deleter = require('../middleware/files-deleter');
 
 const Image =  require('../models/image'); 
 
@@ -127,15 +127,14 @@ exports.images_delete_image = (req, res, next) => {
             })
         }
         else{
-            var imagePath = result.path.split('/');
-            fs.unlinkSync('uploads/'+imagePath[imagePath.length-1]);
+            deleter(req, result,);
             Image.deleteOne({_id: req.params.imageId})
             .exec()
             .then(result => {
                 res.status(200).json({
                     message: "Image deleted"
                 });
-            })
+            }) 
         }
     })
     .catch(err=>{
