@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const fs = require('fs');
+const deleter = require('../middleware/files-deleter');
 
 const Audio =  require('../models/audio'); 
 
@@ -42,7 +42,7 @@ exports.audios_get_audios_from_folder = (req, res, next) =>{
     .then(docs=>{
         const response={
             count: docs.length,
-            audios: docs.map(doc=>{
+            Audios: docs.map(doc=>{
                 return{
                     _id: doc._id,
                     audioName: doc.audioName,
@@ -75,7 +75,7 @@ exports.audios_upload_audio = (req, res, next) =>{
         year: req.data.Year,
         accessList: [req.userData.userId],
         folder: req.params.folderId,
-        path: process.env.SERVER+req.file.filename
+        path: req.file.location
     });
     audio.save().then(result => {
         // console.log(result);
@@ -124,6 +124,7 @@ exports.audios_rename_audio = (req, res, next) =>{
 }
 
 exports.audios_delete_audio = (req, res, next) => {
+    console.log('audios_delete_audio:');
     Audio.findOne({_id: req.params.audioId})
     .then(result=>{
         if (result===null){
@@ -132,15 +133,14 @@ exports.audios_delete_audio = (req, res, next) => {
             })
         }
         else{
-            var audioPath = result.path.split('/');
-            fs.unlinkSync('uploads/'+audioPath[audioPath.length-1]);
+            deleter(req, result,);
             Audio.deleteOne({_id: req.params.audioId})
             .exec()
             .then(result => {
                 res.status(200).json({
                     message: "Audio deleted"
                 });
-            })
+            }) 
         }
     })
     .catch(err=>{
