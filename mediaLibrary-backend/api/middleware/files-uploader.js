@@ -4,16 +4,29 @@ multerS3 = require('multer-s3');
 // const sftpStorage = require('multer-sftp');
 
 aws.config.update({
-    secretAccessKey: 'yGt1FaQWb8AU12/E2sQwtYZLu87Rc1f4+EAPBe76',
-    accessKeyId: 'AKIAIUNUAFITHKFMRD6Q',
+    secretAccessKey: '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',
+    accessKeyId: 'AKIAJF4RWB6KLDPH7D6A',
     region: 'ap-south-1',
 });
 
 var s3 = new aws.S3();
 
+const bucketName = (req, file, cb)=>{
+    fileType=req.originalUrl.split("/")[1];
+    if (fileType === 'images'){
+        cb(null, 'my-media-images');
+    }
+    else if (fileType === 'audios'){
+        cb(null, 'my-media-audios');
+    }
+    else if (fileType === 'videos'){
+        cb(null, 'my-media-videos');
+    }
+}
+
 const storage = multerS3({
     s3: s3,
-    bucket: 'my-media-images',
+    bucket: bucketName,
     acl: 'public-read',
     contentType: function (req, file, cb) {
         cb(null, file.mimetype); 
@@ -37,6 +50,7 @@ module.exports = upload;
 // AKIAIUNUAFITHKFMRD6Q
 // Secret Access Key:
 // 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
+//'my-media-images'
 // // const storage = sftpStorage({
 //     sftp:{
 //         host: 'localhost',
@@ -47,5 +61,5 @@ module.exports = upload;
 //     destination: function(req, file, cb){
 //         cb(null, './uploads/');
 //     }
-// });
+// });''
 
