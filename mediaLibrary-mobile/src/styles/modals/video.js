@@ -1,7 +1,7 @@
 import { StyleSheet, Dimensions} from 'react-native';
 
 const { width: DEVICE_WIDTH, height: DEVICE_HEIGHT } = Dimensions.get("window");
-const VIDEO_CONTAINER_HEIGHT = (DEVICE_HEIGHT * 2.0) /5.0 ;
+const VIDEO_CONTAINER_HEIGHT = DEVICE_HEIGHT / 2 ;
 
 export const stylesScreen = StyleSheet.create({
     modal: {
@@ -26,7 +26,7 @@ export const stylesScreen = StyleSheet.create({
     videoContainer:{
         width: Dimensions.get('screen').width,
         height: Dimensions.get('screen').height* 1 / 2,
-        marginTop: 50,
+        marginTop: 40,
     },
     video: {
         width: Dimensions.get('screen').width-5,
@@ -42,9 +42,10 @@ export const stylesScreen = StyleSheet.create({
         fontSize:32
     },
     iconBottom:{
-        marginTop: 10,
         fontSize: 20,
-        marginHorizontal: 20
+        width: DEVICE_WIDTH/3,
+        textAlign: 'center',
+        marginTop: 20,
     },
     bottomView:{
         marginTop: 20,
@@ -67,7 +68,7 @@ export const stylesScreen = StyleSheet.create({
     bottom:{
         alignSelf: 'center',
         justifyContent: 'center',
-        marginTop: 20
+        marginTop: 40
     },
     bottomText:{
         marginTop: 20,

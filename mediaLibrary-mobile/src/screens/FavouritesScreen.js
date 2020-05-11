@@ -35,6 +35,11 @@ export const FavouritesScreen = ({navigation}) => {
         })
     }
 
+    navigation.addListener('focus', ()=>{
+        getFavouriteFiles(selected);
+    });
+        
+
     return(
     <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
         <Header navigation={navigation}>MyFavourites</Header>
@@ -61,9 +66,9 @@ export const FavouritesScreen = ({navigation}) => {
 
         </View>
 
-        {selected==='Image' && <ImageDisplayer setRefresh={setRefresh} count={count} images={files}/>}
-        {selected==='Audio' && <AudioDisplayer setRefresh={setRefresh} count={count} audios={files}/>}
-        {selected==='Video' && <VideoDisplayer setRefresh={setRefresh} count={count} videos={files}/>}
+        {selected==='Image' && files!==[] && <ImageDisplayer setRefresh={()=>getFavouriteFiles(selected)} count={count} images={files}/>}
+        {selected==='Audio' && <AudioDisplayer setRefresh={()=>getFavouriteFiles(selected)} count={count} audios={files}/>}
+        {selected==='Video' && <VideoDisplayer setRefresh={()=>getFavouriteFiles(selected)} count={count} videos={files}/>}
 
     </ImageBackground>);
 }

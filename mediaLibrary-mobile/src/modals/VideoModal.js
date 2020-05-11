@@ -5,6 +5,8 @@ import { Ionicons, MaterialIcons, MaterialCommunityIcons, AntDesign } from '@exp
 import {deleteVideo, renameVideo} from '../api/video';
 import {stylesScreen} from '../styles/modals/video';
 import { DetailsModal } from './DetailsModal';
+import { ToolTip } from '../commons/ToolTip';
+import {getIsFavorite, addToFavourite, removeFromFavorites} from '../api/favorites';
 
 const DISABLED_OPACITY = 0.3;
 
@@ -12,6 +14,7 @@ export const VideoModal = ({visible, setVisible, videoModal, setRefresh}) => {
 
     const [isLoading, setLoading]= useState(true);
     const [detailsModal, setDetailsModal] = useState(false);
+    const [isFavorite, setIsFavorite] = useState(null);
 
     function deletevideo(videoId){
         setVisible(false);
@@ -49,6 +52,35 @@ export const VideoModal = ({visible, setVisible, videoModal, setRefresh}) => {
         console.log(`ON ERROR : ${error}`);
     };
 
+    function setFavorite(videoId){
+        addToFavourite('Video', videoId)
+        .then((response)=>{
+            setRefresh(true);
+        })
+        .catch((error)=>{
+            console.log(error);
+        })
+    }
+
+    function removeFavorite(videoId){
+        removeFromFavorites('Video', videoId)
+        .then((response)=>{
+            setRefresh(true);
+        })
+        .catch((error)=>{
+            console.log(error);
+        })
+    }
+
+    React.useEffect(()=>{  
+        if (videoModal!==null){
+            getIsFavorite('Video',videoModal._id)
+            .then((response)=>{
+                setIsFavorite(response.isFavorite)
+            })
+        }
+    },[videoModal])
+
     return(
         <View>
         <Modal style={stylesScreen.modal} transparent={true} animationType='slide' visible={visible} onRequestClose={()=>{setVisible(false);}}>
@@ -74,15 +106,26 @@ export const VideoModal = ({visible, setVisible, videoModal, setRefresh}) => {
                         />
                     </View>
                     
-                    <View flexDirection='row-reverse'>
-                        <MaterialCommunityIcons name='delete-outline' style={stylesScreen.iconBottom} 
+                    <View flexDirection='row-reverse' style={stylesScreen.iconBottomSet}>
+                        <ToolTip content='Delete Audio' dark={false} 
                             onPress={()=>{ 
                                 Alert.alert('Do you want to delete video','',[
                                     {text: 'Cancel'},
                                     {text: "Yes", onPress: ()=>deletevideo(videoModal._id)}
                             ],{cancelable:false})}}
-                        />
-                        <MaterialIcons name='favorite-border' style={stylesScreen.iconBottom} onPress={()=>setVisible(false)}/>
+                        >
+                            <MaterialCommunityIcons name='delete-outline' style={stylesScreen.iconBottom}/>
+                        </ToolTip>
+                        {isFavorite?
+                        (
+                            <ToolTip dark={false} content='Remove favourites' onPress={()=>removeFavorite(videoModal._id)}>
+                                <MaterialIcons name='favorite' style={[stylesScreen.iconBottom,{color: '#ef5350'}]}/>
+                            </ToolTip>
+                        ):(
+                            <ToolTip content='Add to favourites' dark={false} onPress={()=>setFavorite(videoModal._id)}>
+                                <MaterialIcons name='favorite-border' style={stylesScreen.iconBottom}/>
+                            </ToolTip>
+                        )}    
                         <Ionicons name='md-share' style={stylesScreen.iconBottom} onPress={()=>setVisible(false)}/>
                     </View> 
 

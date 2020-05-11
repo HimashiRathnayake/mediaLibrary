@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Text, View, ScrollView, TouchableOpacity, Modal, TouchableWithoutFeedback} from 'react-native';
+import {Text, View, ScrollView, TouchableOpacity, Modal, TouchableWithoutFeedback, Alert} from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import {stylesScreen} from '../styles/folderStyles';
 import {deleteFolder} from "../api/folder";
@@ -68,13 +68,16 @@ export const FolderDisplayer = ({setRefresh, folders, count, type, navigation}) 
                         <View style={stylesScreen.folderActionModal}>
                             <View style={stylesScreen.modalContainer}>
                                 <TouchableOpacity onPress={()=>{setActionModalVisible(false); setRenameModalVisible(true);}}>
-                                    <Text style={stylesScreen.modalText}>Rename</Text>
+                                    <Text style={stylesScreen.modalText}>Rename Folder</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={()=>deletefolder(modalFolder)}>
-                                    <Text style={stylesScreen.modalText}>Delete</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={()=>alert('fgh')}>
-                                    <Text style={stylesScreen.modalText}>Share</Text>
+                                <TouchableOpacity 
+                                    onPress={()=>
+                                    Alert.alert('Do you want to delete image','',[
+                                        {text: 'Cancel', onPress: ()=>setActionModalVisible(false)},
+                                        {text: "Yes", onPress: ()=>deletefolder(modalFolder)}
+                                    ],{cancelable:false})}
+                                    >
+                                    <Text style={stylesScreen.modalText}>Delete Folder</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>

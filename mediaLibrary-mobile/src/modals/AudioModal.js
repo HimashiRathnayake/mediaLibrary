@@ -6,6 +6,8 @@ import { Ionicons, MaterialIcons, MaterialCommunityIcons, FontAwesome5, AntDesig
 import {stylesScreen} from '../styles/modals/audio';
 import {deleteAudio, renameAudio} from '../api/audio';
 import { DetailsModal } from './DetailsModal';
+import {getIsFavorite, addToFavourite, removeFromFavorites} from '../api/favorites';
+import { ToolTip } from '../commons/ToolTip';
 
 const DISABLED_OPACITY = 0.6;
 const LOADING_STRING = "... loading ...";
@@ -24,7 +26,8 @@ export const AudioModal = ({audio, index, visible, setVisible, openModal, setRef
     const [isBuffering, setBuffering]= useState(false);
     const [isLoading, setLoading]= useState(true);
     const [detailsModal, setDetailsModal] = useState(false);
-
+    const [isFavorite, setIsFavorite] = useState(null);
+    
     function deleteaudio(audioId){
         setVisible(false);
         deleteAudio({audioId: audioId})
@@ -121,18 +124,6 @@ export const AudioModal = ({audio, index, visible, setVisible, openModal, setRef
         return padWithZero(minutes) + ":" + padWithZero(seconds);
     }
 
-    function onMutePressed(){
-        if (playbackInstance != null) {
-            playbackInstance.setIsMutedAsync(!isMuted);
-        }
-    }
-
-    function onStopPressed(){
-        if (playbackInstance != null) {
-            playbackInstance.stopAsync();
-        }
-    }
-
     function stopPlaying(){
         if (playbackInstance != null) {
             playbackInstance.pauseAsync();
@@ -176,6 +167,26 @@ export const AudioModal = ({audio, index, visible, setVisible, openModal, setRef
         openModal(true, index+1);
     }
 
+    function setFavorite(audioId){
+        addToFavourite('Audio', audioId)
+        .then((response)=>{
+            setRefresh(true);
+        })
+        .catch((error)=>{
+            console.log(error);
+        })
+    }
+
+    function removeFavorite(audioId){
+        removeFromFavorites('Audio', audioId)
+        .then((response)=>{
+            setRefresh(true);
+        })
+        .catch((error)=>{
+            console.log(error);
+        })
+    }
+
     React.useEffect(()=>{
         Audio.setAudioModeAsync({
             allowsRecordingIOS: false,
@@ -187,6 +198,12 @@ export const AudioModal = ({audio, index, visible, setVisible, openModal, setRef
             playThroughEarpieceAndroid: false
         });
         loadNewPlaybackInstance(false);
+        if (audio!==null){
+            getIsFavorite('Audio',audio._id)
+            .then((response)=>{
+                setIsFavorite(response.isFavorite)
+            })
+        }
     },[audio]);
 
     return(
@@ -197,16 +214,30 @@ export const AudioModal = ({audio, index, visible, setVisible, openModal, setRef
                     <TouchableOpacity onPress={()=>{stopPlaying()}} style={{flexDirection:'row-reverse', marginLeft: 20, marginTop: 20, position: 'absolute'}}>
                         <Ionicons name='md-arrow-back' style={stylesScreen.icon}/>  
                     </TouchableOpacity>
+
                     <View flexDirection='row' marginTop={20} marginLeft={Dimensions.get('screen').width-100} flexDirection='row-reverse' position='absolute'>
-                        <MaterialCommunityIcons name='delete-outline' style={stylesScreen.iconTop} 
+                        <ToolTip content='Delete Audio' dark={false} 
                             onPress={()=>{ 
                                 Alert.alert('Do you want to delete audio','',[
                                     {text: 'Cancel'},
                                     {text: "Yes", onPress: ()=>deleteaudio(audio._id)}
-                            ],{cancelable:false})}}                        
-                        />
-                        <MaterialIcons name='favorite-border' style={stylesScreen.iconTop} onPress={()=>setVisible(false)}/>
+                            ],{cancelable:false})}}  >
+                            <MaterialCommunityIcons name='delete-outline' style={stylesScreen.iconTop}/>
+                        </ToolTip>   
+
+                        {isFavorite?
+                        (
+                            <ToolTip dark={false} content='Remove from favourites' onPress={()=>removeFavorite(audio._id)}>
+                                <MaterialIcons name='favorite' style={[stylesScreen.iconTop,{color: '#ef5350'}]}/>
+                            </ToolTip>
+                        ):(
+                            <ToolTip content='Add to favourites' dark={false} onPress={()=>setFavorite(audio._id)}>
+                                <MaterialIcons name='favorite-border' style={stylesScreen.iconTop}/>
+                            </ToolTip>
+                        )}               
+
                     </View> 
+                    
                     <View style={{ alignItems: "center", marginTop: 24 }}>
                         <Text style={stylesScreen.headerTop}>MyMedia Audio</Text>
                         <Text style={stylesScreen.header}>{audio.audioName.substring(0,25)}</Text>

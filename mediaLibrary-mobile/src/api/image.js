@@ -43,7 +43,7 @@ export async function getImagesInFolder({folderId}){
 export async function uploadImage({folderId,uri,type}){
     var token = await AsyncStorage.getItem('userToken')
     let body = new FormData();
-    body.append('file', {uri:uri, type:'image/'+type, name:'IMG_'+Math.random(4000)});
+    body.append('file', {uri:uri, type:'image/'+type, name:'IMG_'+Math.random(4000)+'.jpg', MimeType:'image/jpeg'});
     return fetch(serverUrl+'/images/'+folderId,{
         method: 'POST',
         headers: {

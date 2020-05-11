@@ -8,7 +8,7 @@ import {removeUser} from '../api/share';
 import { FolderList } from './FolderList';
 import { ToolTip } from '../commons/ToolTip';
  
-export const DetailsModal = ({file, type, detailsModal, setDetailsModal, renameFile, setRefresh}) => {
+export const DetailsModal = ({file, type, detailsModal, setDetailsModal, setVisible, renameFile, setRefresh, enableFolder}) => {
 
     const [pressed, setPressed] = useState(false);
     const [shareModal, setShareModal] = useState(false);
@@ -113,10 +113,10 @@ export const DetailsModal = ({file, type, detailsModal, setDetailsModal, renameF
                             {(subject!=null) && <View flexDirection='row'><Text style={stylesScreen.detailTextLeft}>Subject :</Text><Text style={stylesScreen.detailTextRight}>{subject}</Text></View>}
                             {(artist!=null) && <View flexDirection='row'><Text style={stylesScreen.detailTextLeft}>Artist :</Text><Text style={stylesScreen.detailTextRight}>{artist}</Text></View>}
                             {(year!=null) && <View flexDirection='row'><Text style={stylesScreen.detailTextLeft}>Year :</Text><Text style={stylesScreen.detailTextRight}>{year}</Text></View>}
-                            {(file!=null) && <View flexDirection='row'>
+                            {(file!=null) && (enableFolder===true) && <View flexDirection='row'>
                                 <Text style={stylesScreen.detailTextLeft}>Folder :</Text>
                                 <Text style={stylesScreen.detailTextRight}>{file.folder.folderName}</Text>
-                                <TouchableOpacity onPress={()=>setFolderVisible(true)}>
+                                <TouchableOpacity onPress={()=>{setFolderVisible(true);}}>
                                     <MaterialCommunityIcons name='file-move' style={stylesScreen.renameIcon}/>
                                 </TouchableOpacity>
                             </View>}
@@ -137,7 +137,7 @@ export const DetailsModal = ({file, type, detailsModal, setDetailsModal, renameF
             </View>
         </Modal>
         <ShareModal shareModal={shareModal} setShareModal={setShareModal} type={type} fileId={file._id} setRefresh={setRefresh}/>
-        <FolderList visible={folderVisible} setVisible={setFolderVisible} fileId={file._id} type={type} setRefresh={setRefresh}/>
+        <FolderList visible={folderVisible} setVisible={setFolderVisible} fileId={file._id} type={type} setRefresh={setRefresh} setDetailsModal={setDetailsModal} setFileModal={setVisible}/>
         </View>
 
 );

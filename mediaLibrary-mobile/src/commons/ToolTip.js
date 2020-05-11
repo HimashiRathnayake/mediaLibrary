@@ -7,13 +7,13 @@ export const ToolTip = ({content, children, onPress, dark}) => {
     return(
     <View>
         <Tooltip 
-            backgroundColor={dark?"rgba(0,0,0,0.5)":"blue"}
+            backgroundColor={"rgba(0,0,0,0.5)"}
             arrowSize={{width:16, height:8}} 
             isVisible={toolTip} 
             content={<Text style={{color:'#fff'}}>{content}</Text>} 
             placement="bottom" 
             onClose={()=>setToolTip(false)}
-            contentStyle={{backgroundColor:'rgba(128,128,127,0.6)'}}
+            contentStyle={{backgroundColor:dark?'rgba(128,128,127,0.6)':'#242424'}}
         >
             <TouchableOpacity onPress={onPress} onLongPress={()=>setToolTip(true)}>
                 {children}

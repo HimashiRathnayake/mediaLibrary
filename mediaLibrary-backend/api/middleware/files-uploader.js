@@ -1,17 +1,43 @@
-const express=require('express');
-const multer=require('multer');
+var aws = require('aws-sdk'),
+multer = require('multer'),
+multerS3 = require('multer-s3');
 // const sftpStorage = require('multer-sftp');
 
-const storage = multer.diskStorage({
-    destination: function(req, file, cb){
-        cb(null, './uploads/');
-    },
-    filename: function(req,file, cb){
-        cb(null, Date.now() + '-' + file.originalname);
-    }
+aws.config.update({
+    secretAccessKey: 'yGt1FaQWb8AU12/E2sQwtYZLu87Rc1f4+EAPBe76',
+    accessKeyId: 'AKIAIUNUAFITHKFMRD6Q',
+    region: 'ap-south-1',
 });
 
-// const storage = sftpStorage({
+var s3 = new aws.S3();
+
+const storage = multerS3({
+    s3: s3,
+    bucket: 'my-media-images',
+    acl: 'public-read',
+    contentType: function (req, file, cb) {
+        cb(null, file.mimetype); 
+    },
+    key: function (req, file, cb) {
+        console.log(file);
+        cb(null, Date.now() + '-' + file.originalname); 
+    },
+});
+
+const upload = multer({
+    storage: storage,
+});
+
+module.exports = upload;
+
+
+
+
+// Access Key ID:
+// AKIAIUNUAFITHKFMRD6Q
+// Secret Access Key:
+// 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
+// // const storage = sftpStorage({
 //     sftp:{
 //         host: 'localhost',
 //         port: 3000,
@@ -23,44 +49,3 @@ const storage = multer.diskStorage({
 //     }
 // });
 
-const fileFilter = (req,file,cb)=>{
-    fileType=req.originalUrl.split("/")[1];
-    if (fileType === 'images'){
-        if (file.mimetype === 'image/jpeg'|| file.mimetype === 'image/jpg' || file.mimetype === 'image/png'){
-            cb(null, true);
-        }else{
-            cb(null, false);
-        }
-    }
-    else if (fileType === 'audios'){
-        if (file.mimetype === 'audio/mp3' || file.mimetype === 'audio/wav'){
-            cb(null, true);
-        }else{
-            cb(null, false);
-        }
-    }
-    else if (fileType === 'audios'){
-        if (file.mimetype === 'audio/mp3' || file.mimetype === 'audio/wav'){
-            cb(null, true);
-        }else{
-            cb(null, false);
-        }
-    }
-    else if (fileType === 'videos'){
-        if (file.mimetype === 'video/mp4'){
-            cb(null, true);
-        }else{
-            cb(null, false);
-        }
-    }
-    else {
-        cb(null, false);
-    }    
-}
-
-const upload = multer({
-    storage: storage,
-    // fileFilter : fileFilter
-});
-
-module.exports = upload;

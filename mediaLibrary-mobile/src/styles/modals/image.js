@@ -1,9 +1,13 @@
 import {StyleSheet, Dimensions} from 'react-native';
 
+const deviceHeight = Dimensions.get('screen').height;
+const deviceWidth = Dimensions.get('screen').width; 
+
 export const stylesScreen = StyleSheet.create({
     upModal:{
         width: Dimensions.get('screen').width,
-        height: 100,
+        height: 60,
+        backgroundColor: 'rgba(0,0,0,0.5)'
     },
     modal: {
         flex:1,
@@ -36,5 +40,23 @@ export const stylesScreen = StyleSheet.create({
         resizeMode: 'center',
         width: Dimensions.get('screen').width,
         height: Dimensions.get('screen').height
+    },
+    bottomModal: {
+        height: 140,
+        marginTop: deviceHeight - 140,
+        backgroundColor: 'rgba(0,0,0,0.7)'
+    },
+    bottomHeader:{
+        marginTop: 0,
+        fontSize: 12,
+        alignSelf: 'center',
+        color: '#B6B7BF'
+    },
+    bottomText:{
+        fontSize: 15,
+        fontWeight: "500",
+        marginTop: 8,
+        color: "#8E97A6",
+        alignSelf: 'center'
     },
 });

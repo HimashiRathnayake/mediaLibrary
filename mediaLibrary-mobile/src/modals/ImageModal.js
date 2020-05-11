@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {View, Modal, Image, Alert} from 'react-native';
+import {View, Modal, Image, Alert, Text} from 'react-native';
 import {MaterialIcons, MaterialCommunityIcons, Entypo, Ionicons} from '@expo/vector-icons';
 import {stylesScreen} from '../styles/modals/image';
 import {deleteImage, renameImage} from '../api/image';
@@ -7,7 +7,7 @@ import { DetailsModal } from './DetailsModal';
 import {getIsFavorite, addToFavourite, removeFromFavorites} from '../api/favorites';
 import {ToolTip} from '../commons/ToolTip';
 
-export const ImageModal = ({modelImage, modelVisible, setVisible, setRefresh}) => {
+export const ImageModal = ({modelImage, modelVisible, setVisible, setRefresh, enableFolder}) => {
     const [detailsModal, setDetailsModal] = useState(false);
     const [isFavorite, setIsFavorite] = useState(null);
 
@@ -17,6 +17,9 @@ export const ImageModal = ({modelImage, modelVisible, setVisible, setRefresh}) =
             .then((response)=>{
                 setIsFavorite(response.isFavorite)
             })
+        }else{
+            setVisible(false);
+            setDetailsModal(false);
         }
     },[modelImage])
 
@@ -62,11 +65,6 @@ export const ImageModal = ({modelImage, modelVisible, setVisible, setRefresh}) =
         })
     }
 
-    if (modelImage===null){
-        setVisible(false);
-        setDetailsModal(false);
-    }
-
     return(
         <View>
             <Modal style={stylesScreen.modal} transparent={false} animationType='slide' visible={modelVisible} onRequestClose={()=>{setVisible(false); setIsFavorite(null)}}>
@@ -75,6 +73,15 @@ export const ImageModal = ({modelImage, modelVisible, setVisible, setRefresh}) =
                         <View style={{justifyContent:'center'}}>
                             <Image source={{uri:modelImage.path}} style={stylesScreen.originalImage}/>
                         </View>
+                    </View>
+                </View>
+            </Modal>
+
+            <Modal transparent={true} animationType='slide' visible={modelVisible} onRequestClose={()=>{setVisible(false); setIsFavorite(null)}} style={stylesScreen.bottomModal}>
+                <View style={stylesScreen.bottomModal}>
+                    <View style={{ alignItems: "center", marginTop: 24 }}>
+                        <Text style={stylesScreen.bottomHeader}>MyMedia Image</Text>
+                        <Text style={stylesScreen.bottomText}>{modelImage.imageName.substring(0,25)}</Text>
                     </View>
                 </View>
             </Modal>
@@ -114,14 +121,16 @@ export const ImageModal = ({modelImage, modelVisible, setVisible, setRefresh}) =
                 </View>
 
             </Modal>
-            
+
             <DetailsModal 
                 file={modelImage} 
                 type='Image' 
                 setDetailsModal={setDetailsModal} 
+                setVisible={setVisible}
                 detailsModal={detailsModal} 
                 renameFile={renameimage} 
                 setRefresh={setRefresh}
+                enableFolder={enableFolder}
             />
 
         </View>

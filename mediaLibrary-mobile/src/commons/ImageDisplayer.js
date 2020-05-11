@@ -44,7 +44,7 @@ export const ImageDisplayer = ({setRefresh, images, count, shouldMove}) => {
                 (<ScrollView style={stylesScreen.container}>
                     <View style={stylesScreen.container}>
                         {(modelImage !== null) && (
-                            <ImageModal modelImage={modelImage} modelVisible={modelVisible} setVisible={setVisible} setRefresh={setRefresh}/>
+                            <ImageModal modelImage={modelImage} modelVisible={modelVisible} setVisible={setVisible} setRefresh={setRefresh} enableFolder={shouldMove}/>
                         )}
                         {imageSet}
                     </View>
@@ -56,13 +56,13 @@ export const ImageDisplayer = ({setRefresh, images, count, shouldMove}) => {
                         <View style={stylesScreen.folderActionModal}>
                             <View style={stylesScreen.modalContainer}>
                                 <TouchableOpacity onPress={()=>{setActionModalVisible(false); setRenameModalVisible(true);}}>
-                                    <Text style={stylesScreen.modalText}>Rename</Text>
+                                    <Text style={stylesScreen.modalText}>Rename Image</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={()=>deletefolder(modalFolder)}>
-                                    <Text style={stylesScreen.modalText}>Delete</Text>
+                                    <Text style={stylesScreen.modalText}>Delete Image</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={()=>alert('fgh')}>
-                                    <Text style={stylesScreen.modalText}>Share</Text>
+                                    <Text style={stylesScreen.modalText}>Move to Folder</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>

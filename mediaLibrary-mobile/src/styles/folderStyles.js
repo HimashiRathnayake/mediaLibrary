@@ -69,14 +69,16 @@ export const stylesScreen = StyleSheet.create({
     },
     modalContainer:{
         backgroundColor: 'white',
-        height: 140,
-        width: Dimensions.get('screen').width/3,
+        height: Dimensions.get('screen').height/4,
+        width: Dimensions.get('screen').width/2 + 60,
         borderRadius: 20,
         alignSelf: 'center',
+        textAlign: 'center',
+        paddingTop: Dimensions.get('screen').height/16 - 5,
     },
     modalText: {
         paddingVertical: 10,
-        paddingHorizontal: 20,
+        textAlign: 'center',
         fontSize: 18
     },
     noFolderContainer:{

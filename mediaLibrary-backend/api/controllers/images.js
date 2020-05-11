@@ -64,8 +64,6 @@ exports.images_get_images_from_folder = (req, res, next) =>{
 }
 
 exports.images_upload_image = (req, res, next) =>{
-    //console.log(req.data)
-    //console.log(req.file)
     const image =new Image({
         _id: new mongoose.Types.ObjectId(),
         imageName: req.file.originalname,
@@ -74,7 +72,7 @@ exports.images_upload_image = (req, res, next) =>{
         artist: req.data.Artist,
         accessList: [req.userData.userId],
         folder: req.params.folderId,
-        path: process.env.SERVER+req.file.filename
+        path: req.file.location
     });
     image.save().then(result => {
         //console.log(result);

@@ -1,27 +1,34 @@
 const exiftool = require('node-exiftool');
 const exiftoolBin = require('dist-exiftool');
+const http = require('https');
+const fs = require('fs');
 
 module.exports = (req, res, next)=>{
     try{
         const ep = new exiftool.ExiftoolProcess(exiftoolBin)
-        
-        ep
-        .open()
-        .then((pid) => {
-            // console.log('Started exiftool process %s', pid);
-        })
-        .then(() => ep.readMetadata(req.file.path, ['-File:all']))
-        .then((result)=>{
-            req.data = result.data[0];
-        })
-        .then(() => ep.close())
-        .then(() => {
-            // console.log('Closed exiftool');
-            next();
-        })
-        .catch((error)=>{
-            res.status(401).json({message: 'File Not Found'})
-        })
+        console.log(req.file);
+        var fileNew=req.file.key;
+        http.get(req.file.location, function(res){
+            res.pipe(fs.createWriteStream(req.file.key));
+            ep
+            .open() 
+            .then((pid) => {
+            })
+            .then(() => ep.readMetadata(fileNew, ['-File:all']))
+            .then((result)=>{
+                console.log(result)
+                req.data = result.data[0];
+            })
+            .then(() => ep.close())
+            .then(() => {
+                fs.unlinkSync(fileNew)
+                next();
+            })
+            .catch((error)=>{
+                console.log(error)
+                res.status(401).json({message: error})
+            })
+            })
         
     }catch(error){
         return res.status(401).json({
