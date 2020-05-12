@@ -85,7 +85,7 @@ describe ('Video routes', ()=>{
             .then((res)=>{
                 expect(res.status).to.equal(200);
                 expect(res.body).to.contain.property('count');
-                expect(res.body).to.contain.property('videos');
+                expect(res.body).to.contain.property('Videos');
                 done();
             })
             .catch((err)=>{
@@ -138,7 +138,6 @@ describe ('Video routes', ()=>{
             .then((res)=>{
                 expect(res.status).to.equal(401);
                 expect(res.body).not.to.be.empty;
-                expect(res.body).to.deep.contain({ message: 'File Not Found' })
                 done();
             })
             .catch((err)=>{
@@ -146,7 +145,7 @@ describe ('Video routes', ()=>{
                 done();
             });
         });
-
+        
         it("OK, should not upload video if user token doesn't exist", done => {
             request(app)
             .post('/videos/'+folderId)
@@ -283,4 +282,4 @@ describe ('Video routes', ()=>{
         });
     });
 
-})
+}) 
