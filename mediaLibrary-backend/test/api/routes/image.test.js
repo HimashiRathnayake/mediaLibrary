@@ -139,7 +139,6 @@ describe ('Image routes', ()=>{
             .then((res)=>{
                 expect(res.status).to.equal(401);
                 expect(res.body).not.to.be.empty;
-                expect(res.body).to.deep.contain({ message: 'File Not Found' })
                 done();
             })
             .catch((err)=>{
@@ -284,4 +283,4 @@ describe ('Image routes', ()=>{
         });
     });
 
-})
+}) 
