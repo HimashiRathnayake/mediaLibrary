@@ -59,7 +59,9 @@ describe ('User Modal', ()=>{
                 expect(res).to.contain.property('_id');
                 expect(res).to.contain.property('email');
                 expect(res).to.contain.property('password');
-                expect(res).to.contain.property('favourites');
+                expect(res).to.contain.property('imgfavourites');
+                expect(res).to.contain.property('audfavourites');
+                expect(res).to.contain.property('vidfavourites');
                 done();
             })
         })
