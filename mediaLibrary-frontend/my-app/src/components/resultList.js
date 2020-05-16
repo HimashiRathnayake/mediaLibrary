@@ -165,8 +165,8 @@ class ResultList extends Component{
                     
                     return(
                         <li  key={imageName._id} style={{float: 'left', listStyle: 'none', paddingLeft: '10px', paddingBottom: '10px'}}  > 
-                            <div className='card ' style={{width: '270px', height: '300px'}} >
-                                <img src={imgsrc} className="card-img-top" style={{width: '268px', height: '220px'}} alt='' />
+                            <div className='card ' style={{width: '250px', height: '300px'}} >
+                                <img src={imgsrc} className="card-img-top" style={{width: '248px', height: '220px'}} alt='' />
                                 <div className="card-body">
                                     <p className="card-text">
                                         <button className="link-button" title={title} onClick={() => this.props.favourite(favourite, imageName._id)}><span className={classname} > </span></button> 
