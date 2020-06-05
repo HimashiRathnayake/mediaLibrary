@@ -2,6 +2,6 @@
     "env":{
         "JWT_KEY": "secret",
         "MONGO_ATLAS_PW": "mediaLibraryPassword",
-        "SERVER": "http://192.168.1.4:3000/"
+        "SERVER": "https://mymedia-app-backend.herokuapp.com/"
     }
 }

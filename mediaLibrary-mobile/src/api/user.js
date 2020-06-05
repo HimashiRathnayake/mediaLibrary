@@ -1,6 +1,6 @@
 import { AsyncStorage } from "react-native";
 
-const serverUrl = 'http://192.168.1.4:3000';
+const serverUrl = 'https://mymedia-app-backend.herokuapp.com';
 
 export function signup({values}){
     return fetch(serverUrl+'/user/signup',{
