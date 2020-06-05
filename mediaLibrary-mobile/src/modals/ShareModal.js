@@ -44,7 +44,7 @@ export const ShareModal = ({shareModal, setShareModal, type, fileId, setRefresh}
     const userSet = users.map((val,key)=>{
         return(
             <View key={key}>
-                <TouchableOpacity onPress={()=>{
+                <TouchableOpacity accessibilityLabel={val._id} onPress={()=>{
                     sharefile(val._id);
                     setShareModal(false); setUsers([]);
                 }}>
@@ -66,6 +66,7 @@ export const ShareModal = ({shareModal, setShareModal, type, fileId, setRefresh}
                 <View style={stylesScreen.shareView}>
                     <View flexDirection='row' style={stylesScreen.detailsHeader}>
                         <TouchableOpacity 
+                            accessibilityLabel='back2'
                             onPress={()=>{setShareModal(false); setUsers([]);}} 
                             style={{marginLeft: 20, marginTop:12}}
                         >
@@ -82,6 +83,7 @@ export const ShareModal = ({shareModal, setShareModal, type, fileId, setRefresh}
                             underlineColorAndroid="transparent"
                             keyboardType='default'
                             onChangeText={(text)=>getUsers(text)}
+                            accessibilityLabel='user'
                         />
                     </View>
                     <ScrollView style={{marginBottom: 50}}>

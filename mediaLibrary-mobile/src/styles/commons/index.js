@@ -1,9 +1,12 @@
 import { StyleSheet, Dimensions } from 'react-native';
 
+const screenHeight = Dimensions.get('screen').height;
+const screenWidth = Dimensions.get('screen').width;
+
 export const styles = StyleSheet.create({
     backgroundImage:{
-        width:360,
-        height:700,
+        width: screenWidth,
+        height: screenHeight,
         resizeMode:'contain',
     },
     container: {

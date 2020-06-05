@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
+const nodemailer = require('nodemailer');
+const smtpTransport = require('nodemailer-smtp-transport');
 
 const User =  require('../models/user'); 
 
@@ -131,4 +134,81 @@ exports.get_other_users =  (req, res, next) => {
             error:err
         });
     });
+}
+
+exports.forgot_password = (req, res, next) => {
+    User.findOne({email: req.body.email})
+        .exec()
+        .then(user => {
+            var buf = crypto.randomBytes(5);
+            var token = buf.toString('hex');
+            User.updateOne({_id: user._id},{resetPasswordToken: token, resetPasswordExpires: Date.now() + 3600000})
+            .exec()
+            .then(result => {
+                var transport = nodemailer.createTransport(smtpTransport({
+                    service: 'Gmail',
+                    auth: {
+                      user: 'mymediamymedia5@gmail.com',
+                      pass: 'mymedia5@'
+                    },
+                    tls: {rejectUnauthorized: false}
+                }));
+                var mailOptions = {
+                    to: user.email,
+                    from: 'mymediaAdmin@mymedia.com',
+                    subject: 'MyMedia Password Reset',
+                    text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
+                      'Your verification code is:\n\n' +
+                      token + '\n\n' +
+                      'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+                };
+                transport.sendMail(mailOptions, function(err, response) {
+                    if (err){
+                        console.log(err)
+                        res.status(500).json({
+                            message: "Something went wrong"
+                        });
+                    }else{
+                        console.log(response)
+                        res.status(200).json({
+                            message: "Verification code has sent"
+                        });
+                    }
+                });
+            })
+        })
+        .catch(err=>{
+            console.log(err);
+            res.status(404).json({
+                error: "No user found"
+            });
+        });
+}
+
+exports.reset_password = (req, res, next) => {
+    User.findOne({resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } })
+        .exec()
+        .then(user => {
+            bcrypt.hash(req.body.password, 10, (err, hash) => {
+                if (err){
+                    return res.status(500).json({
+                        error: err
+                    });
+                }else{
+                    User.updateOne({_id: user._id},{password:hash, resetPasswordToken: undefined, resetPasswordExpires: undefined})
+                    .exec()
+                    .then(result => {
+                        res.status(200).json({
+                            message: "Password changed successfully"
+                        });
+                    })
+                }
+            });
+        })
+        .catch(err=>{
+            console.log(err);
+            res.status(500).json({
+                error: "Password reset token is invalid or has expired."
+            });
+        });
 }

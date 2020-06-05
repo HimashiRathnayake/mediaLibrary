@@ -19,14 +19,10 @@ export const SignUpScreen = ({navigation}) => {
     const [isLoading, setIsLoading] = React.useState(false);
 
     return(
-        <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
-            <View flex={1} style={{opacity: isLoading ? 0.3 : 1.0}}>
-                <View style={styles.headerContainer}>
-                    <Entypo name="folder-video" color="white" size={40} /> 
-                    <Text style={styles.headerText}>SignUp Here To Continue</Text>
-                </View>
-                
+        <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage} accessibilityLabel='signupscreen'>
+            <View flex={1} style={{opacity: isLoading ? 0.3 : 1.0}} accessibilityLabel='view'>
                     <Formik 
+                        accessibilityLabel='form'
                         initialValues={{email:'',password:'', confirmPassword:''}}
                         validationSchema={validationSchema} 
                         onSubmit={
@@ -53,11 +49,18 @@ export const SignUpScreen = ({navigation}) => {
                         }}
                     >
                     {(props)=>(
-                        <KeyboardAvoidingView flex={4} behavior='padding'>
+                        <KeyboardAvoidingView flex={3} behavior='padding'>
                         <View style={styles.form}>
+
+                            <View style={styles.headerContainer}>
+                                <Entypo name="folder-video" color="white" size={40} /> 
+                                <Text style={styles.headerText}>SignUp Here To Continue</Text>
+                            </View>
+
                             <View style={styles.inputContainer}> 
                                 <FontAwesome name="user-circle-o" style={styles.inputIcon}/>   
                                 <TextInput 
+                                    accessibilityLabel='email1'
                                     style={styles.input}
                                     placeholder='Email'
                                     placeholderTextColor="white"
@@ -69,10 +72,11 @@ export const SignUpScreen = ({navigation}) => {
                                     onSubmitEditing={()=>props.handleSubmit()}
                                 />
                             </View>  
-                            <Text style={styles.errorText}>{props.touched.email && props.errors.email}</Text>
+                            <Text accessibilityLabel='emailErr1' style={styles.errorText}>{props.touched.email && props.errors.email}</Text>
                             <View style={styles.inputContainer}> 
                                 <AntDesign name="lock" style={styles.inputIcon}/>  
                                 <TextInput 
+                                    accessibilityLabel='password1'
                                     style={styles.input}
                                     placeholder='Password'
                                     placeholderTextColor="white"
@@ -84,10 +88,11 @@ export const SignUpScreen = ({navigation}) => {
                                     onSubmitEditing={()=>props.handleSubmit()}
                                 />
                             </View>   
-                            <Text style={styles.errorText}>{props.touched.password && props.errors.password}</Text>
+                            <Text style={styles.errorText} accessibilityLabel='passwordErr1'>{props.touched.password && props.errors.password}</Text>
                             <View style={styles.inputContainer}> 
                                 <AntDesign name="lock" style={styles.inputIcon}/>  
                                 <TextInput 
+                                    accessibilityLabel='confirmP1'
                                     style={styles.input}
                                     placeholder='Confirm Password'
                                     placeholderTextColor="white"
@@ -99,8 +104,8 @@ export const SignUpScreen = ({navigation}) => {
                                     onSubmitEditing={()=>props.handleSubmit()}
                                 />
                             </View>   
-                            <Text style={styles.errorText}>{props.touched.confirmPassword && props.errors.confirmPassword}</Text>
-                            <TouchableOpacity style={styles.loginbutton} disabled={isLoading} onPress={()=>{props.handleSubmit();}}>
+                            <Text accessibilityLabel='confirmPErr1' style={styles.errorText}>{props.touched.confirmPassword && props.errors.confirmPassword}</Text>
+                            <TouchableOpacity accessibilityLabel='submit1' style={styles.loginbutton} disabled={isLoading} onPress={()=>{props.handleSubmit();}}>
                                 <Text style={styles.logintext}>SIGNUP</Text>
                             </TouchableOpacity>
                         </View>
@@ -109,9 +114,9 @@ export const SignUpScreen = ({navigation}) => {
                     </Formik>
             
                 <View style={styles.bottom}>
-                    <Text style={styles.bottomtext} disabled={isLoading} onPress={()=>navigation.navigate('Login')}>Already have an account? Login</Text>
+                    <Text accessibilityLabel='loginbutton' style={styles.bottomtext} disabled={isLoading} onPress={()=>navigation.navigate('Login')}>Already have an account? Login</Text>
                 </View>
             </View>
         </ImageBackground>
-    );
+    ); 
 }

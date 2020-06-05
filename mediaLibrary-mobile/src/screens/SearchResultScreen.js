@@ -39,7 +39,7 @@ export const SearchResultScreen = ({route,navigation}) => {
     },[refresh])
 
     return(
-        <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
+        <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage} accessibilityLabel='searchResultScreen'>
             <SearchHeader navigation={navigation} route={route}/>
             {type==='Image' && <ImageDisplayer setRefresh={setRefresh} images={files} count={count}/>}
             {type==='Audio' && <AudioDisplayer setRefresh={setRefresh} audios={files} count={count}/>}

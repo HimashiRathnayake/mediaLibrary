@@ -33,7 +33,7 @@ export const AppIntroScreen = ({route,navigation}) => {
 
     const renderItem = ({item}) => {
         return(
-            <View style={styles.view}>
+            <View style={styles.view} accessibilityLabel='slide'>
                 <Text style={styles.header}>{item.title}</Text>
                 <Text style={styles.text}>{item.text}</Text>
               <Image source={item.image} style={styles.image}/>
@@ -47,6 +47,7 @@ export const AppIntroScreen = ({route,navigation}) => {
     else{
         return(
             <AppIntroSlider 
+                accessibilityLabel='appIntro'
                 data={slides} 
                 onDone={()=>signUp({token:route.params.token, email:route.params.email})} 
                 renderItem={renderItem}

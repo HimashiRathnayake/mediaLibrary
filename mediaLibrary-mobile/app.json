@@ -25,6 +25,10 @@
     ],
     "ios": {
       "supportsTablet": true
+    },
+    "android":{
+      "package": "mymedia.com.mymedia",
+      "versionCode":1
     }
   }
 }

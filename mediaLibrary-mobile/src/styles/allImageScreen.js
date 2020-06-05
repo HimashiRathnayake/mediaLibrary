@@ -72,11 +72,12 @@ export const stylesScreen = StyleSheet.create({
     },
     modalContainer:{
         backgroundColor: 'white',
-        height: Dimensions.get('screen').height / 4,
+        // height: Dimensions.get('screen').height / 4,
         width: Dimensions.get('screen').width*2/3,
         borderRadius: 20,
         alignSelf: 'center',
-        paddingTop: 10,
+        paddingTop: 20,
+        paddingBottom: 20
     },
     modalText: {
         paddingVertical: 10,

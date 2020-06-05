@@ -1,5 +1,5 @@
 import React from 'react';
-import { ImageBackground, View, Text, TouchableOpacity, TextInput, Alert} from 'react-native';
+import { ImageBackground, View, Text, TouchableOpacity, TextInput, Alert, KeyboardAvoidingView} from 'react-native';
 import { Entypo, FontAwesome, AntDesign } from '@expo/vector-icons';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import {styles} from '../styles/loginscreen';
@@ -19,13 +19,9 @@ export const LoginScreen = ({navigation}) => {
     const {signIn} = React.useContext(AuthContext); 
 
     return(
-    <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
-        <View flex={1} style={{opacity: isLoading ? 0.3 : 1.0}}>
-            <View style={styles.headerContainer}>
-                <Entypo name="folder-video" color="white" size={40} /> 
-                <Text style={styles.headerText}>Login Here To Continue</Text>
-            </View>
-            <KeyboardAwareScrollView>
+    <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage} accessibilityLabel='loginscreen'>
+        <View flex={1} style={{opacity: isLoading ? 0.3 : 1.0}} accessibilityLabel='view1'>
+                       
                 <Formik 
                     initialValues={{email:'',password:''}}
                     validationSchema={validationSchema} 
@@ -49,8 +45,15 @@ export const LoginScreen = ({navigation}) => {
                     }}
                 >
                 {(props)=>(
+                    <KeyboardAvoidingView flex={3} behavior='padding'>
                     <View style={styles.form}>
-                        <View style={styles.inputContainer}> 
+
+                        <View style={styles.headerContainer}>
+                            <Entypo name="folder-video" color="white" size={40} /> 
+                            <Text style={styles.headerText} accessibilityLabel='text1'>Login Here To Continue</Text>
+                        </View>
+
+                        <View style={styles.inputContainer} accessibilityLabel='view2'> 
                             <FontAwesome name="user-circle-o" style={styles.inputIcon}/>   
                             <TextInput 
                                 style={styles.input}
@@ -61,9 +64,10 @@ export const LoginScreen = ({navigation}) => {
                                 keyboardType='email-address'
                                 onChangeText={props.handleChange('email')}
                                 value={props.values.email}
+                                accessibilityLabel='email'
                             />
                         </View>  
-                        <Text style={styles.errorText}>{props.touched.email && props.errors.email}</Text>
+                        <Text style={styles.errorText} accessibilityLabel='emailError'>{props.touched.email && props.errors.email}</Text>
 
                         <View style={styles.inputContainer}> 
                             <AntDesign name="lock" style={styles.inputIcon}/>  
@@ -76,20 +80,21 @@ export const LoginScreen = ({navigation}) => {
                                 keyboardType='default'
                                 onChangeText={props.handleChange('password')}
                                 value={props.values.password}
+                                accessibilityLabel='password'
                             />
                         </View>  
-                        <Text style={styles.errorText}>{props.touched.password && props.errors.password}</Text>
+                        <Text style={styles.errorText} accessibilityLabel='passwordError'>{props.touched.password && props.errors.password}</Text>
 
-                        <TouchableOpacity style={styles.loginbutton} disabled={isLoading} onPress={()=>{props.handleSubmit();}}>
+                        <TouchableOpacity accessibilityLabel='submit' style={styles.loginbutton} disabled={isLoading} onPress={()=>{props.handleSubmit();}}>
                             <Text style={styles.logintext}>LOGIN</Text>
                         </TouchableOpacity>
                     </View>
+                    </KeyboardAvoidingView>
                 )}    
                 </Formik>
-            </KeyboardAwareScrollView>
             <View style={styles.bottom}>
-                <Text style={styles.bottomtext} disabled={isLoading} onPress={()=>navigation.navigate('SignUp')}>Create Account</Text>
-                <Text style={styles.bottomtext} disabled={isLoading}>Forgot Password?</Text>
+                <Text style={styles.bottomtext} accessibilityLabel='signup' disabled={isLoading} onPress={()=>navigation.navigate('SignUp')}>Create Account</Text>
+                <Text style={styles.bottomtext} accessibilityLabel='forget' disabled={isLoading}>Forgot Password?</Text>
             </View>
         </View>
     </ImageBackground>

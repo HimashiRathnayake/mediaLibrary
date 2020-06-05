@@ -1,19 +1,42 @@
 import React, {useState} from 'react';
-import { Text, View, TouchableOpacity, ScrollView} from 'react-native';
+import { Text, View, TouchableOpacity, ScrollView, Modal, TouchableWithoutFeedback, Alert} from 'react-native';
 import { VideoModal } from '../modals/VideoModal';
 import { Foundation } from '@expo/vector-icons';
 import {styleVideo} from '../styles/videoStyles';
+import {stylesScreen} from '../styles/allImageScreen';
+import {FolderModal} from '../modals/FolderModal';
+import { FolderList } from '../modals/FolderList';
+import {deleteVideo} from '../api/video';
  
-export const VideoDisplayer = ({videos, count, setRefresh}) => {
+export const VideoDisplayer = ({videos, count, setRefresh, insideFolder}) => {
 	const [videoModal, setVideoModal] = useState(null);
 	const [visible, setVisible] = useState(false);
-    const [index, setIndex] = useState(0);
+	const [index, setIndex] = useState(0);
+	const [actionModalVisible, setActionModalVisible] = useState(false);
+    const [renameModal, setRenameModalVisible] = useState(false);
+    const [folderList, setfolderListVisible] = useState(false);
 
 	async function openModal(visible,key){
 		await setIndex(key);
         await setVideoModal(videos[key]);
         setVisible(visible);
 	}
+
+	async function setAction(val){
+        setActionModalVisible(true);
+        await setVideoModal(val)
+    }
+
+    function deletevideo(videoId){
+        setVideoModal(null)
+        deleteVideo({videoId: videoId})
+        .then((response)=>{
+            setRefresh(true);
+        })
+        .catch((error)=>{
+            console.log(error);
+        })
+    }
 	
 	React.useEffect(()=>{  
         if (videoModal!==null){
@@ -23,7 +46,12 @@ export const VideoDisplayer = ({videos, count, setRefresh}) => {
 
 	const videoSet = videos.map((val,key)=>{
 		return(
-            <TouchableOpacity key={key} onPress={()=>{openModal(true, key)}}>
+			<TouchableOpacity 
+				key={key} 
+				onPress={()=>{openModal(true, key)}} 
+				onLongPress={()=> setAction(val)}
+				accessibilityLabel={val._id}
+			>
                 <View style={styleVideo.videoContainer}>
 					<Foundation name='play-video' style={styleVideo.videoIcon} />
                     <Text style={styleVideo.videoName}>{val.videoName.substring(0, 34)}</Text>
@@ -36,17 +64,47 @@ return(
 	<View>
 		{count===0 ? 
 			(<View style={styleVideo.noVideoContainer}>
-				<Text style={styleVideo.noVideoText}>No Videos found</Text>
+				<Text accessibilityLabel='noVideosFound' style={styleVideo.noVideoText}>No Videos found</Text>
 			</View>):
 			(<ScrollView style={styleVideo.container}>
-				<View style={styleVideo.container}>
+				<View style={styleVideo.container} accessibilityLabel='videoContainer'>
 					{(videoModal !== null) && (
-					<VideoModal visible={visible} setVisible={setVisible} videoModal={videoModal} setRefresh={setRefresh}/>
+						<View>
+						<VideoModal visible={visible} setVisible={setVisible} videoModal={videoModal} setRefresh={setRefresh} insideFolder={insideFolder}/>
+						<Modal style={stylesScreen.folderActionModal} transparent={true} animationType='fade' visible={actionModalVisible} onRequestClose={()=>{setActionModalVisible(false)}}>
+							<TouchableWithoutFeedback accessibilityLabel='videoActionModalbutton' onPress={()=>setActionModalVisible(false)}>
+								<View style={stylesScreen.folderActionModal}>
+									<View style={stylesScreen.modalContainer}>
+										<TouchableOpacity accessibilityLabel='renameVideo' onPress={()=>{setActionModalVisible(false); setRenameModalVisible(true);}}>
+											<Text style={stylesScreen.modalText}>Rename Video</Text>
+										</TouchableOpacity>
+										<TouchableOpacity accessibilityLabel='deleteVideo' 
+											onPress={()=> {setActionModalVisible(false); 
+												Alert.alert('Do you want to delete video','',[
+													{text: 'Cancel'},
+													{text: "Yes", onPress: ()=>deletevideo(videoModal._id)}
+												],{cancelable:false})}}>
+											<Text style={stylesScreen.modalText}>Delete Video</Text>
+										</TouchableOpacity>
+										{(insideFolder!==undefined)&&
+										<TouchableOpacity accessibilityLabel='moveVideo' onPress={()=>setfolderListVisible(true)}>
+											<Text style={stylesScreen.modalText}>Move to Folder</Text>
+										</TouchableOpacity>}
+									</View>
+								</View>
+							</TouchableWithoutFeedback>
+						</Modal>
+						
+						<FolderModal modalVisible={renameModal} setVisible={setRenameModalVisible} folderId={videoModal._id} setRefresh={setRefresh} actionType={'RenameVideo'}/>
+						
+						<FolderList visible={folderList} setVisible={setfolderListVisible} fileId={videoModal._id} type={'Video'} setRefresh={setRefresh} setDetailsModal={setActionModalVisible}/>
+						</View>
 					)}
 					{videoSet}
 				</View>
 			</ScrollView>)
 		}
+
 	</View>
 );}
 

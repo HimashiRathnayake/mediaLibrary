@@ -35,7 +35,7 @@ export const FolderList = ({visible, setVisible, fileId, type, setRefresh, setDe
     const folderSet = folders.map((val,key)=>{
         return(
             <View key={key}>
-                <TouchableOpacity onPress={()=>{moveToFolder(val._id)}}>
+                <TouchableOpacity onPress={()=>{moveToFolder(val._id)}} accessibilityLabel={val._id}>
                     <View style={styles.folderContainer}>
                         <View flexDirection='row'>
                             <MaterialCommunityIcons name='folder-move' style={styles.folderIcon}/>
@@ -49,14 +49,14 @@ export const FolderList = ({visible, setVisible, fileId, type, setRefresh, setDe
     
     return(
         <Modal style={styles.modal} transparent={true} animationType='fade' visible={visible} onRequestClose={()=>{setVisible(false)}}>
-            <View style={styles.modal}>
+            <View style={styles.modal} accessibilityLabel='folderListModal'>
                 <View style={styles.modalView}>
                     <Text style={styles.header}>Move To Folder</Text>
                     <ScrollView>
                         {folderSet}
                     </ScrollView>
                     <View style={styles.bottom}>
-                        <TouchableOpacity onPress={()=>setVisible(false)}>
+                        <TouchableOpacity accessibilityLabel='cancel2' onPress={()=>setVisible(false)}>
                             <Text style={styles.submit}>Cancel</Text>
                         </TouchableOpacity>
                     </View>

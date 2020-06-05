@@ -1,7 +1,7 @@
 import {StyleSheet, Dimensions} from 'react-native';
 
-const screenHeight = Dimensions.get('screen').height;
-const screenWidth = Dimensions.get('screen').width;
+const screenHeight = Dimensions.get('window').height;
+const screenWidth = Dimensions.get('window').width;
 
 export const styleHome = StyleSheet.create({
     header:{

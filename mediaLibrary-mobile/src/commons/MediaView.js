@@ -4,7 +4,7 @@ import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import {styles} from '../styles/commons/mediaButton';
 
 export const MediaButton = ({children, type, onPress}) => (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity accessibilityLabel='mediaButton' onPress={onPress}>
         <View style={styles.container}>
             <View style={styles.buttonView}>
                 {type==='Image'&&<Entypo name="images" style={styles.icon}/>}

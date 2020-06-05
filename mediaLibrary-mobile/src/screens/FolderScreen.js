@@ -24,7 +24,7 @@ export const FolderScreen = ({route,navigation}) => {
     },[refresh])
 
     return(
-        <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
+        <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage} accessibilityLabel='folderScreen'>
             <Header navigation={navigation} setRefresh={setRefresh} type={type}>{type} Folders</Header>
             <FolderDisplayer setRefresh={setRefresh} count={count} folders={folders} type={type} navigation={navigation}/>            
         </ImageBackground>

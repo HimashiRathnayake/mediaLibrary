@@ -34,7 +34,7 @@ function CustomDrawerContent(props) {
                 <View>
                     <View style={styles.drawerHeader}>
                         <FontAwesome name="user-circle-o" style={styles.drawerIcon}/>
-                        <Text style={styles.drawerHeaderText}>{email}</Text>
+                        <Text accessibilityLabel='useremail' style={styles.drawerHeaderText}>{email}</Text>
                     </View>
                     <DrawerItemList {...props} itemStyle={{marginLeft:25}} labelStyle={{marginLeft:-20, fontSize:15}} activeTintColor='#1976d2' inactiveTintColor='#fff'/>
                     <DrawerItem 
@@ -66,12 +66,6 @@ function CustomDrawerContent(props) {
             }}/>
             <Drawer.Screen name="Favourites" component={FavouritesScreen} options={{drawerIcon: ({color, size}) => 
                 <MaterialIcons name="favorite" color={color} size={18}/>
-            }}/>
-            <Drawer.Screen name="Settings" component={SettingsScreen} options={{drawerIcon: ({color, size}) => 
-                <AntDesign name="setting" color={color} size={18}/>
-            }}/>
-            <Drawer.Screen name="Help & feedback" component={HelpScreen} options={{drawerIcon: ({color, size}) => 
-                <Ionicons name="ios-help-circle-outline" color={color} size={18}/>
             }}/>
         </Drawer.Navigator>
     );	

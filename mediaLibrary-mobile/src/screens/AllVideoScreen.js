@@ -27,9 +27,9 @@ export const AllVideoScreen = ({navigation, route}) => {
 	},[refresh])
 	
 return(
-	<ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
+	<ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage} accessibilityLabel='allVideoScreen'>
 		<Header navigation={navigation}>Video</Header>
-		<VideoDisplayer setRefresh={setRefresh} count={count} videos={videos}/>
+		<VideoDisplayer setRefresh={setRefresh} count={count} videos={videos} insideFolder={false}/>
 	</ImageBackground>
 );}
 

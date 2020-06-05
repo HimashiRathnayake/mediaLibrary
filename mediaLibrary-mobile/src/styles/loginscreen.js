@@ -1,15 +1,15 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 
 export const styles = StyleSheet.create({
   backgroundImage:{
-      width:360,
-      height:640,
+      width: Dimensions.get('screen').width,
+      height: Dimensions.get('screen').height,
       resizeMode:'contain'
   },
   form: {
       alignContent: 'center',
       justifyContent: 'center',
-      flex: 1
+      flex: 3
   },
   btn: {
     position: 'absolute',
@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
   },
   bottom: {
     flex: 1,
-    top: 0,
+    paddingTop: 10,
     width:360,
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -26,6 +26,8 @@ export const styles = StyleSheet.create({
   bottomtext: {
     color: 'white',
     backgroundColor: 'transparent',
+    height: 50,
+    marginTop: 20
   },
   loginbutton: {
     alignItems: 'center',
@@ -43,9 +45,11 @@ export const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   headerContainer: {
-    flex: 3,
+    flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
+    bottom: 20,
+    marginBottom: 10,
   },
   headerText: {
     color: 'white',

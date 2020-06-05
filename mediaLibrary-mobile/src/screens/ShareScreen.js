@@ -29,7 +29,7 @@ export const ShareScreen = ({route,navigation}) => {
 
     const type=route.params.type;
     return(
-        <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
+        <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage} accessibilityLabel='shareScreen'>
             <Header navigation={navigation}>Shared {type}s</Header>
             <View flex={1}>
                 {type==='Image' && <ImageDisplayer setRefresh={setRefresh} images={files} count={count}/>}

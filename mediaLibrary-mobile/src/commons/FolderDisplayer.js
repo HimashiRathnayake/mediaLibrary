@@ -25,6 +25,7 @@ export const FolderDisplayer = ({setRefresh, folders, count, type, navigation}) 
     const folderSet = folders.map((val,key) => {
         return(
             <TouchableOpacity 
+                accessibilityLabel={val._id}
                 key={key} 
                 onPress={()=>{navigation.push(type,{visible:false, folderId:val._id, folderName: val.folderName})}}
                 delayLongPress= {1000}
@@ -35,7 +36,7 @@ export const FolderDisplayer = ({setRefresh, folders, count, type, navigation}) 
             >
                 <View style={stylesScreen.folderWrapper}>
                     <MaterialIcons name='folder' style={stylesScreen.folderIcon}/>
-                    <Text style={stylesScreen.folderName}>{val.folderName.substring(0,10)}</Text>
+                    <Text accessibilityLabel='folderName' style={stylesScreen.folderName}>{val.folderName.substring(0,10)}</Text>
                 </View>
             </TouchableOpacity>
         )
@@ -46,7 +47,7 @@ export const FolderDisplayer = ({setRefresh, folders, count, type, navigation}) 
             {count===0 ? 
             (<View style={stylesScreen.noFolderContainer}>
                 <Text style={stylesScreen.noFolderText}>No {type} Folders found</Text>
-                <TouchableOpacity onPress={()=>{setCreateModalVisible (true)}}>
+                <TouchableOpacity accessibilityLabel='createFolder1' onPress={()=>{setCreateModalVisible (true)}}>
                     <View>
                         <MaterialIcons name='create-new-folder' style={stylesScreen.addFolderIcon}/>
                     </View>
@@ -55,7 +56,7 @@ export const FolderDisplayer = ({setRefresh, folders, count, type, navigation}) 
 
             (<ScrollView style={stylesScreen.container}>
                 <View style={stylesScreen.container}>
-                    <TouchableOpacity onPress={()=>{setCreateModalVisible(true)}}>
+                    <TouchableOpacity accessibilityLabel='createFolder1' onPress={()=>{setCreateModalVisible(true)}}>
                         <View style={stylesScreen.folderWrapper}>
                             <MaterialIcons name='create-new-folder' style={stylesScreen.folderIcon}/>
                             <Text style={stylesScreen.folderName}>Create Folder</Text>
@@ -64,15 +65,16 @@ export const FolderDisplayer = ({setRefresh, folders, count, type, navigation}) 
                     {folderSet}
                 </View>
                 <Modal style={stylesScreen.folderActionModal} transparent={true} animationType='fade' visible={actionModalVisible} onRequestClose={()=>{}}>
-                    <TouchableWithoutFeedback onPress={()=>setActionModalVisible(false)}>
-                        <View style={stylesScreen.folderActionModal}>
+                    <TouchableWithoutFeedback accessibilityLabel='actionModalButton' onPress={()=>setActionModalVisible(false)}>
+                        <View style={stylesScreen.folderActionModal} accessibilityLabel='actionModal'>
                             <View style={stylesScreen.modalContainer}>
-                                <TouchableOpacity onPress={()=>{setActionModalVisible(false); setRenameModalVisible(true);}}>
+                                <TouchableOpacity accessibilityLabel='renamefolder' onPress={()=>{setActionModalVisible(false); setRenameModalVisible(true);}}>
                                     <Text style={stylesScreen.modalText}>Rename Folder</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity 
+                                    accessibilityLabel='deleteFolder'
                                     onPress={()=>
-                                    Alert.alert('Do you want to delete image','',[
+                                    Alert.alert('Do you want to delete folder','',[
                                         {text: 'Cancel', onPress: ()=>setActionModalVisible(false)},
                                         {text: "Yes", onPress: ()=>deletefolder(modalFolder)}
                                     ],{cancelable:false})}

@@ -22,7 +22,9 @@ const userSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Video'
         //addedDate: Date
-    }]
+    }],
+    resetPasswordToken: {type: String},
+    resetPasswordExpires: {type: Date}
 });
 
 module.exports = mongoose.model('User', userSchema);

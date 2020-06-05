@@ -46,7 +46,7 @@ export const HomeSearch = ({visible, setVisible}) => {
 
     return(
         <Modal flex={1} transparent={false} animationType='fade' visible={visible} onRequestClose={()=>{}}>
-            <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
+            <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage} accessibilityLabel='homeSearch'>
 
                 <View flexDirection='row' style={[styleHome.searchHeader, {marginTop:7}]}>
                     <Ionicons.Button name="md-arrow-back" underlayColor='transparent' backgroundColor="transparent" color="#fff" size={30} marginTop={3} marginLeft={10} onPress={()=>{setVisible(false); setValue('');}}/>  
@@ -59,12 +59,14 @@ export const HomeSearch = ({visible, setVisible}) => {
                         onChangeText={text=>{setValue(text);}}
                         value={value}
                         onFocus={()=>setVisible(true)}
+                        accessibilityLabel='searchhometext'
                     />
                     <Picker 
                         mode='dropdown' 
                         style={{width: 130, height:40, alignSelf:'center', borderRadius: 50}}
                         selectedValue = {criteria}
                         onValueChange = {(item)=>{setCriteria(item); setValue('');}}
+                        accessibilityLabel='picker'
                     >
                         <Picker.Item label="By Title" value="title"/>
                         <Picker.Item label="By Artist" value="artist"/>
@@ -72,17 +74,17 @@ export const HomeSearch = ({visible, setVisible}) => {
                 </View>
 
                 <View style={styleHome.searchView}>
-                    <TouchableOpacity disabled={isLoading} onPress={async()=>{await setFiles(null); setSelected('image');}}>
+                    <TouchableOpacity accessibilityLabel='selectImage' disabled={isLoading} onPress={async()=>{await setFiles(null); setSelected('image');}}>
                         <Text style={[styleHome.criteria, selected==='image'?{borderBottomColor:'#1976d2', color:'#1976d2'}:{borderBottomColor:'transparent', color:'#fff'}]}>
                             Image
                         </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity disabled={isLoading} onPress={async()=>{await setFiles(null); setSelected('audio'); }}>
+                    <TouchableOpacity accessibilityLabel='selectAudio' disabled={isLoading} onPress={async()=>{await setFiles(null); setSelected('audio'); }}>
                         <Text style={[styleHome.criteria, selected==='audio'?{borderBottomColor:'#1976d2', color:'#1976d2'}:{borderBottomColor:'transparent', color:'#fff'}]}>
                             Audio
                         </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity disabled={isLoading} onPress={async()=>{await setFiles(null); setSelected('video');}}>
+                    <TouchableOpacity accessibilityLabel='selectVideo' disabled={isLoading} onPress={async()=>{await setFiles(null); setSelected('video');}}>
                         <Text style={[styleHome.criteria, selected==='video'?{borderBottomColor:'#1976d2', color:'#1976d2'}:{borderBottomColor:'transparent', color:'#fff'}]}>
                             Video
                         </Text>

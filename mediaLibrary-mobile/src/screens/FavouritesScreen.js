@@ -41,25 +41,25 @@ export const FavouritesScreen = ({navigation}) => {
         
 
     return(
-    <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
+    <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage} accessibilityLabel='favouriteScreen'>
         <Header navigation={navigation}>MyFavourites</Header>
         
         <View flexDirection='row'>
             
             <View flexDirection='row' style={styles.header}>
-                <TouchableOpacity disabled={isLoading} onPress={()=>{setSelected('Image'); getFavouriteFiles('Image')}}>
+                <TouchableOpacity disabled={isLoading} onPress={()=>{setSelected('Image'); getFavouriteFiles('Image')}} accessibilityLabel='imageFavourite'>
                     <Text style={[styles.headerText, selected==='Image' ? {borderBottomColor:'#1976d2', color:'#1976d2'}:{borderBottomColor:'transparent', color:'#fff'}]}>Images</Text>
                 </TouchableOpacity>
             </View>
             
             <View flexDirection='row' style={styles.header}>
-                <TouchableOpacity disabled={isLoading} onPress={()=>{setSelected('Audio'); getFavouriteFiles('Audio')}}>
+                <TouchableOpacity disabled={isLoading} onPress={()=>{setSelected('Audio'); getFavouriteFiles('Audio')}} accessibilityLabel='audioFavourite'>
                     <Text style={[styles.headerText, selected==='Audio' ? {borderBottomColor:'#1976d2', color:'#1976d2'}:{borderBottomColor:'transparent', color:'#fff'}]}>Audios</Text>
                 </TouchableOpacity>
             </View>
 
             <View flexDirection='row' style={styles.header}>
-                <TouchableOpacity disabled={isLoading} onPress={()=>{setSelected('Video'); getFavouriteFiles('Video')}}>
+                <TouchableOpacity disabled={isLoading} onPress={()=>{setSelected('Video'); getFavouriteFiles('Video')}} accessibilityLabel='videoFavourite'>
                     <Text style={[styles.headerText, selected==='Video' ? {borderBottomColor:'#1976d2', color:'#1976d2'}:{borderBottomColor:'transparent', color:'#fff'}]}>Videos</Text>
                 </TouchableOpacity>
             </View>

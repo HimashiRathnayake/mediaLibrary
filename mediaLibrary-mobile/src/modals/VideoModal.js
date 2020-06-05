@@ -10,7 +10,7 @@ import {getIsFavorite, addToFavourite, removeFromFavorites} from '../api/favorit
 
 const DISABLED_OPACITY = 0.3;
 
-export const VideoModal = ({visible, setVisible, videoModal, setRefresh}) => {
+export const VideoModal = ({visible, setVisible, videoModal, setRefresh, insideFolder}) => {
 
     const [isLoading, setLoading]= useState(true);
     const [detailsModal, setDetailsModal] = useState(false);
@@ -84,10 +84,10 @@ export const VideoModal = ({visible, setVisible, videoModal, setRefresh}) => {
     return(
         <View>
         <Modal style={stylesScreen.modal} transparent={true} animationType='slide' visible={visible} onRequestClose={()=>{setVisible(false);}}>
-            <View style={[stylesScreen.modal]}>
+            <View style={[stylesScreen.modal]} accessibilityLabel='videoModal'>
                 <View style={[stylesScreen.modalView, {opacity: isLoading ? DISABLED_OPACITY : 1.0}]}>
 
-                    <TouchableOpacity onPress={()=>{setVisible(false);}} style={{flexDirection:'row-reverse', marginLeft: 20, marginTop: 30, position: 'absolute'}}>
+                    <TouchableOpacity accessibilityLabel='backV' onPress={()=>{setVisible(false);}} style={{flexDirection:'row-reverse', marginLeft: 20, marginTop: 30, position: 'absolute'}}>
                         <Ionicons name='md-arrow-back' style={stylesScreen.icon}/>  
                     </TouchableOpacity>
                     <View style={{ alignItems: "center", marginTop: 24 }}>
@@ -106,7 +106,7 @@ export const VideoModal = ({visible, setVisible, videoModal, setRefresh}) => {
                         />
                     </View>
                     
-                    <View flexDirection='row-reverse' style={stylesScreen.iconBottomSet}>
+                    <View flexDirection='row-reverse' style={stylesScreen.iconBottomSet} accessibilityLabel='buttonsV'>
                         <ToolTip content='Delete Audio' dark={false} 
                             onPress={()=>{ 
                                 Alert.alert('Do you want to delete video','',[
@@ -130,7 +130,7 @@ export const VideoModal = ({visible, setVisible, videoModal, setRefresh}) => {
                     </View> 
 
                     <View style={stylesScreen.bottom}>
-                        <TouchableOpacity onPress={()=>setDetailsModal(true)}>
+                        <TouchableOpacity accessibilityLabel='detailsModalV' onPress={()=>setDetailsModal(true)}>
                             <View flexDirection='row'>
                                 <Text style={[stylesScreen.bottomText, {marginRight:10}]}>View & edit Details</Text>
                                 <AntDesign name='caretdown' style={stylesScreen.bottomText}/>
@@ -146,8 +146,10 @@ export const VideoModal = ({visible, setVisible, videoModal, setRefresh}) => {
             type='Video' 
             detailsModal={detailsModal} 
             setDetailsModal={setDetailsModal} 
+            setVisible={setVisible}
             renameFile={renamevideo} 
             setRefresh={setRefresh}
+            enableFolder={insideFolder}
         />
 
         </View>

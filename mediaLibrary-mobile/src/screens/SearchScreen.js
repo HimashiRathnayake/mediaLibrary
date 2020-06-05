@@ -8,7 +8,7 @@ export const SearchScreen = ({route,navigation}) => {
     const type=route.params.type;
 
     return(
-        <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
+        <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage} accessibilityLabel='searchScreen'>
             <Header navigation={navigation}>Search {type}s</Header>
             <KeyboardAvoidingView flex={1} behavior='padding' keyboardVerticalOffset={-200}>
 
@@ -40,6 +40,7 @@ export const SearchScreen = ({route,navigation}) => {
                                     underlineColorAndroid="transparent"
                                     onChangeText={props.handleChange('title')}
                                     value={props.values.title}
+                                    accessibilityLabel='title'
                                 />
                                 <TextInput 
                                     style={searchStyle.input}
@@ -48,6 +49,7 @@ export const SearchScreen = ({route,navigation}) => {
                                     underlineColorAndroid="transparent"
                                     onChangeText={props.handleChange('subject')}
                                     value={props.values.subject}
+                                    accessibilityLabel='subject'
                                 />
                                 <TextInput 
                                     style={searchStyle.input}
@@ -56,6 +58,7 @@ export const SearchScreen = ({route,navigation}) => {
                                     underlineColorAndroid="transparent"
                                     onChangeText={props.handleChange('artist')}
                                     value={props.values.artist}
+                                    accessibilityLabel='artist'
                                 />
                             </View>}
 
@@ -68,6 +71,7 @@ export const SearchScreen = ({route,navigation}) => {
                                     underlineColorAndroid="transparent"
                                     onChangeText={props.handleChange('title')}
                                     value={props.values.title}
+                                    accessibilityLabel='title'
                                 />
                                 <TextInput 
                                     style={searchStyle.input}
@@ -76,6 +80,7 @@ export const SearchScreen = ({route,navigation}) => {
                                     underlineColorAndroid="transparent"
                                     onChangeText={props.handleChange('album')}
                                     value={props.values.album}
+                                    accessibilityLabel='album'
                                 />
                                 <TextInput 
                                     style={searchStyle.input}
@@ -84,6 +89,7 @@ export const SearchScreen = ({route,navigation}) => {
                                     underlineColorAndroid="transparent"
                                     onChangeText={props.handleChange('artist')}
                                     value={props.values.artist}
+                                    accessibilityLabel='artist'
                                 />
                                 <TextInput 
                                     style={searchStyle.input}
@@ -92,6 +98,7 @@ export const SearchScreen = ({route,navigation}) => {
                                     underlineColorAndroid="transparent"
                                     onChangeText={props.handleChange('year')}
                                     value={props.values.year}
+                                    accessibilityLabel='year'
                                 />
                             </View>}
 
@@ -104,6 +111,7 @@ export const SearchScreen = ({route,navigation}) => {
                                     underlineColorAndroid="transparent"
                                     onChangeText={props.handleChange('title')}
                                     value={props.values.title}
+                                    accessibilityLabel='title'
                                 />
                                 <TextInput 
                                     style={searchStyle.input}
@@ -112,10 +120,11 @@ export const SearchScreen = ({route,navigation}) => {
                                     underlineColorAndroid="transparent"
                                     onChangeText={props.handleChange('artist')}
                                     value={props.values.artist}
+                                    accessibilityLabel='artist'
                                 />
                             </View>}                            
 
-                        <TouchableOpacity style={searchStyle.submitButton} onPress={()=>{props.handleSubmit();}}>
+                        <TouchableOpacity accessibilityLabel='search' style={searchStyle.submitButton} onPress={()=>{props.handleSubmit();}}>
                             <Text style={searchStyle.submitText}>Search</Text>
                         </TouchableOpacity>
                     </View>

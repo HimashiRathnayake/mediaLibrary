@@ -26,7 +26,7 @@ export const AllImageScreen = ({navigation, route}) => {
     },[refresh])
 
     return(
-        <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
+        <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage} accessibilityLabel='allImageScreen'>
             <Header navigation={navigation}>Image</Header>
             <View flex={1}>
                 <ImageDisplayer setRefresh={setRefresh} images={images} count={count}/>

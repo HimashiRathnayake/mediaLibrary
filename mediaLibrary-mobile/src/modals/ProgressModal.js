@@ -4,7 +4,7 @@ import {Text, View, ProgressBarAndroid, Dimensions, Modal, StyleSheet} from 'rea
 export const ProgressModal = ({visible, type}) => {
     return(
         <Modal transparent={true} animationType='fade' visible={visible} onRequestClose={()=>{}}>
-            <View style={styleProgress.modal}>
+            <View style={styleProgress.modal} accessibilityLabel='progressModal'>
                 <Text style={styleProgress.text}>{type}</Text>
                 <ProgressBarAndroid styleAttr='Horizontal' style={styleProgress.progressBar}/>
             </View>

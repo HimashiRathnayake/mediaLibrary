@@ -19,7 +19,7 @@ export const VideoScreen = ({navigation, route}) => {
         getVideosInFolder({folderId:route.params.folderId})
         .then((response)=>{
             setCount(response.count);
-            setVideos(response.videos);
+            setVideos(response.Videos);
         })
         .catch((error)=>{
             console.log(error)
@@ -54,12 +54,12 @@ export const VideoScreen = ({navigation, route}) => {
     } 
 
     return(
-        <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
+        <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage} accessibilityLabel='videoScreen'>
             <FileHeader navigation={navigation} route={route}/>
             <View>
-                <VideoDisplayer setRefresh={setRefresh} count={count} videos={videos}/>
+                <VideoDisplayer setRefresh={setRefresh} count={count} videos={videos} insideFolder={true}/>
                 <View style={styleVideo.iconContainer}>
-                    <TouchableOpacity onPress={()=>{openVideoPickerAsync()}}>
+                    <TouchableOpacity accessibilityLabel='uploadVideo' onPress={()=>{openVideoPickerAsync()}}>
                         <Text style={styleVideo.addVideoIcon}>+</Text>
                     </TouchableOpacity>
                 </View>

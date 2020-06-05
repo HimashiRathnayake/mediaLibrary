@@ -1,7 +1,7 @@
 import {StyleSheet, Dimensions} from 'react-native';
 
-const deviceHeight = Dimensions.get('screen').height;
-const deviceWidth = Dimensions.get('screen').width; 
+const deviceHeight = Dimensions.get('window').height;
+const deviceWidth = Dimensions.get('window').width; 
 
 export const stylesScreen = StyleSheet.create({
     upModal:{

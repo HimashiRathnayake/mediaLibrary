@@ -133,5 +133,23 @@ export const stylesScreen = StyleSheet.create({
     },
     owner: {
         color: 'rgba(52,52,52,0.5)',
-    }
+    },
+    coverContainer: {
+        marginTop: 20,
+        width: 130,
+        height: 130,
+        alignSelf: 'center',
+        alignItems: 'stretch',
+        elevation: 8,
+        backgroundColor: '#0000',
+        borderRadius: 60,
+        marginBottom: -20
+    },
+    image:{
+        width: 120,
+        height: 120,
+        borderRadius: 60,
+        alignSelf:'center',
+        justifyContent: 'center'
+    },
 });

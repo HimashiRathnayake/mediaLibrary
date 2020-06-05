@@ -15,7 +15,7 @@ export const ToolTip = ({content, children, onPress, dark}) => {
             onClose={()=>setToolTip(false)}
             contentStyle={{backgroundColor:dark?'rgba(128,128,127,0.6)':'#242424'}}
         >
-            <TouchableOpacity onPress={onPress} onLongPress={()=>setToolTip(true)}>
+            <TouchableOpacity accessibilityLabel='tooltipButton' onPress={onPress} onLongPress={()=>setToolTip(true)}>
                 {children}
             </TouchableOpacity>
         </Tooltip>

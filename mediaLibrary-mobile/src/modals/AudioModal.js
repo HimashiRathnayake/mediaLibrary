@@ -13,7 +13,7 @@ const DISABLED_OPACITY = 0.6;
 const LOADING_STRING = "... loading ...";
 const BUFFERING_STRING = "... buffering ...";
 
-export const AudioModal = ({audio, index, visible, setVisible, openModal, setRefresh}) => {
+export const AudioModal = ({audio, index, visible, setVisible, openModal, setRefresh, insideFolder}) => {
 
     const [playbackInstance, setInstance] = useState(null); 
     const [isSeeking, setSeeking] = useState(false);
@@ -209,13 +209,13 @@ export const AudioModal = ({audio, index, visible, setVisible, openModal, setRef
     return(
         <View>
         <Modal style={stylesScreen.modal} transparent={true} animationType='slide' visible={visible} onRequestClose={()=>{stopPlaying()}}>
-            <View style={stylesScreen.modal}>
+            <View style={stylesScreen.modal} accessibilityLabel='audioModal'>
                 <View style={[stylesScreen.modalView, {opacity: isLoading ? DISABLED_OPACITY : 1.0}]}>
-                    <TouchableOpacity onPress={()=>{stopPlaying()}} style={{flexDirection:'row-reverse', marginLeft: 20, marginTop: 20, position: 'absolute'}}>
+                    <TouchableOpacity accessibilityLabel='stop' onPress={()=>{stopPlaying()}} style={{flexDirection:'row-reverse', marginLeft: 20, marginTop: 20, position: 'absolute'}}>
                         <Ionicons name='md-arrow-back' style={stylesScreen.icon}/>  
                     </TouchableOpacity>
 
-                    <View flexDirection='row' marginTop={20} marginLeft={Dimensions.get('screen').width-100} flexDirection='row-reverse' position='absolute'>
+                    <View accessibilityLabel='buttonSetView' flexDirection='row' marginTop={20} marginLeft={Dimensions.get('screen').width-100} flexDirection='row-reverse' position='absolute'>
                         <ToolTip content='Delete Audio' dark={false} 
                             onPress={()=>{ 
                                 Alert.alert('Do you want to delete audio','',[
@@ -240,7 +240,7 @@ export const AudioModal = ({audio, index, visible, setVisible, openModal, setRef
                     
                     <View style={{ alignItems: "center", marginTop: 24 }}>
                         <Text style={stylesScreen.headerTop}>MyMedia Audio</Text>
-                        <Text style={stylesScreen.header}>{audio.audioName.substring(0,25)}</Text>
+                        <Text accessibilityLabel='audioName' style={stylesScreen.header}>{audio.audioName.substring(0,25)}</Text>
                     </View>
 
                     <View style={stylesScreen.coverContainer}>
@@ -269,23 +269,23 @@ export const AudioModal = ({audio, index, visible, setVisible, openModal, setRef
                     </View>
                 
                     <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
-                        <TouchableOpacity onPress={()=>backPressed()}>
+                        <TouchableOpacity accessibilityLabel='next' onPress={()=>backPressed()}>
                             <FontAwesome5 name="backward" size={32} color="#93A8B3"></FontAwesome5>
                         </TouchableOpacity>
-                        <TouchableOpacity style={stylesScreen.playButtonContainer} disabled={isLoading} onPress={()=>onPlayPausePressed()}>
+                        <TouchableOpacity accessibilityLabel='play' style={stylesScreen.playButtonContainer} disabled={isLoading} onPress={()=>onPlayPausePressed()}>
                             <FontAwesome5
                                 name = {isPlaying? 'pause' :'play'}
                                 size={32}
                                 color="#3D425C"
                             />
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={()=>forwardPressed()}>
+                        <TouchableOpacity accessibilityLabel='forward' onPress={()=>forwardPressed()}>
                             <FontAwesome5 name="forward" size={32} color="#93A8B3"></FontAwesome5>
                         </TouchableOpacity>
                     </View>
                     
                     <View style={stylesScreen.bottom}>
-                        <TouchableOpacity onPress={()=>setDetailsModal(true)}>
+                        <TouchableOpacity accessibilityLabel='showDetails' onPress={()=>setDetailsModal(true)}>
                             <View flexDirection='row'>
                                 <Text style={[stylesScreen.bottomText, {marginRight:10}]}>View & edit Details</Text>
                                 <AntDesign name='caretdown' style={stylesScreen.bottomText}/>
@@ -303,6 +303,7 @@ export const AudioModal = ({audio, index, visible, setVisible, openModal, setRef
             setDetailsModal={setDetailsModal} 
             renameFile={renameaudio} 
             setRefresh={setRefresh}
+            enableFolder={insideFolder}
         />
         
         </View>

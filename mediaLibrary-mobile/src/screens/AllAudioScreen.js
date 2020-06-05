@@ -14,6 +14,7 @@ export const AllAudioScreen = ({navigation, route}) => {
         navigation.addListener('focus', ()=>{
             setRefresh(true);
         });
+        setRefresh(false);
         getAudios()
         .then((response)=>{
             setCount(response.count);
@@ -22,11 +23,10 @@ export const AllAudioScreen = ({navigation, route}) => {
         .catch((error)=>{
             console.log(error)
         })
-        setRefresh(false);
     },[refresh])
 
     return(
-        <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
+        <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage} accessibilityLabel='allAudioScreen'>
             <Header navigation={navigation}>Audio</Header>
             <AudioDisplayer setRefresh={setRefresh} audios={audios} count={count}/>
         </ImageBackground>

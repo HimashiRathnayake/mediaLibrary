@@ -60,12 +60,12 @@ export const ImageScreen = ({navigation, route}) => {
     }
     
     return(
-        <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
+        <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage} accessibilityLabel='imageScreen'>
             <FileHeader navigation={navigation} route={route}/>
             <View>
                 <ImageDisplayer setRefresh={setRefresh} images={images} count={count} shouldMove={true}/>
                 <View style={stylesScreen.iconContainer}>
-                    <TouchableOpacity onPress={()=>{openImagePickerAsync()}}>
+                    <TouchableOpacity accessibilityLabel='uploadImage' onPress={()=>{openImagePickerAsync()}}>
                         <Text style={stylesScreen.addImageIcon}>+</Text>
                     </TouchableOpacity>
                 </View>

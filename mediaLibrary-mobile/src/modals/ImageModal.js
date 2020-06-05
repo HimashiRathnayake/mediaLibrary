@@ -7,7 +7,7 @@ import { DetailsModal } from './DetailsModal';
 import {getIsFavorite, addToFavourite, removeFromFavorites} from '../api/favorites';
 import {ToolTip} from '../commons/ToolTip';
 
-export const ImageModal = ({modelImage, modelVisible, setVisible, setRefresh, enableFolder}) => {
+export const ImageModal = ({modelImage, modelVisible, setVisible, setRefresh, enableFolder, setImage}) => {
     const [detailsModal, setDetailsModal] = useState(false);
     const [isFavorite, setIsFavorite] = useState(null);
 
@@ -24,6 +24,7 @@ export const ImageModal = ({modelImage, modelVisible, setVisible, setRefresh, en
     },[modelImage])
 
     function deleteimage(imageId){
+        setImage(null)
         setVisible(false); 
         deleteImage({imageId: imageId})
         .then((response)=>{
@@ -88,7 +89,7 @@ export const ImageModal = ({modelImage, modelVisible, setVisible, setRefresh, en
 
             <Modal transparent={true} animationType='slide' visible={modelVisible} onRequestClose={()=>{setVisible(false); setIsFavorite(null)}}>
                 <View style={stylesScreen.upModal}>
-                    <View flexDirection= 'row-reverse' style={stylesScreen.upModal}>
+                    <View flexDirection= 'row-reverse' style={stylesScreen.upModal} accessibilityLabel='upModal'>
                         
                         
                         <ToolTip content='View Details' dark={true} onPress={()=>setDetailsModal(true)}>       
@@ -107,11 +108,11 @@ export const ImageModal = ({modelImage, modelVisible, setVisible, setRefresh, en
 
                         {isFavorite?
                         (
-                            <ToolTip dark={true} content='Remove from favourites' onPress={()=>removeFavorite(modelImage._id)}>
+                            <ToolTip dark={true} content='Remove from favourites' onPress={()=>{removeFavorite(modelImage._id); setIsFavorite(false)}}>
                                 <MaterialIcons name='favorite' style={[stylesScreen.icon,{color: '#ef5350'}]}/>
                             </ToolTip>
                         ):(
-                            <ToolTip dark={true} content='Add to favourites' onPress={()=>setFavorite(modelImage._id)}>
+                            <ToolTip dark={true} content='Add to favourites' onPress={()=>{setFavorite(modelImage._id); setIsFavorite(true);}}>
                                 <MaterialIcons name='favorite-border' style={stylesScreen.icon}/>
                             </ToolTip>
                         )}

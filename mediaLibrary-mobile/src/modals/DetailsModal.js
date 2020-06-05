@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Text, View, Modal, TouchableOpacity, TextInput, AsyncStorage} from 'react-native';
+import {Text, View, Modal, TouchableOpacity, TextInput, Image} from 'react-native';
 import { Ionicons, FontAwesome, MaterialIcons, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import {stylesScreen} from '../styles/modals/details';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -37,7 +37,7 @@ export const DetailsModal = ({file, type, detailsModal, setDetailsModal, setVisi
         setArtist(file.artist); 
         setAlbum(file.album);
         setSubject(file.subject); 
-        setYear(file.year);
+        if (year==='') {setYear('Unknown');} else{setYear(file.year);}
         if (type==='Audio'){setFileName(file.audioName); }
         else if (type==='Video'){setFileName(file.videoName)}
         else {setFileName(file.imageName)}        
@@ -46,7 +46,7 @@ export const DetailsModal = ({file, type, detailsModal, setDetailsModal, setVisi
     const userSet = file.accessList.map((val,key)=>{
         if (key===0){
             return(
-                <View style={stylesScreen.userContainer} key={key}>
+                <View style={stylesScreen.userContainer} key={key} accessibilityLabel={val._id}>
                     <FontAwesome name='user-circle' style={stylesScreen.userIcon}/>
                     <Text style={stylesScreen.userName}>{val.email.substring(0, 25)}</Text>
                     <Text style={stylesScreen.owner}>Owner</Text>
@@ -54,7 +54,7 @@ export const DetailsModal = ({file, type, detailsModal, setDetailsModal, setVisi
             )
         }else{
             return(
-                <View style={stylesScreen.userContainer} key={key}>
+                <View style={stylesScreen.userContainer} key={key} accessibilityLabel={val._id}>
                     <FontAwesome name='user-circle' style={stylesScreen.userIcon}/>
                     <Text style={stylesScreen.userName}>{val.email.substring(0, 25)}</Text>
                     <TouchableOpacity onPress={()=>removeFromShared(val._id, file._id)}>
@@ -67,41 +67,47 @@ export const DetailsModal = ({file, type, detailsModal, setDetailsModal, setVisi
 
     return(
 
-        <View>
+        <View accessibilityLabel='detailsModalView'>
         <Modal style={stylesScreen.modal} transparent={false} animationType='slide' visible={detailsModal} onRequestClose={()=>{setDetailsModal(false); setPressed(false);}}>
             <View style={stylesScreen.modal}>
                 <View style={{backgroundColor:'#fff', flex:1, justifyContent:'center'}}>
                     <View flexDirection='row' style={stylesScreen.detailsHeader}>
-                        <TouchableOpacity onPress={()=>{setDetailsModal(false); setPressed(false);}} style={{marginLeft: 20, marginTop:12}}>
+                        <TouchableOpacity accessibilityLabel='back1' onPress={()=>{setDetailsModal(false); setPressed(false);}} style={{marginLeft: 20, marginTop:12}}>
                             <Ionicons name='md-arrow-back' style={stylesScreen.icon}/>  
                         </TouchableOpacity>
                         <Text style={{fontWeight: 'bold', fontSize:20, marginTop:15, marginLeft:20}}>Details: </Text>
                     </View>
                     <ScrollView>
+
+                        {(type==='Image') && <View style={stylesScreen.coverContainer}>
+                            <Image source={{uri: file.path}} style={stylesScreen.image}/>
+                        </View>}
+
                         <View style={stylesScreen.detailsView}>
                             <View flexDirection='row'>
                                 <Text style={stylesScreen.detailTextLeft}>{type} Name :</Text>
                                 {pressed===false ? 
-                                (<View flexDirection='row'>
+                                (<View accessibilityLabel='renameUnpressed' flexDirection='row'>
                                     <Text style={stylesScreen.detailTextRight}>{fileName}</Text>
                                     <ToolTip content='Rename File' onPress={()=>{setPressed(true)}} dark={false}>
                                         <AntDesign name='edit' style={stylesScreen.renameIcon}/>
                                     </ToolTip>
                                 </View>):
-                                (<View>
+                                (<View accessibilityLabel='renamePressed'>
                                     <View flexDirection='row'>
                                         <TextInput 
                                             style={stylesScreen.detailTextRight} 
                                             placeholder={fileName}
                                             onChangeText={(newName)=>setName(newName)}
                                             value={name}
+                                            accessibilityLabel='newname'
                                         />
                                     </View>
                                     <View flexDirection='row'>
-                                        <TouchableOpacity onPress={()=>{renameFile(file._id, name); setPressed(false)}}>
+                                        <TouchableOpacity accessibilityLabel='renamebutton' onPress={()=>{renameFile(file._id, name); setPressed(false)}}>
                                             <Text style={stylesScreen.button}>Rename</Text>
                                         </TouchableOpacity>
-                                        <TouchableOpacity onPress={()=>{setPressed(false);}}>
+                                        <TouchableOpacity accessibilityLabel='cancelbutton' onPress={()=>{setPressed(false);}}>
                                             <Text style={stylesScreen.button}>Cancel</Text>
                                         </TouchableOpacity>
                                     </View>
@@ -116,7 +122,7 @@ export const DetailsModal = ({file, type, detailsModal, setDetailsModal, setVisi
                             {(file!=null) && (enableFolder===true) && <View flexDirection='row'>
                                 <Text style={stylesScreen.detailTextLeft}>Folder :</Text>
                                 <Text style={stylesScreen.detailTextRight}>{file.folder.folderName}</Text>
-                                <TouchableOpacity onPress={()=>{setFolderVisible(true);}}>
+                                <TouchableOpacity accessibilityLabel='folderSet' onPress={()=>{setFolderVisible(true);}}>
                                     <MaterialCommunityIcons name='file-move' style={stylesScreen.renameIcon}/>
                                 </TouchableOpacity>
                             </View>}
@@ -124,7 +130,7 @@ export const DetailsModal = ({file, type, detailsModal, setDetailsModal, setVisi
                             
                         <View style={{backgroundColor: 'white'}}>
                             <Text style={stylesScreen.accessText}>Who have access :</Text>
-                            <TouchableOpacity onPress={()=>setShareModal(true)}>
+                            <TouchableOpacity accessibilityLabel='shareModalVisible' onPress={()=>setShareModal(true)}>
                                 <View style={stylesScreen.userContainer}>
                                     <Ionicons name="md-person-add" style={stylesScreen.userIcon}/>
                                     <Text style={stylesScreen.userName}>Share with other users</Text>

@@ -6,9 +6,9 @@ import {AuthContext} from './context';
 import {DrawerNavigator} from './DrawerNavigator';
 import {AsyncStorage} from 'react-native';
 import {AuthNavigator} from '../navigators/StackNavigators';
-
+import JWT from 'expo-jwt';
 const Stack =createStackNavigator();
-
+const key= 'secret';
 export default ()=>{
 	const [state, dispatch] = React.useReducer((prevState, action)=>{
 		switch (action.type) {
@@ -38,14 +38,16 @@ export default ()=>{
 		const bootstrapAsync = async () => {
 			let userToken;
 			try {
-			  	userToken = await AsyncStorage.getItem('userToken');
+				  userToken = await AsyncStorage.getItem('userToken');
+				  const decoded = JWT.decode(userToken, key);
 			} catch (e) {
-				console.log(e);
+				console.log(e)
+				authContext.signOut()
 			}
 			dispatch({ type: 'RESTORE_TOKEN', token: userToken });
-		  	};
-			bootstrapAsync();	
-		}, []);
+		};
+		bootstrapAsync();	
+	}, []);
 
 	const authContext = React.useMemo(
 		() => ({

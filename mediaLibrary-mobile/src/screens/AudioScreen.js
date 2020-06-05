@@ -19,7 +19,7 @@ export const AudioScreen = ({navigation, route}) => {
         getAudiosInFolder({folderId:route.params.folderId})
         .then((response)=>{
             setCount(response.count);
-            setAudios(response.audios);
+            setAudios(response.Audios);
         })
         .catch((error)=>{
             console.log(error)
@@ -55,12 +55,12 @@ export const AudioScreen = ({navigation, route}) => {
     }
     
     return(
-        <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage}>
+        <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage} accessibilityLabel='audioScreen'>
             <FileHeader navigation={navigation} route={route}/>
             <View>
-                <AudioDisplayer count={count} setRefresh={setRefresh} audios={audios}/>
+                <AudioDisplayer count={count} setRefresh={setRefresh} audios={audios} insideFolder={true}/>
                 <View style={styleAudio.iconContainer}>
-                    <TouchableOpacity onPress={()=>{openAudioPickerAsync()}}>
+                    <TouchableOpacity onPress={()=>{openAudioPickerAsync()}} accessibilityLabel='uploadAudio'>
                         <Text style={styleAudio.addAudioIcon}>+</Text>
                     </TouchableOpacity>
                 </View>
