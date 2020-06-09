@@ -2,6 +2,8 @@
     "env":{
         "JWT_KEY": "secret",
         "MONGO_ATLAS_PW": "mediaLibraryPassword",
-        "SERVER": "http://192.168.1.5:3000/"
+        "SERVER": "http://192.168.1.5:3000/",
+        "AWS_secretAccessKey": "sp3cE6P/Vk5lx75c1J0ieHNqGbw7uvoIroTqnmdB",
+        "AWS_accessKeyId": "AKIAJF4RWB6KLDPH7D6A"
     }
 }
