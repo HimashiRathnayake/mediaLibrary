@@ -33,17 +33,18 @@ export const VerifyScreen = ({navigation, route}) => {
                             setIsLoading(true);
                             verifyResetToken({token: values.token})
                             .then((response)=>{
+                                setIsLoading(false);
                                 console.log(response)
-                            //     if (response.message==='Verification code has sent'){
-                            //         navigation.navigate('Verify')
-                            //     }else if (response.message==="No user found"){
-                            //         Alert.alert('Alert',"Email is invalid",[{text: 'OK', onPress: ()=>actions.resetForm()}])
-                            //         setIsLoading(false);
-                            //     }
-                            //     else{
-                            //         Alert.alert('Alert',"Something went wrong",[{text: 'OK', onPress: ()=>actions.resetForm()}])
-                            //         setIsLoading(false);
-                            //     }
+                                if (response.message==='Verification code has sent'){
+                                    navigation.navigate('Verify')
+                                }else if (response.message==="No user found"){
+                                    Alert.alert('Alert',"Email is invalid",[{text: 'OK', onPress: ()=>actions.resetForm()}])
+                                    setIsLoading(false);
+                                }
+                                else{
+                                    Alert.alert('Alert',"Something went wrong",[{text: 'OK', onPress: ()=>actions.resetForm()}])
+                                    setIsLoading(false);
+                                }
                             })
                             .catch((error)=>{console.log(error)});
                     }}

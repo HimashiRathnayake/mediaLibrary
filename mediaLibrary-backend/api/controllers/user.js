@@ -195,7 +195,7 @@ exports.verify_token = (req, res, next) => {
                 });
             }else{
                 res.status(200).json({
-                    error: "Reset token is valid."
+                    message: "Reset token is valid."
                 });
             }
         })
