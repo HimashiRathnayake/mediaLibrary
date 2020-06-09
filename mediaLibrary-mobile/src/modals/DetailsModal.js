@@ -8,7 +8,7 @@ import {removeUser} from '../api/share';
 import { FolderList } from './FolderList';
 import { ToolTip } from '../commons/ToolTip';
  
-export const DetailsModal = ({file, type, detailsModal, setDetailsModal, setVisible, renameFile, setRefresh, enableFolder}) => {
+export const DetailsModal = ({file, type, detailsModal, setDetailsModal, setVisible, renameFile, setRefresh, enableFolder, setFile}) => {
 
     const [pressed, setPressed] = useState(false);
     const [shareModal, setShareModal] = useState(false);
@@ -143,7 +143,7 @@ export const DetailsModal = ({file, type, detailsModal, setDetailsModal, setVisi
             </View>
         </Modal>
         <ShareModal shareModal={shareModal} setShareModal={setShareModal} type={type} fileId={file._id} setRefresh={setRefresh}/>
-        <FolderList visible={folderVisible} setVisible={setFolderVisible} fileId={file._id} type={type} setRefresh={setRefresh} setDetailsModal={setDetailsModal} setFileModal={setVisible}/>
+        <FolderList visible={folderVisible} setVisible={setFolderVisible} fileId={file._id} type={type} setRefresh={setRefresh} setDetailsModal={setDetailsModal} setFileModal={setVisible} setFile={setFile}/>
         </View>
 
 );

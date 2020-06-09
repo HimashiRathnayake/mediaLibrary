@@ -66,45 +66,42 @@ export const ImageDisplayer = ({setRefresh, images, count, shouldMove}) => {
                 (<ScrollView style={stylesScreen.container}>
                     <View style={stylesScreen.container} accessibilityLabel='imagesView'>
                         {(modelImage !== null) && (
+                            <View>
                             <ImageModal modelImage={modelImage} modelVisible={modelVisible} setVisible={setVisible} setRefresh={setRefresh} enableFolder={shouldMove} setImage={setImage}/>
+                            
+                            <Modal style={stylesScreen.folderActionModal} transparent={true} animationType='fade' visible={actionModalVisible} onRequestClose={()=>{}}>
+                                <TouchableWithoutFeedback accessibilityLabel='imageActionModalbutton' onPress={()=>setActionModalVisible(false)}>
+                                    <View style={stylesScreen.folderActionModal}>
+                                        <View style={stylesScreen.modalContainer}>
+                                            <TouchableOpacity accessibilityLabel='renameImage' onPress={()=>{setActionModalVisible(false); setRenameModalVisible(true);}}>
+                                                <Text style={stylesScreen.modalText}>Rename Image</Text>
+                                            </TouchableOpacity>
+                                            <TouchableOpacity accessibilityLabel='deleteImage' 
+                                                onPress={()=> {setActionModalVisible(false); 
+                                                    Alert.alert('Do you want to delete image','',[
+                                                        {text: 'Cancel'},
+                                                        {text: "Yes", onPress: ()=>deleteimage(modelImage._id)}
+                                                    ],{cancelable:false})}}>
+                                                <Text style={stylesScreen.modalText}>Delete Image</Text>
+                                            </TouchableOpacity>
+                                            {(shouldMove!==undefined)&&
+                                            <TouchableOpacity accessibilityLabel='moveImage' onPress={()=>setfolderListVisible(true)}>
+                                                <Text style={stylesScreen.modalText}>Move to Folder</Text>
+                                            </TouchableOpacity>}
+                                        </View>
+                                    </View>
+                                </TouchableWithoutFeedback>
+                            </Modal>
+
+                            <FolderModal modalVisible={renameModal} setVisible={setRenameModalVisible} folderId={modelImage._id} setRefresh={setRefresh} actionType={'RenameImage'}/>
+                            <FolderList visible={folderList} setVisible={setfolderListVisible} fileId={modelImage._id} type={'Image'} setRefresh={setRefresh} setDetailsModal={setActionModalVisible} setFileModal={setVisible} setFile={setImage}/>
+                            </View>
                         )}
                         {imageSet}
                     </View>
                 </ScrollView>)
             }
 
-                {(modelImage !== null) && (
-                <Modal style={stylesScreen.folderActionModal} transparent={true} animationType='fade' visible={actionModalVisible} onRequestClose={()=>{}}>
-                    <TouchableWithoutFeedback accessibilityLabel='imageActionModalbutton' onPress={()=>setActionModalVisible(false)}>
-                        <View style={stylesScreen.folderActionModal}>
-                            <View style={stylesScreen.modalContainer}>
-                                <TouchableOpacity accessibilityLabel='renameImage' onPress={()=>{setActionModalVisible(false); setRenameModalVisible(true);}}>
-                                    <Text style={stylesScreen.modalText}>Rename Image</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity accessibilityLabel='deleteImage' 
-                                    onPress={()=> {setActionModalVisible(false); 
-                                        Alert.alert('Do you want to delete image','',[
-                                            {text: 'Cancel'},
-                                            {text: "Yes", onPress: ()=>deleteimage(modelImage._id)}
-                                        ],{cancelable:false})}}>
-                                    <Text style={stylesScreen.modalText}>Delete Image</Text>
-                                </TouchableOpacity>
-                                {(shouldMove!==undefined)&&
-                                <TouchableOpacity accessibilityLabel='moveImage' onPress={()=>setfolderListVisible(true)}>
-                                    <Text style={stylesScreen.modalText}>Move to Folder</Text>
-                                </TouchableOpacity>}
-                            </View>
-                        </View>
-                    </TouchableWithoutFeedback>
-                </Modal>)}
-
-                {(modelImage !== null) && (
-                <FolderModal modalVisible={renameModal} setVisible={setRenameModalVisible} folderId={modelImage._id} setRefresh={setRefresh} actionType={'RenameImage'}/>
-                )}
-
-                {(modelImage !== null) && (
-                <FolderList visible={folderList} setVisible={setfolderListVisible} fileId={modelImage._id} type={'Image'} setRefresh={setRefresh} setDetailsModal={setActionModalVisible}/>
-                )}
         </View>
     )
 }

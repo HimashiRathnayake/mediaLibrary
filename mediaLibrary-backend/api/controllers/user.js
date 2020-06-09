@@ -189,6 +189,11 @@ exports.reset_password = (req, res, next) => {
     User.findOne({resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } })
         .exec()
         .then(user => {
+            if (user===null){
+                res.status(500).json({
+                    error: "Password reset token is invalid or has expired."
+                });
+            }else{
             bcrypt.hash(req.body.password, 10, (err, hash) => {
                 if (err){
                     return res.status(500).json({
@@ -204,11 +209,11 @@ exports.reset_password = (req, res, next) => {
                     })
                 }
             });
+        }
         })
         .catch(err=>{
-            console.log(err);
             res.status(500).json({
-                error: "Password reset token is invalid or has expired."
+                error: "Something went wrong."
             });
         });
 }

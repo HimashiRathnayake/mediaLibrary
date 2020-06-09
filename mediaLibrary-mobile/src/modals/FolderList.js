@@ -4,11 +4,12 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { getFolders, moveFile } from '../api/folder';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-export const FolderList = ({visible, setVisible, fileId, type, setRefresh, setDetailsModal, setFileModal}) => {
+export const FolderList = ({visible, setVisible, fileId, type, setRefresh, setDetailsModal, setFileModal, setFile}) => {
 
     const [folders, setFolders] = useState([]);
 
     function moveToFolder(folderId){
+        setFile(null);
         setVisible(false);
         moveFile(fileId, folderId, type)
         .then((response)=>{

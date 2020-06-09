@@ -132,6 +132,7 @@ export const ImageModal = ({modelImage, modelVisible, setVisible, setRefresh, en
                 renameFile={renameimage} 
                 setRefresh={setRefresh}
                 enableFolder={enableFolder}
+                setFile={setImage}
             />
 
         </View>

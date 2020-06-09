@@ -10,7 +10,7 @@ import {getIsFavorite, addToFavourite, removeFromFavorites} from '../api/favorit
 
 const DISABLED_OPACITY = 0.3;
 
-export const VideoModal = ({visible, setVisible, videoModal, setRefresh, insideFolder}) => {
+export const VideoModal = ({visible, setVisible, videoModal, setRefresh, insideFolder, setVideoModal}) => {
 
     const [isLoading, setLoading]= useState(true);
     const [detailsModal, setDetailsModal] = useState(false);
@@ -150,6 +150,7 @@ export const VideoModal = ({visible, setVisible, videoModal, setRefresh, insideF
             renameFile={renamevideo} 
             setRefresh={setRefresh}
             enableFolder={insideFolder}
+            setFile = {setVideoModal}
         />
 
         </View>

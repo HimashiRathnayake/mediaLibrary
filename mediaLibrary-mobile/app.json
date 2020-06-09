@@ -12,7 +12,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "splash": {  
+    "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
@@ -26,9 +26,10 @@
     "ios": {
       "supportsTablet": true
     },
-    "android":{
+    "android": {
       "package": "mymedia.com.mymedia",
-      "versionCode":1
-    }
+      "versionCode": 1
+    },
+    "description": ""
   }
 }

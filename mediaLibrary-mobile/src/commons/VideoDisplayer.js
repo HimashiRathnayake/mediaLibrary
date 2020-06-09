@@ -70,7 +70,7 @@ return(
 				<View style={styleVideo.container} accessibilityLabel='videoContainer'>
 					{(videoModal !== null) && (
 						<View>
-						<VideoModal visible={visible} setVisible={setVisible} videoModal={videoModal} setRefresh={setRefresh} insideFolder={insideFolder}/>
+						<VideoModal visible={visible} setVisible={setVisible} videoModal={videoModal} setRefresh={setRefresh} insideFolder={insideFolder} setVideoModal={setVideoModal}/>
 						<Modal style={stylesScreen.folderActionModal} transparent={true} animationType='fade' visible={actionModalVisible} onRequestClose={()=>{setActionModalVisible(false)}}>
 							<TouchableWithoutFeedback accessibilityLabel='videoActionModalbutton' onPress={()=>setActionModalVisible(false)}>
 								<View style={stylesScreen.folderActionModal}>
@@ -97,7 +97,7 @@ return(
 						
 						<FolderModal modalVisible={renameModal} setVisible={setRenameModalVisible} folderId={videoModal._id} setRefresh={setRefresh} actionType={'RenameVideo'}/>
 						
-						<FolderList visible={folderList} setVisible={setfolderListVisible} fileId={videoModal._id} type={'Video'} setRefresh={setRefresh} setDetailsModal={setActionModalVisible}/>
+						<FolderList visible={folderList} setVisible={setfolderListVisible} fileId={videoModal._id} type={'Video'} setRefresh={setRefresh} setDetailsModal={setActionModalVisible} setFileModal={setVisible} setFile={setVideoModal}/>
 						</View>
 					)}
 					{videoSet}

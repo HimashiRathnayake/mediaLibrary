@@ -1,19 +1,18 @@
 import React from 'react';
 import { ImageBackground, View, Text, TouchableOpacity, TextInput, Alert, KeyboardAvoidingView} from 'react-native';
-import { Entypo, FontAwesome, AntDesign } from '@expo/vector-icons';
+import { Entypo, FontAwesome, AntDesign, FontAwesome5 } from '@expo/vector-icons';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import {styles} from '../styles/loginscreen';
+import {styles} from '../styles/forgotPScreen';
 import {Formik} from 'formik';
 import * as yup from 'yup';
 import {login} from "../api/user";
 import {AuthContext} from '../navigators/context';
 
 const validationSchema = yup.object({
-    email: yup.string().required(),
-    password: yup.string().required(),
+    email: yup.string().required().email(),
 });
 
-export const LoginScreen = ({navigation}) => {
+export const ForgotPasswordScreen = ({navigation}) => {
 
     const [isLoading, setIsLoading] = React.useState(false);
     const {signIn} = React.useContext(AuthContext); 
@@ -49,8 +48,10 @@ export const LoginScreen = ({navigation}) => {
                     <View style={styles.form}>
 
                         <View style={styles.headerContainer}>
-                            <Entypo name="folder-video" color="white" size={40} /> 
-                            <Text style={styles.headerText} accessibilityLabel='text1'>Login Here To Continue</Text>
+                            <FontAwesome5 name="lock" color="white" size={40} /> 
+                            <Text style={styles.headerText} accessibilityLabel='text1'>Forgot Password?</Text>
+                            <Text style={styles.smallHeader} accessibilityLabel='text01'>We just need your registered email address</Text>
+                            <Text style={styles.smallHeader} accessibilityLabel='text01'>to send your password reset token.</Text>
                         </View>
 
                         <View style={styles.inputContainer} accessibilityLabel='view2'> 
@@ -65,36 +66,21 @@ export const LoginScreen = ({navigation}) => {
                                 onChangeText={props.handleChange('email')}
                                 value={props.values.email}
                                 accessibilityLabel='email'
+                                onSubmitEditing={()=>props.handleSubmit()}
                             />
                         </View>  
                         <Text style={styles.errorText} accessibilityLabel='emailError'>{props.touched.email && props.errors.email}</Text>
 
-                        <View style={styles.inputContainer}> 
-                            <AntDesign name="lock" style={styles.inputIcon}/>  
-                            <TextInput 
-                                style={styles.input}
-                                placeholder='Password'
-                                placeholderTextColor="white"
-                                underlineColorAndroid="transparent"
-                                secureTextEntry={true}
-                                keyboardType='default'
-                                onChangeText={props.handleChange('password')}
-                                value={props.values.password}
-                                accessibilityLabel='password'
-                            />
-                        </View>  
-                        <Text style={styles.errorText} accessibilityLabel='passwordError'>{props.touched.password && props.errors.password}</Text>
-
                         <TouchableOpacity accessibilityLabel='submit' style={styles.loginbutton} disabled={isLoading} onPress={()=>{props.handleSubmit();}}>
-                            <Text style={styles.logintext}>LOGIN</Text>
+                            <Text style={styles.logintext}>NEXT</Text>
                         </TouchableOpacity>
                     </View>
                     </KeyboardAvoidingView>
                 )}    
                 </Formik>
             <View style={styles.bottom}>
+                <Text style={styles.bottomtext} accessibilityLabel='login' disabled={isLoading} onPress={()=>navigation.navigate('Login')}>Back To Login</Text>
                 <Text style={styles.bottomtext} accessibilityLabel='signup' disabled={isLoading} onPress={()=>navigation.navigate('SignUp')}>Create Account</Text>
-                <Text style={styles.bottomtext} accessibilityLabel='forget' disabled={isLoading} onPress={()=>navigation.navigate('ForgotP')}>Forgot Password?</Text>
             </View>
         </View>
     </ImageBackground>

@@ -13,7 +13,7 @@ const DISABLED_OPACITY = 0.6;
 const LOADING_STRING = "... loading ...";
 const BUFFERING_STRING = "... buffering ...";
 
-export const AudioModal = ({audio, index, visible, setVisible, openModal, setRefresh, insideFolder}) => {
+export const AudioModal = ({audio, index, visible, setVisible, openModal, setRefresh, insideFolder, setAudioModal}) => {
 
     const [playbackInstance, setInstance] = useState(null); 
     const [isSeeking, setSeeking] = useState(false);
@@ -304,6 +304,7 @@ export const AudioModal = ({audio, index, visible, setVisible, openModal, setRef
             renameFile={renameaudio} 
             setRefresh={setRefresh}
             enableFolder={insideFolder}
+            setFile={setAudioModal}
         />
         
         </View>

@@ -70,44 +70,44 @@ export const AudioDisplayer = ({setRefresh, audios, count, insideFolder}) => {
                 (<ScrollView style={styleAudio.container} accessibilityLabel='audioView'>
                     <View style={styleAudio.container}>
                         {(audioModal !== null) && (
+                        <View>
                         <AudioModal visible={visible} setVisible={setVisible} openModal={openModal} index={index} audio={audioModal} setRefresh={setRefresh} setAudioModal={setAudioModal} insideFolder={insideFolder}/>
+                        
+                        <Modal style={stylesScreen.folderActionModal} transparent={true} animationType='fade' visible={actionModalVisible} onRequestClose={()=>{setActionModalVisible(false)}}>
+                            <TouchableWithoutFeedback accessibilityLabel='audioActionModalbutton' onPress={()=>setActionModalVisible(false)}>
+                                <View style={stylesScreen.folderActionModal}>
+                                    <View style={stylesScreen.modalContainer}>
+                                        <TouchableOpacity accessibilityLabel='renameAudio' onPress={()=>{setActionModalVisible(false); setRenameModalVisible(true);}}>
+                                            <Text style={stylesScreen.modalText}>Rename Audio</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity accessibilityLabel='deleteAudio' 
+                                            onPress={()=> {setActionModalVisible(false); 
+                                                Alert.alert('Do you want to delete audio','',[
+                                                    {text: 'Cancel'},
+                                                    {text: "Yes", onPress: ()=>deleteaudio(audioModal._id)}
+                                                ],{cancelable:false})}}>
+                                            <Text style={stylesScreen.modalText}>Delete Audio</Text>
+                                        </TouchableOpacity>
+                                        {(insideFolder!==undefined)&&
+                                        <TouchableOpacity accessibilityLabel='moveAudio' onPress={()=>setfolderListVisible(true)}>
+                                            <Text style={stylesScreen.modalText}>Move to Folder</Text>
+                                        </TouchableOpacity>}
+                                    </View>
+                                </View>
+                            </TouchableWithoutFeedback>
+                        </Modal>
+
+                        <FolderModal modalVisible={renameModal} setVisible={setRenameModalVisible} folderId={audioModal._id} setRefresh={setRefresh} actionType={'RenameAudio'}/>
+
+                        <FolderList visible={folderList} setVisible={setfolderListVisible} fileId={audioModal._id} type={'Audio'} setRefresh={setRefresh} setDetailsModal={setActionModalVisible} setFileModal={setVisible} setFile={setAudioModal}/>
+
+                        </View>
                         )}
                         {audioSet}
                     </View>
                 </ScrollView>)
             }
 
-                <Modal style={stylesScreen.folderActionModal} transparent={true} animationType='fade' visible={actionModalVisible} onRequestClose={()=>{setActionModalVisible(false)}}>
-                    <TouchableWithoutFeedback accessibilityLabel='audioActionModalbutton' onPress={()=>setActionModalVisible(false)}>
-                        <View style={stylesScreen.folderActionModal}>
-                            <View style={stylesScreen.modalContainer}>
-                                <TouchableOpacity accessibilityLabel='renameAudio' onPress={()=>{setActionModalVisible(false); setRenameModalVisible(true);}}>
-                                    <Text style={stylesScreen.modalText}>Rename Audio</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity accessibilityLabel='deleteAudio' 
-                                    onPress={()=> {setActionModalVisible(false); 
-                                        Alert.alert('Do you want to delete audio','',[
-                                            {text: 'Cancel'},
-                                            {text: "Yes", onPress: ()=>deleteaudio(audioModal._id)}
-                                        ],{cancelable:false})}}>
-                                    <Text style={stylesScreen.modalText}>Delete Audio</Text>
-                                </TouchableOpacity>
-                                {(insideFolder!==undefined)&&
-                                <TouchableOpacity accessibilityLabel='moveAudio' onPress={()=>setfolderListVisible(true)}>
-                                    <Text style={stylesScreen.modalText}>Move to Folder</Text>
-                                </TouchableOpacity>}
-                            </View>
-                        </View>
-                    </TouchableWithoutFeedback>
-                </Modal>
-
-                {(audioModal !== null) && (
-                    <FolderModal modalVisible={renameModal} setVisible={setRenameModalVisible} folderId={audioModal._id} setRefresh={setRefresh} actionType={'RenameAudio'}/>
-                )}
-
-                {(audioModal !== null) && (
-                    <FolderList visible={folderList} setVisible={setfolderListVisible} fileId={audioModal._id} type={'Audio'} setRefresh={setRefresh} setDetailsModal={setActionModalVisible}/>
-                )}
             </View>    
     );
 }
