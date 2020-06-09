@@ -1,12 +1,10 @@
 import React from 'react';
 import { ImageBackground, View, Text, TouchableOpacity, TextInput, Alert, KeyboardAvoidingView} from 'react-native';
-import { Entypo, FontAwesome, AntDesign, FontAwesome5 } from '@expo/vector-icons';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 import {styles} from '../styles/forgotPScreen';
 import {Formik} from 'formik';
 import * as yup from 'yup';
-import {login} from "../api/user";
-import {AuthContext} from '../navigators/context';
+import {forgotPassword} from "../api/user";
 
 const validationSchema = yup.object({
     email: yup.string().required().email(),
@@ -15,27 +13,27 @@ const validationSchema = yup.object({
 export const ForgotPasswordScreen = ({navigation}) => {
 
     const [isLoading, setIsLoading] = React.useState(false);
-    const {signIn} = React.useContext(AuthContext); 
 
     return(
     <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage} accessibilityLabel='loginscreen'>
         <View flex={1} style={{opacity: isLoading ? 0.3 : 1.0}} accessibilityLabel='view1'>
                        
                 <Formik 
-                    initialValues={{email:'',password:''}}
+                    initialValues={{email:''}}
                     validationSchema={validationSchema} 
                     onSubmit={
                         (values, actions)=>{
                             setIsLoading(true);
-                            login({values})
+                            forgotPassword({values})
                             .then((response)=>{
-                                if (response.message==='Auth successful'){
-                                    signIn({token:response.token, email:values.email});
-                                }else if (response.message==="Auth failed"){
-                                    Alert.alert('Alert',"Email or password is incorrect",[{text: 'OK', onPress: ()=>actions.resetForm()}])
+                                console.log(response)
+                                if (response.message==='Verification code has sent'){
+                                    navigation.navigate('Verify', {email: values.email})
                                     setIsLoading(false);
-                                }
-                                else{
+                                }else if (response.error==="No user found"){
+                                    Alert.alert('Alert',"Email is invalid",[{text: 'OK', onPress: ()=>actions.resetForm()}])
+                                    setIsLoading(false);
+                                }else{
                                     Alert.alert('Alert',"Something went wrong",[{text: 'OK', onPress: ()=>actions.resetForm()}])
                                     setIsLoading(false);
                                 }

@@ -63,3 +63,39 @@ export async function getOtherUsers(text){
     })
 }
 
+export async function forgotPassword({values}){
+    return fetch(serverUrl+'/user/forgot',{
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type':'application/json'
+        },
+        body: JSON.stringify({
+            email: values.email,
+        })
+    })
+    .then((response)=>response.json())
+    .then((json)=>{
+        return json
+    })
+    .catch((error)=>{
+        return error
+    })
+}
+
+export async function verifyResetToken({token}){
+    return fetch(serverUrl+'/user/verify/'+token,{
+        method: 'GET',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type':'application/json',
+        }
+    })
+    .then((response)=>response.json())
+    .then((json)=>{
+        return json;
+    })
+    .catch((error)=>{
+        console.log(error)
+    })
+}

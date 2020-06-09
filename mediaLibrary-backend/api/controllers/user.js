@@ -185,6 +185,27 @@ exports.forgot_password = (req, res, next) => {
         });
 }
 
+exports.verify_token = (req, res, next) => {
+    User.findOne({resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } })
+        .exec()
+        .then(user => {
+            if (user===null){
+                res.status(500).json({
+                    error: "Password reset token is invalid or has expired."
+                });
+            }else{
+                res.status(200).json({
+                    error: "Reset token is valid."
+                });
+            }
+        })
+        .catch(err=>{
+            res.status(500).json({
+                error: "Something went wrong."
+            });
+        });
+}
+
 exports.reset_password = (req, res, next) => {
     User.findOne({resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } })
         .exec()

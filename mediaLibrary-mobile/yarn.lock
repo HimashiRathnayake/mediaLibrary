@@ -4523,6 +4523,11 @@ react-native-app-intro-slider@^4.0.2:
   resolved "https://registry.yarnpkg.com/react-native-app-intro-slider/-/react-native-app-intro-slider-4.0.2.tgz#890a7a4c1f190ef27a54801bb67f2bb089d891b5"
   integrity sha512-sZbBBGxAB/MUP/urNxC+W1/KGu/uwshI1nFuuIKSNlcnLW8E5jp+lmWQoRNdx8K26vEBd13cnWV/1T5XCYhSAQ==
 
+react-native-confirmation-code-field@^6.2.0:
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-confirmation-code-field/-/react-native-confirmation-code-field-6.2.0.tgz#0a62f82b81d04b5a7450e904d8f2b179648e766e"
+  integrity sha512-Jw8SqrogLEudiFhyOAo7fuu/6fpPwG7sCh2RCRjmxqZx9PQu5PD7pHd9U+J6hqDe3a4PwSVUncmDaIVstbJlxw==
+
 react-native-design-utility@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/react-native-design-utility/-/react-native-design-utility-1.0.0.tgz#e4e47a2f7794da96b0f55e721c759d574907610d"
