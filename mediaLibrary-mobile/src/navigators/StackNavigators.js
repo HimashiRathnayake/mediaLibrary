@@ -11,6 +11,7 @@ import {SignUpScreen} from '../screens/SignUpScreen';
 import {AppIntroScreen} from '../screens/AppIntroScreen';
 import {ForgotPasswordScreen} from '../screens/ForgotPasswordScreen';
 import {VerifyScreen} from '../screens/VerifyScreen';
+import {ResetScreen} from '../screens/ResetScreen';
 
 const FolderStack = createStackNavigator();
 
@@ -46,6 +47,7 @@ export const AuthNavigator = () => {
 			<AuthStack.Screen name="AppIntro" component={AppIntroScreen} options={{title: "AppIntroScreen", headerShown: false}}/>
 			<AuthStack.Screen name="ForgotP" component={ForgotPasswordScreen} options={{title: "ForgotPScreen", headerShown: false}}/>
             <AuthStack.Screen name="Verify" component={VerifyScreen} options={{title: "VerifyScreen", headerShown: false}}/>
+            <AuthStack.Screen name="Reset" component={ResetScreen} options={{title: "ResetScreen", headerShown: false}}/>
 		</AuthStack.Navigator>
 	)
 }

@@ -43,6 +43,8 @@ export const styles = StyleSheet.create({
   logintext: {
     color: 'white',
     backgroundColor: 'transparent',
+    fontWeight: 'bold',
+    fontSize: 16
   },
   headerContainer: {
     flex: 1,

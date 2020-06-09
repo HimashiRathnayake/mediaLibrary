@@ -35,14 +35,10 @@ export const VerifyScreen = ({navigation, route}) => {
                             .then((response)=>{
                                 setIsLoading(false);
                                 console.log(response)
-                                if (response.message==='Verification code has sent'){
-                                    navigation.navigate('Verify')
-                                }else if (response.message==="No user found"){
-                                    Alert.alert('Alert',"Email is invalid",[{text: 'OK', onPress: ()=>actions.resetForm()}])
-                                    setIsLoading(false);
-                                }
-                                else{
-                                    Alert.alert('Alert',"Something went wrong",[{text: 'OK', onPress: ()=>actions.resetForm()}])
+                                if (response.message==='Reset token is valid.'){
+                                    navigation.navigate('Reset', {resetToken: values.token})
+                                }else{
+                                    Alert.alert('Alert',"Password reset token is invalid or expired",[{text: 'OK', onPress: ()=>actions.resetForm()}])
                                     setIsLoading(false);
                                 }
                             })

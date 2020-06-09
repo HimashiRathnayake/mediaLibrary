@@ -99,3 +99,23 @@ export async function verifyResetToken({token}){
         console.log(error)
     })
 }
+
+export async function resetPassword({token, password}){
+    return fetch(serverUrl+'/user/reset/'+token,{
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type':'application/json'
+        },
+        body: JSON.stringify({
+            password: password,
+        })
+    })
+    .then((response)=>response.json())
+    .then((json)=>{
+        return json
+    })
+    .catch((error)=>{
+        return error
+    })
+}

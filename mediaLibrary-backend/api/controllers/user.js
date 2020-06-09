@@ -158,7 +158,7 @@ exports.forgot_password = (req, res, next) => {
                     from: 'mymediaAdmin@mymedia.com',
                     subject: 'MyMedia Password Reset',
                     text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
-                      'Your verification code is:\n\n' +
+                      'Your password reset token is:\n\n' +
                       token + '\n\n' +
                       'If you did not request this, please ignore this email and your password will remain unchanged.\n'
                 };
