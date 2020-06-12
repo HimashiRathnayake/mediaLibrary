@@ -1,5 +1,5 @@
-//const path = 'https://mymedia-app-backend.herokuapp.com';
-const path = 'http://localhost:3000';
+const path = 'https://mymedia-app-backend.herokuapp.com';
+//const path = 'http://localhost:3000';
 
 export function LoginData(userdata){
     console.log('PostData');

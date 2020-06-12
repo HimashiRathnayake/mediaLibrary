@@ -71,14 +71,14 @@ class FavouriteResults extends Component {
         let vidInfoClose=()=> this.setState({vidInfoShow: false})
         let audInfoClose=()=> this.setState({audInfoShow: false})
 
-        var result='';
+        let result='';
         console.log('imgresults:', this.props.results);
         if(this.props.results.imgfavourites){
             result= this.props.results.imgfavourites.map(imageName => {
                 var imgsrc=  imageName.path;
             
                 return(
-                    <li title= "image" key={imageName._id} style={{float: 'left', listStyle: 'none', paddingLeft: '10px', paddingBottom: '10px', backgroundColor: 'white'}}  > 
+                    <li title= "image" key={imageName._id} style={{display: 'inline-block', listStyle: 'none',paddingLeft: '10px', paddingBottom: '10px', paddingTop: '10px'}}  > 
                         <div className='card ' style={{width: '270px', height: '300px'}} >
                             <img src={imgsrc} className="card-img-top" style={{width: '268px', height: '220px'}} alt='' />
                             <div className="card-body">
@@ -100,7 +100,7 @@ class FavouriteResults extends Component {
                 console.log("audiosrc: ", audiosrc);
                 
                 return(
-                    <li title= "audio" key={audioName._id} style={{float: 'left', listStyle: 'none', paddingLeft: '10px', paddingBottom: '10px', backgroundColor: 'white'}}  > 
+                    <li title= "audio" key={audioName._id} style={{display: 'inline-block', listStyle: 'none',paddingLeft: '10px', paddingBottom: '10px', paddingTop: '10px'}}  > 
                         <div className='card ' style={{width: '400px', height: '150px'}} >
                             <audio className="card-img-top" style={{width: '398px', height: '100px'}} controls>
                                 <source src={audiosrc} type="audio/mp3" />
@@ -125,7 +125,7 @@ class FavouriteResults extends Component {
                 console.log("videosrc: ", videosrc);
             
                 return(
-                    <li title= "video" key={videoName._id} style={{float: 'left', listStyle: 'none', paddingLeft: '10px', paddingBottom: '10px', backgroundColor: 'white'}}  > 
+                    <li title= "video" key={videoName._id} style={{display: 'inline-block', listStyle: 'none',paddingLeft: '10px', paddingBottom: '10px', paddingTop: '10px'}}  > 
                         <div className='card ' style={{width: '400px', height: '350px'}} >
                             <video className="card-img-top" style={{width: '398px', height: '270px'}}  controls >
                                 <source  src = {videosrc} type="video/mp4" />
@@ -143,8 +143,7 @@ class FavouriteResults extends Component {
                 )
             })   
         }
-        return(
-            
+        return(  
             <ul>
                 {result}
                 <Share

@@ -162,8 +162,8 @@ export default class Favourites extends Component{
             </nav>
             {/*<div className="container" style={{backgroundColor: 'White', marginTop: '100px', height: '100%'}}>*/}
             <div className="container" style={{backgroundColor: 'White', marginTop: '100px', width: '80%', height: '100%'}}>
-                <h3>Favourites</h3>
-                <Tabs defaultActiveKey="Image"> 
+                <h3 style={{paddingTop: '10px'}}>Favourites</h3>
+                <Tabs defaultActiveKey="Image" transition={false}> 
                 {/* <Tabs activeKey={this.state.activeTab} onChange={this.changeTab}> */}
                     <Tab eventKey="Image" title="Image" >
                         <FavouriteResults results={this.state.imgresults}
@@ -171,7 +171,7 @@ export default class Favourites extends Component{
                                           allfolders= {this.state.imgfolders}
                                           movefile= {this.Movefile}
                                           setresults= {this.setResults}
-                                          remove={this.removeSharedUsers}/>
+                                          remove={this.removeSharedUsers}/> 
                     </Tab>
                     <Tab eventKey="Audio" title="Audio" >
                         <FavouriteResults results={this.state.audresults}
@@ -190,7 +190,6 @@ export default class Favourites extends Component{
                                           remove={this.removeSharedUsers}/>
                     </Tab>
                 </Tabs>
-                
             </div>
             </div>
         )
