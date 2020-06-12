@@ -30,8 +30,8 @@ export default class Start extends Component{
 
         return(
         <form>
-        <nav className="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
-            <div className="container">
+        <nav className="navbar navbar-expand navbar-dark bg-primary fixed-top" id="mainNav">
+            
                 <Link className="navbar-brand js-scroll-trigger" to={"/start"}>MyMedia</Link>
                 <div className="collapse navbar-collapse" id="navbarResponsive">
                     <ul className="navbar-nav text-uppercase ml-auto">
@@ -55,7 +55,7 @@ export default class Start extends Component{
                         </li>
                     </ul>
                 </div>
-            </div>
+            
         </nav>
         <div className="container">
         <div className="row">

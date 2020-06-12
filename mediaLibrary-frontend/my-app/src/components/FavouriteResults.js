@@ -78,7 +78,7 @@ class FavouriteResults extends Component {
                 var imgsrc=  imageName.path;
             
                 return(
-                    <li key={imageName._id} style={{float: 'left', listStyle: 'none', paddingLeft: '10px', paddingBottom: '10px', backgroundColor: 'white'}}  > 
+                    <li title= "image" key={imageName._id} style={{float: 'left', listStyle: 'none', paddingLeft: '10px', paddingBottom: '10px', backgroundColor: 'white'}}  > 
                         <div className='card ' style={{width: '270px', height: '300px'}} >
                             <img src={imgsrc} className="card-img-top" style={{width: '268px', height: '220px'}} alt='' />
                             <div className="card-body">
@@ -100,7 +100,7 @@ class FavouriteResults extends Component {
                 console.log("audiosrc: ", audiosrc);
                 
                 return(
-                    <li  key={audioName._id} style={{float: 'left', listStyle: 'none', paddingLeft: '10px', paddingBottom: '10px', backgroundColor: 'white'}}  > 
+                    <li title= "audio" key={audioName._id} style={{float: 'left', listStyle: 'none', paddingLeft: '10px', paddingBottom: '10px', backgroundColor: 'white'}}  > 
                         <div className='card ' style={{width: '400px', height: '150px'}} >
                             <audio className="card-img-top" style={{width: '398px', height: '100px'}} controls>
                                 <source src={audiosrc} type="audio/mp3" />
@@ -125,7 +125,7 @@ class FavouriteResults extends Component {
                 console.log("videosrc: ", videosrc);
             
                 return(
-                    <li  key={videoName._id} style={{float: 'left', listStyle: 'none', paddingLeft: '10px', paddingBottom: '10px', backgroundColor: 'white'}}  > 
+                    <li title= "video" key={videoName._id} style={{float: 'left', listStyle: 'none', paddingLeft: '10px', paddingBottom: '10px', backgroundColor: 'white'}}  > 
                         <div className='card ' style={{width: '400px', height: '350px'}} >
                             <video className="card-img-top" style={{width: '398px', height: '270px'}}  controls >
                                 <source  src = {videosrc} type="video/mp4" />

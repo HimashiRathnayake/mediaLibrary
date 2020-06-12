@@ -61,8 +61,9 @@ export default class Search extends Component{
         
         this.setState({
             key: this.refs.inputword.value
-        })
-
+        }, () => {
+            this.search();
+        });
     }
 
     allfolders() {
@@ -175,8 +176,10 @@ export default class Search extends Component{
     }
 
     search(){
-        
+        console.log('in search:', this.state.key);
         let formErrors = this.state.formErrors;
+        formErrors.error='';
+        
         if(this.state.key.length > 0 && this.state.criteria === ' Select Criteria'){
             formErrors.error= "Please select any criteria"
         }
@@ -373,8 +376,8 @@ export default class Search extends Component{
         
         return(
         <div>
-            <nav className="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
-                <div className="container">
+            <nav className="navbar navbar-expand navbar-dark bg-primary fixed-top" id="mainNav">
+                
                     <Link className="navbar-brand js-scroll-trigger" to={"/start"}>MyMedia</Link>
                     <div className="collapse navbar-collapse" id="navbarResponsive">
                         <ul className="navbar-nav text-uppercase ml-auto">
@@ -392,13 +395,13 @@ export default class Search extends Component{
                             </li>
                         </ul>
                     </div>
-                </div>
+                
             </nav>
             <div className="container" style={{backgroundColor: 'White', marginTop: '100px', height: '100%'}}>
         
                 <div className="row">
                 {/* <legend>Search your media files</legend> */}
-                    <div className="col-md-2" style={{marginTop: '10px', marginBottom: '10px'}}>
+                    <div className="col-md-2.5" style={{marginTop: '10px', marginBottom: '10px', marginLeft: '20px'}}>
                         <DropdownButton id="dropdown-basic-button" variant="primary" title={this.state.criteria} >
                             <Dropdown.Item onClick={()=> this.setState({criteria: ' Search By Title '})}>By Title</Dropdown.Item>
                             <Dropdown.Item onClick={() =>this.setState({criteria: ' Search By Artist'})}>By Artist</Dropdown.Item>
@@ -414,7 +417,6 @@ export default class Search extends Component{
                                 onChange={this.getKey}
                                 aria-describedby="basic-addon2"
                             />
-                            
                             
                             <InputGroup.Append>
                                 <Button variant="outline-primary"  onClick={this.search}><i className="fa fa-search"></i></Button>

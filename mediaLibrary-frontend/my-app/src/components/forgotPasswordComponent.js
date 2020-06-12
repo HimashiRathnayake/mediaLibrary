@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Redirect, Link } from "react-router-dom";
 import './componentCss/login.css';
-import {LoginData} from '../services/PostData';
+import {Forgot} from '../services/PostData';
 
 const emailRegex = RegExp(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/);
 
@@ -14,50 +14,45 @@ const formValid = formErrors => {
     return valid;
 };
 
-export default class Login extends Component{
+export default class ForgotPassword extends Component{
 
     constructor(props){
         super(props);
 
         this.onChange = this.onChange.bind(this);
-        this.login = this.login.bind(this);
+        this.confirmation = this.confirm.bind(this);
 
         this.state = { 
             email: '',
-            password: '',
             formErrors: {
                 email: '',
-                password: '',
-                loginError: ''
+                confirmError: ''
             },
             redirect: false
         }
     }
 
-    login(){
+    confirm(){
         
         if(formValid(this.state.formErrors)){
             console.log(`
                 --submitting--
                 email: ${this.state.email}
-                password: ${this.state.password}
             `)
-            LoginData(this.state).then((result) => {
-                let responseJSON = result;
+            Forgot(this.state).then((result) => {
+                let response = result;
                 //console.log('login results:', result);
-                
-                if(responseJSON.token){
-                    sessionStorage.setItem('userData', JSON.stringify(responseJSON));
+                alert(result.message);
+                if(response.message === "Verification code has sent"){
                     this.setState({redirect: true})
                 }else{
-                    console.log('Login Error');
+                    console.log('Something went wrong');
                     let formErrors = this.state.formErrors;
-                    if(result.message === 'Auth failed'){
-                        formErrors.loginError= "Incorrect email or password";
+                    if(response.message === "Something went wrong"){
+                        formErrors.confirmError= "Something went wrong. Please Check the email and try again.";
                         this.setState({
                             formErrors
-                        })
-                        
+                        })   
                     }
                 }
             }) 
@@ -73,7 +68,7 @@ export default class Login extends Component{
 
         switch(name){
             case 'email':
-                formErrors.loginError='';
+                formErrors.confirmError='';
                 if(value){
                     formErrors.email =
                         emailRegex.test(value) && value.length > 0 
@@ -83,24 +78,9 @@ export default class Login extends Component{
                     formErrors.email = "The email is required";
                 }
                 break;
-            case 'password':
-                formErrors.loginError='';
-                if(value){
-                    formErrors.password =
-                        value.length < 3 && value.length >0 
-                        ? "minimum 3 characters required"
-                        : "";
-                }
-                else{
-                    formErrors.password = "The password is required";
-                }
-                break;
-            case 'login':
+            case 'confirm':
                 if(this.state.email.length === 0){
                     formErrors.email = "The email is required";
-                }
-                if(this.state.password.length === 0){
-                    formErrors.password = "The password is required";
                 }
                 break;
             default:
@@ -110,20 +90,22 @@ export default class Login extends Component{
             formErrors,
             [e.target.name]: e.target.value 
         } ); 
-        if(e.target.name === 'login'){
-            this.login();
+        if(e.target.name === 'confirm'){
+            this.confirm();
         }
         console.log(this.state);
     }
 
     render(){
-
+        const back = "< back";
         if(this.state.redirect){
-            return(<Redirect to={'/start'} />);
-        }
-        
-        if(sessionStorage.getItem('userData')){
-            return(<Redirect to={'/start'}/>);
+            return(
+                <Redirect to={{
+                    pathname: '/verify',
+                    state: { email: this.state.email }
+                    }}
+                />
+            );
         } 
 
         const {formErrors} = this.state;
@@ -132,10 +114,10 @@ export default class Login extends Component{
         <form >
             <div className="auth-wrapper">
             <div className="auth-inner">
-                    <h3>Login</h3>
+                    <h3>Forgot Password</h3>
 
-                    {formErrors.loginError.length > 0 && (
-                            <span className="errorMessage">{formErrors.loginError}</span>
+                    {formErrors.confirmError.length > 0 && (
+                            <span className="errorMessage">{formErrors.confirmError}</span>
                         )}
                     <div className="form-group">
                         <label>Email address</label>
@@ -149,26 +131,10 @@ export default class Login extends Component{
                             <span className="errorMessage">{formErrors.email}</span>
                         )}
                     </div> 
-                    
-                    <div className="form-group"> 
-                        <label>Password</label>
-                        <input type="password"
-                            className="form-control"
-                            placeholder="Enter password"
-                            name="password"
-                            onChange={this.onChange} 
-                        /> 
-                        {formErrors.password.length > 0 && (
-                            <span className="errorMessage">{formErrors.password}</span>
-                        )}  
-                     </div>
-                     <p className="forgot-password text-left" style={{paddingBottom: '10px'}}>
-                        <Link  to={"/forgotPassword"}>forgot password?</Link>
-                    </p>
-                    <input className="btn btn-primary btn-block" type="button" name="login" onClick={this.onChange}  /* onClick={this.login} */ value="Login" />
-                    
-                    <p className="forgot-password text-right">
-                        Don't have an account? <Link  to={"/signup"}>SignUp</Link>
+                     
+                    <input className="btn btn-primary btn-block" type="button" name="confirm" onClick={this.onChange} value="Send Confirmation" />
+                    <p className="forgot-password text-left">
+                        <Link  to={"/login"}>{back} </Link>
                     </p>
                 </div>
             </div> 

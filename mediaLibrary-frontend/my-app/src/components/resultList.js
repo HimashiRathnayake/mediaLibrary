@@ -26,7 +26,8 @@ class ResultList extends Component{
             type: '',
             shareType: '',
             infotitle: '',
-            file: {}   
+            file: {},
+            loading: false 
         }
         this.renameFolder=this.renameFolder.bind(this);
         this.upload=this.upload.bind(this);
@@ -62,8 +63,14 @@ class ResultList extends Component{
         e.preventDefault();
         console.log("In result list upload function: ", e);
         console.log("In result list upload function selected file: ", this.state.selectedFile);
+        this.setState({
+            loading: true
+        });
         UploadFiles(JSON.parse(sessionStorage.getItem('userData')).token,this.props.routeType, this.state.folderId, this.state.selectedFile).then((result) => {
-            console.log("in upload file");
+            console.log("in upload file:", result);
+            this.setState({
+                loading: false
+            });
             alert(result.message);
             this.props.getMedia(this.props.currentfolder);
         })  ;
@@ -152,21 +159,29 @@ class ResultList extends Component{
             }
             else if(this.props.resultFolders.Images){
                 let ary=this.props.imgfavourites.imgfavourites;
+                let muser= this.props.sharedimg;
                 folderlist= this.props.resultFolders.Images.map(imageName => {
                     var imgsrc=  imageName.path;
                     var favourite= false;
                     let classname="fa fa-star-o fa-fw";
+                    let sclass= "";
+                    let stitle= "";
                     let title= 'add to favourite';
                     if(ary.some(ary => ary._id === imageName._id)){
                         favourite= true;
                         title= "remove from favourite";
                         classname="fa fa-star fa-fw"
                     } 
+                    if(muser.some(muser => muser._id === imageName._id)){
+                        stitle= "Shared";
+                        sclass="fa fa-users"
+                    } 
                     
                     return(
                         <li  key={imageName._id} style={{float: 'left', listStyle: 'none', paddingLeft: '10px', paddingBottom: '10px'}}  > 
                             <div className='card ' style={{width: '250px', height: '300px'}} >
                                 <img src={imgsrc} className="card-img-top" style={{width: '248px', height: '220px'}} alt='' />
+                                <i className={sclass} title={stitle} style={{float:'right'}}> </i>
                                 <div className="card-body">
                                     <p className="card-text">
                                         <button className="link-button" title={title} onClick={() => this.props.favourite(favourite, imageName._id)}><span className={classname} > </span></button> 
@@ -185,23 +200,31 @@ class ResultList extends Component{
             }
             else if(this.props.resultFolders.Videos){
                 let ary=this.props.vidfavourites.vidfavourites;
+                let muser= this.props.sharedvid;
                 folderlist= this.props.resultFolders.Videos.map(videoName => {
                     var videosrc=  videoName.path;
                     var favourite= false;
                     let classname="fa fa-star-o fa-fw";
                     let title= 'add to favourite';
+                    let sclass= "";
+                    let stitle= "";
                     if(ary.some(ary => ary._id === videoName._id)){
                         favourite= true;
                         title= "remove from favourite";
                         classname="fa fa-star fa-fw"
                     }
+                    if(muser.some(muser => muser._id === videoName._id)){
+                        stitle= "Shared";
+                        sclass="fa fa-users"
+                    }
                     
                     return(
                         <li  key={videoName._id} style={{float: 'left', listStyle: 'none', paddingLeft: '10px', paddingBottom: '10px'}}  > 
                             <div className='card ' style={{width: '500px', height: '350px'}} >
-                                <video className="card-img-top" style={{width: '498px', height: '300px'}}  controls >
+                                <video className="card-img-top" style={{width: '498px', height: '280px'}}  controls >
                                     <source  src = {videosrc} type="video/mp4" />
                                 </video>
+                                <i className={sclass} title={stitle} style={{float:'right'}}> </i>
                                 <div className="card-body">
                                     <p className="card-text">
                                         <button className="link-button" title={title} onClick={() => this.props.favourite(favourite, videoName._id)}><span className={classname} > </span></button> 
@@ -219,27 +242,35 @@ class ResultList extends Component{
             }
             else if(this.props.resultFolders.Audios){
                 let ary=this.props.audfavourites.audfavourites;
+                let muser= this.props.sharedaud;
                 folderlist= this.props.resultFolders.Audios.map(audioName => {
                     var audiosrc=  audioName.path;
                     var favourite= false;
                     let classname="fa fa-star-o fa-fw";
                     let title= 'add to favourite';
+                    let sclass= "";
+                    let stitle= "";
                     if(ary.some(ary => ary._id === audioName._id)){
                         favourite= true;
                         title= "remove from favourite";
                         classname="fa fa-star fa-fw"
                     }
+                    if(muser.some(muser => muser._id === audioName._id)){
+                        stitle= "Shared";
+                        sclass="fa fa-users"
+                    }
                     
                     return(
                         <li  key={audioName._id} style={{float: 'left', listStyle: 'none', paddingLeft: '10px', paddingBottom: '10px'}}  > 
                             <div className='card ' style={{width: '400px', height: '150px'}} >
-                                <audio className="card-img-top" style={{width: '398px', height: '100px'}} controls>
+                                <audio className="card-img-top" style={{width: '398px', height: '80px'}} controls>
                                     <source src={audiosrc} type="audio/mp3" />
                                     <source src={audiosrc} type="audio/wav" />
                                 </audio>
+                                <i className={sclass} title={stitle} style={{float:'right'}}> </i>
                                 <div className="card-body">
                                     <p className="card-text">
-                                        <button className="link-button" title={title} onClick={() => this.props.favourite(favourite, audioName._id)}><span className={classname} > </span></button> 
+                                        <button className="link-button" title={title} onClick={() => this.props.favourite(favourite, audioName._id)}><span className={classname} > </span></button>
                                         {audioName.audioName}
                                         <button className="link-button" title='Details' style={{float: 'right'}} onClick={() => this.setState({audInfoShow: true, file: audioName, infotitle: audioName.folder.folderName})}><span className="fa fa-info-circle" > </span></button>
                                         <button className="link-button" title='Share' style={{float: 'right'}}onClick={() => this.setState({shareShow: true, folderId: audioName._id, shareType: 'audio'})}><span className="fa fa-share-alt fa-fw" > </span></button>
@@ -270,6 +301,7 @@ class ResultList extends Component{
                 show={this.state.uploadShow}
                 onHide={uploadClose}
                 upload={this.upload}
+                loading={this.state.loading}
                 selectedfile={this.selectedfile}
                 />
                 <Share

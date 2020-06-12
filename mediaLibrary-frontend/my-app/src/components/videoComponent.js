@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Redirect, Link} from "react-router-dom";
 import './componentCss/files.css';
-import {GetFolders, GetAll, GetFromFolder, CreateFolders, DeleteFolder, DeleteVideo, SearchVideos, Favourite, RemoveFavourite, AddFavourite, MoveFile, UploadFiles, ShareFile, RemoveUser} from '../services/PostData';
+import {GetFolders, GetAll, GetFromFolder, CreateFolders, DeleteFolder, DeleteVideo, SearchVideos, Favourite, RemoveFavourite, AddFavourite, MoveFile, UploadFiles, ShareFile, RemoveUser, SharedVideos} from '../services/PostData';
 import ResultList from './resultList';
 import VideoSearch from './VideoSearch';
 import OverallUpload from './overallUpload';
@@ -43,14 +43,17 @@ export default class Video extends Component{
           redirect: false,
           searchShow: false,
           vidfavourites:[],
+          sharedvid: [],
           title: 'Select a folder',
           RLType: "Folders",
           overallUploadShow: false,
           uploadfolder: {},
-          selectedVid: {}
+          selectedVid: {},
+          loading: false
         }
         this.allfolders();
         this.vidfavourites();
+        this.sharedVideos();
     }
       
     addActiveClass() {
@@ -80,6 +83,15 @@ export default class Video extends Component{
             console.log("results: ", result) ;
             this.setState({
                 vidfavourites: result
+            });
+        });
+    }
+
+    sharedVideos(){
+        SharedVideos(JSON.parse(sessionStorage.getItem('userData')).token).then((result) => {
+            console.log("sharedVideo: ", result) ;
+            this.setState({
+                sharedvid: result
             });
         });
     }
@@ -208,9 +220,16 @@ export default class Video extends Component{
         console.log('in video component upload');
         console.log('upload folder:', this.state.uploadfolder);
         console.log('upload image: ', this.state.selectedVid);
+        this.setState({
+            loading: true
+        });
 
         UploadFiles(JSON.parse(sessionStorage.getItem('userData')).token,this.state.routeType, this.state.uploadfolder._id, this.state.selectedVid).then((result) => {
             console.log("in upload file");
+            this.setState({
+                loading: false
+            });
+
             alert(result.message);
             //this.getImage(this.state.uploadfolder);
             this.allVideos();
@@ -263,7 +282,7 @@ export default class Video extends Component{
 
     Movefile(vidId, folderId){
         MoveFile(JSON.parse(sessionStorage.getItem('userData')).token, this.state.routeType, vidId, folderId).then((result) => {
-            //alert(result.message);
+            alert(result.message);
             if(result.message === "Video moved successfully"){
                 if(Object.keys(this.state.folder).length){
                     this.getVideo(this.state.folder);
@@ -283,6 +302,7 @@ export default class Video extends Component{
             console.log("in share file");
             alert(result.message);
             if(result.message === 'Video shared successfully'){
+                this.sharedVideos();
                 if(Object.keys(this.state.folder).length){
                     this.getVideo(this.state.folder);
                 }
@@ -305,6 +325,7 @@ export default class Video extends Component{
             console.log("in remove user file");
             alert(result.message);
             if(result.message === 'Removed user successfully'){
+                this.sharedVideos();
                 if(Object.keys(this.state.folder).length){
                     this.getVideo(this.state.folder);
                 }
@@ -337,7 +358,7 @@ export default class Video extends Component{
 
         return(
             <div>
-                <nav className="navbar navbar-expand navbar-dark bg-primary"> 
+                <nav className="navbar navbar-expand navbar-dark bg-primary fixed-top"> 
                     <div className="collapse navbar-collapse" id="navbarsExample02">
                         <ul className="navbar-nav mr-auto">
                             <li className="nav-item"> 
@@ -388,6 +409,7 @@ export default class Video extends Component{
                                         movefile= {this.Movefile}
                                         share={this.shareVideo}
                                         remove={this.removeSharedUsers}
+                                        sharedvid={this.state.sharedvid}
                                         />
                             <VideoSearch show={this.state.searchShow}
                                          onHide={searchClose}
@@ -400,6 +422,7 @@ export default class Video extends Component{
                                            selectTitle={this.selectTitle}
                                            selectfile={this.selectedfile}
                                            upload={this.upload}
+                                           loading={this.state.loading}
                             /> 
                         </div>
                     </div>

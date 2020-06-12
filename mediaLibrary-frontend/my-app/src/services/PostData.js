@@ -1,7 +1,75 @@
+//const path = 'https://mymedia-app-backend.herokuapp.com';
+const path = 'http://localhost:3000';
+
 export function LoginData(userdata){
     console.log('PostData');
     return new Promise((resolve, reject) => {
-        fetch('http://localhost:3000/user/login', {
+        fetch(`${path}/user/login`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userdata)
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            resolve(responseJson);
+        })
+        .catch((error) => {
+            reject(error);
+        })
+    });
+
+}
+
+export function Forgot(userdata){
+    console.log('PostData');
+    return new Promise((resolve, reject) => {
+        fetch(`${path}/user/forgot`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userdata)
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            resolve(responseJson);
+        })
+        .catch((error) => {
+            reject(error);
+        })
+    });
+
+}
+
+export function VerifyCode(userdata, token){
+    console.log('PostData');
+    return new Promise((resolve, reject) => {
+        fetch(`${path}/user/verify/${token}`, {
+            method: 'Get',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            resolve(responseJson);
+        })
+        .catch((error) => {
+            reject(error);
+        })
+    });
+
+}
+
+export function ResetPassword(userdata, token){
+    console.log('PostData');
+    return new Promise((resolve, reject) => {
+        fetch(`${path}/user/reset/${token}`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -23,7 +91,7 @@ export function LoginData(userdata){
 export function SignUpData(userdata){
     console.log('PostData');
     return new Promise((resolve, reject) => {
-        fetch('http://localhost:3000/user/signup', {
+        fetch(`${path}/user/signup`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -45,7 +113,7 @@ export function SignUpData(userdata){
 export function GetFolders(userdata, type){
     console.log('PostData');
     return new Promise((resolve, reject) => {
-        fetch(`http://localhost:3000/folders/${type}`, {
+        fetch(`${path}/folders/${type}`, {
             method: 'Get',
             headers: {
                 'Authorization': `Bearer ${userdata}`,
@@ -69,7 +137,7 @@ export function GetFolders(userdata, type){
 export function GetAll(userdata, type){
     console.log('PostData');
     return new Promise((resolve, reject) => {
-        fetch(`http://localhost:3000/${type}`, {
+        fetch(`${path}/${type}`, {
             method: 'Get',
             headers: {
                 'Authorization': `Bearer ${userdata}`,
@@ -92,7 +160,7 @@ export function GetAll(userdata, type){
 export function GetFromFolder(userdata, type, folderId){
     console.log('PostData');
     return new Promise((resolve, reject) => {
-        fetch(`http://localhost:3000/${type}/${folderId}`, {
+        fetch(`${path}/${type}/${folderId}`, {
             method: 'Get',
             headers: {
                 'Authorization': `Bearer ${userdata}`,
@@ -116,7 +184,7 @@ export function GetFromFolder(userdata, type, folderId){
 export function DeleteFolder(userdata, folderId){
     console.log('PostData');
     return new Promise((resolve, reject) => {
-        fetch(`http://localhost:3000/folders/${folderId}`, {
+        fetch(`${path}/folders/${folderId}`, {
             method: 'Delete',
             headers: {
                 'Authorization': `Bearer ${userdata}`,
@@ -140,7 +208,7 @@ export function DeleteFolder(userdata, folderId){
 export function DeleteImage(userdata, imageId){
     console.log('PostData');
     return new Promise((resolve, reject) => {
-        fetch(`http://localhost:3000/images/${imageId}`, {
+        fetch(`${path}/images/${imageId}`, {
             method: 'Delete',
             headers: {
                 'Authorization': `Bearer ${userdata}`,
@@ -164,7 +232,7 @@ export function DeleteImage(userdata, imageId){
 export function DeleteVideo(userdata, videoId){
     console.log('PostData Delete video');
     return new Promise((resolve, reject) => {
-        fetch(`http://localhost:3000/videos/${videoId}`, {
+        fetch(`${path}/videos/${videoId}`, {
             method: 'Delete',
             headers: {
                 'Authorization': `Bearer ${userdata}`,
@@ -188,7 +256,7 @@ export function DeleteVideo(userdata, videoId){
 export function DeleteAudio(userdata, audioId){
     console.log('PostData Delete video');
     return new Promise((resolve, reject) => {
-        fetch(`http://localhost:3000/audios/${audioId}`, {
+        fetch(`${path}/audios/${audioId}`, {
             method: 'Delete',
             headers: {
                 'Authorization': `Bearer ${userdata}`,
@@ -212,7 +280,7 @@ export function DeleteAudio(userdata, audioId){
 export function CreateFolders(userdata, type, folderName){
     console.log('PostData', JSON.stringify(folderName));
     return new Promise((resolve, reject) => {
-        fetch(`http://localhost:3000/folders/${type}`, {
+        fetch(`${path}/folders/${type}`, {
             method: 'Post',
             headers: {
                 'Authorization': `Bearer ${userdata}`,
@@ -235,10 +303,10 @@ export function CreateFolders(userdata, type, folderName){
 }
 
 export function RenameFolder(userdata, type, folderId, folderName){
-    console.log('PostData', `http://localhost:3000/${type}/${folderId}`);
+    //console.log('PostData', `http://localhost:3000/${type}/${folderId}`);
     return new Promise((resolve, reject) => {
         if(type==='folders'){
-            fetch(`http://localhost:3000/${type}/${folderId}`, {
+            fetch(`${path}/${type}/${folderId}`, {
                 method: 'PATCH',
                 headers: {
                     'Authorization': `Bearer ${userdata}`,
@@ -258,7 +326,7 @@ export function RenameFolder(userdata, type, folderId, folderName){
             })
         }
         else if(type === 'images'){
-            fetch(`http://localhost:3000/${type}/${folderId}`, {
+            fetch(`${path}/${type}/${folderId}`, {
                 method: 'PATCH',
                 headers: {
                     'Authorization': `Bearer ${userdata}`,
@@ -278,7 +346,7 @@ export function RenameFolder(userdata, type, folderId, folderName){
             })
         }
         else if(type === 'videos'){
-            fetch(`http://localhost:3000/${type}/${folderId}`, {
+            fetch(`${path}/${type}/${folderId}`, {
                 method: 'PATCH',
                 headers: {
                     'Authorization': `Bearer ${userdata}`,
@@ -298,7 +366,7 @@ export function RenameFolder(userdata, type, folderId, folderName){
             })
         }
         else if(type === 'audios'){
-            fetch(`http://localhost:3000/${type}/${folderId}`, {
+            fetch(`${path}/${type}/${folderId}`, {
                 method: 'PATCH',
                 headers: {
                     'Authorization': `Bearer ${userdata}`,
@@ -323,7 +391,7 @@ export function RenameFolder(userdata, type, folderId, folderName){
 }
 
 export function UploadFiles(userdata, type, folderId, file){
-    console.log('UploadFiles', `http://localhost:3000/${type}/${folderId}`);
+    //console.log('UploadFiles', `http://localhost:3000/${type}/${folderId}`);
     const fd =new FormData();
     
     fd.append('file', file);
@@ -334,7 +402,7 @@ export function UploadFiles(userdata, type, folderId, file){
     console.log('boundary:', fd._boundary);
 
     return new Promise((resolve, reject) => {
-        fetch(`http://localhost:3000/${type}/${folderId}`, {
+        fetch(`${path}/${type}/${folderId}`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${userdata}`,
@@ -353,9 +421,9 @@ export function UploadFiles(userdata, type, folderId, file){
 }
 
 export function SearchImages(userdata, url){
-    console.log('SearchImages', `http://localhost:3000/search/image/?${url}`);
+    //console.log('SearchImages', `http://localhost:3000/search/image/?${url}`);
     return new Promise((resolve, reject) => {
-        fetch(`http://localhost:3000/search/image/?${url}`, {
+        fetch(`${path}/search/image/?${url}`, {
             method: 'Get',
             headers: {
                 'Authorization': `Bearer ${userdata}`,
@@ -375,9 +443,9 @@ export function SearchImages(userdata, url){
 }
 
 export function SearchVideos(userdata, url){
-    console.log('SearchVideos', `http://localhost:3000/search/video/?${url}`);
+    //console.log('SearchVideos', `http://localhost:3000/search/video/?${url}`);
     return new Promise((resolve, reject) => {
-        fetch(`http://localhost:3000/search/video/?${url}`, {
+        fetch(`${path}/search/video/?${url}`, {
             method: 'Get',
             headers: {
                 'Authorization': `Bearer ${userdata}`,
@@ -397,9 +465,9 @@ export function SearchVideos(userdata, url){
 }
 
 export function SearchAudios(userdata, url){
-    console.log('SearchAudios', `http://localhost:3000/search/audio/?${url}`);
+    //console.log('SearchAudios', `http://localhost:3000/search/audio/?${url}`);
     return new Promise((resolve, reject) => {
-        fetch(`http://localhost:3000/search/audio/?${url}`, {
+        fetch(`${path}/search/audio/?${url}`, {
             method: 'Get',
             headers: {
                 'Authorization': `Bearer ${userdata}`,
@@ -419,9 +487,9 @@ export function SearchAudios(userdata, url){
 }
 
 export function SearchImagebyCriteria(userdata, criteria, parameter){
-    console.log('SearchImagebyCCriteria: ', `http://localhost:3000/search/image/${criteria}/${parameter}`);
+    //console.log('SearchImagebyCCriteria: ', `http://localhost:3000/search/image/${criteria}/${parameter}`);
     return new Promise((resolve, reject) => {
-        fetch(`http://localhost:3000/search/image/${criteria}/${parameter}`, {
+        fetch(`${path}/search/image/${criteria}/${parameter}`, {
             method: 'Get',
             headers: {
                 'Authorization': `Bearer ${userdata}`,
@@ -441,9 +509,9 @@ export function SearchImagebyCriteria(userdata, criteria, parameter){
 }
 
 export function SearchAudiobyCriteria(userdata, criteria, parameter){
-    console.log('SearchAudiobyCriteria: ', `http://localhost:3000/search/audio/${criteria}/${parameter}`);
+    //console.log('SearchAudiobyCriteria: ', `http://localhost:3000/search/audio/${criteria}/${parameter}`);
     return new Promise((resolve, reject) => {
-        fetch(`http://localhost:3000/search/audio/${criteria}/${parameter}`, {
+        fetch(`${path}/search/audio/${criteria}/${parameter}`, {
             method: 'Get',
             headers: {
                 'Authorization': `Bearer ${userdata}`,
@@ -465,7 +533,7 @@ export function SearchAudiobyCriteria(userdata, criteria, parameter){
 export function SearchVideobyCriteria(userdata, criteria, parameter){
     console.log('SearchVideobyCriteria');
     return new Promise((resolve, reject) => {
-        fetch(`http://localhost:3000/search/video/${criteria}/${parameter}`, {
+        fetch(`${path}/search/video/${criteria}/${parameter}`, {
             method: 'Get',
             headers: {
                 'Authorization': `Bearer ${userdata}`,
@@ -484,7 +552,7 @@ export function SearchVideobyCriteria(userdata, criteria, parameter){
 }
 export function Favourite(userdata, type){
     return new Promise((resolve, reject) => {
-        fetch(`http://localhost:3000/favorite/${type}`, {
+        fetch(`${path}/favorite/${type}`, {
             method: 'Get',
             headers: {
                 'Authorization': `Bearer ${userdata}`,
@@ -503,7 +571,7 @@ export function Favourite(userdata, type){
 }
 export function RemoveFavourite(userdata, type, Id){
     return new Promise((resolve, reject) => {
-        fetch(`http://localhost:3000/favorite/remove/${type}/${Id}`, {
+        fetch(`${path}/favorite/remove/${type}/${Id}`, {
             method: 'Delete',
             headers: {
                 'Authorization': `Bearer ${userdata}`,
@@ -522,7 +590,7 @@ export function RemoveFavourite(userdata, type, Id){
 }
 export function AddFavourite(userdata, type, Id){
     return new Promise((resolve, reject) => {
-        fetch(`http://localhost:3000/favorite/add/${type}/${Id}`, {
+        fetch(`${path}/favorite/add/${type}/${Id}`, {
             method: 'Post',
             headers: {
                 'Authorization': `Bearer ${userdata}`,
@@ -541,7 +609,7 @@ export function AddFavourite(userdata, type, Id){
 }
 export function MoveFile(userdata, type, fileId, folderId){
     return new Promise((resolve, reject) => {
-        fetch(`http://localhost:3000/${type}/${fileId}/${folderId}`, {
+        fetch(`${path}/${type}/${fileId}/${folderId}`, {
             method: 'PATCH',
             headers: {
                 'Authorization': `Bearer ${userdata}`,
@@ -561,7 +629,7 @@ export function MoveFile(userdata, type, fileId, folderId){
 
 export function GetUsers(userdata, email){
     return new Promise((resolve, reject) => {
-        fetch(`http://localhost:3000/user/${email}`, {
+        fetch(`${path}/user/${email}`, {
             method: 'Get',
             headers: {
                 'Authorization': `Bearer ${userdata}`,
@@ -580,7 +648,7 @@ export function GetUsers(userdata, email){
 }
 export function ShareFile(userdata, type, imageId, sharedId){
     return new Promise((resolve, reject) => {
-        fetch(`http://localhost:3000/share/${type}/${imageId}/${sharedId}`, {
+        fetch(`${path}/share/${type}/${imageId}/${sharedId}`, {
             method: 'PATCH',
             headers: {
                 'Authorization': `Bearer ${userdata}`,
@@ -600,8 +668,68 @@ export function ShareFile(userdata, type, imageId, sharedId){
 
 export function RemoveUser(userdata, type, imageId, userId){
     return new Promise((resolve, reject) => {
-        fetch(`http://localhost:3000/share/remove/${type}/${imageId}/${userId}`, {
+        fetch(`${path}/share/remove/${type}/${imageId}/${userId}`, {
             method: 'PATCH',
+            headers: {
+                'Authorization': `Bearer ${userdata}`,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            resolve(responseJson);
+        })
+        .catch((error) => {
+            reject(error);
+        })
+    });
+}
+
+export function SharedImages(userdata){
+    return new Promise((resolve, reject) => {
+        fetch(`${path}/share/sharedImages`, {
+            method: 'Get',
+            headers: {
+                'Authorization': `Bearer ${userdata}`,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            resolve(responseJson);
+        })
+        .catch((error) => {
+            reject(error);
+        })
+    });
+}
+
+export function SharedAudios(userdata){
+    return new Promise((resolve, reject) => {
+        fetch(`${path}/share/sharedAudios`, {
+            method: 'Get',
+            headers: {
+                'Authorization': `Bearer ${userdata}`,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            resolve(responseJson);
+        })
+        .catch((error) => {
+            reject(error);
+        })
+    });
+}
+
+export function SharedVideos(userdata){
+    return new Promise((resolve, reject) => {
+        fetch(`${path}/share/sharedVideos`, {
+            method: 'Get',
             headers: {
                 'Authorization': `Bearer ${userdata}`,
                 'Accept': 'application/json',

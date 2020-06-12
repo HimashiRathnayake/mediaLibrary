@@ -5,8 +5,8 @@ header.masthead {
   color: rgba(5, 3, 3, 0.993);
   background-image: url("../img/homepage.jpg");
   background-repeat: no-repeat;
-  background-attachment: scroll;
-  background-position: center center;
+  /*background-attachment: scroll; */
+  background-position: center;
   background-size: cover;
 }
 

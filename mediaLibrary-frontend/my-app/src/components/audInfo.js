@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Modal, Button, Row, Col, Form, FormGroup } from 'react-bootstrap';
+import {Modal, Button, Row, Col, Form} from 'react-bootstrap';
 import Item from './Item';
 import SharedUser from './sharedUser';
 
@@ -69,9 +69,7 @@ export default class AudInfo extends Component{
                                         </Form.Label>
                                     </Row>
                                 </Form.Group>
-                                <FormGroup>
-                                    <Button varient="primary" type="submit">save</Button>
-                                </FormGroup>
+                                
                             </Form>
                         </Col>
                     </Row>

@@ -90,6 +90,7 @@ export default class Favourites extends Component{
 
         RemoveFavourite(JSON.parse(sessionStorage.getItem('userData')).token, type, file._id).then((result) => {
             console.log("results: ", result) ;
+            alert(result.message);
             if(type ==='Image'){
                 this.setState({
                     imgresults: result
@@ -138,8 +139,8 @@ export default class Favourites extends Component{
         }
         return(
             <div>
-            <nav className="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
-                <div className="container">
+            <nav className="navbar navbar-expand navbar-dark bg-primary fixed-top" id="mainNav">
+                
                     <Link className="navbar-brand js-scroll-trigger" to={"/start"}>MyMedia</Link>
                     <div className="collapse navbar-collapse" id="navbarResponsive">
                         <ul className="navbar-nav text-uppercase ml-auto">
@@ -157,7 +158,7 @@ export default class Favourites extends Component{
                             </li>
                         </ul>
                     </div>
-                </div>
+                
             </nav>
             {/*<div className="container" style={{backgroundColor: 'White', marginTop: '100px', height: '100%'}}>*/}
             <div className="container" style={{backgroundColor: 'White', marginTop: '100px', width: '80%', height: '100%'}}>

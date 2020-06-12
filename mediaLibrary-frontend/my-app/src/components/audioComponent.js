@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Redirect, Link} from "react-router-dom";
 import './componentCss/files.css';
-import {GetFolders, GetAll, GetFromFolder, CreateFolders, DeleteFolder, DeleteAudio, SearchAudios, Favourite, RemoveFavourite, AddFavourite, MoveFile, UploadFiles, ShareFile, RemoveUser} from '../services/PostData';
+import {GetFolders, GetAll, GetFromFolder, CreateFolders, DeleteFolder, DeleteAudio, SearchAudios, Favourite, RemoveFavourite, AddFavourite, MoveFile, UploadFiles, ShareFile, RemoveUser, SharedAudios} from '../services/PostData';
 import ResultList from './resultList';
 import AudioSearch from './AudioSearch';
 import OverallUpload from './overallUpload';
@@ -43,14 +43,17 @@ export default class Audio extends Component{
           redirect: false,
           searchShow: false,
           audfavourites:[],
+          sharedaud: [],
           title: 'Select a folder',
           RLType: "Folders",
           overallUploadShow: false,
           uploadfolder: {},
-          selectedAud: {}
+          selectedAud: {},
+          loading: false
         }
         this.allfolders();
         this.audfavourites();
+        this.sharedAudios();
     }
       
     addActiveClass() {
@@ -80,6 +83,15 @@ export default class Audio extends Component{
             console.log("results: ", result) ;
             this.setState({
                 audfavourites: result
+            });
+        });
+    }
+
+    sharedAudios(){
+        SharedAudios(JSON.parse(sessionStorage.getItem('userData')).token).then((result) => {
+            console.log("sharedAudio: ", result) ;
+            this.setState({
+                sharedaud: result
             });
         });
     }
@@ -208,9 +220,15 @@ export default class Audio extends Component{
         console.log('in audio component upload');
         console.log('upload folder:', this.state.uploadfolder);
         console.log('upload image: ', this.state.selectedAud);
+        this.setState({
+            loading: true
+        });
 
         UploadFiles(JSON.parse(sessionStorage.getItem('userData')).token,this.state.routeType, this.state.uploadfolder._id, this.state.selectedAud).then((result) => {
             console.log("in upload file");
+            this.setState({
+                loading: false
+            });
             alert(result.message);
             //this.getImage(this.state.uploadfolder);
             this.allAudios();
@@ -270,7 +288,7 @@ export default class Audio extends Component{
 
     Movefile(audId, folderId){
         MoveFile(JSON.parse(sessionStorage.getItem('userData')).token, this.state.routeType, audId, folderId).then((result) => {
-            //alert(result.message);
+            alert(result.message);
             if(result.message === "Audio moved successfully"){
                 if(Object.keys(this.state.folder).length){
                     this.getAudio(this.state.folder);
@@ -290,6 +308,7 @@ export default class Audio extends Component{
             console.log("in share file");
             alert(result.message);
             if(result.message === 'Audio shared successfully'){
+                this.sharedAudios();
                 if(Object.keys(this.state.folder).length){
                     this.getAudio(this.state.folder);
                 }
@@ -312,6 +331,7 @@ export default class Audio extends Component{
             console.log("in remove user file");
             alert(result.message);
             if(result.message === 'Removed user successfully'){
+                this.sharedAudios();
                 if(Object.keys(this.state.folder).length){
                     this.getAudio(this.state.folder);
                 }
@@ -344,7 +364,7 @@ export default class Audio extends Component{
 
         return(
             <div>
-                <nav className="navbar navbar-expand navbar-dark bg-primary"> 
+                <nav className="navbar navbar-expand navbar-dark bg-primary fixed-top"> 
                     <div className="collapse navbar-collapse" id="navbarsExample02">
                         <ul className="navbar-nav mr-auto">
                             <li className="nav-item"> 
@@ -395,6 +415,7 @@ export default class Audio extends Component{
                                         movefile= {this.Movefile}
                                         share={this.shareAudio}
                                         remove={this.removeSharedUsers}
+                                        sharedaud={this.state.sharedaud}
                                         />
                             <AudioSearch show={this.state.searchShow}
                                          onHide={searchClose}
@@ -407,6 +428,7 @@ export default class Audio extends Component{
                                            selectTitle={this.selectTitle}
                                            selectfile={this.selectedfile}
                                            upload={this.upload}
+                                           loading={this.state.loading}
                             />  
                         </div>
                     </div>

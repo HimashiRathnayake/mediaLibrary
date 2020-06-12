@@ -4,7 +4,8 @@ import history from './history';
 
 import Home from './components/homeComponent';
 import Login from './components/loginComponent';
-
+import ForgotPassword from './components/forgotPasswordComponent';
+import Reset from './components/resetComponent';
 import Signup from './components/signupComponent';
 import Start from './components/startpageComponent';  
 import Image from './components/imageComponent';
@@ -12,6 +13,7 @@ import Audio from './components/audioComponent';
 import Video from './components/videoComponent'; 
 import Search from './components/search'; 
 import Favourites from './components/favourites'; 
+import Verify from './components/verifyComponent';
 
 export default class Routes extends Component {
 
@@ -21,6 +23,9 @@ export default class Routes extends Component {
                 <Switch>
                     <Route path="/" exact component={Home} />
                     <Route path="/login" component={Login} />
+                    <Route path="/forgotPassword" component={ForgotPassword} />
+                    <Route path="/verify" component={Verify}></Route>
+                    <Route path="/reset" component={Reset} />
                     <Route path="/signup" component={Signup} />
                     <Route path="/start" component={Start} />
                     <Route path="/image" component={Image} />

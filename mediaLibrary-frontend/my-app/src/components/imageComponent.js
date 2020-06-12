@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Redirect, Link} from "react-router-dom";
 import './componentCss/files.css';
-import {GetFolders, GetAll, GetFromFolder, DeleteFolder, DeleteImage, CreateFolders, SearchImages, Favourite, RemoveFavourite, AddFavourite, MoveFile, UploadFiles, ShareFile, RemoveUser} from '../services/PostData';
+import {GetFolders, GetAll, GetFromFolder, DeleteFolder, DeleteImage, CreateFolders, SearchImages, Favourite, RemoveFavourite, AddFavourite, MoveFile, UploadFiles, ShareFile, RemoveUser, SharedImages} from '../services/PostData';
 import ResultList from './resultList';
 import ImageSearch from './ImageSearch';
 import OverallUpload from './overallUpload';
@@ -43,14 +43,17 @@ export default class Image extends Component{
           redirect: false,
           searchShow: false,
           imgfavourites:[],
+          sharedimg: [],
           title: 'Select a folder',
           RLType: "Folders",
           overallUploadShow: false,
           uploadfolder: {},
-          selectedImg: {}
+          selectedImg: {},
+          loading: false
         }
         this.allfolders();
         this.imgfavourites();
+        this.sharedImages();
     }
       
     addActiveClass() {
@@ -80,6 +83,15 @@ export default class Image extends Component{
             console.log("results: ", result) ;
             this.setState({
                 imgfavourites: result
+            });
+        });
+    }
+
+    sharedImages(){
+        SharedImages(JSON.parse(sessionStorage.getItem('userData')).token).then((result) => {
+            console.log("sharedImage: ", result) ;
+            this.setState({
+                sharedimg: result
             });
         });
     }
@@ -122,6 +134,7 @@ export default class Image extends Component{
     }
 
     allImages(){
+        
         GetAll(JSON.parse(sessionStorage.getItem('userData')).token, this.state.routeType).then((result) => {
             console.log("All images results: ", result);
             this.setState({
@@ -210,9 +223,15 @@ export default class Image extends Component{
         console.log('in image component upload');
         console.log('upload folder:', this.state.uploadfolder);
         console.log('upload image: ', this.state.selectedImg);
+        this.setState({
+            loading: true
+        });
 
         UploadFiles(JSON.parse(sessionStorage.getItem('userData')).token,this.state.routeType, this.state.uploadfolder._id, this.state.selectedImg).then((result) => {
-            console.log("in upload file");
+            console.log("in upload file", result);
+            this.setState({
+                loading: false
+            });
             alert(result.message);
             //this.getImage(this.state.uploadfolder);
             this.allImages();
@@ -268,7 +287,7 @@ export default class Image extends Component{
 
     Movefile(imgId, folderId){
         MoveFile(JSON.parse(sessionStorage.getItem('userData')).token, this.state.routeType, imgId, folderId).then((result) => {
-            //alert(result.message);
+            alert(result.message);
             if(result.message === "Image moved successfully"){
                 if(Object.keys(this.state.folder).length){
                     this.getImage(this.state.folder);
@@ -288,6 +307,7 @@ export default class Image extends Component{
             console.log("in share file");
             alert(result.message);
             if(result.message === 'Image shared successfully'){
+                this.sharedImages();
                 if(Object.keys(this.state.folder).length){
                     this.getImage(this.state.folder);
                 }
@@ -310,6 +330,7 @@ export default class Image extends Component{
             console.log("in remove user file");
             alert(result.message);
             if(result.message === 'Removed user successfully'){
+                this.sharedImages();
                 if(Object.keys(this.state.folder).length){
                     this.getImage(this.state.folder);
                 }
@@ -343,7 +364,7 @@ export default class Image extends Component{
         return(
             
             <div>
-                <nav className="navbar navbar-expand navbar-dark bg-primary"> 
+                <nav className="navbar navbar-expand navbar-dark bg-primary fixed-top"> 
                     <div className="collapse navbar-collapse" id="navbarsExample02">
                         <ul className="navbar-nav mr-auto">
                             <li className="nav-item"> 
@@ -395,6 +416,7 @@ export default class Image extends Component{
                                         movefile= {this.Movefile}
                                         share={this.shareImage}
                                         remove={this.removeSharedUsers}
+                                        sharedimg={this.state.sharedimg}
                             />
                             <ImageSearch show={this.state.searchShow}
                                          onHide={searchClose}
@@ -407,6 +429,7 @@ export default class Image extends Component{
                                            selectTitle={this.selectTitle}
                                            selectfile={this.selectedfile}
                                            upload={this.upload}
+                                           loading={this.state.loading}
                             />   
                         </div>
                     </div>
