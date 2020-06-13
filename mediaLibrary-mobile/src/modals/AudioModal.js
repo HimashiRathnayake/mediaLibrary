@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Text, View, Modal, TouchableOpacity, Alert, Image, Dimensions} from 'react-native';
 import {Slider} from 'react-native-elements';
 import {Audio} from 'expo-av';
-import { Ionicons, MaterialIcons, MaterialCommunityIcons, FontAwesome5, AntDesign } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons, MaterialCommunityIcons, FontAwesome5, AntDesign, Entypo } from '@expo/vector-icons';
 import {stylesScreen} from '../styles/modals/audio';
 import {deleteAudio, renameAudio} from '../api/audio';
 import { DetailsModal } from './DetailsModal';
@@ -13,7 +13,7 @@ const DISABLED_OPACITY = 0.6;
 const LOADING_STRING = "... loading ...";
 const BUFFERING_STRING = "... buffering ...";
 
-export const AudioModal = ({audio, index, visible, setVisible, openModal, setRefresh, insideFolder, setAudioModal}) => {
+export const AudioModal = ({audio, index, visible, setVisible, openModal, setRefresh, insideFolder, setAudioModal, type}) => {
 
     const [playbackInstance, setInstance] = useState(null); 
     const [isSeeking, setSeeking] = useState(false);
@@ -178,6 +178,10 @@ export const AudioModal = ({audio, index, visible, setVisible, openModal, setRef
     }
 
     function removeFavorite(audioId){
+        if (type==='fav'){
+            setVisible(false);
+            setAudioModal(null)
+        }
         removeFromFavorites('Audio', audioId)
         .then((response)=>{
             setRefresh(true);
@@ -215,7 +219,10 @@ export const AudioModal = ({audio, index, visible, setVisible, openModal, setRef
                         <Ionicons name='md-arrow-back' style={stylesScreen.icon}/>  
                     </TouchableOpacity>
 
-                    <View accessibilityLabel='buttonSetView' flexDirection='row' marginTop={20} marginLeft={Dimensions.get('screen').width-100} flexDirection='row-reverse' position='absolute'>
+                    <View accessibilityLabel='buttonSetView' flexDirection='row' marginTop={20} width={Dimensions.get('screen').width} height={60} flexDirection='row-reverse'>
+                        <ToolTip content='View Details' dark={false} onPress={()=>setDetailsModal(true)}>       
+                            <Entypo name='dots-three-vertical' style={stylesScreen.iconTop} />
+                        </ToolTip>
                         <ToolTip content='Delete Audio' dark={false} 
                             onPress={()=>{ 
                                 Alert.alert('Do you want to delete audio','',[
@@ -238,7 +245,7 @@ export const AudioModal = ({audio, index, visible, setVisible, openModal, setRef
 
                     </View> 
                     
-                    <View style={{ alignItems: "center", marginTop: 24 }}>
+                    <View style={{ alignItems: "center", marginTop: 0 }}>
                         <Text style={stylesScreen.headerTop}>MyMedia Audio</Text>
                         <Text accessibilityLabel='audioName' style={stylesScreen.header}>{audio.audioName.substring(0,25)}</Text>
                     </View>
@@ -284,14 +291,14 @@ export const AudioModal = ({audio, index, visible, setVisible, openModal, setRef
                         </TouchableOpacity>
                     </View>
                     
-                    <View style={stylesScreen.bottom}>
+                    {/* <View style={stylesScreen.bottom}>
                         <TouchableOpacity accessibilityLabel='showDetails' onPress={()=>setDetailsModal(true)}>
                             <View flexDirection='row'>
                                 <Text style={[stylesScreen.bottomText, {marginRight:10}]}>View & edit Details</Text>
                                 <AntDesign name='caretdown' style={stylesScreen.bottomText}/>
                             </View>
                         </TouchableOpacity>
-                    </View>
+                    </View> */}
                 </View>
             </View>
         </Modal>

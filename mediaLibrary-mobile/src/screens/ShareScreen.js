@@ -32,9 +32,9 @@ export const ShareScreen = ({route,navigation}) => {
         <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage} accessibilityLabel='shareScreen'>
             <Header navigation={navigation}>Shared {type}s</Header>
             <View flex={1}>
-                {type==='Image' && <ImageDisplayer setRefresh={setRefresh} images={files} count={count}/>}
-                {type==='Audio'&& <AudioDisplayer setRefresh={setRefresh} audios={files} count={count}/>}
-                {type==='Video'&&   <VideoDisplayer setRefresh={setRefresh} videos={files} count={count}/>}
+                {type==='Image' && <ImageDisplayer setRefresh={setRefresh} images={files} count={count} type='shared'/>}
+                {type==='Audio'&& <AudioDisplayer setRefresh={setRefresh} audios={files} count={count} type='shared'/>}
+                {type==='Video'&&   <VideoDisplayer setRefresh={setRefresh} videos={files} count={count} type='shared'/>}
             </View>
         </ImageBackground>
     );

@@ -5,10 +5,8 @@ import {FavouritesScreen} from '../screens/FavouritesScreen';
 import { createDrawerNavigator, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 import {AuthContext} from './context'
 import { styles } from '../styles/drawer';
-import { FontAwesome, Entypo, MaterialIcons, Ionicons, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
+import { FontAwesome, Entypo, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { ImageTabNavigator, AudioTabNavigator, VideoTabNavigator } from './TabNavigator';
-import { SettingsScreen } from '../screens/SettingsScreen';
-import { HelpScreen } from '../screens/HelpScreen';
 
 const Drawer = createDrawerNavigator();
 

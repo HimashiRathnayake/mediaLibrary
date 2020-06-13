@@ -66,9 +66,9 @@ export const FavouritesScreen = ({navigation}) => {
 
         </View>
 
-        {selected==='Image' && files!==[] && <ImageDisplayer setRefresh={()=>getFavouriteFiles(selected)} count={count} images={files}/>}
-        {selected==='Audio' && <AudioDisplayer setRefresh={()=>getFavouriteFiles(selected)} count={count} audios={files}/>}
-        {selected==='Video' && <VideoDisplayer setRefresh={()=>getFavouriteFiles(selected)} count={count} videos={files}/>}
+        {selected==='Image' && files!==[] && <ImageDisplayer setRefresh={()=>getFavouriteFiles(selected)} count={count} images={files} type='fav'/>}
+        {selected==='Audio' && <AudioDisplayer setRefresh={()=>getFavouriteFiles(selected)} count={count} audios={files} type='fav'/>}
+        {selected==='Video' && <VideoDisplayer setRefresh={()=>getFavouriteFiles(selected)} count={count} videos={files} type='fav'/>}
 
     </ImageBackground>);
 }

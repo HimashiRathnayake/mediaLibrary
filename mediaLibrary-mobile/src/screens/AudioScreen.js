@@ -58,7 +58,7 @@ export const AudioScreen = ({navigation, route}) => {
         <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage} accessibilityLabel='audioScreen'>
             <FileHeader navigation={navigation} route={route}/>
             <View>
-                <AudioDisplayer count={count} setRefresh={setRefresh} audios={audios} insideFolder={true}/>
+                <AudioDisplayer count={count} setRefresh={setRefresh} audios={audios} insideFolder={true} type='infolder'/>
                 <View style={styleAudio.iconContainer}>
                     <TouchableOpacity onPress={()=>{openAudioPickerAsync()}} accessibilityLabel='uploadAudio'>
                         <Text style={styleAudio.addAudioIcon}>+</Text>

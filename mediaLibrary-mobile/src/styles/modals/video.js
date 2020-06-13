@@ -26,7 +26,7 @@ export const stylesScreen = StyleSheet.create({
     videoContainer:{
         width: Dimensions.get('screen').width,
         height: Dimensions.get('screen').height* 1 / 2,
-        marginTop: 40,
+        marginTop: 45,
     },
     video: {
         width: Dimensions.get('screen').width-5,
@@ -34,7 +34,7 @@ export const stylesScreen = StyleSheet.create({
         height: VIDEO_CONTAINER_HEIGHT,
         backgroundColor: 'black',
         borderRadius: 10,
-        elevation: 30
+        elevation: 30,
     },
     icon: {
         fontSize: 30,
@@ -43,7 +43,7 @@ export const stylesScreen = StyleSheet.create({
     },
     iconBottom:{
         fontSize: 20,
-        width: DEVICE_WIDTH/3,
+        marginHorizontal: 20,
         textAlign: 'center',
         marginTop: 20,
     },

@@ -101,6 +101,7 @@ export const DetailsModal = ({file, type, detailsModal, setDetailsModal, setVisi
                                             onChangeText={(newName)=>setName(newName)}
                                             value={name}
                                             accessibilityLabel='newname'
+                                            onSubmitEditing={()=>{renameFile(file._id, name); setPressed(false)}}
                                         />
                                     </View>
                                     <View flexDirection='row'>

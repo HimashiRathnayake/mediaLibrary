@@ -56,7 +56,7 @@ export const stylesScreen = StyleSheet.create({
     },
     iconTop:{
         fontSize: 22,
-        marginHorizontal: 10,
+        marginHorizontal: 20,
         color: 'black',
     },
     audioSlider: {

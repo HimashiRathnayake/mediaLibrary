@@ -57,7 +57,7 @@ export const VideoScreen = ({navigation, route}) => {
         <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage} accessibilityLabel='videoScreen'>
             <FileHeader navigation={navigation} route={route}/>
             <View>
-                <VideoDisplayer setRefresh={setRefresh} count={count} videos={videos} insideFolder={true}/>
+                <VideoDisplayer setRefresh={setRefresh} count={count} videos={videos} insideFolder={true} type='infolder'/>
                 <View style={styleVideo.iconContainer}>
                     <TouchableOpacity accessibilityLabel='uploadVideo' onPress={()=>{openVideoPickerAsync()}}>
                         <Text style={styleVideo.addVideoIcon}>+</Text>

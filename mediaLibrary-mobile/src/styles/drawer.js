@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
     },
     drawerHeader:{
         height: 120,
-        marginTop: 40,
+        marginTop: 60,
         alignItems: 'center',
         marginBottom: 20,
     },
@@ -18,7 +18,8 @@ export const styles = StyleSheet.create({
     },
     drawerHeaderText:{
         fontSize: 16,
-        color: '#9e9e9e'
+        color: '#9e9e9e',
+        marginTop: 10,
     }
 });
 

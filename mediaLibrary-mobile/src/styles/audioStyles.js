@@ -8,14 +8,26 @@ export const styleAudio = StyleSheet.create({
         marginBottom: 120,
     },
     noAudioContainer:{
-        marginTop: '60%',
+        marginTop: '40%',
         alignSelf: 'center',
+    },
+    originalImage:{
+        width: 150,
+        height:150,
+        borderRadius: 10,
+        backgroundColor: 'white',
+        alignSelf: 'center',
+        marginBottom: 20
     },
     noAudioText: {
         color: '#fff',
-        justifyContent: 'space-between',
-        textAlignVertical: 'center',
+        textAlign: 'center',
         fontSize: 20
+    },
+    noAudioTextB:{
+        color: '#9e9e9e',
+        textAlign: 'center',
+        fontSize: 16
     },
     audioIcon:{
         color: '#fff',
@@ -57,5 +69,11 @@ export const styleAudio = StyleSheet.create({
         borderRadius: 100,
         justifyContent: 'center',
         shadowOpacity: 1
-    }
+    },
+    iconBottom:{
+        position:'absolute', 
+        marginTop: 10,
+        marginLeft: Dimensions.get('screen').width - 80,
+        fontSize: 25
+    },
 })

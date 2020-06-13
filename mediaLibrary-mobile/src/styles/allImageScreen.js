@@ -9,6 +9,14 @@ export const stylesScreen = StyleSheet.create({
         alignSelf: 'center',
         marginBottom: 120
     },
+    originalImage:{
+        width: 150,
+        height:150,
+        borderRadius: 10,
+        backgroundColor: 'white',
+        alignSelf: 'center',
+        marginBottom: 20
+    },
     imagewrapper:{
         margin: 5,
         borderRadius: 30,
@@ -25,14 +33,18 @@ export const stylesScreen = StyleSheet.create({
         color: 'white'
     },
     noImageContainer:{
-        marginTop: '60%',
+        marginTop: '40%',
         alignSelf: 'center',
     },
     noImageText: {
         color: '#fff',
-        justifyContent: 'space-between',
-        textAlignVertical: 'center',
+        textAlign: 'center',
         fontSize: 20
+    },
+    noImageTextB:{
+        color: '#9e9e9e',
+        textAlign: 'center',
+        fontSize: 16
     },
     image:{
         flex: 1,
@@ -83,5 +95,11 @@ export const stylesScreen = StyleSheet.create({
         paddingVertical: 10,
         paddingHorizontal: 20,
         fontSize: 18
+    },
+    iconBottom:{
+        position:'absolute', 
+        marginTop: 80,
+        marginLeft: 80,
+        fontSize: 25
     },
 });

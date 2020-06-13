@@ -1,5 +1,5 @@
 import React from 'react';
-import { ImageBackground, View, Text, TouchableOpacity, TextInput, Alert, KeyboardAvoidingView, Keyboard} from 'react-native';
+import { ImageBackground, View, Text, TouchableOpacity, TextInput, Alert, KeyboardAvoidingView, Image} from 'react-native';
 import {styles} from '../styles/loginscreen';
 import { Entypo, FontAwesome, AntDesign } from '@expo/vector-icons';
 import { AuthContext } from '../navigators/context';
@@ -9,7 +9,7 @@ import {signup} from "../api/user";
 
 const validationSchema = yup.object({
     email: yup.string().required().email(),
-    password: yup.string().required().min(5),
+    password: yup.string().required().min(8),
     confirmPassword: yup.string().required().oneOf([yup.ref('password')],"Password doesn't match")
 });
 
@@ -49,11 +49,12 @@ export const SignUpScreen = ({navigation}) => {
                         }}
                     >
                     {(props)=>(
-                        <KeyboardAvoidingView flex={3} behavior='padding'>
+                        <KeyboardAvoidingView flex={3} behavior='padding' marginTop={140}>
                         <View style={styles.form}>
 
                             <View style={styles.headerContainer}>
-                                <Entypo name="folder-video" color="white" size={40} /> 
+                                {/* <Entypo name="folder-video" color="white" size={40} />  */}
+                                <Image source={require('../../assets/logo.png')} style={[styles.originalImage]}/>    
                                 <Text style={styles.headerText}>SignUp Here To Continue</Text>
                             </View>
 

@@ -109,6 +109,7 @@ export const FolderModal = ({modalVisible, setVisible, type, folderId, setRefres
                             onChangeText={props.handleChange('folderName')}
                             value={props.values.folderName}
                             accessibilityLabel='folderName1'
+                            onSubmitEditing={()=>props.handleSubmit()}
                         />
                         <View style={stylesScreen.bottom}>
                             <TouchableOpacity accessibilityLabel='close' onPress={()=>{setVisible(false)}}><Text style={stylesScreen.text}>Close</Text></TouchableOpacity> 

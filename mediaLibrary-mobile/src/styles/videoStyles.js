@@ -8,14 +8,26 @@ export const styleVideo = StyleSheet.create({
         marginBottom: 120,
     },
     noVideoContainer:{
-        marginTop: '60%',
+        marginTop: '40%',
         alignSelf: 'center',
+    },
+    originalImage:{
+        width: 150,
+        height:150,
+        borderRadius: 10,
+        backgroundColor: 'white',
+        alignSelf: 'center',
+        marginBottom: 20
     },
     noVideoText: {
         color: '#fff',
-        justifyContent: 'space-between',
-        textAlignVertical: 'center',
+        textAlign: 'center',
         fontSize: 20
+    },
+    noVideoTextB:{
+        color: '#9e9e9e',
+        textAlign: 'center',
+        fontSize: 16
     },
     videoContainer: {
         backgroundColor: 'rgba(255, 255, 255, 0.4)',
@@ -52,5 +64,11 @@ export const styleVideo = StyleSheet.create({
         borderRadius: 100,
         justifyContent: 'center',
         shadowOpacity: 1
-    }
+    },
+    iconBottom:{
+        position:'absolute', 
+        marginTop: 10,
+        marginLeft: Dimensions.get('screen').width - 80,
+        fontSize: 25
+    },
 })

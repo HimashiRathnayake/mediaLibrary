@@ -5,8 +5,9 @@ import {ImageModal} from '../modals/ImageModal';
 import {FolderModal} from '../modals/FolderModal';
 import {deleteImage} from '../api/image';
 import { FolderList } from '../modals/FolderList';
+import { FontAwesome } from '@expo/vector-icons';
 
-export const ImageDisplayer = ({setRefresh, images, count, shouldMove}) => {
+export const ImageDisplayer = ({setRefresh, images, count, shouldMove, type}) => {
 
     const [modelVisible, setVisible] = useState(false);
     const [modelImage, setImage] = useState(null);
@@ -52,6 +53,9 @@ export const ImageDisplayer = ({setRefresh, images, count, shouldMove}) => {
             >
                 <View style={stylesScreen.imagewrapper}>
                     <Image source={{uri:val.path}} style={stylesScreen.image}/>
+                    {(val.accessList.length>1)&&
+                    <FontAwesome name="slideshare" size={24} color="white" style={stylesScreen.iconBottom}/>
+                    }
                 </View>
             </TouchableOpacity>
         )
@@ -60,14 +64,31 @@ export const ImageDisplayer = ({setRefresh, images, count, shouldMove}) => {
         <View>
             {count===0 ? 
                 (<View style={stylesScreen.noImageContainer}>
-                    <Text accessibilityLabel='noImage1' style={stylesScreen.noImageText}>No images found</Text>
+                    <Image source={require('../../assets/no_result.png')} style={[stylesScreen.originalImage]}/> 
+                    <Text accessibilityLabel='noImage1' style={stylesScreen.noImageText}>No Images Found</Text>
+                    {(type==='infolder')&&
+                        <View><Text style={stylesScreen.noImageTextB}>Images uploading to this folder</Text>
+                        <Text style={stylesScreen.noImageTextB}>will appear here</Text></View>
+                    }
+                    {(type==='fav')&&
+                        <View><Text style={stylesScreen.noImageTextB}>Images added to the favourites</Text>
+                        <Text style={stylesScreen.noImageTextB}>will appear here</Text></View>
+                    }
+                    {(type==='shared')&&
+                        <View><Text style={stylesScreen.noImageTextB}>Images shared with/by others</Text>
+                        <Text style={stylesScreen.noImageTextB}>will appear here</Text></View>
+                    }
+                    {(type==='search')&&
+                        <View><Text style={stylesScreen.noImageTextB}>We cannot find image you are searching for,</Text>
+                        <Text style={stylesScreen.noImageTextB}>may be a little spelling mistake</Text></View>
+                    }
                 </View>
                 ):
                 (<ScrollView style={stylesScreen.container}>
                     <View style={stylesScreen.container} accessibilityLabel='imagesView'>
                         {(modelImage !== null) && (
                             <View>
-                            <ImageModal modelImage={modelImage} modelVisible={modelVisible} setVisible={setVisible} setRefresh={setRefresh} enableFolder={shouldMove} setImage={setImage}/>
+                            <ImageModal modelImage={modelImage} modelVisible={modelVisible} setVisible={setVisible} setRefresh={setRefresh} enableFolder={shouldMove} setImage={setImage} type={type}/>
                             
                             <Modal style={stylesScreen.folderActionModal} transparent={true} animationType='fade' visible={actionModalVisible} onRequestClose={()=>{}}>
                                 <TouchableWithoutFeedback accessibilityLabel='imageActionModalbutton' onPress={()=>setActionModalVisible(false)}>

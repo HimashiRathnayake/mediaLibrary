@@ -41,9 +41,9 @@ export const SearchResultScreen = ({route,navigation}) => {
     return(
         <ImageBackground source={require('../../assets/bg.jpeg')} style={styles.backgroundImage} accessibilityLabel='searchResultScreen'>
             <SearchHeader navigation={navigation} route={route}/>
-            {type==='Image' && <ImageDisplayer setRefresh={setRefresh} images={files} count={count}/>}
-            {type==='Audio' && <AudioDisplayer setRefresh={setRefresh} audios={files} count={count}/>}
-            {type==='Video' && <VideoDisplayer setRefresh={setRefresh} videos={files} count={count}/>}
+            {type==='Image' && <ImageDisplayer setRefresh={setRefresh} images={files} count={count} type='search'/>}
+            {type==='Audio' && <AudioDisplayer setRefresh={setRefresh} audios={files} count={count} type='search'/>}
+            {type==='Video' && <VideoDisplayer setRefresh={setRefresh} videos={files} count={count} type='search'/>}
         </ImageBackground>
     );
 }

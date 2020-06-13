@@ -1,5 +1,5 @@
 import React from 'react';
-import { ImageBackground, View, Text, TouchableOpacity, TextInput, Alert, KeyboardAvoidingView} from 'react-native';
+import { ImageBackground, View, Text, TouchableOpacity, TextInput, Alert, KeyboardAvoidingView, Image} from 'react-native';
 import { Entypo, FontAwesome, AntDesign } from '@expo/vector-icons';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import {styles} from '../styles/loginscreen';
@@ -9,7 +9,7 @@ import {login} from "../api/user";
 import {AuthContext} from '../navigators/context';
 
 const validationSchema = yup.object({
-    email: yup.string().required(),
+    email: yup.string().required().email(),
     password: yup.string().required(),
 });
 
@@ -49,7 +49,7 @@ export const LoginScreen = ({navigation}) => {
                     <View style={styles.form}>
 
                         <View style={styles.headerContainer}>
-                            <Entypo name="folder-video" color="white" size={40} /> 
+                            <Image source={require('../../assets/logo.png')} style={styles.originalImage}/>    
                             <Text style={styles.headerText} accessibilityLabel='text1'>Login Here To Continue</Text>
                         </View>
 
@@ -65,6 +65,7 @@ export const LoginScreen = ({navigation}) => {
                                 onChangeText={props.handleChange('email')}
                                 value={props.values.email}
                                 accessibilityLabel='email'
+                                onSubmitEditing={()=>props.handleSubmit()}
                             />
                         </View>  
                         <Text style={styles.errorText} accessibilityLabel='emailError'>{props.touched.email && props.errors.email}</Text>
@@ -81,6 +82,7 @@ export const LoginScreen = ({navigation}) => {
                                 onChangeText={props.handleChange('password')}
                                 value={props.values.password}
                                 accessibilityLabel='password'
+                                onSubmitEditing={()=>props.handleSubmit()}
                             />
                         </View>  
                         <Text style={styles.errorText} accessibilityLabel='passwordError'>{props.touched.password && props.errors.password}</Text>

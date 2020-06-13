@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Text, View, Modal, TouchableOpacity, Alert } from 'react-native';
+import { Text, View, Modal, TouchableOpacity, Alert, Dimensions } from 'react-native';
 import {Video} from 'expo-av';
-import { Ionicons, MaterialIcons, MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons, MaterialCommunityIcons, AntDesign, Entypo } from '@expo/vector-icons';
 import {deleteVideo, renameVideo} from '../api/video';
 import {stylesScreen} from '../styles/modals/video';
 import { DetailsModal } from './DetailsModal';
@@ -10,7 +10,7 @@ import {getIsFavorite, addToFavourite, removeFromFavorites} from '../api/favorit
 
 const DISABLED_OPACITY = 0.3;
 
-export const VideoModal = ({visible, setVisible, videoModal, setRefresh, insideFolder, setVideoModal}) => {
+export const VideoModal = ({visible, setVisible, videoModal, setRefresh, insideFolder, setVideoModal, type}) => {
 
     const [isLoading, setLoading]= useState(true);
     const [detailsModal, setDetailsModal] = useState(false);
@@ -63,6 +63,10 @@ export const VideoModal = ({visible, setVisible, videoModal, setRefresh, insideF
     }
 
     function removeFavorite(videoId){
+        if (type==='fav'){
+            setVisible(false);
+            setVideoModal(null)
+        }
         removeFromFavorites('Video', videoId)
         .then((response)=>{
             setRefresh(true);
@@ -90,23 +94,12 @@ export const VideoModal = ({visible, setVisible, videoModal, setRefresh, insideF
                     <TouchableOpacity accessibilityLabel='backV' onPress={()=>{setVisible(false);}} style={{flexDirection:'row-reverse', marginLeft: 20, marginTop: 30, position: 'absolute'}}>
                         <Ionicons name='md-arrow-back' style={stylesScreen.icon}/>  
                     </TouchableOpacity>
-                    <View style={{ alignItems: "center", marginTop: 24 }}>
-                        <Text style={stylesScreen.headerTop}>MyMedia Video</Text>
-                        <Text style={stylesScreen.header}>{videoModal.videoName.substring(0,25)}</Text>
-                    </View>
-                    <View style={stylesScreen.videoContainer}>
-                        <Video
-                            source={{uri: videoModal.path}}
-                            style={[stylesScreen.video,{opacity: isLoading ? 0.0 : 1.0,}]}
-                            resizeMode={Video.RESIZE_MODE_CONTAIN}
-                            onLoadStart={onLoadStart}
-                            onLoad={onLoad}
-                            onError={onError}
-                            useNativeControls = {true}
-                        />
-                    </View>
-                    
-                    <View flexDirection='row-reverse' style={stylesScreen.iconBottomSet} accessibilityLabel='buttonsV'>
+
+                    <View accessibilityLabel='buttonSetView' flexDirection='row' marginTop={20} width={Dimensions.get('screen').width} height={60} flexDirection='row-reverse'>
+                        <ToolTip content='View Details' dark={false} onPress={()=>setDetailsModal(true)}>       
+                            <Entypo name='dots-three-vertical' style={stylesScreen.iconBottom} />
+                        </ToolTip>
+
                         <ToolTip content='Delete Audio' dark={false} 
                             onPress={()=>{ 
                                 Alert.alert('Do you want to delete video','',[
@@ -126,17 +119,34 @@ export const VideoModal = ({visible, setVisible, videoModal, setRefresh, insideF
                                 <MaterialIcons name='favorite-border' style={stylesScreen.iconBottom}/>
                             </ToolTip>
                         )}    
-                        <Ionicons name='md-share' style={stylesScreen.iconBottom} onPress={()=>setVisible(false)}/>
-                    </View> 
+                        {/* <Ionicons name='md-share' style={stylesScreen.iconBottom} onPress={()=>setVisible(false)}/> */}
+                    </View>
 
-                    <View style={stylesScreen.bottom}>
+                    <View style={stylesScreen.videoContainer}>
+                        <Video
+                            source={{uri: videoModal.path}}
+                            style={[stylesScreen.video,{opacity: isLoading ? 0.0 : 1.0,}]}
+                            resizeMode={Video.RESIZE_MODE_CONTAIN}
+                            onLoadStart={onLoadStart}
+                            onLoad={onLoad}
+                            onError={onError}
+                            useNativeControls = {true}
+                        />
+                    </View>
+
+                    <View style={{ alignItems: "center", marginTop: 35 }}>
+                        <Text style={stylesScreen.headerTop}>MyMedia Video</Text>
+                        <Text style={stylesScreen.header}>{videoModal.videoName.substring(0,25)}</Text>
+                    </View>
+                    
+                    {/* <View style={stylesScreen.bottom}>
                         <TouchableOpacity accessibilityLabel='detailsModalV' onPress={()=>setDetailsModal(true)}>
                             <View flexDirection='row'>
                                 <Text style={[stylesScreen.bottomText, {marginRight:10}]}>View & edit Details</Text>
                                 <AntDesign name='caretdown' style={stylesScreen.bottomText}/>
                             </View>
                         </TouchableOpacity>
-                    </View>
+                    </View> */}
                 </View>
             </View>
         </Modal>

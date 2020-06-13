@@ -90,9 +90,9 @@ export const HomeSearch = ({visible, setVisible}) => {
                         </Text>
                     </TouchableOpacity>
                 </View>
-                {selected==='image' && files!==null && <ImageDisplayer setRefresh={setRefresh} images={files} count={count}/>}
-                {selected==='audio' && files!==null && <AudioDisplayer setRefresh={setRefresh} audios={files} count={count}/>}
-                {selected==='video' && files!==null && <VideoDisplayer setRefresh={setRefresh} videos={files} count={count}/>}
+                {selected==='image' && files!==null && <ImageDisplayer setRefresh={setRefresh} images={files} count={count} type='search'/>}
+                {selected==='audio' && files!==null && <AudioDisplayer setRefresh={setRefresh} audios={files} count={count} type='search'/>}
+                {selected==='video' && files!==null && <VideoDisplayer setRefresh={setRefresh} videos={files} count={count} type='search'/>}
             </ImageBackground>
         </Modal>
     );

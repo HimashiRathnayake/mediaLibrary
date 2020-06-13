@@ -7,7 +7,7 @@ import * as yup from 'yup';
 import {resetPassword} from "../api/user";
 
 const validationSchema = yup.object({
-    password: yup.string().required().min(5),
+    password: yup.string().required().min(8),
     confirmPassword: yup.string().required().oneOf([yup.ref('password')],"Password doesn't match")
 });
 

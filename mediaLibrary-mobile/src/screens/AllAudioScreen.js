@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {ImageBackground} from 'react-native';
+import {ImageBackground, Image} from 'react-native';
 import {styles} from '../styles/commons';
 import {Header} from '../commons/Header';
 import { getAudios } from '../api/audio';
