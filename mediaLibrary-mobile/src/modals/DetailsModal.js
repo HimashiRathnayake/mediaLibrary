@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Text, View, Modal, TouchableOpacity, TextInput, Image} from 'react-native';
+import {Text, View, Modal, TouchableOpacity, TextInput, Image, Alert} from 'react-native';
 import { Ionicons, FontAwesome, MaterialIcons, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import {stylesScreen} from '../styles/modals/details';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -37,7 +37,7 @@ export const DetailsModal = ({file, type, detailsModal, setDetailsModal, setVisi
         setArtist(file.artist); 
         setAlbum(file.album);
         setSubject(file.subject); 
-        if (year==='') {setYear('Unknown');} else{setYear(file.year);}
+        if (year==='' && type==='Audio') {setYear('Unknown');} else{setYear(file.year);}
         if (type==='Audio'){setFileName(file.audioName); }
         else if (type==='Video'){setFileName(file.videoName)}
         else {setFileName(file.imageName)}        
@@ -105,7 +105,16 @@ export const DetailsModal = ({file, type, detailsModal, setDetailsModal, setVisi
                                         />
                                     </View>
                                     <View flexDirection='row'>
-                                        <TouchableOpacity accessibilityLabel='renamebutton' onPress={()=>{renameFile(file._id, name); setPressed(false)}}>
+                                        <TouchableOpacity accessibilityLabel='renamebutton' 
+                                            onPress={()=>{
+                                            if (name==='' || name===null){
+                                                setPressed(false);
+                                                Alert.alert('You have to enter a name in order to rename','',[{text:'OK'}]);
+                                            }
+                                            else{
+                                                renameFile(file._id, name); 
+                                                setPressed(false)}}}
+                                        >
                                             <Text style={stylesScreen.button}>Rename</Text>
                                         </TouchableOpacity>
                                         <TouchableOpacity accessibilityLabel='cancelbutton' onPress={()=>{setPressed(false);}}>
