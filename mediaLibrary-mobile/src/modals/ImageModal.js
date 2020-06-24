@@ -6,10 +6,29 @@ import {deleteImage, renameImage} from '../api/image';
 import { DetailsModal } from './DetailsModal';
 import {getIsFavorite, addToFavourite, removeFromFavorites} from '../api/favorites';
 import {ToolTip} from '../commons/ToolTip';
+import GestureRecognizer from 'react-native-swipe-gestures';
 
-export const ImageModal = ({modelImage, modelVisible, setVisible, setRefresh, enableFolder, setImage, type}) => {
+export const ImageModal = ({modelImage, count, index, modelVisible, setVisible, setRefresh, enableFolder, setImage, type, openModal}) => {
     const [detailsModal, setDetailsModal] = useState(false);
     const [isFavorite, setIsFavorite] = useState(null);
+    const config = {
+        velocityThreshold: 0.3,
+        directionalOffsetThreshold: 80
+    };
+
+    function onSwipeLeft() {
+        if (index+1 < count){
+            setVisible(false);
+            openModal(true, index+1);
+        }
+    }
+
+    function onSwipeRight() {
+        if (index-1 >= 0){
+            setVisible(false);
+            openModal(true, index-1)
+        }
+    }
 
     React.useEffect(()=>{  
         if (modelImage!==null){
@@ -71,6 +90,13 @@ export const ImageModal = ({modelImage, modelVisible, setVisible, setRefresh, en
     }
 
     return(
+        <GestureRecognizer
+            onSwipeUp={(state) => setDetailsModal(true)}
+            onSwipeLeft={(state)=> onSwipeLeft()}
+            onSwipeRight={(state) => onSwipeRight()}
+            onSwipeDown={()=>setDetailsModal(false)}
+            config={config}
+        >
         <View>
             <Modal style={stylesScreen.modal} transparent={false} animationType='slide' visible={modelVisible} onRequestClose={()=>{setVisible(false); setIsFavorite(null)}}>
                 <View style={stylesScreen.modal}>
@@ -140,5 +166,6 @@ export const ImageModal = ({modelImage, modelVisible, setVisible, setRefresh, en
             />
 
         </View>
+        </GestureRecognizer>
     );
 }

@@ -22,8 +22,8 @@ export const VideoDisplayer = ({videos, count, setRefresh, insideFolder, type}) 
 
 	async function openModal(visible,key){
 		await setIndex(key);
-        await setVideoModal(videos[key]);
-        setVisible(visible);
+		await setVideoModal(videos[key]);
+		setVisible(visible);
 	}
 
 	async function setAction(val){
@@ -94,7 +94,18 @@ return(
 				<View style={styleVideo.container} accessibilityLabel='videoContainer'>
 					{(videoModal !== null) && (
 						<View>
-						<VideoModal visible={visible} setVisible={setVisible} videoModal={videoModal} setRefresh={setRefresh} insideFolder={insideFolder} setVideoModal={setVideoModal} type={type}/>
+						<VideoModal 
+							visible={visible} 
+							setVisible={setVisible} 
+							videoModal={videoModal} 
+							setRefresh={setRefresh} 
+							insideFolder={insideFolder} 
+							setVideoModal={setVideoModal} 
+							type={type} 
+							index={index} 
+							openModal={openModal}
+							count={count}
+						/>
 						<Modal style={stylesScreen.folderActionModal} transparent={true} animationType='fade' visible={actionModalVisible} onRequestClose={()=>{setActionModalVisible(false)}}>
 							<TouchableWithoutFeedback accessibilityLabel='videoActionModalbutton' onPress={()=>setActionModalVisible(false)}>
 								<View style={stylesScreen.folderActionModal}>

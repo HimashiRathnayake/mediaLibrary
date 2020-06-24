@@ -7,6 +7,7 @@ import {AuthContext} from './context'
 import { styles } from '../styles/drawer';
 import { FontAwesome, Entypo, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { ImageTabNavigator, AudioTabNavigator, VideoTabNavigator } from './TabNavigator';
+import { HomeStackScreen } from './StackNavigators';
 
 const Drawer = createDrawerNavigator();
 
@@ -50,7 +51,7 @@ function CustomDrawerContent(props) {
 
     return(
 		<Drawer.Navigator initialRouteName="Home" drawerStyle={{width:279}} drawerContent={props => <CustomDrawerContent {...props}/>}>
-            <Drawer.Screen name="Home" component={HomeScreen} options={{drawerIcon: ({color, size}) => 
+            <Drawer.Screen name="Home" component={HomeStackScreen} options={{drawerIcon: ({color, size}) => 
                 <FontAwesome name="home" color={color} size={18}/>
             }}/>
             <Drawer.Screen name="Images" component={ImageTabNavigator} options={{drawerIcon: ({color, size}) => 

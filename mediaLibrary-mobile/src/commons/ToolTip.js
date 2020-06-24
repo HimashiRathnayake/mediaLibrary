@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
 import Tooltip from 'react-native-walkthrough-tooltip';
 
-export const ToolTip = ({content, children, onPress, dark}) => {
+export const ToolTip = ({content, children, onPress, dark, disabled}) => {
     const [toolTip, setToolTip] = useState(false);
     return(
     <View>
@@ -15,7 +15,7 @@ export const ToolTip = ({content, children, onPress, dark}) => {
             onClose={()=>setToolTip(false)}
             contentStyle={{backgroundColor:dark?'rgba(128,128,127,0.6)':'#242424'}}
         >
-            <TouchableOpacity accessibilityLabel='tooltipButton' onPress={onPress} onLongPress={()=>setToolTip(true)}>
+            <TouchableOpacity accessibilityLabel='tooltipButton' onPress={onPress} onLongPress={()=>setToolTip(true)} disabled={disabled}>
                 {children}
             </TouchableOpacity>
         </Tooltip>

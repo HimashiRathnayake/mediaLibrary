@@ -7,7 +7,8 @@ import {ShareModal} from './ShareModal';
 import {removeUser} from '../api/share';
 import { FolderList } from './FolderList';
 import { ToolTip } from '../commons/ToolTip';
- 
+import GestureRecognizer from 'react-native-swipe-gestures';
+
 export const DetailsModal = ({file, type, detailsModal, setDetailsModal, setVisible, renameFile, setRefresh, enableFolder, setFile}) => {
 
     const [pressed, setPressed] = useState(false);
@@ -20,6 +21,10 @@ export const DetailsModal = ({file, type, detailsModal, setDetailsModal, setVisi
     const [subject, setSubject] = useState('');
     const [year, setYear] = useState('');
     const [name, setName] = useState(null);
+    const config = {
+        velocityThreshold: 0.3,
+        directionalOffsetThreshold: 80
+    };
 
     function removeFromShared(userId, fileId){
         removeUser(userId, fileId, type)
@@ -67,6 +72,10 @@ export const DetailsModal = ({file, type, detailsModal, setDetailsModal, setVisi
 
     return(
 
+        <GestureRecognizer
+            onSwipeDown={(state) => setDetailsModal(false)}
+            config={config}
+        >
         <View accessibilityLabel='detailsModalView'>
         <Modal style={stylesScreen.modal} transparent={false} animationType='slide' visible={detailsModal} onRequestClose={()=>{setDetailsModal(false); setPressed(false);}}>
             <View style={stylesScreen.modal}>
@@ -155,6 +164,7 @@ export const DetailsModal = ({file, type, detailsModal, setDetailsModal, setVisi
         <ShareModal shareModal={shareModal} setShareModal={setShareModal} type={type} fileId={file._id} setRefresh={setRefresh}/>
         <FolderList visible={folderVisible} setVisible={setFolderVisible} fileId={file._id} type={type} setRefresh={setRefresh} setDetailsModal={setDetailsModal} setFileModal={setVisible} setFile={setFile}/>
         </View>
+        </GestureRecognizer>
 
 );
 }

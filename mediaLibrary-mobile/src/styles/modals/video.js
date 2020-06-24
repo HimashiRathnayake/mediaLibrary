@@ -63,16 +63,20 @@ export const stylesScreen = StyleSheet.create({
         marginTop: 8,
         marginBottom: 10,
         color: "#8E97A6",
-        alignSelf: 'center'
+        alignSelf: 'center',
+        textAlign:'center',
+        width: 192
     },
     bottom:{
         alignSelf: 'center',
         justifyContent: 'center',
         marginTop: 40
-    },
-    bottomText:{
-        marginTop: 20,
-        fontSize: 16,
-        color: '#1976d2'
-    },    
+    },  
+    icons: {
+        fontSize: 40,
+        marginHorizontal: 20,
+        textAlign: 'center',
+        marginTop: 40,
+        // color: '#B6B7BF',
+    }
 });

@@ -7,14 +7,43 @@ import {stylesScreen} from '../styles/modals/video';
 import { DetailsModal } from './DetailsModal';
 import { ToolTip } from '../commons/ToolTip';
 import {getIsFavorite, addToFavourite, removeFromFavorites} from '../api/favorites';
+import GestureRecognizer from 'react-native-swipe-gestures';
 
 const DISABLED_OPACITY = 0.3;
 
-export const VideoModal = ({visible, setVisible, videoModal, setRefresh, insideFolder, setVideoModal, type}) => {
+export const VideoModal = ({visible, setVisible, videoModal, setRefresh, insideFolder, setVideoModal, type, index, openModal, count}) => {
 
     const [isLoading, setLoading]= useState(true);
     const [detailsModal, setDetailsModal] = useState(false);
     const [isFavorite, setIsFavorite] = useState(null);
+    const [disableBackward, setDisableB] = useState(false);
+    const [disableForward, setDisableF] = useState(false);
+    const config = {
+        velocityThreshold: 0.3,
+        directionalOffsetThreshold: 80
+    };
+
+    function previousVideo(){
+        console.log(index)
+        if(index < 1){
+            setDisableB(true);
+		}else{
+            setDisableB(false)
+            setVisible(false);
+            openModal(true, index-1)
+        }
+    }
+
+    function nextVideo(){
+        console.log(index)
+        if(index >= count){
+			setDisableF(true);
+		}else{
+            setDisableF(false)
+            setVisible(false);
+            openModal(true, index+1);
+        }
+    }
 
     function deletevideo(videoId){
         setVisible(false);
@@ -69,7 +98,7 @@ export const VideoModal = ({visible, setVisible, videoModal, setRefresh, insideF
         }
         removeFromFavorites('Video', videoId)
         .then((response)=>{
-            setRefresh(true);
+            setRefresh(true); 
         })
         .catch((error)=>{
             console.log(error);
@@ -86,6 +115,11 @@ export const VideoModal = ({visible, setVisible, videoModal, setRefresh, insideF
     },[videoModal])
 
     return(
+        <GestureRecognizer
+            onSwipeUp={(state) => setDetailsModal(true)}
+            onSwipeDown={()=>setDetailsModal(false)}
+            config={config}
+        >
         <View>
         <Modal style={stylesScreen.modal} transparent={true} animationType='slide' visible={visible} onRequestClose={()=>{setVisible(false);}}>
             <View style={[stylesScreen.modal]} accessibilityLabel='videoModal'>
@@ -134,9 +168,17 @@ export const VideoModal = ({visible, setVisible, videoModal, setRefresh, insideF
                         />
                     </View>
 
-                    <View style={{ alignItems: "center", marginTop: 35 }}>
-                        <Text style={stylesScreen.headerTop}>MyMedia Video</Text>
-                        <Text style={stylesScreen.header}>{videoModal.videoName.substring(0,25)}</Text>
+                    <View flexDirection='row' style={{alignItems: 'center', alignSelf:'center'}}>
+                        <ToolTip content='Previous Video' dark={false} onPress={()=>previousVideo()} disabled={disableBackward}>
+                            <AntDesign name='left' style={[{color: disableBackward?'red' :'black'}, stylesScreen.icons]}/>
+                        </ToolTip>
+                        <View style={{ alignItems: "center", marginTop: 35 }}>
+                            <Text style={stylesScreen.headerTop}>MyMedia Video</Text>
+                            <Text style={stylesScreen.header}>{videoModal.videoName.substring(0,25)}</Text>
+                        </View>
+                        <ToolTip content='Next Video' dark={false} onPress={()=>nextVideo()} disabled={disableForward}>
+                            <AntDesign name='right' style={[{color: disableForward?'red' :'black'},stylesScreen.icons]}/>
+                        </ToolTip>
                     </View>
                     
                     {/* <View style={stylesScreen.bottom}>
@@ -164,5 +206,6 @@ export const VideoModal = ({visible, setVisible, videoModal, setRefresh, insideF
         />
 
         </View>
+        </GestureRecognizer>
 );
 }

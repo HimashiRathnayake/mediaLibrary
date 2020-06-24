@@ -88,7 +88,7 @@ export const ImageDisplayer = ({setRefresh, images, count, shouldMove, type}) =>
                     <View style={stylesScreen.container} accessibilityLabel='imagesView'>
                         {(modelImage !== null) && (
                             <View>
-                            <ImageModal modelImage={modelImage} modelVisible={modelVisible} setVisible={setVisible} setRefresh={setRefresh} enableFolder={shouldMove} setImage={setImage} type={type}/>
+                            <ImageModal count={count} modelImage={modelImage} openModal={setModelVisible} index={index} modelVisible={modelVisible} setVisible={setVisible} setRefresh={setRefresh} enableFolder={shouldMove} setImage={setImage} type={type}/>
                             
                             <Modal style={stylesScreen.folderActionModal} transparent={true} animationType='fade' visible={actionModalVisible} onRequestClose={()=>{}}>
                                 <TouchableWithoutFeedback accessibilityLabel='imageActionModalbutton' onPress={()=>setActionModalVisible(false)}>

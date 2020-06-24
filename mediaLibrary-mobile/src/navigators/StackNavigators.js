@@ -12,8 +12,20 @@ import {AppIntroScreen} from '../screens/AppIntroScreen';
 import {ForgotPasswordScreen} from '../screens/ForgotPasswordScreen';
 import {VerifyScreen} from '../screens/VerifyScreen';
 import {ResetScreen} from '../screens/ResetScreen';
+import { HomeScreen } from '../screens/HomeScreen';
+import { NotificationScreen } from '../screens/NotificationScreen';
 
 const FolderStack = createStackNavigator();
+const HomeStack = createStackNavigator();
+
+export const HomeStackScreen = ({route, navigation})=>{
+    return(
+        <HomeStack.Navigator initialRouteName='Home'>
+            <HomeStack.Screen name="Home" component={HomeScreen} options={{headerShown: false}}/>
+            <HomeStack.Screen name="Notifications" component={NotificationScreen} options={{headerShown: false}}/>
+        </HomeStack.Navigator>
+    );
+}
 
 export const FolderStackScreen = ({route, navigation})=>{
     const type= route.params.type;
