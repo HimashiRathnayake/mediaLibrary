@@ -56,13 +56,3 @@ app.use((error,req,res,next)=>{
 
 module.exports = app;
 
-
-// {
-//     "env":{
-//         "JWT_KEY": "secret",
-//         "MONGO_ATLAS_PW": "mediaLibraryPassword",
-//         "SERVER": "http://192.168.1.5:3000/",
-//         "AWS_secretAccessKey": "3Tj1rdlU7DWl7Fjatft9q4zKPrZkTOBXOYc7pqHs",
-//         "AWS_accessKeyId": "AKIAW6JGUKJDEZP6Z46D"
-//     }
-// } 
