@@ -4,6 +4,8 @@ const Image =  require('../models/image');
 const Audio =  require('../models/audio'); 
 const Video =  require('../models/video'); 
 const Folder =  require('../models/folder'); 
+const User = require('../models/user');
+const Notification = require('../models/notification');
 
 exports.image_add_user = (req, res, next) =>{
     Image.find({_id: req.params.imageId, accessList: {$in:[req.params.userId]}})
@@ -13,9 +15,30 @@ exports.image_add_user = (req, res, next) =>{
             Image.updateOne({_id: req.params.imageId},{$push: { accessList: req.params.userId}})
             .exec()
             .then(()=>{
-                res.status(200).json({
-                    message: 'Image shared successfully'
+                const notification =new Notification({
+                    _id: new mongoose.Types.ObjectId(),
+                    type: "SharedImage",
+                    image:req.params.imageId,
+                    sender: req.userData.userId,
+                    date: new Date(Date.now())
                 });
+                notification.save().then(result => {
+                    console.log(result);
+                    const notifyId=result._id;
+                    User.findOne({_id: req.params.userId})
+                    .exec()
+                    .then(function(user){
+                        user.notifications.push(notifyId);
+                        user
+                        .save()
+                        .then((result)=>{
+                            console.log(result);
+                            res.status(200).json({
+                                message: 'Image shared successfully',
+                            });
+                        })
+                    })
+                })
             })
         }else{
             res.status(409).json({
@@ -39,9 +62,30 @@ exports.audio_add_user = (req, res, next) =>{
             Audio.updateOne({_id: req.params.audioId},{$push: { accessList: req.params.userId}})
             .exec()
             .then(()=>{
-                res.status(200).json({
-                    message: 'Audio shared successfully'
+                const notification =new Notification({
+                    _id: new mongoose.Types.ObjectId(),
+                    type: "SharedAudio",
+                    audio:req.params.audioId,
+                    sender: req.userData.userId,
+                    date: new Date(Date.now())
                 });
+                notification.save().then(result => {
+                    console.log(result);
+                    const notifyId=result._id;
+                    User.findOne({_id: req.params.userId})
+                    .exec()
+                    .then(function(user){
+                        user.notifications.push(notifyId);
+                        user
+                        .save()
+                        .then((result)=>{
+                            console.log(result);
+                            res.status(200).json({
+                                message: 'Audio shared successfully',
+                            });
+                        })
+                    })
+                })
             })
         }else{
             res.status(409).json({
@@ -65,10 +109,30 @@ exports.video_add_user = (req, res, next) =>{
             Video.updateOne({_id: req.params.videoId},{$push: { accessList: req.params.userId}})
             .exec()
             .then(result => {
-                console.log(result);
-                res.status(200).json({
-                    message: 'Video shared successfully'
+                const notification =new Notification({
+                    _id: new mongoose.Types.ObjectId(),
+                    type: "SharedAudio",
+                    video:req.params.videoId,
+                    sender: req.userData.userId,
+                    date: new Date(Date.now())
                 });
+                notification.save().then(result => {
+                    console.log(result);
+                    const notifyId=result._id;
+                    User.findOne({_id: req.params.userId})
+                    .exec()
+                    .then(function(user){
+                        user.notifications.push(notifyId);
+                        user
+                        .save()
+                        .then((result)=>{
+                            console.log(result);
+                            res.status(200).json({
+                                message: 'Video shared successfully',
+                            });
+                        })
+                    })
+                })
             })
         }else{
             res.status(409).json({

@@ -23,6 +23,10 @@ const userSchema = mongoose.Schema({
         ref: 'Video'
         //addedDate: Date
     }],
+    notifications:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Notification'
+    }],
     resetPasswordToken: {type: String},
     resetPasswordExpires: {type: Date}
 });

@@ -11,6 +11,7 @@ const folderRoutes = require('./api/routes/folders');
 const shareRoutes = require('./api/routes/share');
 const searchRoutes = require('./api/routes/search');
 const favoritesRoutes = require('./api/routes/favorites');
+const notificationRoutes = require('./api/routes/notifications');
 
 app.use(morgan('dev'));
 app.use(express.static('uploads'));
@@ -39,7 +40,7 @@ app.use('/folders',folderRoutes);
 app.use('/share', shareRoutes);
 app.use('/search', searchRoutes); 
 app.use('/favorite', favoritesRoutes); 
-
+app.use('/notification',notificationRoutes);
 
 app.use((req,res,next)=>{
     const error = new Error('Route not found');
