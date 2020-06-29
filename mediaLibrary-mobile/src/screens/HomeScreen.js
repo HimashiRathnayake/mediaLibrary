@@ -20,9 +20,9 @@ export const HomeScreen = ({navigation}) => {
                 </Text>
                 <Text style={styleHome.nextHeader}>Home</Text> 
                 <FontAwesome.Button accessibilityLabel='search' name='search' underlayColor='transparent' backgroundColor="transparent" color="#fff" size={20} marginLeft={60} marginTop={6} onPress={()=>setVisible(true)}/>
-                {/* <MaterialIcons.Button accessibilityLabel='notifications' name='notifications' underlayColor='transparent' backgroundColor="transparent" color="#fff" size={25} marginLeft={-10} marginTop={4} onPress={()=>alert('true')}/> */}
+                <MaterialIcons.Button accessibilityLabel='notifications' name='notifications' underlayColor='transparent' backgroundColor="transparent" color="#fff" size={25} marginLeft={-10} marginTop={4} onPress={()=>alert('true')}/>
                 
-                <BadgedIcon type="MaterialIcons" name="notifications" right={-5} top={-5} iconStyle={{color:"#fff"}} onPress={()=>navigation.navigate('Notifications')} underlayColor="transparent"/>
+                {/* <BadgedIcon type="MaterialIcons" name="notifications" right={-5} top={-5} iconStyle={{color:"#fff"}} onPress={()=>navigation.navigate('Notifications')} underlayColor="transparent"/> */}
             </View>
 
             <ScrollView style={styleHome.container}>
