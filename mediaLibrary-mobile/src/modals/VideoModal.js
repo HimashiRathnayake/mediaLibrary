@@ -169,16 +169,16 @@ export const VideoModal = ({visible, setVisible, videoModal, setRefresh, insideF
                     </View>
 
                     <View flexDirection='row' style={{alignItems: 'center', alignSelf:'center'}}>
-                        <ToolTip content='Previous Video' dark={false} onPress={()=>previousVideo()} disabled={disableBackward}>
+                        {/* <ToolTip content='Previous Video' dark={false} onPress={()=>previousVideo()} disabled={disableBackward}>
                             <AntDesign name='left' style={[{color: disableBackward?'red' :'black'}, stylesScreen.icons]}/>
-                        </ToolTip>
+                        </ToolTip> */}
                         <View style={{ alignItems: "center", marginTop: 35 }}>
                             <Text style={stylesScreen.headerTop}>MyMedia Video</Text>
                             <Text style={stylesScreen.header}>{videoModal.videoName.substring(0,25)}</Text>
                         </View>
-                        <ToolTip content='Next Video' dark={false} onPress={()=>nextVideo()} disabled={disableForward}>
+                        {/* <ToolTip content='Next Video' dark={false} onPress={()=>nextVideo()} disabled={disableForward}>
                             <AntDesign name='right' style={[{color: disableForward?'red' :'black'},stylesScreen.icons]}/>
-                        </ToolTip>
+                        </ToolTip> */}
                     </View>
                     
                     {/* <View style={stylesScreen.bottom}>
