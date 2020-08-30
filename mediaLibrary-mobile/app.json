@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "MyMedia",
-    "slug": "medialibrary-mobileapp",
+    "slug": "medialibrary-Mobileapp",
     "privacy": "public",
     "sdkVersion": "36.0.0",
     "platforms": [
@@ -9,7 +9,7 @@
       "android",
       "web"
     ],
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/logo.png",
     "splash": {
@@ -27,9 +27,9 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "mymedia.com.mymedia",
-      "versionCode": 1
+      "package": "mymediamobile.com.mymedia",
+      "versionCode": 1.0
     },
-    "description": ""
+    "description": "Media Library to manage all your media at one place"
   }
 }
