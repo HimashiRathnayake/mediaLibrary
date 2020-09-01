@@ -1,10 +1,24 @@
 import {StyleSheet, Dimensions} from 'react-native';
 
+const deviceHeight = Dimensions.get('screen').height;
+const deviceWidth = Dimensions.get('screen').width;
+
 export const stylesScreen = StyleSheet.create({
     modal: {
         flex:1,
         padding: 0,
         backgroundColor: 'rgba(0,0,0,1)',
+    },
+    bottomBar:{
+        height: 53,
+        backgroundColor: 'rgba(1,1,1,0.7)',
+        marginTop: deviceHeight - 80,
+        width: deviceWidth -10,
+        alignSelf: 'center',
+    },
+    msg:{
+        color: "#fff",
+        marginTop: -6
     },
     icon: {
         fontSize: 30,

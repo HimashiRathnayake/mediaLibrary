@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const User =  require('../models/user');
 const Notification = require('../models/notification');
+const { $where } = require('../models/user');
 
 exports.notifications_get_all = (req, res, next) =>{
     const id= req.userData.userId;
@@ -13,7 +14,7 @@ exports.notifications_get_all = (req, res, next) =>{
     .exec()
     .then(user => {
         res.status(200).json({
-            notifications: user.notifications
+            notifications: user.notifications.reverse()
         });
     })
     .catch(err=>{
@@ -23,6 +24,30 @@ exports.notifications_get_all = (req, res, next) =>{
     });
     
 }  
+
+exports.get_unread_count =(req, res, next)=>{
+    const id= req.userData.userId;
+
+    function checkUnread(notification){
+        return notification.state=='unread'
+    }
+
+    User
+    .findById(id)
+    .populate('notifications')
+    .exec()
+    .then(user => {
+        res.status(200).json({
+            count: user.notifications.filter(checkUnread).length
+        });
+    })
+    .catch(err=>{
+        res.status(500).json({
+            error:err
+        });
+    });
+}
+
 exports.notifications_read = (req, res, next) =>{
     Notification.findOne({_id: req.params.notificationId})
     .then(result=>{

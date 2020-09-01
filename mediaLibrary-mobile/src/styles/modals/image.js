@@ -43,8 +43,15 @@ export const stylesScreen = StyleSheet.create({
     },
     bottomModal: {
         height: 140,
-        marginTop: deviceHeight - 140,
+        marginTop: deviceHeight - 160,
         backgroundColor: 'rgba(0,0,0,0.7)'
+    },
+    bottomBar:{
+        height: 80,
+        backgroundColor: 'rgba(255,255,255,0.3)',
+        marginTop: deviceHeight - 80,
+        width: deviceWidth -10,
+        alignSelf: 'center',
     },
     bottomHeader:{
         marginTop: 0,
@@ -58,5 +65,9 @@ export const stylesScreen = StyleSheet.create({
         marginTop: 8,
         color: "#8E97A6",
         alignSelf: 'center'
+    },
+    msg:{
+        color: "#fff",
+        marginTop: -4
     },
 });

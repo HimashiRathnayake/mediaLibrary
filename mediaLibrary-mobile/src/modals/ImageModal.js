@@ -11,6 +11,7 @@ import GestureRecognizer from 'react-native-swipe-gestures';
 export const ImageModal = ({modelImage, count, index, modelVisible, setVisible, setRefresh, enableFolder, setImage, type, openModal}) => {
     const [detailsModal, setDetailsModal] = useState(false);
     const [isFavorite, setIsFavorite] = useState(null);
+    const [message, setMessage] = useState(null);
     const config = {
         velocityThreshold: 0.3,
         directionalOffsetThreshold: 80
@@ -56,35 +57,65 @@ export const ImageModal = ({modelImage, count, index, modelVisible, setVisible, 
     }
 
     function renameimage(imageId,name){
+        setMessage("Renaming Image ...")
         renameImage({imageId: imageId, name:name})
         .then((response)=>{
-            setRefresh(true);
+            if(response.message=="Image renamed successfully"){
+                setRefresh(true);
+                setTimeout(()=>setMessage('Image renamed successfully'), 2200);
+                setTimeout(()=>setMessage(null), 2500);
+            }else{
+                setTimeout(()=>setMessage('Something went wrong.'), 2300);
+                setTimeout(()=>setMessage(null), 2600);
+            }
         })
         .catch((error)=>{
+            setTimeout(()=>setMessage('Something went wrong.'), 2300);
+            setTimeout(()=>setMessage(null), 2600);
             console.log(error);
         })
     }
 
     function setFavorite(imageId){
+        setMessage('Adding to favourites .... ');
         addToFavourite('Image', imageId)
         .then((response)=>{
-            setRefresh(true);
+            if(response.message=="Add image to favourites"){
+                setRefresh(true);
+                setTimeout(()=>setMessage('Added to Favourites.'), 2200);
+                setTimeout(()=>setMessage(null), 2500);
+            }else{
+                setTimeout(()=>setMessage('Something went wrong.'), 2300);
+                setTimeout(()=>setMessage(null), 2600);
+            }
         })
         .catch((error)=>{
+            setTimeout(()=>setMessage('Something went wrong.'), 2300);
+            setTimeout(()=>setMessage(null), 2600);
             console.log(error);
         })
     }
 
     function removeFavorite(imageId){
+        setMessage('Removing from favourites .... ');
         if (type==='fav'){
             setVisible(false);
             setImage(null)
         }
         removeFromFavorites('Image', imageId)
         .then((response)=>{
-            setRefresh(true);
+            if(response.message=="Remove image from favorites"){
+                setRefresh(true);
+                setTimeout(()=>setMessage('Removed from Favourites.'), 2200);
+                setTimeout(()=>setMessage(null), 2500);
+            }else{
+                setTimeout(()=>setMessage('Something went wrong.'), 2300);
+                setTimeout(()=>setMessage(null), 2600);
+            }
         })
         .catch((error)=>{
+            setTimeout(()=>setMessage('Something went wrong.'), 2300);
+            setTimeout(()=>setMessage(null), 2600);
             console.log(error);
         })
     }
@@ -98,7 +129,7 @@ export const ImageModal = ({modelImage, count, index, modelVisible, setVisible, 
             config={config}
         >
         <View>
-            <Modal style={stylesScreen.modal} transparent={false} animationType='slide' visible={modelVisible} onRequestClose={()=>{setVisible(false); setIsFavorite(null)}}>
+            <Modal style={stylesScreen.modal} transparent={false} animationType='fade' visible={modelVisible} onRequestClose={()=>{setVisible(false); setIsFavorite(null)}}>
                 <View style={stylesScreen.modal}>
                     <View style={stylesScreen.modalView}>
                         <View style={{justifyContent:'center'}}>
@@ -108,7 +139,7 @@ export const ImageModal = ({modelImage, count, index, modelVisible, setVisible, 
                 </View>
             </Modal>
 
-            <Modal transparent={true} animationType='slide' visible={modelVisible} onRequestClose={()=>{setVisible(false); setIsFavorite(null)}} style={stylesScreen.bottomModal}>
+            <Modal transparent={true} animationType='fade' visible={modelVisible} onRequestClose={()=>{setVisible(false); setIsFavorite(null)}} style={stylesScreen.bottomModal}>
                 <View style={stylesScreen.bottomModal}>
                     <View style={{ alignItems: "center", marginTop: 24 }}>
                         <Text style={stylesScreen.bottomHeader}>MyMedia Image</Text>
@@ -117,7 +148,15 @@ export const ImageModal = ({modelImage, count, index, modelVisible, setVisible, 
                 </View>
             </Modal>
 
-            <Modal transparent={true} animationType='slide' visible={modelVisible} onRequestClose={()=>{setVisible(false); setIsFavorite(null)}}>
+            <Modal transparent={true} animationType='fade' visible={message!=null} onRequestClose={()=>{setVisible(false); setIsFavorite(null)}} style={stylesScreen.bottomBar}>
+                <View style={stylesScreen.bottomBar}>
+                    <View style={{ alignItems: "center", marginTop: 24 }}>
+                        <Text style={stylesScreen.msg}>{message}</Text>
+                    </View>
+                </View>
+            </Modal>
+
+            <Modal transparent={true} animationType='fade' visible={modelVisible} onRequestClose={()=>{setVisible(false); setIsFavorite(null)}}>
                 <View style={stylesScreen.upModal}>
                     <View flexDirection= 'row-reverse' style={stylesScreen.upModal} accessibilityLabel='upModal'>
                         
@@ -163,6 +202,8 @@ export const ImageModal = ({modelImage, count, index, modelVisible, setVisible, 
                 setRefresh={setRefresh}
                 enableFolder={enableFolder}
                 setFile={setImage}
+                message={message}
+                setMessage={setMessage}
             />
 
         </View>

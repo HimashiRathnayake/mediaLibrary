@@ -125,10 +125,6 @@ export const VideoModal = ({visible, setVisible, videoModal, setRefresh, insideF
             <View style={[stylesScreen.modal]} accessibilityLabel='videoModal'>
                 <View style={[stylesScreen.modalView, {opacity: isLoading ? DISABLED_OPACITY : 1.0}]}>
 
-                    <TouchableOpacity accessibilityLabel='backV' onPress={()=>{setVisible(false);}} style={{flexDirection:'row-reverse', marginLeft: 20, marginTop: 30, position: 'absolute'}}>
-                        <Ionicons name='md-arrow-back' style={stylesScreen.icon}/>  
-                    </TouchableOpacity>
-
                     <View accessibilityLabel='buttonSetView' flexDirection='row' marginTop={20} width={Dimensions.get('screen').width} height={60} flexDirection='row-reverse'>
                         <ToolTip content='View Details' dark={false} onPress={()=>setDetailsModal(true)}>       
                             <Entypo name='dots-three-vertical' style={stylesScreen.iconBottom} />
@@ -189,6 +185,11 @@ export const VideoModal = ({visible, setVisible, videoModal, setRefresh, insideF
                             </View>
                         </TouchableOpacity>
                     </View> */}
+
+                    <TouchableOpacity accessibilityLabel='backV' onPress={()=>{setVisible(false);}} style={{flexDirection:'row-reverse', marginLeft: 20, marginTop: 30, position: 'absolute'}}>
+                        <Ionicons name='md-arrow-back' style={stylesScreen.icon}/>  
+                    </TouchableOpacity>
+                    
                 </View>
             </View>
         </Modal>

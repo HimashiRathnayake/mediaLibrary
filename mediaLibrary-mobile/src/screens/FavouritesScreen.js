@@ -36,7 +36,8 @@ export const FavouritesScreen = ({navigation}) => {
     }
 
     navigation.addListener('focus', ()=>{
-        getFavouriteFiles(selected);
+        setSelected('Image');
+        getFavouriteFiles('Image');
     });
         
 

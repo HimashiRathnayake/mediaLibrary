@@ -212,14 +212,11 @@ export const AudioModal = ({audio, index, visible, setVisible, openModal, setRef
 
     return(
         <View>
-        <Modal style={stylesScreen.modal} transparent={true} animationType='slide' visible={visible} onRequestClose={()=>{stopPlaying()}}>
+        <Modal style={stylesScreen.modal} transparent={true} animationType='fade' visible={visible} onRequestClose={()=>{stopPlaying()}}>
             <View style={stylesScreen.modal} accessibilityLabel='audioModal'>
                 <View style={[stylesScreen.modalView, {opacity: isLoading ? DISABLED_OPACITY : 1.0}]}>
-                    <TouchableOpacity accessibilityLabel='stop' onPress={()=>{stopPlaying()}} style={{flexDirection:'row-reverse', marginLeft: 20, marginTop: 20, position: 'absolute'}}>
-                        <Ionicons name='md-arrow-back' style={stylesScreen.icon}/>  
-                    </TouchableOpacity>
-
-                    <View accessibilityLabel='buttonSetView' flexDirection='row' marginTop={20} width={Dimensions.get('screen').width} height={60} flexDirection='row-reverse'>
+                    
+                    <View accessibilityLabel='buttonSetView' flexDirection='row' marginTop={30} width={Dimensions.get('screen').width} height={60} flexDirection='row-reverse'>
                         <ToolTip content='View Details' dark={false} onPress={()=>setDetailsModal(true)}>       
                             <Entypo name='dots-three-vertical' style={stylesScreen.iconTop} />
                         </ToolTip>
@@ -299,6 +296,10 @@ export const AudioModal = ({audio, index, visible, setVisible, openModal, setRef
                             </View>
                         </TouchableOpacity>
                     </View> */}
+
+                    <TouchableOpacity accessibilityLabel='stop' onPress={()=>{stopPlaying()}} style={{flexDirection:'row-reverse', marginLeft: 20, marginTop: 25, position:'absolute'}}>
+                        <Ionicons name='md-arrow-back' style={stylesScreen.icon}/>  
+                    </TouchableOpacity>
                 </View>
             </View>
         </Modal>

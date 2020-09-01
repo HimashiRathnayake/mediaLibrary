@@ -9,7 +9,7 @@ import { FolderList } from './FolderList';
 import { ToolTip } from '../commons/ToolTip';
 import GestureRecognizer from 'react-native-swipe-gestures';
 
-export const DetailsModal = ({file, type, detailsModal, setDetailsModal, setVisible, renameFile, setRefresh, enableFolder, setFile}) => {
+export const DetailsModal = ({file, type, detailsModal, setDetailsModal, setVisible, renameFile, setRefresh, enableFolder, setFile, message}) => {
 
     const [pressed, setPressed] = useState(false);
     const [shareModal, setShareModal] = useState(false);
@@ -21,6 +21,7 @@ export const DetailsModal = ({file, type, detailsModal, setDetailsModal, setVisi
     const [subject, setSubject] = useState('');
     const [year, setYear] = useState('');
     const [name, setName] = useState(null);
+
     const config = {
         velocityThreshold: 0.3,
         directionalOffsetThreshold: 80
@@ -98,7 +99,7 @@ export const DetailsModal = ({file, type, detailsModal, setDetailsModal, setVisi
                                 {pressed===false ? 
                                 (<View accessibilityLabel='renameUnpressed' flexDirection='row'>
                                     <Text style={stylesScreen.detailTextRight}>{fileName}</Text>
-                                    <ToolTip content='Rename File' onPress={()=>{setPressed(true)}} dark={false}>
+                                    <ToolTip content='Rename File' onPress={()=>{setPressed(true);}} dark={false}>
                                         <AntDesign name='edit' style={stylesScreen.renameIcon}/>
                                     </ToolTip>
                                 </View>):
@@ -110,7 +111,7 @@ export const DetailsModal = ({file, type, detailsModal, setDetailsModal, setVisi
                                             onChangeText={(newName)=>setName(newName)}
                                             value={name}
                                             accessibilityLabel='newname'
-                                            onSubmitEditing={()=>{renameFile(file._id, name); setPressed(false)}}
+                                            onSubmitEditing={()=>{setFileName(newName); renameFile(file._id, name); setPressed(false)}}
                                         />
                                     </View>
                                     <View flexDirection='row'>
@@ -122,6 +123,7 @@ export const DetailsModal = ({file, type, detailsModal, setDetailsModal, setVisi
                                             }
                                             else{
                                                 renameFile(file._id, name); 
+                                                setFileName(name);
                                                 setPressed(false)}}}
                                         >
                                             <Text style={stylesScreen.button}>Rename</Text>
@@ -158,6 +160,13 @@ export const DetailsModal = ({file, type, detailsModal, setDetailsModal, setVisi
                             {userSet}
                         </View>
                     </ScrollView>
+                </View>
+            </View>
+        </Modal>
+        <Modal transparent={true} animationType='fade' visible={message!=null} onRequestClose={()=>{setDetailsModal(false); setPressed(false);}} style={stylesScreen.bottomBar}>
+            <View style={stylesScreen.bottomBar}>
+                <View style={{ alignItems: "center", marginTop: 24 }}>
+                    <Text style={stylesScreen.msg}>{message}</Text>
                 </View>
             </View>
         </Modal>

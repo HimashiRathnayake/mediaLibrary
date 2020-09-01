@@ -149,7 +149,7 @@ exports.forgot_password = (req, res, next) => {
                     service: 'Gmail',
                     auth: {
                       user: 'mymediamymedia5@gmail.com',
-                      pass: 'mymedia5@'
+                      pass: 'mymedia@123'
                     },
                     tls: {rejectUnauthorized: false}
                 }));

@@ -5,11 +5,24 @@ import {HomeSearch} from '../modals/HomeSearch';
 import { FontAwesome, AntDesign, MaterialIcons } from '@expo/vector-icons';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {Badge, Icon, withBadge} from 'react-native-elements';
+import { getUnreadCount } from '../api/notification';
 
 export const HomeScreen = ({navigation}) => {
     const [visible, setVisible] = useState(false);
-    const [badge, setBadge] = useState(4);
-    const BadgedIcon = withBadge(badge)(Icon) 
+    const [badge, setBadge] = useState(0);
+    const BadgedIcon = withBadge(badge)(Icon);
+
+    React.useEffect(()=>{  
+        navigation.addListener('focus', ()=>{
+            getUnreadCount()
+            .then((response)=>{
+                setBadge(response.count);
+            })
+            .catch((error)=>{
+                console.log(error)
+            })
+        });
+    },[badge])
     
     return (
         <ImageBackground source={require('../../assets/bg.jpeg')} style={styleHome.backgroundImage} accessibilityLabel='home'>
@@ -20,9 +33,10 @@ export const HomeScreen = ({navigation}) => {
                 </Text>
                 <Text style={styleHome.nextHeader}>Home</Text> 
                 <FontAwesome.Button accessibilityLabel='search' name='search' underlayColor='transparent' backgroundColor="transparent" color="#fff" size={20} marginLeft={60} marginTop={6} onPress={()=>setVisible(true)}/>
-                <MaterialIcons.Button accessibilityLabel='notifications' name='notifications' underlayColor='transparent' backgroundColor="transparent" color="#fff" size={25} marginLeft={-10} marginTop={4} onPress={()=>navigation.navigate('Notifications')}/>
+                {(badge===0) ? <MaterialIcons.Button accessibilityLabel='notifications' name='notifications' underlayColor='transparent' backgroundColor="transparent" color="#fff" size={25} marginLeft={-10} marginTop={4} onPress={()=>navigation.navigate('Notifications')}/>
                 
-                {/* <BadgedIcon type="MaterialIcons" name="notifications" right={-5} top={-5} iconStyle={{color:"#fff"}} onPress={()=>navigation.navigate('Notifications')} underlayColor="transparent"/> */}
+                :<BadgedIcon type="MaterialIcons" name="notifications" right={-5} top={-5} iconStyle={{color:"#fff"}} onPress={()=>navigation.navigate('Notifications')} underlayColor="transparent"/>
+            }
             </View>
 
             <ScrollView style={styleHome.container}>
