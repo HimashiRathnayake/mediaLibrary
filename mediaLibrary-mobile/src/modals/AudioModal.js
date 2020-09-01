@@ -27,6 +27,7 @@ export const AudioModal = ({audio, index, visible, setVisible, openModal, setRef
     const [isLoading, setLoading]= useState(true);
     const [detailsModal, setDetailsModal] = useState(false);
     const [isFavorite, setIsFavorite] = useState(null);
+    const [message, setMessage] = useState(null);
     
     function deleteaudio(audioId){
         setVisible(false);
@@ -41,11 +42,21 @@ export const AudioModal = ({audio, index, visible, setVisible, openModal, setRef
     }
 
     function renameaudio(audioId,name){
+        setMessage("Renaming Audio ...")
         renameAudio({audioId: audioId, name:name})
         .then((response)=>{
-            setRefresh(true);
+            if(response.message=="Audio renamed successfully"){
+                setRefresh(true);
+                setTimeout(()=>setMessage('Audio renamed successfully'), 2200);
+                setTimeout(()=>setMessage(null), 2500);
+            }else{
+                setTimeout(()=>setMessage('Something went wrong.'), 2300);
+                setTimeout(()=>setMessage(null), 2600);
+            }
         })
         .catch((error)=>{
+            setTimeout(()=>setMessage('Something went wrong.'), 2300);
+            setTimeout(()=>setMessage(null), 2600);
             console.log(error);
         })
     }
@@ -168,25 +179,46 @@ export const AudioModal = ({audio, index, visible, setVisible, openModal, setRef
     }
 
     function setFavorite(audioId){
+        setMessage('Adding to favourites .... ');
         addToFavourite('Audio', audioId)
         .then((response)=>{
-            setRefresh(true);
+            if(response.message=="Add audio to favourites"){
+                setRefresh(true);
+                setTimeout(()=>setMessage('Added to Favourites.'), 2200);
+                setTimeout(()=>setMessage(null), 2500);
+            }else{
+                setTimeout(()=>setMessage('Something went wrong.'), 2300);
+                setTimeout(()=>setMessage(null), 2600);
+            }
         })
         .catch((error)=>{
+            setTimeout(()=>setMessage('Something went wrong.'), 2300);
+            setTimeout(()=>setMessage(null), 2600);
             console.log(error);
         })
     }
 
     function removeFavorite(audioId){
+        setMessage('Removing from favourites .... ');
         if (type==='fav'){
             setVisible(false);
             setAudioModal(null)
         }
         removeFromFavorites('Audio', audioId)
         .then((response)=>{
-            setRefresh(true);
+            setTimeout(()=>setMessage(null), 1000);
+            if(response.message=="Remove audio from favorites"){
+                setRefresh(true);
+                setTimeout(()=>setMessage('Removed from Favourites.'), 2200);
+                setTimeout(()=>setMessage(null), 2500);
+            }else{
+                setTimeout(()=>setMessage('Something went wrong.'), 2300);
+                setTimeout(()=>setMessage(null), 2600);
+            }
         })
         .catch((error)=>{
+            setTimeout(()=>setMessage('Something went wrong.'), 2300);
+            setTimeout(()=>setMessage(null), 2600);
             console.log(error);
         })
     }
@@ -304,6 +336,14 @@ export const AudioModal = ({audio, index, visible, setVisible, openModal, setRef
             </View>
         </Modal>
 
+        <Modal transparent={true} animationType='fade' visible={message!=null} onRequestClose={()=>{stopPlaying()}} style={stylesScreen.bottomBar}>
+            <View style={stylesScreen.bottomBar}>
+                <View style={{ alignItems: "center", marginTop: 24 }}>
+                    <Text style={stylesScreen.msg}>{message}</Text>
+                </View>
+            </View>
+        </Modal>
+
         <DetailsModal 
             file={audio} 
             type='Audio' 
@@ -313,6 +353,8 @@ export const AudioModal = ({audio, index, visible, setVisible, openModal, setRef
             setRefresh={setRefresh}
             enableFolder={insideFolder}
             setFile={setAudioModal}
+            message={message}
+            setMessage={setMessage}
         />
         
         </View>

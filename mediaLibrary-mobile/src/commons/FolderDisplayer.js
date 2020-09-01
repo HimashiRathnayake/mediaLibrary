@@ -10,12 +10,15 @@ export const FolderDisplayer = ({setRefresh, folders, count, type, navigation}) 
     const [renameModalVisible, setRenameModalVisible] = useState(false);
     const [actionModalVisible, setActionModalVisible] = useState(false);
     const [modalFolder, setModalFolder] = useState(null);
+    const [message, setMessage] = useState(null);
     
     function deletefolder(folderId){
         // showProgress(true);
         setActionModalVisible(false);
+        setMessage('Deleting folder .... ');
         deleteFolder({folderId: folderId})
         .then((response)=>{
+            setTimeout(()=>setMessage(null), 1000);
             console.log(response)
             setRefresh(true);
             // showProgress(false);
@@ -88,8 +91,16 @@ export const FolderDisplayer = ({setRefresh, folders, count, type, navigation}) 
             </ScrollView>
             )}
 
-            <FolderModal modalVisible={createModalVisible} setVisible={setCreateModalVisible} type={type} setRefresh={setRefresh} actionType={'Create'}/>
-            <FolderModal modalVisible={renameModalVisible} setVisible={setRenameModalVisible} type={type} setRefresh={setRefresh} folderId={modalFolder} actionType={'Rename'}/>
+            <FolderModal modalVisible={createModalVisible} setVisible={setCreateModalVisible} type={type} setRefresh={setRefresh} actionType={'Create'} message={message} setMessage={setMessage}/>
+            <FolderModal modalVisible={renameModalVisible} setVisible={setRenameModalVisible} type={type} setRefresh={setRefresh} folderId={modalFolder} actionType={'Rename'} message={message} setMessage={setMessage}/>
+            
+            <Modal transparent={true} animationType='fade' visible={message!=null} onRequestClose={()=>{}} style={stylesScreen.bottomBar}>
+                <View style={stylesScreen.bottomBar}>
+                    <View style={{ alignItems: "center", marginTop: 24 }}>
+                        <Text style={stylesScreen.msg}>{message}</Text>
+                    </View>
+                </View>
+            </Modal>
         </View>    
     );
 }

@@ -6,7 +6,7 @@ import {getOtherUsers} from '../api/user';
 import {shareFile} from '../api/share';
 import { ScrollView } from 'react-native-gesture-handler';
 
-export const ShareModal = ({shareModal, setShareModal, type, fileId, setRefresh}) => {
+export const ShareModal = ({shareModal, setShareModal, type, fileId, setRefresh, message, setMessage}) => {
 
     const[users, setUsers] = useState([]);
 
@@ -26,13 +26,17 @@ export const ShareModal = ({shareModal, setShareModal, type, fileId, setRefresh}
     }
 
     function sharefile(userId){
+        setMessage('Sharing file .... ');
         shareFile(userId, type, fileId)
         .then((response)=>{
             if (response.message === 'Already Shared'){
                 alert('Already Shared');
+                setTimeout(()=>setMessage(null), 500);
             }
             else{
                 setRefresh(true);
+                setTimeout(()=>setMessage('Shared successfully.'), 1200);
+                setTimeout(()=>setMessage(null), 1500);
             }
         })
         .catch((error)=>{

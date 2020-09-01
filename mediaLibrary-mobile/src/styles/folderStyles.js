@@ -1,5 +1,8 @@
 import {StyleSheet, Dimensions} from 'react-native';
 
+const deviceHeight = Dimensions.get('window').height;
+const deviceWidth = Dimensions.get('window').width;
+
 export const stylesScreen = StyleSheet.create({
     container:{
         marginTop: 10,
@@ -96,5 +99,16 @@ export const stylesScreen = StyleSheet.create({
         color: '#9e9e9e',
         alignSelf: 'center',
         // marginTop: -200
+    },
+    bottomBar:{
+        height: 50,
+        backgroundColor: 'rgba(255,255,255,0.4)',
+        marginTop: deviceHeight - 130,
+        width: deviceWidth -10,
+        alignSelf: 'center',
+    },
+    msg:{
+        color: "#fff",
+        marginTop: -4
     },
 });

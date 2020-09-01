@@ -9,7 +9,7 @@ import { FolderList } from './FolderList';
 import { ToolTip } from '../commons/ToolTip';
 import GestureRecognizer from 'react-native-swipe-gestures';
 
-export const DetailsModal = ({file, type, detailsModal, setDetailsModal, setVisible, renameFile, setRefresh, enableFolder, setFile, message}) => {
+export const DetailsModal = ({file, type, detailsModal, setDetailsModal, setVisible, renameFile, setRefresh, enableFolder, setFile, message, setMessage}) => {
 
     const [pressed, setPressed] = useState(false);
     const [shareModal, setShareModal] = useState(false);
@@ -28,12 +28,22 @@ export const DetailsModal = ({file, type, detailsModal, setDetailsModal, setVisi
     };
 
     function removeFromShared(userId, fileId){
+        setMessage('Removing user .... ');
         removeUser(userId, fileId, type)
         .then((response)=>{
             console.log(response);
-            setRefresh(true);
+            if(response.message=="Removed user successfully"){
+                setRefresh(true);
+                setTimeout(()=>setMessage('Removed user successfully.'), 1200);
+                setTimeout(()=>setMessage(null), 1500);
+            }else{
+                setRefresh(true);
+                setTimeout(()=>setMessage('Something went wrong.'), 2300);
+                setTimeout(()=>setMessage(null), 2600);
+            }
         })
         .catch((error)=>{
+            setRefresh(true);
             console.log(error);
         })
     }
@@ -111,7 +121,7 @@ export const DetailsModal = ({file, type, detailsModal, setDetailsModal, setVisi
                                             onChangeText={(newName)=>setName(newName)}
                                             value={name}
                                             accessibilityLabel='newname'
-                                            onSubmitEditing={()=>{setFileName(newName); renameFile(file._id, name); setPressed(false)}}
+                                            onSubmitEditing={()=>{renameFile(file._id, name); setFileName(name); setPressed(false)}}
                                         />
                                     </View>
                                     <View flexDirection='row'>
@@ -170,7 +180,7 @@ export const DetailsModal = ({file, type, detailsModal, setDetailsModal, setVisi
                 </View>
             </View>
         </Modal>
-        <ShareModal shareModal={shareModal} setShareModal={setShareModal} type={type} fileId={file._id} setRefresh={setRefresh}/>
+        <ShareModal shareModal={shareModal} setShareModal={setShareModal} type={type} fileId={file._id} setRefresh={setRefresh} message={message} setMessage={setMessage}/>
         <FolderList visible={folderVisible} setVisible={setFolderVisible} fileId={file._id} type={type} setRefresh={setRefresh} setDetailsModal={setDetailsModal} setFileModal={setVisible} setFile={setFile}/>
         </View>
         </GestureRecognizer>

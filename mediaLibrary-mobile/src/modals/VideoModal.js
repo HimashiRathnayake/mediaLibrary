@@ -18,6 +18,8 @@ export const VideoModal = ({visible, setVisible, videoModal, setRefresh, insideF
     const [isFavorite, setIsFavorite] = useState(null);
     const [disableBackward, setDisableB] = useState(false);
     const [disableForward, setDisableF] = useState(false);
+    const [message, setMessage] = useState(null);
+
     const config = {
         velocityThreshold: 0.3,
         directionalOffsetThreshold: 80
@@ -58,11 +60,21 @@ export const VideoModal = ({visible, setVisible, videoModal, setRefresh, insideF
     }
 
     function renamevideo(videoId,name){
+        setMessage("Renaming Video ...")
         renameVideo({videoId: videoId, name:name})
         .then((response)=>{
-            setRefresh(true);
+            if(response.message=="Video renamed successfully"){
+                setRefresh(true);
+                setTimeout(()=>setMessage('Video renamed successfully'), 2200);
+                setTimeout(()=>setMessage(null), 2500);
+            }else{
+                setTimeout(()=>setMessage('Something went wrong.'), 2300);
+                setTimeout(()=>setMessage(null), 2600);
+            }
         })
         .catch((error)=>{
+            setTimeout(()=>setMessage('Something went wrong.'), 2300);
+            setTimeout(()=>setMessage(null), 2600);
             console.log(error);
         })
     }
@@ -82,25 +94,45 @@ export const VideoModal = ({visible, setVisible, videoModal, setRefresh, insideF
     };
 
     function setFavorite(videoId){
+        setMessage('Adding to favourites .... ');
         addToFavourite('Video', videoId)
         .then((response)=>{
-            setRefresh(true);
+            if(response.message=="Add video to favourites"){
+                setRefresh(true);
+                setTimeout(()=>setMessage('Added to Favourites.'), 2200);
+                setTimeout(()=>setMessage(null), 2500);
+            }else{
+                setTimeout(()=>setMessage('Something went wrong.'), 2300);
+                setTimeout(()=>setMessage(null), 2600);
+            }
         })
         .catch((error)=>{
+            setTimeout(()=>setMessage('Something went wrong.'), 2300);
+            setTimeout(()=>setMessage(null), 2600);
             console.log(error);
         })
     }
 
     function removeFavorite(videoId){
+        setMessage('Removing from favourites .... ');
         if (type==='fav'){
             setVisible(false);
             setVideoModal(null)
         }
         removeFromFavorites('Video', videoId)
         .then((response)=>{
-            setRefresh(true); 
+            if(response.message=="Remove video from favorites"){
+                setRefresh(true);
+                setTimeout(()=>setMessage('Removed from Favourites.'), 2200);
+                setTimeout(()=>setMessage(null), 2500);
+            }else{
+                setTimeout(()=>setMessage('Something went wrong.'), 2300);
+                setTimeout(()=>setMessage(null), 2600);
+            }
         })
         .catch((error)=>{
+            setTimeout(()=>setMessage('Something went wrong.'), 2300);
+            setTimeout(()=>setMessage(null), 2600);
             console.log(error);
         })
     }
@@ -204,6 +236,8 @@ export const VideoModal = ({visible, setVisible, videoModal, setRefresh, insideF
             setRefresh={setRefresh}
             enableFolder={insideFolder}
             setFile = {setVideoModal}
+            message = {message}
+            setMessage = {setMessage}
         />
 
         </View>

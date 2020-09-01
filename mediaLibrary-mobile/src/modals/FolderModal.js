@@ -7,29 +7,36 @@ import {renameImage} from '../api/image';
 import {renameAudio} from '../api/audio';
 import { renameVideo } from '../api/video';
 
-export const FolderModal = ({modalVisible, setVisible, type, folderId, setRefresh, actionType}) => {
+export const FolderModal = ({modalVisible, setVisible, type, folderId, setRefresh, actionType, message, setMessage}) => {
 
     function startAction(folderName){
         if (actionType==='Create'){
+            setMessage('Creating folder .... ');
             if (folderName===''){folderName='Untitled'}
             createFolder({name:folderName, type:type})
             .then((response)=>{
                 if (response.message==="Folder created successfully"){
                     setRefresh(true);
+                    setTimeout(()=>setMessage(null), 1400);
                 }
                 else{
+                    setTimeout(()=>setMessage(null), 1000);
                     Alert.alert('Alert','Something Went wrong',[{text:'OK'}]);
                     setRefresh(true);
                 }
             }).catch((error)=>{
+                setTimeout(()=>setMessage(null), 1000);
+                Alert.alert('Alert','Something Went wrong',[{text:'OK'}]);
                 console.log(error);
             })       
         }else if (actionType==='Rename'){
             if (folderName===''){
                 Alert.alert('You have to enter a name in order to rename the folder','',[{text:'OK'}]);
             }else{
+                setMessage('Updating folder name .... ');
                 renameFolder({name:folderName, folderId:folderId})
                 .then((response)=>{
+                    setTimeout(()=>setMessage(null), 1000);
                     if (response.message==="Folder renamed successfully"){
                         setRefresh(true);
                     }
