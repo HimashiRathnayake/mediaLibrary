@@ -746,3 +746,63 @@ export function SharedVideos(userdata){
     });
 }
 
+export function GetAllNotifications(userdata){
+    return new Promise((resolve, reject) => {
+        fetch(`${path}/notification/`, {
+            method: 'Get',
+            headers: {
+                'Authorization': `Bearer ${userdata}`,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            resolve(responseJson);
+        })
+        .catch((error) => {
+            reject(error);
+        })
+    });
+}
+
+export function DeleteNotification(userdata, id){
+    return new Promise((resolve, reject) => {
+        fetch(`${path}/notification/${id}`, {
+            method: 'Delete',
+            headers: {
+                'Authorization': `Bearer ${userdata}`,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            resolve(responseJson);
+        })
+        .catch((error) => {
+            reject(error);
+        })
+    });
+}
+
+export function ReadNotification(userdata, id){
+    return new Promise((resolve, reject) => {
+        fetch(`${path}/notification/${id}`, {
+            method: 'PATCH',
+            headers: {
+                'Authorization': `Bearer ${userdata}`,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            resolve(responseJson);
+        })
+        .catch((error) => {
+            reject(error);
+        })
+    });
+}
+

@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import { Redirect, Link } from "react-router-dom";
+import {Dropdown, DropdownButton} from "react-bootstrap";
 import './componentCss/login.css';
 import './componentCss/start.css';
+import {GetAllNotifications} from '../services/PostData';
 
 export default class Start extends Component{
 
@@ -9,10 +11,38 @@ export default class Start extends Component{
         super(props);
 
         this.state={
-            redirect: false
+            redirect: false,
+            unread: '',
+            counterclass: '',
+            unreadstyle: {}
         }
         this.logout = this.logout.bind(this);
+        this.getNotifications=this.getNotifications.bind(this);
+
+        this.getNotifications();
     }
+
+    getNotifications(){
+        var count= 0;
+        GetAllNotifications(JSON.parse(sessionStorage.getItem('userData')).token).then((result) => {
+            //console.log(result.notifications[0].state);
+            var length = Object.keys(result.notifications).length;
+            for( var i = 0; i < length; i++){ 
+                if ( result.notifications[i].state === 'unread') {
+                    count ++;
+                }
+            }
+            if(count > 0){
+                this.setState({
+                    unread: count,
+                    counterclass:"counter counter-s",
+                    unreadstyle: {position: 'absolute', top: '20px', right: '178px', padding: '1px 8px',borderRadius: '50%', background: 'red', color: 'white'}
+                });
+            }
+                  
+        }) 
+    }
+
 
     logout(e){
         e.preventDefault(e);
@@ -30,34 +60,38 @@ export default class Start extends Component{
 
         return(
         <form>
-        <nav className="navbar navbar-expand navbar-dark bg-primary fixed-top" id="mainNav">
+        <div className="container">
+            <nav style={{paddingLeft: '150px', paddingRight: '100px', paddingTop: '50px'}} className="navbar navbar-expand navbar-dark bg-transparent fixed-top" id="mainNav">
             
-                <Link className="navbar-brand js-scroll-trigger" to={"/start"}>MyMedia</Link>
+                <Link className="navbar-brand js-scroll-trigger" style={{paddingRight: '50px', fontSize: '36px'}} to={"/start"}>MyMedia</Link>
                 <div className="collapse navbar-collapse" id="navbarResponsive">
                     <ul className="navbar-nav text-uppercase ml-auto">
                         <li className="nav-item">
-                            <Link className="nav-link js-scroll-trigger" to={"/start"}>Home</Link>
+                            <Link to={"/search"}><button className="link-button" title="search"  style={{paddingRight: '30px', color: 'white', paddingTop: '15px'}}><span className="fa fa-search fa-lg" > </span></button></Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link js-scroll-trigger" to={"/search"}>Search</Link>
+                            <Link to={'/favourites'}><button className="link-button" title="favourites"  style={{paddingRight: '30px', color: 'white', paddingTop: '15px'}}><span className="fa fa-star fa-lg" > </span></button></Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link js-scroll-trigger" to={"/favourites"}>Favourites</Link>
-                        </li>
-                        {/* <li className="nav-item">
-                            <Link className="nav-link js-scroll-trigger" to={"/audio"}>Audio</Link>
+                            <Link to={"/notifications"}>
+                                <button className="link-button" title="Notifications"  style={{paddingRight: '20px', color: 'white', paddingTop: '15px'}}>
+                                    <i className="fa fa-bell fa-lg" > </i>
+                                    <span  class={this.state.counterclass} style={this.state.unreadstyle}>{this.state.unread}</span>
+                                </button>
+                            </Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link js-scroll-trigger" to={"/video"}>Video</Link>
-                        </li> */}
-                        <li className="nav-item">
-                            <button  className="nav-link js-scroll-trigger link-button" onClick={this.logout}>Logout</button> 
+                        <DropdownButton variant="transparent" title={<span style={{color: 'white', paddingTop: '5px'}}  className="fa fa-user-circle-o fa-2x" > </span>} >
+                            <Dropdown.Item style={{fontFamily: 'serif', color: '#0207f7', textTransform: 'initial'}}>Logged in as <br/> {sessionStorage.getItem('email')} </Dropdown.Item>
+                            <Dropdown.Item onClick={this.logout}>Logout</Dropdown.Item>
+                        </DropdownButton>
+                             
                         </li>
                     </ul>
                 </div>
             
         </nav>
-        <div className="container">
+        
         <div className="row">
             <div className="col-md-4">
                 <div className="card mb-4 border-dark">
@@ -91,6 +125,7 @@ export default class Start extends Component{
             </div>
         </div>
         </div>
+     
         </form>  
         ) ;
     } 

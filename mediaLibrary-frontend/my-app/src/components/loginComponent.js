@@ -48,6 +48,7 @@ export default class Login extends Component{
                 
                 if(responseJSON.token){
                     sessionStorage.setItem('userData', JSON.stringify(responseJSON));
+                    sessionStorage.setItem('email', this.state.email);
                     this.setState({redirect: true})
                 }else{
                     console.log('Login Error');
@@ -118,14 +119,17 @@ export default class Login extends Component{
 
     render(){
 
-        if(this.state.redirect){
-            return(<Redirect to={'/start'} />);
-        }
+        //if(this.state.redirect){
+          //  return(<Redirect to={'/start'} />);
+        //}
         
-        if(sessionStorage.getItem('userData')){
-            return(<Redirect to={'/start'}/>);
-        } 
-
+        if(this.state.redirect){
+            if(sessionStorage.getItem('userData')){
+                return(
+                    <Redirect to={'/start'}/>
+                );
+            }    
+        }
         const {formErrors} = this.state;
 
         return(        

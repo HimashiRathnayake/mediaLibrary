@@ -140,26 +140,12 @@ export default class Favourites extends Component{
         return(
             <div>
             <nav className="navbar navbar-expand navbar-dark bg-primary fixed-top" id="mainNav">
-                
-                    <Link className="navbar-brand js-scroll-trigger" to={"/start"}>MyMedia</Link>
-                    <div className="collapse navbar-collapse" id="navbarResponsive">
-                        <ul className="navbar-nav text-uppercase ml-auto">
-                            <li className="nav-item">
-                                <Link className="nav-link js-scroll-trigger" to={"/start"}>Home</Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link className="nav-link js-scroll-trigger" to={"/search"}>Search</Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link className="nav-link js-scroll-trigger" to={"/favourites"}>Favourites</Link>
-                            </li>
-                            <li className="nav-item">
-                                <button  className="nav-link js-scroll-trigger link-button" onClick={this.logout}>Logout</button> 
-                            </li>
-                        </ul>
-                    </div>
-                
+                    <Link to={'/start'}>
+                        <button className="link-button" title="back"  style={{paddingRight: '10px', color: 'white', paddingTop: '5px', paddingLeft: '20px'}}><span className="fa fa-arrow-left" > </span></button>
+                    </Link>
+                    <Link className="navbar-brand js-scroll-trigger">Favourites</Link>   
             </nav>
+
             {/*<div className="container" style={{backgroundColor: 'White', marginTop: '100px', height: '100%'}}>*/}
             <div className="container" style={{backgroundColor: 'White', marginTop: '100px', width: '80%', height: '100%'}}>
                 <h3 style={{paddingTop: '10px'}}>Favourites</h3>

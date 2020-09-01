@@ -30,6 +30,162 @@
 .link-button:focus {
 text-decoration: none;
 }
+.fa-char-A:before {
+    font-family: roboto;
+    color: white;
+    font-weight: bold;
+    content: "A";  
+}
+.fa-char-B:before {
+    font-family: roboto;
+    color: white;
+    font-weight: bold;
+    content: "B";  
+}
+.fa-char-C:before {
+    font-family: roboto;
+    color: white;
+    font-weight: bold;
+    content: "C";  
+}
+.fa-char-D:before {
+    font-family: roboto;
+    color: white;
+    font-weight: bold;
+    content: "D";  
+}
+.fa-char-E:before {
+    font-family: roboto;
+    color: white;
+    font-weight: bold;
+    content: "E";  
+}
+.fa-char-F:before {
+    font-family: roboto;
+    color: white;
+    font-weight: bold;
+    content: "F";  
+}
+.fa-char-G:before {
+    font-family: roboto;
+    color: white;
+    font-weight: bold;
+    content: "G";  
+}
+.fa-char-H:before {
+    font-family: roboto;
+    color: white;
+    font-weight: bold;
+    content: "H";  
+}
+.fa-char-I:before {
+    font-family: roboto;
+    color: white;
+    font-weight: bold;
+    content: "I";  
+}
+.fa-char-J:before {
+    font-family: roboto;
+    color: white;
+    font-weight: bold;
+    content: "J";  
+}
+.fa-char-K:before {
+    font-family: roboto;
+    color: white;
+    font-weight: bold;
+    content: "K";  
+}
+.fa-char-L:before {
+    font-family: roboto;
+    color: white;
+    font-weight: bold;
+    content: "L";  
+}
+.fa-char-M:before {
+    font-family: roboto;
+    color: white;
+    font-weight: bold;
+    content: "M";  
+}
+.fa-char-N:before {
+    font-family: roboto;
+    color: white;
+    font-weight: bold;
+    content: "N";  
+}
+.fa-char-O:before {
+    font-family: roboto;
+    color: white;
+    font-weight: bold;
+    content: "O";  
+}
+.fa-char-P:before {
+    font-family: roboto;
+    color: white;
+    font-weight: bold;
+    content: "P";  
+}
+.fa-char-Q:before {
+    font-family: roboto;
+    color: white;
+    font-weight: bold;
+    content: "Q";  
+}
+.fa-char-R:before {
+    font-family: roboto;
+    color: white;
+    font-weight: bold;
+    content: "R";  
+}
+.fa-char-S:before {
+    font-family: roboto;
+    color: white;
+    font-weight: bold;
+    content: "S";  
+}
+.fa-char-T:before {
+    font-family: roboto;
+    color: white;
+    font-weight: bold;
+    content: "T";  
+}
+.fa-char-U:before {
+    font-family: roboto;
+    color: white;
+    font-weight: bold;
+    content: "U";  
+}
+.fa-char-V:before {
+    font-family: roboto;
+    color: white;
+    font-weight: bold;
+    content: "V";  
+}
+.fa-char-W:before {
+    font-family: roboto;
+    color: white;
+    font-weight: bold;
+    content: "W";  
+}
+.fa-char-X:before {
+    font-family: roboto;
+    color: white;
+    font-weight: bold;
+    content: "X";  
+}
+.fa-char-Y:before {
+    font-family: roboto;
+    color: white;
+    font-weight: bold;
+    content: "Y";  
+}
+.fa-char-Z:before {
+    font-family: roboto;
+    color: white;
+    font-weight: bold;
+    content: "Z";  
+}
 /* .player-wrapper{
     position: relative;
     padding-top: 56.25%;

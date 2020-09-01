@@ -14,6 +14,7 @@ import Video from './components/videoComponent';
 import Search from './components/search'; 
 import Favourites from './components/favourites'; 
 import Verify from './components/verifyComponent';
+import Notification from './components/notification';
 
 export default class Routes extends Component {
 
@@ -33,6 +34,7 @@ export default class Routes extends Component {
                     <Route path="/video" component={Video} /> 
                     <Route path="/search" component={Search} /> 
                     <Route path="/favourites" component={Favourites} /> 
+                    <Route path="/notifications" component={Notification} /> 
                 </Switch>
             </Router>
            
