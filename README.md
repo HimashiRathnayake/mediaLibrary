@@ -2,8 +2,6 @@
 
 Mobile and web based application to manage a media library.
 
-Web application - https://mymedia-webapp.herokuapp.com/
-
 This application support following functionalities.
 
 * Register and login to the MyMedia system online by providing email and password.  
